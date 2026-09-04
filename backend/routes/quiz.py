@@ -59,13 +59,21 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
         
     # 3. Construct prompt
     context_str = "\n\n".join([f"--- Chunk ID: {c['chunk_id']} ---\n{c['text']}" for c in unique_chunks])
+    allowed_chunk_ids_str = "\n".join([f"- {c['chunk_id']}" for c in unique_chunks])
     
     system_prompt = RAG_SYSTEM_PROMPT.format(
         context=context_str,
         history="No prior conversation.",
         query=f"Generate {req.count} multiple-choice questions of {req.difficulty} difficulty covering the following units: {', '.join(req.unit_ids)}."
     )
-    full_prompt = system_prompt + "\n" + QUIZ_INSTRUCTION
+    
+    citation_instruction = (
+        f"\n\nCRITICAL CITATION RULE:\n"
+        f"For every generated question, 'source_chunk_ids' MUST contain one or more of the EXACT literal Chunk ID strings listed below:\n"
+        f"{allowed_chunk_ids_str}\n"
+        f"Do NOT invent, alter, index, or summarize Chunk IDs (do not write 'chunk_1' or 'Chunk 1'). Use ONLY the exact literal UUID strings provided above."
+    )
+    full_prompt = system_prompt + "\n" + QUIZ_INSTRUCTION + citation_instruction
     
     # 4. Generation Loop with Validation and Retry
     def try_generate(error_msg=""):
@@ -95,21 +103,31 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
                 detail="Quiz generation failed due to formatting errors. Please try again."
             )
             
-    # 5. Relaxed Constraint Check & Question Formatting
+    # 5. Strict Guardrail Check: Exact-Set-Membership Verification
+    def normalize_chunk_id(cid: str, valid_set: set) -> str:
+        if not cid:
+            return ""
+        cid_clean = str(cid).strip().strip("'\"")
+        if cid_clean in valid_set:
+            return cid_clean
+        return ""
+
     valid_questions = []
-    default_chunk_ids = [c["chunk_id"] for c in unique_chunks[:3]] if unique_chunks else [str(uuid.uuid4())]
+    valid_retrieved_set = {c["chunk_id"] for c in unique_chunks}
     
     for q in quiz_data.questions:
         valid_chunk_ids = []
         for cid in q.source_chunk_ids:
-            if cid in retrieved_chunk_ids:
-                valid_chunk_ids.append(cid)
+            norm_id = normalize_chunk_id(cid, valid_retrieved_set)
+            if norm_id in valid_retrieved_set and norm_id not in valid_chunk_ids:
+                valid_chunk_ids.append(norm_id)
                 
-        # Fallback to retrieved chunk IDs if Gemini formatted chunk IDs differently
-        if not valid_chunk_ids:
-            valid_chunk_ids = default_chunk_ids
-            
         q.source_chunk_ids = valid_chunk_ids
+        
+        # STRICT GUARDRAIL: DISCARD ANY QUESTION WITH ZERO VALID RETRIEVED CHUNK IDS!
+        if not q.source_chunk_ids:
+            logger.warning("DISCARDING UNGROUNDED QUESTION: No valid retrieved chunk IDs matched", extra={"question_text": q.question_text})
+            continue
                 
         # Verify the unit requested is valid
         if not q.unit or q.unit not in req.unit_ids:
@@ -122,7 +140,7 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
     if delivered_count == 0:
         raise HTTPException(
             status_code=400,
-            detail="Quiz generation could not produce questions. Please try again."
+            detail="Not enough course material retrieved for the selected unit(s) to generate a grounded quiz. Please select additional units or try again."
         )
     
     # 6. Storage

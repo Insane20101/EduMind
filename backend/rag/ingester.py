@@ -135,6 +135,7 @@ def ingest_document(
         # Untagged generic prose (PDFs, Markdown notes, student uploads) -> Use RecursiveCharacterTextSplitter
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         chunks = text_splitter.split_text(raw_text)
+        is_placeholder_doc = ("is available for inline viewing and download" in raw_text or "Document placeholder metadata" in raw_text)
         for i, chunk_str in enumerate(chunks):
             chunk_id = f"{filename}_chunk_{i}_{uuid.uuid4().hex[:6]}"
             meta = {
@@ -142,7 +143,8 @@ def ingest_document(
                 "subject_id": subject_id,
                 "unit": effective_unit,
                 "source_filename": filename,
-                "resource_type": resource_type
+                "resource_type": resource_type,
+                "is_placeholder": is_placeholder_doc
             }
             documents.append(Document(page_content=chunk_str, metadata=meta))
 

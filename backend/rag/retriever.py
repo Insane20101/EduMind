@@ -50,6 +50,11 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
         for point in points:
             payload = point.payload or {}
             text = payload.get("text") or payload.get("page_content") or ""
+            # Filter out scanned PDF placeholder chunks from RAG grounding context
+            is_ph = payload.get("is_placeholder", False)
+            if is_ph or "is available for inline viewing and download" in text or "Document placeholder metadata" in text:
+                continue
+                
             chunk_id = payload.get("chunk_id") or str(point.id)
             chunks.append({
                 "chunk_id": chunk_id,
