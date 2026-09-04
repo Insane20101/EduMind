@@ -4,7 +4,7 @@ from datetime import datetime
 
 class UserCreate(BaseModel):
     enrollment: str
-    email: Optional[str] = None
+    recovery_email: str
     branch: str
     semester: str
     first_name: str
@@ -18,6 +18,7 @@ class UserLogin(BaseModel):
 
 class SendOTPRequest(BaseModel):
     enrollment: str
+    recovery_email: str
 
 class VerifyOTPResetPasswordRequest(BaseModel):
     enrollment: str
@@ -37,7 +38,7 @@ class UserUpdate(BaseModel):
 
 class UserResponse(BaseModel):
     enrollment: str
-    email: Optional[str] = None
+    recovery_email: Optional[str] = None
     branch: str
     semester: str
     first_name: str

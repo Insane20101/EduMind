@@ -3,17 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock } from 'lucide-react';
+import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock, Mail } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 export default function Login() {
   const [formData, setFormData] = useState({ enrollment: '', password: '' });
   
-  // Password Reset State
+  // Forgot Password Recovery State
   const [showResetModal, setShowResetModal] = useState(false);
-  const [resetStep, setResetStep] = useState(1); // 1: Send OTP, 2: Verify OTP & New Password
+  const [resetStep, setResetStep] = useState(1); // 1: Enrollment + Recovery Email ➔ Send OTP, 2: OTP + New Password
   const [resetEnrollment, setResetEnrollment] = useState('');
+  const [recoveryEmail, setRecoveryEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [maskedEmail, setMaskedEmail] = useState('');
@@ -33,35 +34,40 @@ export default function Login() {
     }
   };
 
-  // Step 1: Send OTP to registered email via Resend API
+  // Step 1: Verify Enrollment + Recovery Email & Send Resend OTP
   const handleSendOTP = async (e) => {
     e.preventDefault();
     if (!resetEnrollment.trim()) {
-      toast.error('Please enter your Enrollment Number or registered Email.');
+      toast.error('Please enter your Enrollment Number.');
+      return;
+    }
+    if (!recoveryEmail.trim()) {
+      toast.error('Please enter your registered Recovery Email ID.');
       return;
     }
 
     setLoading(true);
     try {
       const res = await axios.post(`${API_BASE}/api/auth/send-otp`, {
-        enrollment: resetEnrollment.trim().toUpperCase()
+        enrollment: resetEnrollment.trim().toUpperCase(),
+        recovery_email: recoveryEmail.trim().toLowerCase()
       });
       
-      setMaskedEmail(res.data.masked_email || 'your registered email');
-      toast.success(res.data.message || 'Verification code sent to your email!');
+      setMaskedEmail(res.data.masked_email || recoveryEmail);
+      toast.success(res.data.message || 'Verification code sent to your Recovery Email!');
       setResetStep(2);
     } catch (err) {
-      toast.error(err.response?.data?.detail || 'Failed to send verification code.');
+      toast.error(err.response?.data?.detail || 'Failed to send verification code. Please check your inputs.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Step 2: Verify OTP code and set new password
+  // Step 2: Verify 6-digit OTP code & Reset Password
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     if (!otpCode.trim() || otpCode.trim().length !== 6) {
-      toast.error('Please enter the 6-digit code sent to your email.');
+      toast.error('Please enter the 6-digit code sent to your Recovery Email.');
       return;
     }
     if (!newPassword.trim() || newPassword.length < 8) {
@@ -78,7 +84,7 @@ export default function Login() {
       });
 
       toast.success(res.data?.message || 'Password reset successfully!');
-      // Pre-fill login credentials
+      // Pre-fill login credentials with Enrollment + New Password
       setFormData({
         enrollment: resetEnrollment.trim().toUpperCase(),
         password: newPassword.trim()
@@ -89,7 +95,7 @@ export default function Login() {
       setOtpCode('');
       setNewPassword('');
     } catch (err) {
-      toast.error(err.response?.data?.detail || 'Verification failed. Please check the code.');
+      toast.error(err.response?.data?.detail || 'Verification failed. Please check the 6-digit code.');
     } finally {
       setLoading(false);
     }
@@ -102,13 +108,13 @@ export default function Login() {
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">Enrollment No. or Email</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Enrollment Number</label>
             <input
               type="text"
-              placeholder="e.g. 2023CSE0123 or student@gmail.com"
-              className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
+              placeholder="e.g. 2023CSD0517"
+              className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm uppercase"
               value={formData.enrollment}
-              onChange={(e) => setFormData({...formData, enrollment: e.target.value})}
+              onChange={(e) => setFormData({...formData, enrollment: e.target.value.toUpperCase()})}
               required
             />
           </div>
@@ -152,7 +158,7 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Modern 2-Step Resend Email OTP Password Reset Modal */}
+      {/* Modern 2-Factor Recovery Password Reset Modal */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl border border-slate-200 relative animate-in zoom-in-95 duration-150">
@@ -169,27 +175,42 @@ export default function Login() {
 
             <div className="flex items-center gap-2 text-primary font-bold text-lg mb-1">
               <ShieldCheck size={22} className="text-accent" />
-              <span>Resend Email OTP Reset</span>
+              <span>Password Recovery</span>
             </div>
             <p className="text-xs text-slate-500 mb-5 leading-relaxed">
               {resetStep === 1 
-                ? 'Enter your Enrollment Number to receive a 6-digit verification code via email.' 
-                : `Enter the 6-digit code sent to ${maskedEmail} and choose a new password.`}
+                ? 'Enter your Enrollment Number and your registered Recovery Email ID to receive a 6-digit OTP code.' 
+                : `Enter the 6-digit OTP code sent to ${maskedEmail} and create your new password.`}
             </p>
 
-            {/* STEP 1: Request Email OTP */}
+            {/* STEP 1: Verify Enrollment + Recovery Email */}
             {resetStep === 1 && (
-              <form onSubmit={handleSendOTP} className="space-y-4">
+              <form onSubmit={handleSendOTP} className="space-y-3.5">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
-                    Enrollment Number or Registered Email
+                    Enrollment Number
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. 2023CSE0123 or student@gmail.com"
+                    placeholder="e.g. 2023CSD0517"
                     className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all uppercase"
                     value={resetEnrollment}
-                    onChange={(e) => setResetEnrollment(e.target.value)}
+                    onChange={(e) => setResetEnrollment(e.target.value.toUpperCase())}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider flex items-center gap-1">
+                    <Mail size={12} className="text-accent" />
+                    <span>Registered Recovery Email ID</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="e.g. student@gmail.com"
+                    className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -209,18 +230,18 @@ export default function Login() {
                     className="px-4 py-2 text-xs font-semibold bg-primary hover:bg-primary-hover text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
                   >
                     {loading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-                    <span>Send Verification Code</span>
+                    <span>Send 6-Digit OTP</span>
                   </button>
                 </div>
               </form>
             )}
 
-            {/* STEP 2: Verify 6-Digit OTP & Set New Password */}
+            {/* STEP 2: Verify 6-Digit OTP & Create New Password */}
             {resetStep === 2 && (
               <form onSubmit={handleVerifyOTP} className="space-y-3.5">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
-                    6-Digit Verification Code
+                    6-Digit Verification OTP Code
                   </label>
                   <input
                     type="text"
@@ -273,7 +294,7 @@ export default function Login() {
                       className="px-4 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
                     >
                       {loading ? <Loader2 size={14} className="animate-spin" /> : <Lock size={14} />}
-                      <span>Verify & Reset Password</span>
+                      <span>Reset Password</span>
                     </button>
                   </div>
                 </div>

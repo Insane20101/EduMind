@@ -28,7 +28,7 @@ def validate_enrollment(enr: str, branch: str):
 
 def mask_email(email: str) -> str:
     if not email or "@" not in email:
-        return "your registered email"
+        return "your recovery email"
     parts = email.split("@")
     name = parts[0]
     domain = parts[1]
@@ -43,25 +43,19 @@ async def signup(user: UserCreate):
     validate_enrollment(user.enrollment, user.branch)
     
     clean_enr = user.enrollment.strip().upper()
-    clean_email = (user.email or "").strip().lower() if user.email else None
+    clean_rec_email = (user.recovery_email or "").strip().lower()
 
-    if clean_email and not EMAIL_REGEX.match(clean_email):
-        raise HTTPException(status_code=400, detail="Invalid email format.")
+    if not clean_rec_email or not EMAIL_REGEX.match(clean_rec_email):
+        raise HTTPException(status_code=400, detail="Valid Recovery Email ID is required.")
     
-    # Check if enrollment already exists
+    # Check if enrollment already exists (case-insensitive)
     existing_enr = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
     if existing_enr:
         raise HTTPException(status_code=400, detail="Enrollment number already registered.")
 
-    # Check if email already exists
-    if clean_email:
-        existing_email = await db.users.find_one({"email": clean_email})
-        if existing_email:
-            raise HTTPException(status_code=400, detail="Email address already registered.")
-
     user_dict = user.dict(exclude={"password"})
     user_dict["enrollment"] = clean_enr
-    user_dict["email"] = clean_email
+    user_dict["recovery_email"] = clean_rec_email
     user_dict["branch"] = user_dict.get("branch", "CSE").upper()
     user_dict["password_hash"] = hash_password(user.password.strip())
     user_dict["created_at"] = datetime.utcnow()
@@ -69,7 +63,7 @@ async def signup(user: UserCreate):
     try:
         await db.users.insert_one(user_dict)
     except DuplicateKeyError:
-        raise HTTPException(status_code=400, detail="Enrollment number or email already registered.")
+        raise HTTPException(status_code=400, detail="Enrollment number already registered.")
     
     user_dict.pop("password_hash", None)
     user_dict.pop("_id", None)
@@ -80,31 +74,26 @@ async def signup(user: UserCreate):
 @router.post("/login")
 @limiter.limit("10/minute")
 async def login(request: Request, credentials: UserLogin):
-    clean_identifier = (credentials.enrollment or "").strip()
-    if not clean_identifier:
-        raise HTTPException(status_code=400, detail="Enrollment number or Email required.")
+    clean_enr = (credentials.enrollment or "").strip().upper()
+    if not clean_enr:
+        raise HTTPException(status_code=400, detail="Enrollment number required.")
 
-    # Support login by enrollment OR email
-    user = await db.users.find_one({
-        "$or": [
-            {"enrollment": {"$regex": f"^{re.escape(clean_identifier.upper())}$", "$options": "i"}},
-            {"email": clean_identifier.lower()}
-        ]
-    })
+    # Primary login strictly by Enrollment Number
+    user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
     
     if not user or "password_hash" not in user:
-        raise HTTPException(status_code=401, detail="Invalid credentials or password.")
+        raise HTTPException(status_code=401, detail="Invalid enrollment number or password.")
 
     raw_pw = credentials.password or ""
     clean_pw = raw_pw.strip()
 
     is_valid = verify_password(clean_pw, user["password_hash"]) or verify_password(raw_pw, user["password_hash"])
     if not is_valid:
-        raise HTTPException(status_code=401, detail="Invalid credentials or password.")
+        raise HTTPException(status_code=401, detail="Invalid enrollment number or password.")
     
     user_dict = {
         "enrollment": user["enrollment"],
-        "email": user.get("email"),
+        "recovery_email": user.get("recovery_email") or user.get("email"),
         "branch": user.get("branch", "CSE"),
         "semester": user.get("semester", 4),
         "first_name": user.get("first_name", "Student"),
@@ -120,33 +109,34 @@ async def login(request: Request, credentials: UserLogin):
 @limiter.limit("5/minute")
 async def send_otp(request: Request, payload: SendOTPRequest):
     clean_enr = (payload.enrollment or "").strip().upper()
-    if not clean_enr:
-        raise HTTPException(status_code=400, detail="Enrollment number required.")
+    clean_rec_email = (payload.recovery_email or "").strip().lower()
 
-    user = await db.users.find_one({
-        "$or": [
-            {"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}},
-            {"email": clean_enr.lower()}
-        ]
-    })
+    if not clean_enr or not clean_rec_email:
+        raise HTTPException(status_code=400, detail="Both Enrollment Number and Recovery Email ID are required.")
+
+    user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
 
     if not user:
-        raise HTTPException(status_code=404, detail="Enrollment number or email not registered.")
+        raise HTTPException(status_code=404, detail="Enrollment number not registered. Please check or sign up.")
 
-    student_email = user.get("email")
-    if not student_email:
-        raise HTTPException(status_code=400, detail="No registered email address found for this account. Please contact admin to reset.")
+    registered_rec_email = (user.get("recovery_email") or user.get("email") or "").strip().lower()
+    if not registered_rec_email:
+        raise HTTPException(status_code=400, detail="No registered recovery email found for this enrollment. Please contact admin.")
+
+    # Strict Security Check: Verify submitted recovery email matches registered recovery email
+    if registered_rec_email != clean_rec_email:
+        raise HTTPException(status_code=400, detail="Recovery Email ID does not match the registered record for this Enrollment Number.")
 
     # Generate 6-digit OTP
     otp_code = str(random.randint(100000, 999999))
     expires_at = datetime.utcnow() + timedelta(minutes=10)
 
-    # Upsert OTP into collection
+    # Upsert OTP into otps collection
     await db.otps.update_one(
         {"enrollment": user["enrollment"]},
         {"$set": {
             "enrollment": user["enrollment"],
-            "email": student_email,
+            "recovery_email": registered_rec_email,
             "otp_code": otp_code,
             "expires_at": expires_at,
             "created_at": datetime.utcnow()
@@ -155,9 +145,9 @@ async def send_otp(request: Request, payload: SendOTPRequest):
     )
 
     student_name = user.get("first_name", "Student")
-    email_sent = send_resend_otp_email(student_email, student_name, otp_code)
+    email_sent = send_resend_otp_email(registered_rec_email, student_name, otp_code)
 
-    masked = mask_email(student_email)
+    masked = mask_email(registered_rec_email)
     return {
         "message": f"6-digit verification code sent to {masked}",
         "masked_email": masked,
@@ -177,12 +167,7 @@ async def verify_otp_reset_password(request: Request, payload: VerifyOTPResetPas
     if len(new_pw) < 8:
         raise HTTPException(status_code=400, detail="New password must be at least 8 characters long.")
 
-    user = await db.users.find_one({
-        "$or": [
-            {"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}},
-            {"email": clean_enr.lower()}
-        ]
-    })
+    user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
     if not user:
         raise HTTPException(status_code=404, detail="Account not found.")
 
@@ -193,7 +178,7 @@ async def verify_otp_reset_password(request: Request, payload: VerifyOTPResetPas
     if otp_record.get("expires_at") < datetime.utcnow():
         raise HTTPException(status_code=400, detail="Verification code has expired. Please click 'Resend Code'.")
 
-    # Update password
+    # Update password hash
     new_hash = hash_password(new_pw)
     await db.users.update_one(
         {"_id": user["_id"]},
@@ -203,43 +188,13 @@ async def verify_otp_reset_password(request: Request, payload: VerifyOTPResetPas
     # Delete used OTP
     await db.otps.delete_one({"_id": otp_record["_id"]})
 
-    return {"message": "Password reset successfully! You can now log in with your new password."}
-
-@router.post("/reset-password")
-@limiter.limit("5/minute")
-async def reset_password(request: Request, data: UserPasswordReset):
-    """Fallback reset endpoint matching first_name verification."""
-    clean_enr = (data.enrollment or "").strip().upper()
-    clean_name = (data.first_name or "").strip()
-    new_pw = (data.new_password or "").strip()
-
-    if not clean_enr or not clean_name or not new_pw:
-        raise HTTPException(status_code=400, detail="All fields are required.")
-
-    if len(new_pw) < 8:
-        raise HTTPException(status_code=400, detail="New password must be at least 8 characters long.")
-
-    user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
-    if not user:
-        raise HTTPException(status_code=404, detail="Enrollment number not found.")
-
-    user_first_name = (user.get("first_name") or "").strip()
-    if user_first_name.lower() != clean_name.lower():
-        raise HTTPException(status_code=400, detail="First name does not match the registered record.")
-
-    new_hash = hash_password(new_pw)
-    await db.users.update_one(
-        {"_id": user["_id"]},
-        {"$set": {"password_hash": new_hash}}
-    )
-
-    return {"message": "Password reset successfully! You can now log in with your new password."}
+    return {"message": "Password reset successfully! You can now log in with your Enrollment Number and new password."}
 
 @router.get("/profile", response_model=UserResponse)
 async def get_profile(current_user: dict = Depends(get_current_user)):
     return {
         "enrollment": current_user["enrollment"],
-        "email": current_user.get("email"),
+        "recovery_email": current_user.get("recovery_email") or current_user.get("email"),
         "branch": current_user["branch"],
         "semester": current_user["semester"],
         "first_name": current_user["first_name"],
@@ -259,7 +214,7 @@ async def update_profile(user_update: UserUpdate, current_user: dict = Depends(g
     
     return {
         "enrollment": updated_user["enrollment"],
-        "email": updated_user.get("email"),
+        "recovery_email": updated_user.get("recovery_email") or updated_user.get("email"),
         "branch": updated_user["branch"],
         "semester": updated_user["semester"],
         "first_name": updated_user["first_name"],

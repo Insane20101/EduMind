@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 export default function Signup() {
   const [formData, setFormData] = useState({
     enrollment: '',
-    email: '',
+    recovery_email: '',
     branch: 'CSE',
     semester: 'Semester-3',
     first_name: '',
@@ -32,6 +32,10 @@ export default function Signup() {
     }
     if (formData.password !== formData.confirm_password) {
       toast.error('Passwords do not match');
+      return;
+    }
+    if (!formData.recovery_email.trim()) {
+      toast.error('Recovery Email ID is required');
       return;
     }
     
@@ -67,14 +71,14 @@ export default function Signup() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">Email Address (For Password Reset OTP)</label>
-            <input required type="email" placeholder="student@example.com" className="w-full p-2 border rounded bg-muted text-sm" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+            <label className="block text-sm font-medium text-text-primary mb-1">Recovery Email ID (For Password Reset)</label>
+            <input required type="email" placeholder="student@example.com" className="w-full p-2 border rounded bg-muted text-sm" value={formData.recovery_email} onChange={e => setFormData({...formData, recovery_email: e.target.value})} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-primary mb-1">Enrollment No.</label>
-              <input required type="text" placeholder="e.g. 2023CSE0123" className="w-full p-2 border rounded bg-muted uppercase text-sm" value={formData.enrollment} onChange={handleEnrollmentChange} />
+              <input required type="text" placeholder="e.g. 2023CSD0517" className="w-full p-2 border rounded bg-muted uppercase text-sm" value={formData.enrollment} onChange={handleEnrollmentChange} />
             </div>
             <div>
               <label className="block text-sm font-medium text-text-primary mb-1">Branch</label>
