@@ -16,8 +16,13 @@ langchain-core
 langchain-community
 langchain-google-genai
 langchain-openai
+langchain-groq
 PyMuPDF
 pypdf
 qdrant-client
 openai
+youtube-transcript-api
+yt-dlp
+requests
+urllib3
 
