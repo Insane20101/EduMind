@@ -18,7 +18,13 @@ export default function SubjectDashboard() {
   
   const [activeTab, setActiveTab] = useState('Learn');
   const [practiceMode, setPracticeMode] = useState('menu'); // 'menu', 'manual', 'quiz'
-  const tabs = ['Learn', 'Practice', 'Performance'];
+  useEffect(() => {
+    if (activeSubjectName) {
+      document.title = `EduMind — ${activeSubjectName}`;
+    } else {
+      document.title = "EduMind — AI Study Assistant";
+    }
+  }, [activeSubjectName]);
 
   useEffect(() => {
     if (Object.keys(subjectsData).length === 0) {

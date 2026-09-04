@@ -1,0 +1,399 @@
+{
+  "Semester-1": [
+    {
+      "code": "BSM-104",
+      "name": "Linear Algebra and Differential Equations",
+      "status": "channel",
+      "playlists": "https://youtube.com/playlist?list=PLU6SqdYcYsfI7Ebw_j-Vy8YKHdbHKP9am&si=sEoCH5Zgd8W_l9wK",
+      "note": "Dr.Gajendra Purohit, study topic wise videos from this channel."
+    },
+    {
+      "code": "BEE-101",
+      "name": "Fundamental of Electrical Engineering",
+      "status": "channel",
+      "playlists": "https://youtube.com/playlist?list=PL9RcWoqXmzaLTYUdnzKhF4bYug3GjGcEc&si=TqZecy-cTXhzZK5K",
+      "note": "Engineers ki Pathshala, best channel for this, long videos but worth it."
+    },
+    {
+      "code": "BHM-101",
+      "name": "Professional Communication",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes ar enough for this.."
+    },
+    {
+      "code": "BCS-102",
+      "name": "Web Designing-1",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLu0W_9lII9agq5TrH9XLIKQvv0iaF2X3w&si=zzP1yqiFqN16-2WD",
+        "https://youtube.com/playlist?list=PLbtI3_MArDOk_A-GnYHPOiHSxlK2Vd3Zn&si=2dNsvfyyTri_r-nt"
+      ],
+      "note": "Sheriyans Channel strongly recommended for advanced job ready development."
+    },
+    {
+      "code": "BCS-103",
+      "name": "Computer Troubleshooting & Maintenance",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes are enough."
+    },
+    {
+      "code": "BSM-144",
+      "name": "Environment and Ecology",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes are enough."
+    },
+    {
+      "code": "BHM-113",
+      "name": "Industrial Psychology",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes are enough."
+    }
+  ],
+  "Semester-2": [
+    {
+      "code": "BSM-156",
+      "name": "Applied Probability and Statistics",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL5Dqs90qDljV3zXs-DbwJHL9pZLHDQhKi&si=s09gxA3f72NcbNfS"
+      ],
+      "note": "Complete each video."
+    },
+    {
+      "code": "BCS-151",
+      "name": "Introduction to C Programming",
+      "status": "channel",
+      "playlists": "https://youtube.com/playlist?list=PLxgZQoSe9cg1drBnejUaDD9GEJBGQ5hMt&si=xu0cLFgkKBXSbtbj",
+      "note": "Best of Luck."
+    },
+    {
+      "code": "BSM-179",
+      "name": "Quantum Physics and Nanomaterials",
+      "status": "none",
+      "playlists": [],
+      "note": "Class notes Strongly Recommended.."
+    },
+    {
+      "code": "BCS-152",
+      "name": "Web Designing-2",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLu0W_9lII9agq5TrH9XLIKQvv0iaF2X3w&si=zzP1yqiFqN16-2WD",
+        "https://youtube.com/playlist?list=PLbtI3_MArDOk_A-GnYHPOiHSxlK2Vd3Zn&si=2dNsvfyyTri_r-nt"
+      ],
+      "note": "Sheriyans Channel strongly recommended for advanced job ready development."
+    },
+    {
+      "code": "BCS-153",
+      "name": "IT Tools and Workshop-1",
+      "status": "none",
+      "playlists": [],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BEC-154",
+      "name": "Basic Electronic Components and Circuits",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm&si=pcbZjvnhP8aAZODL"
+      ],
+      "note": "Complete each video."
+    }
+  ],
+  "Semester-3": [
+    {
+      "code": "BSM-202",
+      "name": "Discrete Mathematics",
+      "status": "channel",
+      "playlists": "https://youtube.com/playlist?list=PLT3bOBUU3L9j_VG5CICyWK_a4M0-nwwxy&si=zhL7iBLhV1_VhjRH",
+      "note": "Class notes Strongly Recommended.."
+    },
+    {
+      "code": "BCS-201",
+      "name": "Digital Logic and Design",
+      "status": "channel",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLgwJf8NK-2e4OD-vicvzWT7wE8BZIQtEe&si=eDP_RhZk-5KIooI6"
+      ],
+      "note": "Complete each video topic wise, not every video is in syllabus."
+    },
+    {
+      "code": "BHM-202",
+      "name": "Cyber Ethics and IPR",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes ar enough for this.."
+    },
+    {
+      "code": "BCS-202",
+      "name": "Principles of Data Structures",
+      "status": "verified",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLQEaRBV9gAFu4ovJ41PywklqI7IyXwr01&si=-lYWFkiHU9xAWUle"
+      ],
+      "note": "Complete each video for strong dsa foundation for Placements."
+    },
+    {
+      "code": "BCS-203",
+      "name": "Object Oriented Programming",
+      "status": "channel",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLQEaRBV9gAFujcBWJhBT2XXsuMlIfETBy&si=XP6IuSiOa8Ir_QbS"
+      ],
+      "note": "Make sure to chech out JAVATPOINT documentation page for java oops."
+    },
+    {
+      "code": "BCS-204",
+      "name": "IT Tools and Workshop-2",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes ar enough for this.."
+    }
+  ],
+  "Semester-4": [
+    {
+      "code": "BSM-253",
+      "name": "Optimization Techniques",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL23dd-8zssJAdGmsSofO4UaRyEXZDtm7a&si=2FFmAohD9UilOR7D"
+      ],
+      "note": "Best channel for this subject."
+    },
+    {
+      "code": "BCS-251",
+      "name": "Database Management Systems",
+      "status": "verified",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL3R9-um41Jsw8hAUYOfNmWNjUr73H6ee0&si=rJcsllUsMswSgDm5"
+      ],
+      "note": "Class Notes ar enough for this.."
+    },
+    {
+      "code": "BCS-252",
+      "name": "Theory of Computation",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "TOC (Theory of Computation)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiFM9Lj5G9G_76adtyb4ef7i"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BCS-253",
+      "name": "Design & Analysis of Algorithms",
+      "status": "channel",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL1QH9gyQXfgs7foRxIbIH8wmJyDh5QzAm&si=ug4SaOo6k0d7JPJB"
+      ],
+      "note": "Also check Sanchit Jain (KnowledgeGate) DAA one shot."
+    },
+    {
+      "code": "BCS-254",
+      "name": "Computer Organization and Architecture",
+      "status": "channel",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL3eEXnCBViH85a_kkiNN_rj97jPSIWtST&si=KqN9DI1B2zeBmRoc"
+      ],
+      "note": "Gate level questions are asked in exam. So you have to watch gate lectures, Practice extra question ans pyqs."
+    },
+    {
+      "code": "BEC-256",
+      "name": "Signal and Systems",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL9RcWoqXmzaIG-RWneeqDJ-FCt66S15pl&si=TCISkBW2ryTGxzH4"
+      ],
+      "note": "Not every video is in syllabus, watch topic wise."
+    },
+    {
+      "code": "SCS-211/221/231",
+      "name": "Departmental Minor-1 (Data Science / Cyber-Physical Security / CG for VR \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels; these are specialized electives."
+    }
+  ],
+  "Semester-5": [
+    {
+      "code": "BHM-301",
+      "name": "Engineering & Managerial Economics",
+      "status": "none",
+      "playlists": [],
+      "note": "Teacher notes are enough."
+    },
+    {
+      "code": "BCS-301",
+      "name": "Principles of Operating Systems",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Operating System (Complete Playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BCS-302",
+      "name": "Principle of Compiler Design",
+      "status": "channel",
+      "playlists": [
+        "https://www.youtube.com/@GateSmashers/playlists"
+      ],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BCS-303",
+      "name": "Computer Networks",
+      "status": "verified",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLBlnK6fEyqRgMCUAG0XRw78UA8qnv6jEx&si=IFoVWGmasTY8P7r1"
+      ],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BEC-305",
+      "name": "Microprocessor and Microcontroller",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PLgwJf8NK-2e5vHwmowy_kGtjq9Ih0FzwN&si=HRR8pXdL9xzFuUTW"
+      ],
+      "note": "Watch premium videos from neso academy."
+    },
+    {
+      "code": "SCS-312/322/232",
+      "name": "Departmental Minor-2 (Data Analytics / Sensing & Comm / VR-AR \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-6": [
+    {
+      "code": "BHM-351",
+      "name": "Business Management",
+      "status": "none",
+      "playlists": [],
+      "note": "Class Notes are enough."
+    },
+    {
+      "code": "BCS-351",
+      "name": "Artificial Intelligence",
+      "status": "channel",
+      "playlists": [
+        "https://www.youtube.com/@GateSmashers/playlists"
+      ],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BCS-352",
+      "name": "Software Engineering",
+      "status": "channel",
+      "playlists": [
+        "https://www.youtube.com/@GateSmashers/playlists"
+      ],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BCS-353",
+      "name": "Parallel & Distributed Programming",
+      "status": "none",
+      "playlists": [
+        "https://youtube.com/playlist?list=PL3R9-um41Jsz4as9nqgVB6YRR90rs0wE6&si=OJ0rxzOdQKXwmM3u"
+      ],
+      "note": "Class notes Strongly Recommended.."
+    },
+    {
+      "code": "BCS-370",
+      "name": "Project Part-I",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "BCS-380",
+      "name": "Seminar",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 no playlist."
+    },
+    {
+      "code": "SCS-313/323/333",
+      "name": "Departmental Minor-3 (Web Data Mining / IoT / Data Visualisation \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-7": [
+    {
+      "code": "BCS-401",
+      "name": "Fault Tolerance Analysis",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-402",
+      "name": "Cryptography and Information Security",
+      "status": "channel",
+      "playlists": [
+        "https://www.youtube.com/@GateSmashers/playlists"
+      ],
+      "note": "Class notes Strongly Recommended."
+    },
+    {
+      "code": "BCS-403",
+      "name": "Introduction to Functional and Logic Programming",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-440",
+      "name": "Project Part-II",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "SCS-415/425/435",
+      "name": "Departmental Minor-4 (Data Science w/ Python / IoT w/ Arduino / Mobile VR & AI \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-8": [
+    {
+      "code": "ICS-400",
+      "name": "Industrial Practices",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 internship/training, no playlist."
+    },
+    {
+      "code": "BCS-480",
+      "name": "Minor Project",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "SCS-4xx",
+      "name": "Research Project",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    }
+  ]
+}

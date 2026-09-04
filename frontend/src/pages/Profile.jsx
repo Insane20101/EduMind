@@ -15,6 +15,7 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    document.title = "EduMind — Student Profile";
     if (user) {
       setFormData({
         first_name: user.first_name || '',

@@ -23,6 +23,10 @@ export default function Homepage() {
 
   const { user } = useAuth();
   const [homeInput, setHomeInput] = useState('');
+
+  useEffect(() => {
+    document.title = "EduMind — Academic Learning Platform";
+  }, []);
   const fileInputRef = useRef(null);
 
   useEffect(() => {

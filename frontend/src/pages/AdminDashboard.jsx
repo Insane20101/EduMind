@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { api } from '../services/api';
 import { useAppStore } from '../store/appStore';
+import EduMindLogo from '../components/EduMindLogo';
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 const Icon = ({ path, size = 20 }) => (
@@ -675,6 +676,10 @@ export default function AdminDashboard() {
   const navigate   = useNavigate();
   const [active, setActive] = useState('upload');
 
+  useEffect(() => {
+    document.title = "EduMind Admin — Management Portal";
+  }, []);
+
   const ActiveTab = TABS.find(t => t.id === active)?.component ?? UploadTab;
 
   const handleLogout = () => { logout(); navigate('/admin/login'); };
@@ -774,7 +779,7 @@ export default function AdminDashboard() {
       <div className="adm-root">
         {/* Header */}
         <header className="adm-header">
-          <span className="adm-logo">EduMind Admin</span>
+          <EduMindLogo size={32} textClass="text-xl font-bold tracking-tight text-white" />
           <div className="adm-header-right">
             <span className="adm-badge-admin">Administrator</span>
             <button className="adm-logout" onClick={handleLogout}>

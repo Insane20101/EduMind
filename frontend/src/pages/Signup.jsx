@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
+import EduMindLogo from '../components/EduMindLogo';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,10 @@ export default function Signup() {
   
   const { signup } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    document.title = "EduMind — Create Account";
+  }, []);
 
   const handleEnrollmentChange = (e) => {
     let val = e.target.value.toUpperCase();
@@ -52,7 +57,10 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-app px-4 py-8">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg border border-border-subtle">
-        <h2 className="text-2xl font-bold text-primary mb-6 text-center">Join EduMind</h2>
+        <div className="flex flex-col items-center mb-6">
+          <EduMindLogo size={44} textClass="text-2xl font-bold tracking-tight text-slate-900" />
+          <p className="text-xs text-text-secondary mt-1">Create Student Academic Account</p>
+        </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

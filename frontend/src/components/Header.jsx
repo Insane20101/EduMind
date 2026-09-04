@@ -2,6 +2,7 @@ import React from 'react';
 import { User, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
+import EduMindLogo from './EduMindLogo';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -14,8 +15,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 h-16 bg-white border-b border-border-subtle flex items-center justify-between px-4 sm:px-6 lg:px-8">
-      <Link to="/" className="text-xl font-semibold text-primary">
-        EduMind
+      <Link to="/" className="flex items-center">
+        <EduMindLogo size={32} />
       </Link>
       <div className="flex items-center gap-4">
         {user && (

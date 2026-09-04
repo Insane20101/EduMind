@@ -3,12 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '../store/useAdminAuth';
 import toast from 'react-hot-toast';
 import { Shield, Lock, ArrowLeft } from 'lucide-react';
+import EduMindLogo from '../components/EduMindLogo';
 
 export default function AdminLogin() {
   const [formData, setFormData] = useState({ admin_id: '', password: '' });
   const [loading, setLoading] = useState(false);
   const { login } = useAdminAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    document.title = "EduMind Admin — Portal Login";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,14 +33,13 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4 relative">
       <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
         
-        <div className="flex items-center justify-center mb-4">
-          <div className="p-3 bg-red-500/10 rounded-xl border border-red-500/20 text-red-400">
-            <Shield size={32} />
+        <div className="flex flex-col items-center justify-center mb-6">
+          <EduMindLogo size={48} textClass="text-2xl font-bold tracking-tight text-white" />
+          <div className="mt-2 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-semibold uppercase tracking-wider">
+            <Shield size={12} />
+            <span>Restricted Admin Portal</span>
           </div>
         </div>
-
-        <h2 className="text-2xl font-bold text-white mb-1 text-center">EduMind Admin Portal</h2>
-        <p className="text-xs text-slate-400 text-center mb-6">Restricted Management & Control Dashboard</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

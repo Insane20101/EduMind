@@ -4,6 +4,7 @@ import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock, Mail } from 'lucide-react';
+import EduMindLogo from '../components/EduMindLogo';
 
 import { getApiBaseUrl } from '../config';
 
@@ -22,6 +23,10 @@ export default function Login() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "EduMind — Student Login";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,7 +109,10 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-app px-4 relative">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md border border-border-subtle">
-        <h2 className="text-2xl font-bold text-primary mb-6 text-center">Login to EduMind</h2>
+        <div className="flex flex-col items-center mb-6">
+          <EduMindLogo size={44} textClass="text-2xl font-bold tracking-tight text-slate-900" />
+          <p className="text-xs text-text-secondary mt-1">Student Academic Gateway</p>
+        </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
