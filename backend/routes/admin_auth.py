@@ -11,7 +11,14 @@ router = APIRouter()
 @router.post("/login")
 @limiter.limit("10/minute")
 async def admin_login(request: Request, login_data: AdminLogin):
-    admin_user = await db.admin_credentials.find_one({"admin_id": login_data.admin_id})
+    raw_admin_id = (login_data.admin_id or "").strip()
+    if not raw_admin_id:
+        raise HTTPException(status_code=400, detail="Admin ID required")
+
+    # Support case-insensitive admin_id matching
+    admins = await db.admin_credentials.find({}).to_list(100)
+    admin_user = next((a for a in admins if a.get("admin_id", "").strip().lower() == raw_admin_id.lower()), None)
+    
     if not admin_user:
         raise HTTPException(status_code=401, detail="Invalid admin credentials")
         
@@ -20,7 +27,7 @@ async def admin_login(request: Request, login_data: AdminLogin):
         
     access_token_expires = timedelta(hours=2)
     access_token = create_access_token(
-        data={"admin_id": login_data.admin_id},
+        data={"admin_id": admin_user["admin_id"]},
         expires_delta=access_token_expires,
         additional_claims={"token_type": "admin"}
     )

@@ -82,6 +82,10 @@ async def login(request: Request, credentials: UserLogin):
     user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
     
     if not user or "password_hash" not in user:
+        # Check if user is attempting to log in as admin on student login endpoint
+        admin = await db.admin_credentials.find_one({"admin_id": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
+        if admin:
+            raise HTTPException(status_code=400, detail="This is an Admin account. Please use the Admin Login portal at /admin/login.")
         raise HTTPException(status_code=401, detail="Invalid enrollment number or password.")
 
     raw_pw = credentials.password or ""

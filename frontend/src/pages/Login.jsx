@@ -156,6 +156,10 @@ export default function Login() {
         <p className="mt-5 text-center text-sm text-text-secondary">
           Don't have an account? <Link to="/signup" className="text-accent hover:underline font-semibold">Sign up</Link>
         </p>
+
+        <p className="mt-3 pt-3 border-t border-border-subtle text-center text-xs text-text-secondary">
+          Are you an Administrator? <Link to="/admin/login" className="text-primary hover:underline font-bold">Admin Portal</Link>
+        </p>
       </div>
 
       {/* Modern 2-Factor Recovery Password Reset Modal */}
