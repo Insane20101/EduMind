@@ -495,20 +495,28 @@ function VectorCuratorTab() {
   const [ingesting, setIngesting] = useState(false);
   const fileRef = useRef();
 
-  const loadChunks = async () => {
-    if (!subjectId) return;
+  const loadChunks = async (targetSubj = subjectId) => {
+    const cleanSubj = (targetSubj || '').trim().toUpperCase();
+    if (!cleanSubj || cleanSubj.length < 3) return;
     setLoading(true);
     try {
-      const res = await api.get(`/admin/vector/chunks?subject_id=${subjectId.trim().toUpperCase()}`);
+      const res = await api.get(`/admin/vector/chunks?subject_id=${cleanSubj}`);
       setChunksData(res.data);
-    } catch {
-      toast.error('Failed to inspect Qdrant collection.');
+    } catch (err) {
+      console.warn('Vector inspection notice:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { loadChunks(); }, [subjectId]);
+  useEffect(() => { 
+    loadChunks('BCS-401'); 
+  }, []);
+
+  const handleInspectSubmit = (e) => {
+    e.preventDefault();
+    loadChunks(subjectId);
+  };
 
   const handleIngestMarkdown = async (e) => {
     e.preventDefault();
@@ -551,7 +559,7 @@ function VectorCuratorTab() {
         <p className="adm-section-sub">Inspect, refine, add, and purge Qdrant Cloud vector chunks per subject to curate high accuracy.</p>
       </div>
 
-      <div className="adm-grid-2">
+      <form onSubmit={handleInspectSubmit} className="adm-grid-2">
         <div className="adm-field">
           <label className="adm-label">Subject Collection ID *</label>
           <input 
@@ -562,9 +570,9 @@ function VectorCuratorTab() {
           />
         </div>
         <div className="flex items-end">
-          <button className="adm-btn-ghost w-full" onClick={loadChunks}>Refresh Collection Chunks</button>
+          <button type="submit" className="adm-btn-ghost w-full">Inspect Collection Chunks</button>
         </div>
-      </div>
+      </form>
 
       {/* Add Custom Markdown Form */}
       <form onSubmit={handleIngestMarkdown} className="p-4 border border-blue-500/20 bg-blue-500/5 rounded-xl space-y-3">

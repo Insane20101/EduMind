@@ -463,17 +463,15 @@ async def list_vector_chunks(
         raise HTTPException(status_code=400, detail="subject_id is required.")
 
     subject_id = subject_id.strip().upper()
-    client = get_qdrant_client()
-
-    if not client.collection_exists(subject_id):
-        return {
-            "subject_id": subject_id,
-            "collection_name": subject_id,
-            "total_chunks": 0,
-            "chunks": []
-        }
-
     try:
+        client = get_qdrant_client()
+        if not client.collection_exists(subject_id):
+            return {
+                "subject_id": subject_id,
+                "collection_name": subject_id,
+                "total_chunks": 0,
+                "chunks": []
+            }
         points, _ = client.scroll(
             collection_name=subject_id,
             limit=100,
@@ -482,7 +480,13 @@ async def list_vector_chunks(
         )
     except Exception as e:
         logger.warning(f"Qdrant scroll error for collection {subject_id}: {e}")
-        points = []
+        return {
+            "subject_id": subject_id,
+            "collection_name": subject_id,
+            "total_chunks": 0,
+            "chunks": [],
+            "error": str(e)
+        }
 
     chunks = []
     for pt in points:
