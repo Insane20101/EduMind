@@ -9,6 +9,7 @@ import Performance from '../components/Performance';
 import { cn } from '../lib/utils';
 
 export default function SubjectDashboard() {
+  const tabs = ['Learn', 'Practice', 'Performance'];
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { setSubject, setSemester, activeSubjectName, subjectsData, fetchSubjects } = useAppStore();
