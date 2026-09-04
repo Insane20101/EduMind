@@ -3,15 +3,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { KeyRound, X, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 export default function Login() {
   const [formData, setFormData] = useState({ enrollment: '', password: '' });
+  
+  // Password Reset State
   const [showResetModal, setShowResetModal] = useState(false);
-  const [resetData, setResetData] = useState({ enrollment: '', first_name: '', new_password: '' });
-  const [resetLoading, setResetLoading] = useState(false);
+  const [resetStep, setResetStep] = useState(1); // 1: Send OTP, 2: Verify OTP & New Password
+  const [resetEnrollment, setResetEnrollment] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [maskedEmail, setMaskedEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -27,37 +33,65 @@ export default function Login() {
     }
   };
 
-  const handleResetPassword = async (e) => {
+  // Step 1: Send OTP to registered email via Resend API
+  const handleSendOTP = async (e) => {
     e.preventDefault();
-    if (!resetData.enrollment.trim() || !resetData.first_name.trim() || !resetData.new_password.trim()) {
-      toast.error('All fields are required.');
+    if (!resetEnrollment.trim()) {
+      toast.error('Please enter your Enrollment Number or registered Email.');
       return;
     }
-    if (resetData.new_password.length < 8) {
+
+    setLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE}/api/auth/send-otp`, {
+        enrollment: resetEnrollment.trim().toUpperCase()
+      });
+      
+      setMaskedEmail(res.data.masked_email || 'your registered email');
+      toast.success(res.data.message || 'Verification code sent to your email!');
+      setResetStep(2);
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Failed to send verification code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 2: Verify OTP code and set new password
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    if (!otpCode.trim() || otpCode.trim().length !== 6) {
+      toast.error('Please enter the 6-digit code sent to your email.');
+      return;
+    }
+    if (!newPassword.trim() || newPassword.length < 8) {
       toast.error('New password must be at least 8 characters long.');
       return;
     }
 
-    setResetLoading(true);
+    setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/api/auth/reset-password`, {
-        enrollment: resetData.enrollment.trim().toUpperCase(),
-        first_name: resetData.first_name.trim(),
-        new_password: resetData.new_password.trim()
+      const res = await axios.post(`${API_BASE}/api/auth/verify-otp-reset-password`, {
+        enrollment: resetEnrollment.trim().toUpperCase(),
+        otp_code: otpCode.trim(),
+        new_password: newPassword.trim()
       });
-      
+
       toast.success(res.data?.message || 'Password reset successfully!');
       // Pre-fill login credentials
       setFormData({
-        enrollment: resetData.enrollment.trim().toUpperCase(),
-        password: resetData.new_password.trim()
+        enrollment: resetEnrollment.trim().toUpperCase(),
+        password: newPassword.trim()
       });
+      // Close modal and reset state
       setShowResetModal(false);
-      setResetData({ enrollment: '', first_name: '', new_password: '' });
+      setResetStep(1);
+      setOtpCode('');
+      setNewPassword('');
     } catch (err) {
-      toast.error(err.response?.data?.detail || 'Failed to reset password. Please verify your details.');
+      toast.error(err.response?.data?.detail || 'Verification failed. Please check the code.');
     } finally {
-      setResetLoading(false);
+      setLoading(false);
     }
   };
 
@@ -68,13 +102,13 @@ export default function Login() {
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">Enrollment Number</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Enrollment No. or Email</label>
             <input
               type="text"
-              placeholder="e.g. 2023CSE0123"
+              placeholder="e.g. 2023CSE0123 or student@gmail.com"
               className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
               value={formData.enrollment}
-              onChange={(e) => setFormData({...formData, enrollment: e.target.value.toUpperCase()})}
+              onChange={(e) => setFormData({...formData, enrollment: e.target.value})}
               required
             />
           </div>
@@ -85,7 +119,8 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => {
-                  setResetData((prev) => ({ ...prev, enrollment: formData.enrollment }));
+                  setResetEnrollment(formData.enrollment);
+                  setResetStep(1);
                   setShowResetModal(true);
                 }}
                 className="text-xs font-semibold text-accent hover:underline flex items-center gap-1"
@@ -117,13 +152,16 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Password Reset Modal */}
+      {/* Modern 2-Step Resend Email OTP Password Reset Modal */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl border border-slate-200 relative animate-in zoom-in-95 duration-150">
             
             <button
-              onClick={() => setShowResetModal(false)}
+              onClick={() => {
+                setShowResetModal(false);
+                setResetStep(1);
+              }}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg transition-colors"
             >
               <X size={18} />
@@ -131,78 +169,116 @@ export default function Login() {
 
             <div className="flex items-center gap-2 text-primary font-bold text-lg mb-1">
               <ShieldCheck size={22} className="text-accent" />
-              <span>Reset Student Password</span>
+              <span>Resend Email OTP Reset</span>
             </div>
             <p className="text-xs text-slate-500 mb-5 leading-relaxed">
-              Verify your registered Enrollment Number and First Name to create a new password.
+              {resetStep === 1 
+                ? 'Enter your Enrollment Number to receive a 6-digit verification code via email.' 
+                : `Enter the 6-digit code sent to ${maskedEmail} and choose a new password.`}
             </p>
 
-            <form onSubmit={handleResetPassword} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
-                  Enrollment Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. 2023CSE0123"
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all uppercase"
-                  value={resetData.enrollment}
-                  onChange={(e) => setResetData({ ...resetData, enrollment: e.target.value.toUpperCase() })}
-                  required
-                />
-              </div>
+            {/* STEP 1: Request Email OTP */}
+            {resetStep === 1 && (
+              <form onSubmit={handleSendOTP} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                    Enrollment Number or Registered Email
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 2023CSE0123 or student@gmail.com"
+                    className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all uppercase"
+                    value={resetEnrollment}
+                    onChange={(e) => setResetEnrollment(e.target.value)}
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
-                  First Name (Verification)
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your first name as registered"
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
-                  value={resetData.first_name}
-                  onChange={(e) => setResetData({ ...resetData, first_name: e.target.value })}
-                  required
-                />
-              </div>
+                <div className="pt-2 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowResetModal(false)}
+                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
-                  New Password (min 8 chars)
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter your new password"
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
-                  value={resetData.new_password}
-                  onChange={(e) => setResetData({ ...resetData, new_password: e.target.value })}
-                  required
-                />
-              </div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-4 py-2 text-xs font-semibold bg-primary hover:bg-primary-hover text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+                    <span>Send Verification Code</span>
+                  </button>
+                </div>
+              </form>
+            )}
 
-              <div className="pt-2 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowResetModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                >
-                  Cancel
-                </button>
+            {/* STEP 2: Verify 6-Digit OTP & Set New Password */}
+            {resetStep === 2 && (
+              <form onSubmit={handleVerifyOTP} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                    6-Digit Verification Code
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    placeholder="123456"
+                    className="w-full p-3 border border-slate-300 rounded-lg text-center font-mono text-lg font-bold tracking-widest text-primary bg-slate-50 focus:bg-white focus:border-primary outline-none transition-all"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                    required
+                  />
+                </div>
 
-                <button
-                  type="submit"
-                  disabled={resetLoading}
-                  className="px-4 py-2 text-xs font-semibold bg-primary hover:bg-primary-hover text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
-                >
-                  {resetLoading ? (
-                    <Loader2 size={14} className="animate-spin" />
-                  ) : (
-                    <ArrowRight size={14} />
-                  )}
-                  <span>Reset & Save</span>
-                </button>
-              </div>
-            </form>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                    New Password (min 8 chars)
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
+                    onClick={handleSendOTP}
+                    disabled={loading}
+                    className="text-xs text-accent hover:underline flex items-center gap-1 font-medium"
+                  >
+                    <RefreshCw size={12} />
+                    <span>Resend Code</span>
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setResetStep(1)}
+                      className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                    >
+                      Back
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={loading || otpCode.length !== 6}
+                      className="px-4 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                    >
+                      {loading ? <Loader2 size={14} className="animate-spin" /> : <Lock size={14} />}
+                      <span>Verify & Reset Password</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
 
           </div>
         </div>

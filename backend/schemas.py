@@ -3,7 +3,8 @@ from typing import Optional, List, Any
 from datetime import datetime
 
 class UserCreate(BaseModel):
-    enrollment: str = Field(..., pattern=r"^\d{4}[A-Za-z]{3}\d{4}$")
+    enrollment: str
+    email: Optional[str] = None
     branch: str
     semester: str
     first_name: str
@@ -14,6 +15,14 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     enrollment: str
     password: str
+
+class SendOTPRequest(BaseModel):
+    enrollment: str
+
+class VerifyOTPResetPasswordRequest(BaseModel):
+    enrollment: str
+    otp_code: str
+    new_password: str = Field(..., min_length=8)
 
 class UserPasswordReset(BaseModel):
     enrollment: str
@@ -28,6 +37,7 @@ class UserUpdate(BaseModel):
 
 class UserResponse(BaseModel):
     enrollment: str
+    email: Optional[str] = None
     branch: str
     semester: str
     first_name: str
