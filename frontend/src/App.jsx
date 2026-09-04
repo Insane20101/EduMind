@@ -46,7 +46,48 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Toaster position="top-center" />
+      <Toaster 
+        position="top-center" 
+        toastOptions={{
+          className: 'font-sans text-sm rounded-2xl p-4 shadow-2xl border',
+          style: {
+            background: '#0f172a',
+            color: '#f8fafc',
+            border: '1px solid #334155',
+            maxWidth: '480px',
+            wordBreak: 'break-word',
+            overflowWrap: 'anywhere'
+          },
+          error: {
+            style: {
+              background: '#0f172a',
+              color: '#f87171',
+              border: '1px solid #7f1d1d',
+              maxWidth: '480px',
+              wordBreak: 'break-word',
+              overflowWrap: 'anywhere'
+            },
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#ffffff',
+            },
+          },
+          success: {
+            style: {
+              background: '#0f172a',
+              color: '#4ade80',
+              border: '1px solid #14532d',
+              maxWidth: '480px',
+              wordBreak: 'break-word',
+              overflowWrap: 'anywhere'
+            },
+            iconTheme: {
+              primary: '#22c55e',
+              secondary: '#ffffff',
+            },
+          }
+        }}
+      />
       <Routes>
         <Route path="/login" element={<ErrorBoundary><Login /></ErrorBoundary>} />
         <Route path="/signup" element={<ErrorBoundary><Signup /></ErrorBoundary>} />
