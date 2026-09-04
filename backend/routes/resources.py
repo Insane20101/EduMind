@@ -13,7 +13,7 @@ import cloudinary
 import cloudinary.uploader
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 
-from database import db, upload_file
+from database import db, upload_file, delete_file
 
 from jwt_utils import get_current_admin_user
 from ingestion_queue import ingestion_queue
@@ -357,6 +357,13 @@ async def delete_resource(
     if public_id:
         try:
             cloudinary.uploader.destroy(public_id, resource_type="raw")
+        except Exception:
+            pass
+
+    cloud_file_id = doc.get("cloud_file_id")
+    if cloud_file_id:
+        try:
+            await delete_file(cloud_file_id)
         except Exception:
             pass
 

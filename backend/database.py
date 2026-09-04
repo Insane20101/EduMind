@@ -201,6 +201,11 @@ if USE_MOCK_DB:
             }
         return None
 
+    async def delete_file(file_id: str):
+        if "files" in mock_db and file_id in mock_db["files"]:
+            del mock_db["files"][file_id]
+            await save_mock_db()
+
 else:
     # Real MongoDB
     from motor.motor_asyncio import AsyncIOMotorClient
@@ -247,4 +252,12 @@ else:
             }
         except Exception:
             return None
+
+    async def delete_file(file_id: str):
+        from bson import ObjectId
+        bucket = get_fs()
+        try:
+            await bucket.delete(ObjectId(file_id))
+        except Exception:
+            pass
 
