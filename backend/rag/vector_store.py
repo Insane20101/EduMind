@@ -21,6 +21,7 @@ def get_or_create_subject_collection(subject_id: str) -> str:
     """
     Creates or retrieves a Qdrant Cloud collection strictly tied to one subject_id.
     Vector dimensions: 1536 (OpenAI text-embedding-3-small), COSINE distance.
+    Creates keyword payload indexes for metadata filtering.
     """
     client = get_qdrant_client()
     collection_name = subject_id.strip().upper()
@@ -29,7 +30,16 @@ def get_or_create_subject_collection(subject_id: str) -> str:
             collection_name=collection_name,
             vectors_config=models.VectorParams(size=1536, distance=models.Distance.COSINE)
         )
-        logger.info(f"Created Qdrant Cloud collection '{collection_name}' (1536 dimensions, COSINE).")
+        for field in ("unit", "source_filename", "resource_id", "source_file"):
+            try:
+                client.create_payload_index(
+                    collection_name=collection_name,
+                    field_name=field,
+                    field_schema=models.PayloadSchemaType.KEYWORD
+                )
+            except Exception:
+                pass
+        logger.info(f"Created Qdrant Cloud collection '{collection_name}' with payload indexes.")
     return collection_name
 
 def upsert_chunks(chunks: list[dict]):

@@ -45,7 +45,7 @@ def test_qdrant_migration_e2e():
     )
     print(f"    Retrieved {len(context_chunks)} chunks:")
     for i, c in enumerate(context_chunks):
-        snippet = c.get("text", "")[:100].replace("\n", " ")
+        snippet = c.get("text", "")[:100].replace("\n", " ").encode("ascii", "replace").decode("ascii")
         unit = c.get("metadata", {}).get("unit", "N/A")
         print(f"    [{i+1}] Unit: {unit} | Snippet: {snippet}...")
     assert len(context_chunks) > 0, "ERROR: Context retrieval returned 0 chunks!"
@@ -59,7 +59,7 @@ def test_qdrant_migration_e2e():
     )
     print(f"    Retrieved {len(quiz_chunks)} quiz chunks:")
     for i, c in enumerate(quiz_chunks):
-        snippet = c.get("text", "")[:100].replace("\n", " ")
+        snippet = c.get("text", "")[:100].replace("\n", " ").encode("ascii", "replace").decode("ascii")
         print(f"    [{i+1}] Snippet: {snippet}...")
     assert len(quiz_chunks) > 0, "ERROR: Quiz vector query returned 0 chunks!"
 

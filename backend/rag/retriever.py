@@ -37,15 +37,17 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
             )
 
         # 3. Vector Similarity Search in Qdrant Cloud
-        search_result = client.search(
+        search_result = client.query_points(
             collection_name=subject_id,
-            query_vector=query_vector,
+            query=query_vector,
             query_filter=query_filter,
             limit=top_k
         )
 
+        points = search_result.points if hasattr(search_result, "points") else search_result
+
         chunks = []
-        for point in search_result:
+        for point in points:
             payload = point.payload or {}
             text = payload.get("text") or payload.get("page_content") or ""
             chunk_id = payload.get("chunk_id") or str(point.id)
