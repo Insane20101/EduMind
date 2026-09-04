@@ -4,6 +4,8 @@ import { useAuth } from '../store/useAuth';
 import SubjectCard from '../components/SubjectCard';
 import { Sparkles, Paperclip, Send, FileText, X } from 'lucide-react';
 
+import { cn } from '../lib/utils';
+
 export default function Homepage() {
   const { 
     branch, 
@@ -32,9 +34,9 @@ export default function Homepage() {
     clearSubject();
     if (user) {
       if (user.branch) setBranch(user.branch);
-      if (user.semester) setSemester(user.semester);
+      if (user.semester && !sem) setSemester(user.semester);
     }
-  }, [clearSubject, user, setSemester, setBranch]);
+  }, [clearSubject, user, setBranch]);
 
   const handleFileAttach = (e) => {
     const file = e.target.files?.[0];
@@ -54,7 +56,7 @@ export default function Homepage() {
 
   const userName = user ? `${user.first_name}${user.middle_name ? ' ' + user.middle_name : ''} ${user.last_name}` : "Student";
   const displayBranch = user?.branch || branch;
-  const rawSem = user?.semester || sem || "Semester-3";
+  const rawSem = sem || user?.semester || "Semester-3";
   const displaySem = rawSem;
   const semKeyHyphen = rawSem.includes('-') ? rawSem : rawSem.replace(' ', '-');
   
@@ -156,10 +158,35 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* ── My Subjects Grid ────────────────────────────────────────── */}
+      {/* ── My Subjects Grid & Semester Switcher ────────────────────────── */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-slate-800">My Subjects</h2>
-        <p className="text-text-secondary text-sm font-medium">Select a subject to explore units, notes, practice &amp; RAG context</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800">My Subjects</h2>
+            <p className="text-text-secondary text-sm font-medium">Select a subject to explore units, notes, practice &amp; RAG context</p>
+          </div>
+        </div>
+
+        {/* Interactive Semester Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar py-2 mb-2">
+          {["Semester-1", "Semester-2", "Semester-3", "Semester-4", "Semester-5", "Semester-6", "Semester-7", "Semester-8"].map((sNum) => {
+            const isSelected = rawSem === sNum;
+            return (
+              <button
+                key={sNum}
+                onClick={() => setSemester(sNum)}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all shadow-2xs cursor-pointer border",
+                  isSelected
+                    ? "bg-primary text-white border-primary shadow-sm"
+                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900"
+                )}
+              >
+                {sNum.replace('-', ' ')}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

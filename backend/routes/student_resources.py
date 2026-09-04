@@ -6,6 +6,7 @@ Student-facing resource routes.
 """
 
 import os
+import re
 import uuid
 import json
 import logging
@@ -54,10 +55,10 @@ async def list_approved_resources(
     No authentication required.
     """
     query: dict = {"status": "approved"}
-    if subject_id:
-        query["subject_id"] = subject_id
-    if resource_type:
-        query["resource_type"] = resource_type
+    if subject_id and subject_id.strip():
+        query["subject_id"] = {"$regex": f"^{re.escape(subject_id.strip())}$", "$options": "i"}
+    if resource_type and resource_type.strip():
+        query["resource_type"] = resource_type.strip().lower()
 
     cursor = db.resources.find(query)
     docs = await cursor.to_list(length=None)
@@ -82,8 +83,8 @@ async def list_subject_playlists(subject_id: Optional[str] = None):
     Public endpoint, no authentication required.
     """
     query = {}
-    if subject_id:
-        query["subject_id"] = subject_id.upper()
+    if subject_id and subject_id.strip():
+        query["subject_id"] = {"$regex": f"^{re.escape(subject_id.strip())}$", "$options": "i"}
     cursor = db.playlists.find(query)
     docs = await cursor.to_list(length=None)
     for d in docs:

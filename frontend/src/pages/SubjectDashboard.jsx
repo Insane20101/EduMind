@@ -11,7 +11,7 @@ import { cn } from '../lib/utils';
 export default function SubjectDashboard() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { setSubject, activeSubjectName, subjectsData, fetchSubjects } = useAppStore();
+  const { setSubject, setSemester, activeSubjectName, subjectsData, fetchSubjects } = useAppStore();
   
   const semParam = searchParams.get('sem');
   const subjectParam = searchParams.get('subject');
@@ -27,12 +27,22 @@ export default function SubjectDashboard() {
   }, [fetchSubjects, subjectsData]);
 
   useEffect(() => {
-    if (semParam && subjectParam && Object.keys(subjectsData).length > 0) {
+    if (semParam) {
+      setSemester(semParam);
+    }
+    if (subjectParam && Object.keys(subjectsData).length > 0) {
       const semSubjects = subjectsData[semParam] || [];
-      const sub = semSubjects.find(s => s.code === subjectParam);
+      let sub = semSubjects.find(s => s.code === subjectParam);
+      if (!sub) {
+        // Fallback search across all semesters
+        for (const list of Object.values(subjectsData)) {
+          sub = list.find(s => s.code === subjectParam);
+          if (sub) break;
+        }
+      }
       setSubject(subjectParam, sub ? sub.name : subjectParam);
     }
-  }, [semParam, subjectParam, setSubject, subjectsData]);
+  }, [semParam, subjectParam, setSubject, setSemester, subjectsData]);
 
   return (
     <div className="flex flex-col min-h-screen">

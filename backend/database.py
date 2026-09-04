@@ -1,4 +1,5 @@
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -99,7 +100,16 @@ if USE_MOCK_DB:
         def _matches(self, doc, query):
             if not query:
                 return True
-            return all(doc.get(k) == v for k, v in query.items())
+            for k, v in query.items():
+                val = doc.get(k)
+                if isinstance(v, dict) and "$regex" in v:
+                    pattern = v["$regex"]
+                    flags = re.IGNORECASE if v.get("$options") == "i" else 0
+                    if not val or not re.search(pattern, str(val), flags):
+                        return False
+                elif val != v:
+                    return False
+            return True
 
         def find(self, query=None):
             docs = [copy.deepcopy(d) for d in mock_db[self.collection_name] if self._matches(d, query)]

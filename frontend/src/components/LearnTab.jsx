@@ -180,8 +180,18 @@ function SuggestForm({ subjectId }) {
 export default function LearnTab() {
   const { subject, sem, subjectsData } = useAppStore();
 
-  const currentSemSubjects  = subjectsData[sem] || [];
-  const currentSubjectData  = currentSemSubjects.find(s => s.code === subject);
+  let currentSubjectData = (subjectsData[sem] || []).find(s => s.code?.toUpperCase() === subject?.toUpperCase());
+  if (!currentSubjectData && subjectsData) {
+    for (const semList of Object.values(subjectsData)) {
+      if (Array.isArray(semList)) {
+        const found = semList.find(s => s.code?.toUpperCase() === subject?.toUpperCase());
+        if (found) {
+          currentSubjectData = found;
+          break;
+        }
+      }
+    }
+  }
   let staticPlaylists = currentSubjectData?.playlists || [];
   if (!Array.isArray(staticPlaylists)) {
     staticPlaylists = [];
