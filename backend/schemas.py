@@ -15,6 +15,11 @@ class UserLogin(BaseModel):
     enrollment: str
     password: str
 
+class UserPasswordReset(BaseModel):
+    enrollment: str
+    first_name: str
+    new_password: str = Field(..., min_length=8)
+
 class UserUpdate(BaseModel):
     first_name: Optional[str] = None
     middle_name: Optional[str] = None

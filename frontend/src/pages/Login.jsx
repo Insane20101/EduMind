@@ -2,16 +2,24 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import { KeyRound, X, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 export default function Login() {
   const [formData, setFormData] = useState({ enrollment: '', password: '' });
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetData, setResetData] = useState({ enrollment: '', first_name: '', new_password: '' });
+  const [resetLoading, setResetLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await login(formData);
+      await login(formData);
       toast.success('Logged in successfully!');
       navigate('/');
     } catch (error) {
@@ -19,43 +27,186 @@ export default function Login() {
     }
   };
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!resetData.enrollment.trim() || !resetData.first_name.trim() || !resetData.new_password.trim()) {
+      toast.error('All fields are required.');
+      return;
+    }
+    if (resetData.new_password.length < 8) {
+      toast.error('New password must be at least 8 characters long.');
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE}/api/auth/reset-password`, {
+        enrollment: resetData.enrollment.trim().toUpperCase(),
+        first_name: resetData.first_name.trim(),
+        new_password: resetData.new_password.trim()
+      });
+      
+      toast.success(res.data?.message || 'Password reset successfully!');
+      // Pre-fill login credentials
+      setFormData({
+        enrollment: resetData.enrollment.trim().toUpperCase(),
+        password: resetData.new_password.trim()
+      });
+      setShowResetModal(false);
+      setResetData({ enrollment: '', first_name: '', new_password: '' });
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Failed to reset password. Please verify your details.');
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-app px-4">
+    <div className="min-h-screen flex items-center justify-center bg-app px-4 relative">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md border border-border-subtle">
         <h2 className="text-2xl font-bold text-primary mb-6 text-center">Login to EduMind</h2>
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-text-primary mb-1">Enrollment Number</label>
             <input
               type="text"
               placeholder="e.g. 2023CSE0123"
-              className="w-full p-2 border border-border-subtle rounded bg-muted text-text-primary"
+              className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
               value={formData.enrollment}
               onChange={(e) => setFormData({...formData, enrollment: e.target.value.toUpperCase()})}
               required
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm font-medium text-text-primary">Password</label>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetData((prev) => ({ ...prev, enrollment: formData.enrollment }));
+                  setShowResetModal(true);
+                }}
+                className="text-xs font-semibold text-accent hover:underline flex items-center gap-1"
+              >
+                <KeyRound size={12} />
+                <span>Forgot password?</span>
+              </button>
+            </div>
             <input
               type="password"
-              className="w-full p-2 border border-border-subtle rounded bg-muted text-text-primary"
+              placeholder="••••••••"
+              className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-primary hover:bg-primary-hover text-white py-2 rounded font-medium transition-colors"
+            className="w-full bg-primary hover:bg-primary-hover text-white py-2.5 rounded-lg font-medium transition-colors shadow-sm text-sm"
           >
             Log In
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-text-secondary">
-          Don't have an account? <Link to="/signup" className="text-accent hover:underline">Sign up</Link>
+
+        <p className="mt-5 text-center text-sm text-text-secondary">
+          Don't have an account? <Link to="/signup" className="text-accent hover:underline font-semibold">Sign up</Link>
         </p>
       </div>
+
+      {/* Password Reset Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl border border-slate-200 relative animate-in zoom-in-95 duration-150">
+            
+            <button
+              onClick={() => setShowResetModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2 text-primary font-bold text-lg mb-1">
+              <ShieldCheck size={22} className="text-accent" />
+              <span>Reset Student Password</span>
+            </div>
+            <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+              Verify your registered Enrollment Number and First Name to create a new password.
+            </p>
+
+            <form onSubmit={handleResetPassword} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                  Enrollment Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 2023CSE0123"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all uppercase"
+                  value={resetData.enrollment}
+                  onChange={(e) => setResetData({ ...resetData, enrollment: e.target.value.toUpperCase() })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                  First Name (Verification)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Your first name as registered"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
+                  value={resetData.first_name}
+                  onChange={(e) => setResetData({ ...resetData, first_name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1 uppercase tracking-wider">
+                  New Password (min 8 chars)
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter your new password"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-900 focus:bg-white focus:border-primary outline-none transition-all"
+                  value={resetData.new_password}
+                  onChange={(e) => setResetData({ ...resetData, new_password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowResetModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={resetLoading}
+                  className="px-4 py-2 text-xs font-semibold bg-primary hover:bg-primary-hover text-white rounded-lg transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  {resetLoading ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <ArrowRight size={14} />
+                  )}
+                  <span>Reset & Save</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }

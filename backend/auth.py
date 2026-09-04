@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from pymongo.errors import DuplicateKeyError
-from schemas import UserCreate, UserLogin, UserUpdate, UserResponse
+from schemas import UserCreate, UserLogin, UserUpdate, UserResponse, UserPasswordReset
 from database import db
 from jwt_utils import create_access_token, get_current_user
 from utils.security import hash_password, verify_password
@@ -77,6 +77,37 @@ async def login(request: Request, credentials: UserLogin):
     
     token = create_access_token({"enrollment": user["enrollment"]})
     return {"access_token": token, "user": user_dict}
+
+
+@router.post("/reset-password")
+@limiter.limit("5/minute")
+async def reset_password(request: Request, data: UserPasswordReset):
+    clean_enr = (data.enrollment or "").strip().upper()
+    clean_name = (data.first_name or "").strip()
+    new_pw = (data.new_password or "").strip()
+
+    if not clean_enr or not clean_name or not new_pw:
+        raise HTTPException(status_code=400, detail="All fields (enrollment, first name, new password) are required.")
+
+    if len(new_pw) < 8:
+        raise HTTPException(status_code=400, detail="New password must be at least 8 characters long.")
+
+    user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
+    if not user:
+        raise HTTPException(status_code=404, detail="Enrollment number not found. Please check or register first.")
+
+    # Verify first name match (case-insensitive)
+    user_first_name = (user.get("first_name") or "").strip()
+    if user_first_name.lower() != clean_name.lower():
+        raise HTTPException(status_code=400, detail="First name does not match the registered record for this enrollment number.")
+
+    new_hash = hash_password(new_pw)
+    await db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"password_hash": new_hash}}
+    )
+
+    return {"message": "Password reset successfully! You can now log in with your new password."}
 
 
 @router.get("/profile", response_model=UserResponse)
