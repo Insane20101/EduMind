@@ -24,46 +24,65 @@
 The following diagram illustrates the end-to-end request lifecycle, AI RAG vector pipeline, media streaming, and multi-tier database fallback system in EduMind:
 
 ```mermaid
-flowchart TD
-    subgraph Client ["💻 Student & Admin Frontend (React 19 + Vite)"]
-        UI["User Interface / Mobile Viewport"]
-        Theater["Playlist Theater Mode (16:9 Cineview)"]
-        PdfViewer["Protected PDF Viewer Modal"]
-        ChatUI["Interactive RAG Chat & Flowcharts"]
-        QuizUI["Adaptive Quiz & Practice Suite"]
+flowchart TB
+    %% ==========================================
+    %% BLOCK 1: CLIENT FRONTEND LAYER
+    %% ==========================================
+    subgraph Block1 ["💻 BLOCK 1: Student & Admin Frontend (React 19 + Vite 8)"]
+        direction LR
+        UI["📱 Responsive SPA Viewport"]
+        Theater["🎬 Playlist Theater (16:9 Cineview)"]
+        PdfViewer["📄 Protected PDF Viewer Modal"]
+        ChatUI["💬 RAG Assistant & Mermaid Flowcharts"]
+        QuizUI["⚡ Adaptive Quiz & Practice Suite"]
     end
 
-    subgraph Gateway ["⚡ FastAPI API Gateway (0.0.0.0:8000)"]
-        BaseResolver["Base URL Resolver (Vercel & Network Wi-Fi IPs)"]
-        AuthMiddleware["JWT Authentication & Case-Insensitive Enrollment Check"]
-        RateLimiter["SlowAPI Rate Limiter (5 req/min per student)"]
+    %% ==========================================
+    %% BLOCK 2: FASTAPI MIDDLEWARE GATEWAY
+    %% ==========================================
+    subgraph Block2 ["⚡ BLOCK 2: FastAPI API Gateway & Security Pipeline"]
+        direction LR
+        BaseResolver["🌐 Dynamic Network IP Resolver (config.js)"]
+        AuthMiddleware["🔑 JWT Authentication & Enrollment Scoping"]
+        RateLimiter["🛡️ SlowAPI Rate Limiter (5 req/min per IP)"]
+        
+        BaseResolver --> AuthMiddleware --> RateLimiter
     end
 
-    subgraph AI_Engine ["🤖 AI Engine & RAG Pipeline"]
-        Embedder["OpenAI Embedder (text-embedding-3-small)"]
-        ChromaStore["ChromaDB Vector Store (Isolated Per-Subject Collections)"]
-        LLMCascade["Gemini LLM Quota-Rotation Engine\n(gemini-2.5-flash -> 1.5-flash -> 1.5-pro)"]
+    %% ==========================================
+    %% BLOCK 3: AI ENGINE & VECTOR SEARCH
+    %% ==========================================
+    subgraph Block3 ["🤖 BLOCK 3: AI Engine & Qdrant Cloud RAG Pipeline"]
+        direction LR
+        Embedder["⚡ OpenAI Embedder (text-embedding-3-small, 1536d)"]
+        QdrantStore["☁️ Qdrant Cloud (38 Subject Vector Collections)"]
+        LLMCascade["🤖 Gemini LLM Quota-Rotation Cascade"]
+        
+        Embedder --> QdrantStore --> LLMCascade
     end
 
-    subgraph Data_Storage ["📦 Storage & External APIs"]
-        MongoDB["MongoDB Cloud / Mock DB (Users, Resources, Playlists, Analytics)"]
-        GridFS["MongoDB GridFS Bucket (PDF File Storage)"]
-        Cloudinary["Cloudinary (Community Upload Proxy)"]
-        YToEmbed["YouTube oEmbed API (Multithreaded 30-Worker Scraper)"]
+    %% ==========================================
+    %% BLOCK 4: PERSISTENCE & STORAGE
+    %% ==========================================
+    subgraph Block4 ["📦 BLOCK 4: Persistence, File Storage & External APIs"]
+        direction LR
+        MongoDB["🗄️ MongoDB Atlas (Users, Playlists, Analytics)"]
+        GridFS["💾 MongoDB GridFS Bucket (PDF Binary Chunks)"]
+        Cloudinary["☁️ Cloudinary CDN (PDF Storage Mirror)"]
+        YToEmbed["🎬 YouTube oEmbed API (30-Worker Scraper)"]
     end
 
+    %% ==========================================
+    %% VERTICAL STACK CONNECTIVITY
+    %% ==========================================
+    Block1 ==>|1. Direct REST Connections| Block2
+    Block2 ==>|2. RAG Search & LLM Stream| Block3
+    Block3 ==>|3. Async DB Persistence| Block4
+
+    %% ==========================================
+    %% DETAILED FLOW CONNECTIONS
+    %% ==========================================
     UI --> BaseResolver
-    BaseResolver --> AuthMiddleware
-    AuthMiddleware --> RateLimiter
-
-    ChatUI -->|Query| Embedder
-    Embedder -->|1536d Vector| ChromaStore
-    ChromaStore -->|Top-K Chunks + Metadata| LLMCascade
-    LLMCascade -->|Stream Response + Flowchart + Sources| ChatUI
-
-    Theater -->|List ID| YToEmbed
-    YToEmbed -->|Uncapped 100+ Videos + Real Titles| Theater
-
     PdfViewer -->|Proxy Request| Gateway
     Gateway -->|CORS Stream| GridFS
     GridFS -->|Inline Binary PDF| PdfViewer
