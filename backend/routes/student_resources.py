@@ -50,7 +50,7 @@ async def list_approved_resources(
     resource_type: Optional[str] = None,
 ):
     """
-    Returns all approved resources.
+    Returns all approved resources with explicit Cache-Control no-store headers.
     Optionally filtered by subject_id and/or resource_type.
     No authentication required.
     """
@@ -71,7 +71,10 @@ async def list_approved_resources(
         for field in ("uploaded_at", "reviewed_at"):
             if isinstance(doc.get(field), datetime):
                 doc[field] = doc[field].isoformat()
-    return docs
+    return JSONResponse(
+        content=docs,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+    )
 
 
 import xml.etree.ElementTree as ET
@@ -79,7 +82,7 @@ import xml.etree.ElementTree as ET
 @router.get("/playlists")
 async def list_subject_playlists(subject_id: Optional[str] = None):
     """
-    Returns active playlists from MongoDB db.playlists.
+    Returns active playlists from MongoDB db.playlists with explicit Cache-Control no-store headers.
     Public endpoint, no authentication required.
     """
     query = {}
@@ -89,7 +92,10 @@ async def list_subject_playlists(subject_id: Optional[str] = None):
     docs = await cursor.to_list(length=None)
     for d in docs:
         d.pop("_id", None)
-    return docs
+    return JSONResponse(
+        content=docs,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+    )
 
 
 @router.get("/playlist-items")

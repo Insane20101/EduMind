@@ -6,7 +6,7 @@ load_dotenv()
 
 # Get environment variables
 MONGODB_URI = os.getenv("MONGODB_URI")
-USE_MOCK_DB = os.getenv("USE_MOCK_DB", "true").lower() in ("true", "1", "yes")
+USE_MOCK_DB = os.getenv("USE_MOCK_DB", "false").lower() in ("true", "1", "yes")
 
 import json
 import asyncio

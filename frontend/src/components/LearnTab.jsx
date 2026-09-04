@@ -211,19 +211,21 @@ export default function LearnTab() {
     setDbPlaylists([]);
     setActiveTheaterIdx(null);
 
+    const fetchOptions = { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } };
+
     // Use unified /api/resources endpoint for notes and pyqs
-    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=note`)
+    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=note`, fetchOptions)
       .then(res => res.json())
       .then(data => setNotes(Array.isArray(data) ? data : []))
       .catch(() => setNotes([]));
 
-    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=pyq`)
+    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=pyq`, fetchOptions)
       .then(res => res.json())
       .then(data => setPyqs(Array.isArray(data) ? data : []))
       .catch(() => setPyqs([]));
 
     // Fetch dynamic playlists added via Admin Dashboard
-    fetch(`${getApiBaseUrl()}/api/resources/playlists?subject_id=${subject}`)
+    fetch(`${getApiBaseUrl()}/api/resources/playlists?subject_id=${subject}`, fetchOptions)
       .then(res => res.json())
       .then(data => setDbPlaylists(Array.isArray(data) ? data : []))
       .catch(() => setDbPlaylists([]));
