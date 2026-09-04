@@ -1,0 +1,37 @@
+In today's video, we will explore the benefits of representing things in a tree-like structure through the Document Object Model (DOM) in JavaScript. If you enjoy this video, please write "JavaScript Cap" in the comment section below. Now, let's go to the computer screen. Let's roll the intro.
+
+---
+
+I have come to my computer screen, and the first thing I am going to do is create a folder. This will be a constant in this course; no matter how much anyone says not to make a folder, I will create one named "video 16." I will open it with code and create an `index.html` file. Here, I will add boilerplate code and include my script. The title of this page will be "JavaScript DOM."
+
+Now, what is the DOM? DOM stands for Document Object Model. Suppose I have written "JavaScript DOM." You will see that on this page, the body will contain content that is visible. The title of this page will be "Sigma Web Development Course." Along with the title, you will also see meta tags and the body.
+
+I will run this and show you the content. As soon as I write in the script that `document.title` is equal to "Harry is good," you will see "Harry is good" as the title. When I reload the page, the title will change to what I have given. If I write `console.log(document.title)`, you will see the title in the console. If I write `document.body`, you will see the body of the page. 
+
+Now, if I inspect the document body, you will see the elements inside it. For example, if I add a `div.container` in the body and a `div.box` inside it with the text "This is a box," you will see this on the page. This demonstrates that in a tree-like structure, you can access your entire HTML when you write `document.body`. This structure is used to change any element or modify text inside an element.
+
+This is called the Document Object Model (DOM). I can use `document.body` to change the style of a particular element. For instance, if I want to change the background color, I can write `document.body.style.background = "green."` This will make my document's background color green. Note that when writing CSS properties in JavaScript, you use camelCase, so "background-color" will be written as "backgroundColor." 
+
+By using inline CSS, I can set the background color to green. This is how we can inject inline CSS. 
+
+Now, let's talk about the Browser Object Model (BOM). Understanding the DOM and BOM will not give you a lot of power, but it is often asked in interviews. The Document Object Model maps the entire document's inner object, which contains all the content of the page. The Browser Object Model (BOM) provides additional objects for working with elements outside of the document. For example, `location.href` allows you to redirect to another URL.
+
+If I write `window`, you will see the window object, which contains the document. If I write `window.document`, I will get the document. Similarly, if I write `window.document.body`, I will get the body. The window is a global object, and you don't need to write `window.document.body`; you can simply write `document.body`. 
+
+Now, why are we learning about all these things? We are studying these concepts to target elements with the help of JavaScript, which we will explore in the coming videos. For example, if I want a specific element on this page to turn green, I can target it.
+
+Let me share a useful trick. If you are on any website in the browser, right-click and select "Inspect." You will see that the element you clicked on is selected. If I want to select a particular element or a whole div, it will be represented as `$0`. 
+
+Listen carefully: you can use `$0` to refer to this object. If I write `$0`, you will see the element I selected. Now, if I write `$0.style.backgroundColor = "green,"` I can change its background color to green. 
+
+The `$0` represents whichever element you selected. If I right-click and inspect another element, it will become `$0`. For example, if I click on the thumbnail section, it will be `$0`. If I run `$0.style.backgroundColor = "green,"` that element will turn green. The browser provides this utility to select a particular element and add styles to it.
+
+Now, I want to show you an image that represents the DOM better. In the document, we have HTML, which consists of the head and body. In the body, we have elements that we can see. Each element has a leaf node, which is either text or an empty element. 
+
+When navigating through the DOM, you may want to search for a particular node. For instance, if I want to find a `div` inside the body, there are functions for that. You can select a given class or element in the body, and you can select multiple elements. The DOM provides the facility to use complex queries to select different elements using CSS selectors in JavaScript.
+
+I hope you understand the DOM better now. If you want to learn more about it, I recommend checking the MDN page, which explains that the DOM represents a logical tree where every branch ends in a node. This representation is like an object.
+
+You may not fully grasp this until we practice it. In the coming videos, I will show you how to target elements. I have shown you a small example here, but we will do more complex things later. You will learn how to use JavaScript to target different elements, change their CSS, remove them from the DOM, or add them to the DOM.
+
+I hope you liked this video and are learning new things. That's all for now, guys. If you haven't accessed the playlist, please do so. Thank you so much for watching this video, and I will see you next time.

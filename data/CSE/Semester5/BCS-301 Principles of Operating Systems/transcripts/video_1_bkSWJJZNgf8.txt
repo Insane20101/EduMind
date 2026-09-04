@@ -1,0 +1,64 @@
+Hello friends, welcome to Gate Smashers. The topic is the syllabus of operating system. Before I start this video, I just want to request you all, especially those who are watching my video for the first time, please subscribe to my channel, please share with your friends, and please press the bell button for the latest notifications. 
+
+Now we are starting this video. What we are going to talk about in this video is the syllabus of the operating system. Now you must be thinking, "Syllabus of operating system?? I mean it's already available at many places." If you wish to download the syllabus of the operating system of a particular university, or for the GATE exam, or for the UGC NET exam, it'll be easily available to you. But what's my main motive to make this video is... 
+
+First, I'm giving you clear-cut information that if you are preparing operating system for GATE or UGC NET, then what are those topics that are mandatory, star mark... meaning you must do them before the exam, and what are those topics that you can prepare by just taking an overview before the exam. 
+
+So what's the benefit of this? First, for those who prepare at a very late time or start to study just before the exam, then it's very beneficial for them. Even it's beneficial for those who are doing proper study because I'm going to cover all the topics, including the main topics and their sub-topics also. And all the topics that we are mentioning in this video are based on what?? Questions. All the questions that have appeared in past years, whether it's the GATE exam or the UGC NET exam, because their pattern of questions is the same. Many times GATE's questions appear in the UGC NET exam. In the GATE exam, questions get repeated many times but with different language. That's why this video is very important. 
+
+The second point here is smart work. As we all know that hard work is very important, but along with hard work, smart work is also very important. If you remember that, right now we have got the latest report from Forbes. According to it, the world's number one richest man, i.e., Amazon's head—see how much smart work that guy has done. He doesn't have any industries where he would be manufacturing something like shoes, apparel, or anything else that they are selling in their application or website, but still, his total wealth has surpassed all the billionaires, which includes India's Mukesh Ambani and many other billionaires. So that's an example of smart work. Definitely, there's hard work, but along with it, smart work is also there. Without any industry, without any big investment, they are just transferring goods here and there, and this is called smart work. So we are implementing that same smart work here.
+
+***
+
+### 1. Basic Introduction
+The first topic here is basic introduction. What comes here in basic introduction is the normal definition of the operating system, along with that, types of the operating system. Types of operating system consist of batch operating system, multi-programming, multitasking, real-time... you should know all that. 
+
+After that, what I have here is the process diagram. Meaning, when we execute a process or when CPU executes a process, then through what stages that process passes. Other than types of operating system and process diagram, what we have here is basic system calls, definition of system calls which includes your fork system call. Other than that, you should know about basics like fork and kernel system calls. But the main important point here is the diagram of the process, meaning the stages of the process. That is a very important point.
+
+### 2. Process Scheduling (CPU Scheduling)
+Then we have process scheduling, which we can call CPU scheduling also. So scheduling includes a lot of various algorithms, and this whole topic is important. I can't say any particular thing is important in this; this whole topic is important. It has a variety of algorithms like FIFO, SJF, preemptive, Round Robin. It consists of a variety of algorithms. 
+
+So this portion is very important because every year there will be a question in GATE and UGC NET from this topic. So you can say that this topic is mandatory for you, meaning you have to prepare this topic before the exam, and it's very easy. If you practice 1–2 numericals of each, then you can easily solve this.
+
+### 3. Process Synchronization
+The third topic is process synchronization. In this topic, there comes the concept of semaphore, the concept of semaphore—binary semaphore especially comes in this. You must have to prepare it before the exam because that is the most important part. Other than this, there is Peterson's solution; you should know the basic of how it synchronizes the processes, but here questions come from the concept of semaphore. 
+
+This is a little bit of a complex topic, but if you'll study it properly, then definitely it'll be clear to you how semaphore works. So I would say that this semaphore topic is mandatory and you must do it before the exam.
+
+### 4. Deadlock and Threads
+The next is deadlock and threads. In deadlock and threads, the deadlock portion is a very easy portion: basic definition, deadlock prevention and avoidance, and especially it has Banker's algorithm. You should know how Banker's algorithm works; it's very easy. You can check my videos for this; I've explained this with a very nice example there, even through GATE's questions. So you have to do Banker's algorithm. Other than this, I've mentioned basic questions also in my videos based on deadlock. This topic is totally completed in my video, process synchronization also, process scheduling, and the basic one also—all this is already covered.
+
+### 5. Memory Management
+Then, memory management. In memory management, what we have here is especially the concept of paging, the concept of segmentation, and other than that, fragmentation. Many times questions come on internal and external fragmentation, so you must do this portion. 
+
+Although there comes the concept of multi-level paging also, and segmentation with paging—they are a little bit complex topics. If you have time and you are doing proper preparation of it, then definitely do the portion of multi-level paging, segmented paging, etc. But if you are just preparing normally, then for this you've to do basic paging, how segmentation works, types of fragmentation, and other than that, here comes the concept of virtual memory. Make sure to do the concept of virtual memory. 
+
+Here you get numerical questions like you'll be given time, and you've to find out effective memory access time. You should know the basics of thrashing, and other than this, the very important point is page replacement algorithms. I would definitely like to highlight it here because why is it important?? Because first of all, it's a very easy topic; if you'll just practice 1–2 questions, then you'll never do it wrong. That's why this portion... and every year a question is coming from this topic. It's easy, and also a question is coming, then obviously you have to secure it. 
+
+And talking about the GATE exam, it's not important how many number of questions I'm attempting; what's important is how many number of correct questions I'm attempting, meaning correctness is important there. There's no negative marking in UGC NET until now, so you can take a little bit of risk there, but here you have to move towards correctness first, because in case you answer wrong, then negative marking in the GATE exam gives a lot of trouble.
+
+### 6. Disk Scheduling
+After page replacement algorithms, you get disk scheduling. In disk scheduling, we have this numerical portion here—you can call it numerical, kind of. And it's disk scheduling; here also we get SCAN algorithm, C-SCAN algorithm, a basic FCFS, and other basic algorithms. I've already made videos on this also, so you can cover all those videos; I've explained every single question. You can practice it there properly.
+
+### 7. UNIX Commands
+After disk scheduling, we have UNIX commands. This portion comes in UGC NET more as compared to the GATE exam, but still, this can get covered in the GATE exam also. UNIX commands come in basic Linux commands, for example, `ls` command, `mkdir`, `cd`. There are many commands, but all the basic commands like `cd`, `chmod` command—just now recently in the July 2018 exam of UGC NET, a question has appeared based on this. 
+
+And other than this, you should know about open system call also. Other than open system call, you should be aware of system calls related to files and you should know their parameters also. So you can get questions based on basic Linux commands like this. Although this question hasn't been asked much in the GATE exam, for UGC NET this portion is very important.
+
+### 8. File Management and Security
+Then comes file management and security. This portion that specially comes in file management is how various algorithms fetch data from the files where you get sequential access, random access, linked access. There are 3–4 methods whose basics you should know. You'll not get a lot of questions based on this, but you should know the working of these algorithms, what are the advantages and disadvantages between them, you should know what are their complexities, meaning how's the working: sequential, random, and linked. There is allocation also and accessing of the files also. 
+
+And in security, we have basic definition: what is a virus?, what are vulnerabilities?, what are loopholes? They can ask basics of encryption, but encryption actually gets covered in the cryptography portion in networks. But if we'll see from this point, then you should know just some basics, and this portion will get covered there, so you can relate it from there. So basic definition of virus, loopholes, vulnerabilities, and other than this, what are attacks, types of attacks—you should know the basics of all this.
+
+***
+
+### Summary of Priorities
+So here, this is the whole syllabus of the operating system, no matter what exam you are preparing for. 
+
+* I have marked double stars on this first portion, i.e., **Process Scheduling**, because you can't leave this portion. 
+* The second one here is the **Memory Management** portion; no matter what, you have to do this portion. 
+* Then the portion of **Disk Scheduling**. This is also very important because first, the algorithms here are very easy; if you'll just practice 1–2 questions, then you'll always remember this. 
+* Now **Process Synchronization** and **Deadlock** are also very important, but as I said before, Process Synchronization is a little bit complex and tricky topic. If you can do it, then it's very good; otherwise, you can check out the concept of Binary Semaphore. 
+* **Deadlock and thread** concepts are a little bit theoretical. Here only Banker's Algorithm is a numerical; other than this, there's all theory in it: deadlock avoidance, no preemption, circular wait, etc. And in threads, we have two types of threads, so you should know the basics about kernel-level threads or user-level threads. 
+
+So this is the whole syllabus of the operating system here, so you can follow it no matter what exam you are preparing for. Alright? Thank you!

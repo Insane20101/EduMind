@@ -1,0 +1,69 @@
+### Variable Partitioning
+
+In variable partitioning, whenever the processes are coming into the RAM, only then we are allocating space to the processes. This means we keep the RAM empty for now. When processes come into the RAM, then at run time, according to the capacity they need and the space they need, I will allocate it to them. 
+
+But in fixed partitioning, what was the concept? Whatever was the total size of our RAM, first of all, the Operating System is there, and in the RAM, we did partitions beforehand. Before the process comes, we did the partitioning. Let's say the size of one partition is 2KB, one is 4KB, one is 8KB, one is 16KB—we have made partitions of different sizes beforehand. 
+
+Now a process P1 comes of size 1KB. So whichever free slot I get first—let's say this slot is free—I put P1 here. Now P1 comes here; what is the size of P1? 1KB. So it used 1KB, but the remaining 1KB of that partition is getting wasted. This is called internal fragmentation. And always in fixed partitioning, internal fragmentation will definitely occur, because we have already decided the size of the partition, that these many partitions are to be made. And after that, if a process comes which is of a smaller size, some space will always remain at last which we cannot use for any process. So this is called internal fragmentation.
+
+### The Pizza Analogy
+
+In dynamic programming (dynamic partitioning), we keep the entire space empty. When a process comes, at run time, how much space it needs—according to that, I will allocate it. It's like a pizza. When we order a pizza, there are already partitions made in it; meaning there are already pieces made. Let's say this is the pizza. Now what can happen there is that, let's say, a friend is there who won't be satisfied with one piece; he wants 2 to 3 pieces. And one friend can be such that he cannot even finish 1 piece, so maybe he eats half a piece and wastes the remaining half. 
+
+But what will we do? If we allocate one-one piece, then there can be someone's demand that he wants 2 or more than 2 pieces. So what can we do for this? What solution can we provide? We can ask the waiter beforehand to bring the whole pizza; there is no need to cut the pizza. So after asking for a cutter from him, according to the need—meaning some friend wants a bigger piece—beforehand, according to the need, I will cut. And if someone wants a small piece, then I will cut according to that. 
+
+So the same concept we use here in memory: we are not making partitions beforehand; we will do partitions at run time.
+
+### Advantages of Variable Partitioning
+
+Now, let's examine this. Let's say a process P1 comes; P1's size is 2MB. So what will I do? I will simply allocate 2MB space to P1. So the size of P1 was 2MB, and how much space it took in the memory? Exactly 2MB. So this means there is no chance of internal fragmentation in this. 
+
+If, let's say, one more process P2 comes, and P2's size is 4MB, already we know that the size of the process is 4MB, and the demand of the process is 4MB. So how much will I allocate to it? 4MB, because we have all this space free. So when that process makes a demand of 4MB, according to the need, I will fulfill the need. So how much space do I allocate for it? 4MB. That means is there any wastage happening? There is no wastage. 
+
+Similarly, let's say one more process P3 comes. Let's take the size of P3 as 8MB. So a process of 8MB comes here, P3, so you can easily put the process. So we are not doing any fixed partition here. When the process comes, at run time, we allocate the memory to it.
+
+So what is the first point I can write here? There is no chance for internal fragmentation. This is a very important point.
+
+Second, what more advantage can we get in this which was not there in fixed partitioning? The concept of the Degree of Multiprogramming. This means we have to bring the maximum number of processes inside the RAM. But in fixed partitioning, we already divided it into partitions. So however many partitions I made, it can occupy as many number of processes as partitions—we can put only that many processes. But here, all my space is free. So let's say that one more process P4 comes, its size is 1MB, I will allocate it; P5 comes, I will allocate it; P6 comes, I will allocate it. 
+
+So although there will be a constraint on RAM size, we are not talking about RAM size here. If I say the RAM size is enough, if the RAM size I have is enough, then we can put as many as possible processes in the RAM. So this means there is no limitation on the Degree of Multiprogramming. There is no limitation on the number of processes. This is the second advantage.
+
+Third is process size. If I talk about fixed partitioning here, what can be the maximum size of a process which can come into the RAM? 16KB, because how much is the partition? 16KB. But here, my entire space is free. If a process comes here of 64MB—let's say of 64MB—then if I want to put 64MB here, I will simply allocate the memory, the space, to that process. So the third point is that there is no limitation on the process size also. If now one more process comes P4—let's take the size of P4, P3's size was 8MB, let's say a process is of 4MB, then I put the 4MB process in here. Now let's say one more process P5 comes, and the size of P5 is let's say 8MB. So according to that, whenever the process will come, I will simply allocate the memory to them. 
+
+These 3 points—these three you can say are advantages of variable partitioning.
+
+### Disadvantages: External Fragmentation
+
+Now, there is one problem in this. The problem is: let's say process P2 exits from here. The P2 process gets executed or maybe blocked, so it exits from here. If the P2 process exits from here, then here I have 4MB space available. A 4MB space is empty here. In technical terms, we call it a hole. This is called a hole because the 4MB space which was allocated here to a process, when that process exits from here, it made a hole of 4MB. 
+
+Now, if another process of 4MB comes, then I will allocate this space to that. But if the scenario becomes such that this process of 4MB exits from here (leaving a hole of 4MB), and one more process P4 also gets executed, it is also terminated and exits from here—so it also created a hole here, and its size is also what? 4MB. 
+
+Now, at this time, if a process comes—P4 was already there, let's say P6. A new process comes, P6, and the size of P6 is 8MB. P6 is of size 8MB. So where do I put it? There is one hole whose size is 4MB, another hole whose size is 4MB. But as we already know that in contiguous allocation, a process cannot span between two different, separate locations. This means I cannot do this to P6: divide it half and half, put half here and put half here. Because both partitions—this dynamic partitioning and fixed partitioning—are under contiguous allocation. So whenever it goes, it will go entirely as one contiguous partition. 
+
+So means when an 8MB process comes to me, although I have 8MB available (4MB here, 4MB here), the total empty space is how much? 8MB. But can I accommodate this 8MB process here? I cannot. So this P6 will wait. 
+
+So we call this thing external fragmentation. Yes, this is external fragmentation. 
+
+What is external fragmentation? Although we are having available size, although we are having available space collectively—not at the same area, it is collectively we are having that memory available—still, we are not able to put the process in that memory because that is not contiguous. So although we had 8MB space available, because of contiguity requirements, I can't put 8MB here. So we call this thing external fragmentation. Variable partitioning suffers from external fragmentation.
+
+### Solutions and Complexity
+
+And how can we remove this? To remove it, there is a simple concept: here we can use compaction. Compaction means to make compact. This means we take empty space to one side and the remaining process space to one side. This means, let's say P1, this is the Operating System, P1, P3, P5—we take P1, P3, P5 up together, and the remaining empty space, all the empty space, we bring down. 
+
+So it is like copy-paste. This means we copy a process and paste it in some other address. We copy a process and paste it in some other place. This method, although we can use this method, is undesirable. Why? Because what can be the first problem in this? First of all, I will have to stop the processes. This means if any of these processes is in a running state, meaning the CPU is executing it, then at that time I will have to stop it, because it will disturb running processes at run time. 
+
+And second, one process is present at any address—let's say present at 1000 to 2000 address—then I will have to copy it from here and move it to some other address. So this will already take a lot of time because it is like copy-pasting—meaning we are copying one bit at some other location. So here it is 8MB; there are 8 million bytes. If we copy so many bits to some other location and paste them in that place, then it will take a lot of time. So compaction is one of the methods which can be used to remove external fragmentation, but although it is undesirable, still we can use that method.
+
+The second point that comes here is allocation and deallocation. This means one process which was at this place exits from here, and what does it create here? A hole. Here also what is created? A hole. 
+
+So now one process which is coming new—at which place to allocate or deallocate it, from where to remove it? So allocation and deallocation here is a little bit complex. Why is it complex? Because what we do in fixed partitioning is we have already decided that the number of partitions is 5. When our number of partitions is 5, then how many maximum processes can come? 5. So P1 or P2 comes in one, one is empty, or some other process comes in one; we can easily manage the number of partitions if it is fixed. 
+
+But here there is no fixed size; many processes can come. So here the number of holes are also created dynamically, and the number of processes that are coming are also dynamically coming. This means we are allocating memory to processes. When do we allocate? When the process reaches the RAM. This means the process comes to RAM and knocks that yes, I need some memory. So at that time, dynamically at run time, I will have to allocate memory. 
+
+And second, when that process exits from here, although many processes can come here because we did not do any partition, so here the number of processes can be more. So the number of processes can be more, then the number of holes can be more. Since the number of holes is more, in which hole what process will come or not—to manage that, I will have to do allocation and deallocation here, which is complex as compared to fixed partition. 
+
+So we can say that these two are disadvantages of variable partitioning, and these three are advantages of variable partitioning. 
+
+Now, how do we manage allocation and deallocation? We use the concept of bitmaps and linked lists to manage the place where there is a hole and where a process is filled. We use this concept. 
+
+So this is all about variable partitioning.

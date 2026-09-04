@@ -14,11 +14,12 @@ import cloudinary.uploader
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 
 from database import db, upload_file, delete_file
+from qdrant_client.http import models
 
 from jwt_utils import get_current_admin_user
 from ingestion_queue import ingestion_queue
 from rag.ingester import ingest_document
-from rag.vector_store import get_langchain_vectorstore
+from rag.vector_store import get_qdrant_client, delete_resource_chunks
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -357,37 +358,13 @@ async def delete_resource(
     filename = doc.get("filename") or doc.get("title")
     purged_chunks = 0
 
-    # 1. Purge matching vector chunks from target subject's ChromaDB collection
-    if subject_id and filename:
+    # 1. Purge matching vector chunks from target subject's Qdrant Cloud collection
+    if subject_id:
         try:
-            subject_id = subject_id.strip().upper()
-            vs = get_langchain_vectorstore(subject_id)
-            
-            # Candidate filenames to match (filename, filename.pdf, title, title.pdf)
-            candidates = [filename]
-            if not filename.endswith(".pdf"):
-                candidates.append(f"{filename}.pdf")
-            if doc.get("title") and doc.get("title") not in candidates:
-                candidates.append(doc.get("title"))
-                candidates.append(f"{doc.get('title')}.pdf")
-
-            target_ids = set()
-            for cand_fname in candidates:
-                raw_data = vs._collection.get(where={"$and": [{"subject_id": subject_id}, {"source_filename": cand_fname}]})
-                if raw_data and raw_data.get("ids"):
-                    target_ids.update(raw_data.get("ids"))
-                
-                # Fallback search by source_filename inside subject collection
-                raw_fallback = vs._collection.get(where={"source_filename": cand_fname})
-                if raw_fallback and raw_fallback.get("ids"):
-                    target_ids.update(raw_fallback.get("ids"))
-
-            if target_ids:
-                vs._collection.delete(ids=list(target_ids))
-                purged_chunks = len(target_ids)
-                logger.info(f"Purged {purged_chunks} vector chunks for '{filename}' from ChromaDB collection '{subject_id}'.")
+            purged_chunks = delete_resource_chunks(subject_id=subject_id, resource_id=resource_id, source_filename=filename)
+            logger.info(f"Purged {purged_chunks} vector chunks for '{filename}' (resource_id={resource_id}) from Qdrant Cloud collection '{subject_id}'.")
         except Exception as e:
-            logger.warning(f"ChromaDB vector purge note for resource {resource_id}: {e}")
+            logger.warning(f"Qdrant Cloud vector purge note for resource {resource_id}: {e}")
 
     # 2. Cloudinary mirror cleanup
     public_id = doc.get("cloudinary_public_id")

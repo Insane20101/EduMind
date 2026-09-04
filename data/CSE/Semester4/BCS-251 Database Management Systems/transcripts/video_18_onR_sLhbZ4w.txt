@@ -1,0 +1,49 @@
+Hey friends, welcome to Gate Smashers. First of all, wishing all my viewers a very Happy Independence Day. Today we are making a video on the many-to-many relationship. I've already covered one-to-one and one-to-many relationships. In this video, we are covering the many-to-many relationship with an example. 
+
+First of all, there are two entities: student and course. And there is a "study" relationship between them. What is the type of relationship? Many-to-many. Here I am denoting the second "many" as N, because a many-to-many relationship is denoted with M:N. But the notation is not an important part, that's just how we denote them. 
+
+Most of the videos or content where you look at this give major emphasis on what a many-to-many relationship actually is, their examples, and how we denote them. But no. There is a full-fledged topic on this, and there are very deep questions on it that come in UGC NET and GATE exams. What questions are those? I have also covered them in one-to-one and one-to-many relationships, and the same questions will also be covered in many-to-many.
+
+So, for the students entity, I have represented it in a table, and here I have represented the course entity in a table. The attributes of the student entity are roll number, name, and age. The attributes of the course entity are CID (course ID), course name, and credits. Roll number is taken here as the primary key. This is already given. Whenever you get a question of this method, firstly they will give you something as given. Otherwise, we can find the answer by assuming anything according to ourselves, but they will always give you the statement in the questions first: which of the following is the primary key, how many attributes are there, what is the relationship with this? Each and everything is given. 
+
+Right now I'm just explaining the given part: what do I have as given? The roll number here is the primary key, and I have three attributes. And here course ID is the primary key, and there are a total of three attributes. 
+
+Now comes the first point. The "study" relationship is actually a table. When we use an ER model—because what is an ER model? It is used for designing. But when we implement this design, how do we implement it? For that, I need some programming language. So what language do we use? SQL, we use SQL language. And when we use the SQL language and implement this design, then we represent this design in the form of tables. 
+
+So we made a table for the student entity and made a table for the course entity. And "study," which is a relationship, that is also a table. 
+
+Now the first concept or the first question comes: here it is given that the primary key is roll number, and here it is given that the primary key is course ID. First of all, what will be the attributes in this table? Which attributes will be there in this table? 
+
+First, the roll number of this table—i.e., the primary key of this table—will be here, and this primary key acts as a foreign key. And the other is course ID; it also acts as a foreign key. And where is it taking the reference from? It is taking the reference from the roll number [of the student table], and it's taking reference from the primary key of the course table. 
+
+Now, the reason why did we take these two attributes in this table? Because if you think about this table [student table], what information do I get from this table? I find out from this table what the roll number of a student is, their name, and their age. This means the details of the student. What do I know from this table [course table], only from this table? Details of the course—meaning course ID, course name, and how many credits that course has—is all we know. 
+
+But which student is studying which course? Which courses are the students studying? Who tells us? The relationship table. So obviously, in the relationship table, I have to keep the roll number from here and the course ID from here, and now we'll put the data into it. These two are foreign keys here. This foreign key is taking reference from here, and that foreign key is taking reference from there. 
+
+Now let's talk about what data we will put in this table. I can put any data in it. Let's say roll numbers 1, 2, 3, 4, 5, and course IDs C1, C2, C3, C4, because these are the base tables. These are the base tables. Now we are talking about the referencing table, where they are foreign keys. How do we put data in this table? It depends on the relationship: many-to-many. 
+
+So what is the meaning of a many-to-many relationship? That a student can study multiple courses. It is many-to-many, isn't it? Meaning a student can study multiple courses. And if you look from this side too, what will happen? A course can be studied by multiple students. It is one-to-many, isn't it? If it is made from both sides, then obviously what will it become? Many-to-many. A student can do multiple courses, and a course is done by multiple students. 
+
+So we put data in it. Let's suppose here I am writing: roll number 1 is studying course C1, roll number 2 is studying course C2. So can I rewrite roll number 1 here? Obviously, because here we have a many-to-many relationship. A student can do multiple courses. So if a student is taking multiple courses, then I can write here, let's suppose C2—meaning roll number 1 is also studying C1, and roll number 1 is also studying C2. And if I write about 2, then 2 is studying C2, and 2 can also be studying C1. Meaning multiple values can be here. 
+
+Now any data you can put here normally, but that data should be according to the base table or property of the foreign key. What is the property of the foreign key? I've already put a video on it, where I have explained what the properties of the foreign key and its functionalities are, so I have explained it there. 
+
+So in this way, we have put data in it. What is this data representing to me? Roll number 1 is also studying course C1. Roll number 1 is also studying C2. This means roll number 1 is studying multiple courses. And if I look this way, C1 is studied by roll number 1, and C1 is also studied by roll number 2. So yes, a course is also studied by multiple students. 
+
+This is a simple dummy data. You assume that this is a lot of students' data—there are thousands of students, there are a lot of courses, and this is the relationship between them. 
+
+So here I found out which one is the foreign key in this table. Now the next concept is: in this table [student table], the primary key is the roll number. In this table [course table], the primary key is given as course ID. What is the primary key in this table [relationship table]? Meaning, what will be the primary key in the referencing table? The referencing table, which we can also call the relationship table—the table that shows the relationships. 
+
+Now, roll number and course ID: if you look at it carefully, if I just think of the roll number, can I make the roll number a primary key? No, because the values are repeating in the roll number column. Can I make course ID the primary key? No, because course ID is also repeating. But could I make these two combined? Yes! Roll number and course ID combined can make a primary key. Combined means these two together. We call it a composite key. The primary key will be a composite key, and it will be made by combining the roll number and course ID. If we combine these two, then yes, each and every combination will be unique/individual. 
+
+So here my first question is covered: which will be the primary key in this table? 
+
+Now the second question is: can I reduce these tables? How many tables are there in total? Three. Can I reduce them? No. Because how do you reduce? Let's suppose, it has a roll number, and the student table also has a roll number as a primary key—combine them. Or there is a course ID here, and the course table also has a course ID—combine them. But no. In this [relationship] table, the primary key is combined. It is made up of the roll number and course ID together. So neither can you combine these two [student and relationship tables], nor can you combine those two [course and relationship tables]. If you do, then suppose you want to combine these two: how many times is "1" written here [in the relationship table]? Twice. But here [in the student table] it is once. So you can't combine these two. That's why you cannot reduce it. 
+
+So in a many-to-many relationship, there is no reduction. No reduction of tables. Meaning the number of tables cannot be reduced; it will be as it is. How many are there? 1, 2, 3. In the final, it will be three only. But there is scope in one-to-one, and also scope in one-to-many and many-to-one, which I have already explained. 
+
+So in these whole relationships—one-to-one, one-to-many, and many-to-many—what is the most important point? That's the relationship table, that's this referencing table. In this table, the first thing is: which of the following is the primary key? Which of the two is the primary key? On whom will it depend? On the relationship: one-to-one, one-to-many, or many-to-many. And second: can I reduce the tables? Can I reduce the number of tables? And this question comes many times in UGC NET, and also appeared many times in GATE exams, in which you would have been given entities and you would have been asked, "Can I reduce them?" 
+
+So you can reduce in the case of one-to-one or one-to-many. You can't reduce in the case of many-to-many, because here the primary key is [just] roll number [for one-to-one/one-to-many variants depending on design], but here [in many-to-many] the roll number and course ID are combined. So neither can we combine these two nor can we combine those two. 
+
+So this is all about the types of relationships: one-to-one, one-to-many, and many-to-many. Thank you.

@@ -1,0 +1,25 @@
+Hello friends, welcome to Gate Smashers. Let's start with the numerical on TLB. I have already discussed the concept of TLB and you will find its link in the description box, so you must check that video once so that you know what the concept of TLB is in actual. 
+
+So let's start with the numerical, and in this numerical, I am going to explain the numerical of Gate itself. Let's start the numerical here: a paging scheme using TLB, and the TLB access time is 10 ns, and main memory access is provided, that is 50 ns. What is the effective memory access time (in ns) if the TLB hit ratio is 90% and there is no page fault? 
+
+We already discussed what the concept of TLB is. CPU generates a logical address that is called a page number and page offset, so we go to TLB first. Inside TLB, we search and find the frame number. If I got the frame number, then I go to the physical address, go inside that particular frame, and I will access the page from main memory. This is a hit case. How long did it take for me to get a hit? What is effective memory access time? That if I am getting a hit, how long did it take in the hit case: time to access the TLB plus time to access main memory. 
+
+In case a miss occurs here, meaning if a miss is happening here, then what do we do in case of a miss? First, we search in TLB for the frame number, but I could not find it there. Then we go to the page table, find it on the page table, and on the page table I will find the frame number, so I'll go to that page and find main memory. So what is the search time on the page table? Where is the page table? Inside main memory. So the time to access inside main memory, the same time will it take to access the page table. 
+
+That is, if I have a miss, so in case of a miss, you are looking inside TLB first, not found, then you go to the page table and find it. Then you got the frame number, then you went inside main memory, then you got the particular page. So what is the time to access the page table here, which is the time to access main memory? It is equivalent to that. 
+
+So this is my formula for effective memory access time if there is no page fault, meaning a page fault is not occurring any time. The page you are looking for is in main memory, so here we are not using the concept of any page fault. 
+
+So we put simple values. How much is the hit ratio? 90%, meaning a 90% chance for a hit. So in that case, you first search inside TLB. What is the search time inside TLB? 10 ns. Then you searched in main memory. How long did it take you to get the page in main memory? 50 ns. 
+
+In case you have a miss, what will be the miss ratio? 1 minus hit ratio, meaning if your hit ratio is 90%, if you do 100 - 90, then 10% is your miss ratio. So in that case, you first searched in TLB, not found. Then you went to the page table. I have already told you the time to search the page table is equivalent to the main memory access time, which is 50. Then you accessed that page by going to the main memory. So this is your total time. 
+
+So you convert 90% into a ratio, meaning 90% is just 90/100. So what can you write about this? 0.9 × (60) + 0.1, this 10% means 10/100 which is 0.1 × (110). 
+
+So when you solve it: 54 + 11 = 65 ns. 
+
+So this is what your question was. 65 ns, your answer has arrived. 
+
+But remember here, the page fault is not happening any time because if a page fault occurs, then what page are you looking for? That page is not even inside main memory, meaning you have to go to secondary memory first. From the secondary memory, that page will have to be brought into the main memory, which we call page fault service time. The page fault service time that is there will have to be added extra in this concept if we speak about page fault, that this much percent page fault occurs. If no page fault is occurring, so this is a simple formula, put the values, and the answer will come. 
+
+Thank you.

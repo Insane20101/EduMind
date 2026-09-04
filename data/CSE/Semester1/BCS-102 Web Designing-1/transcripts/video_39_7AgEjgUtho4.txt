@@ -1,0 +1,145 @@
+After watching this video, you will get to know about CSS Grid. I can guarantee you that. In this video, I have explained CSS Grid in a very easy way, and you won't be able to forget CSS Grid even if you want to, after seeing the examples I will be using. CSS Grid is used to make layouts. This is one of the ways to make layouts in CSS, as floats and positioning can be very confusing. There are some scenarios in which CSS Grid is directly applied. I will explain how to use it, what the properties are, what is easy, and what is difficult. 
+
+Like this video and write "Sigma Batchop" in the comment section. Let's go to the computer screen. Let's roll the intro.
+
+CSS Grid is used to create layouts that resemble a grid. Let me explain. I will open VS Code and create an `index.html` file. I have taken a boilerplate code here. Now, I will create a container and make five items inside it, numbering them 1, 2, 3, 4, and 5. I will preview it, and you can see the numbers 1, 2, 3, 4, and 5. 
+
+I will add some styles here. I will put a border of 2px solid yellow in the container and a border of 2px solid red in the items. I will set the height of the items to 55px and the width to 55px. You can see the yellow box is the parent container, and inside it, we have items numbered 1, 2, 3, 4, and 5. For better visibility, I will change the background color to black. Now it looks good.
+
+If I write `display: grid` in this container, then, like a flexbox, if I set the display to flex, all the items get laid out horizontally. This does not happen at all in the grid. You see, by setting it to grid, the layout remains the same. If I inspect here, my browser will show it as a grid. It is showing a grid here. When I click on the grid, it shows me that this is your grid, with rows and no columns.
+
+The first property I want to tell you about grid is that you can define how many columns and rows there are. Some properties can be applied to the items as well. I can write `grid-template-columns` and specify that I want a 120px column and a 100px column. That's all I need; just these two columns. You can see that my grid will be divided into two columns. 
+
+I will zoom in to show you. I have one column here and one column here. You can see that I have toggled the grid, and it has divided into two columns. This is the first line of the grid, this is the second line, and this is the third line of the grid. 
+
+In this grid, I can place any item anywhere. If I want, I can make it overlap. I can place it on two columns. How? I will tell you that shortly. First, we established that there are two columns: one is 120px and the other is 100px. 
+
+Now, I will put any item. The first item will come here, the second item will come here, the third item will come here, and all these placements happen automatically. I don't need to configure the rows, but I can specify how I want to place my items. 
+
+Before we move ahead, I want to explain some concepts. The first concept is grid lines and grid cells. Once we divide the grid, we see these lines. These are called grid lines. A box in our grid is a cell, so this area is a cell. I hope you understand what a grid cell is. 
+
+Next is the concept of grid track and grid area. A grid track is the space between two grid lines. If I take two grid lines, the space between them is a grid track. Similarly, the area inside the grid formed by two horizontal and two vertical lines is called the grid area. This is the basic terminology of the grid.
+
+Now, when I set `grid-template-columns` or `grid-template-rows`, I can define the spacing. For example, I can say that my spacing is 10 pixels, this spacing is 20 pixels, and this distance is auto. I can define these spacings accordingly. Similarly, I can define `grid-template-rows` to have two or three rows, where one row is 25% and another row automatically takes the height.
+
+If I add a new item, I can specify where to place it in the grid. I can overlap items as needed. I can tell the grid to keep a given item in a specific cell, and I can also tell it to span multiple cells. 
+
+Now, the grid you see on your screen has numbers. The first line is line number one, the second line is line number two, and so on. There are also horizontal lines, which I can number as well. I can give reverse numbering, where line number four automatically becomes minus one, minus two, and so forth. 
+
+This numbering is important, and I will explain why later. In the grid, we can also give names to these lines. Naming is convenient for reference. For example, I can name line number one as "row 1 start" and line number two as "row 1 end." 
+
+Now, let's apply the theory we have studied. I have set `grid-template-columns` to 120px and 100px. You can see that one column is 120px and the other is 100px. I can also specify three rows and decide their heights using `grid-template-rows`. 
+
+For instance, I can set the height of my three rows to 100 pixels each. If I activate the grid, you can see the layout. Now, I want item number four to come where line one is. I will add a class to item number four and set its properties using `grid-row` and `grid-column`. 
+
+I can say that its grid row should start from 1 and go to 2, and its column should start from 1 and go to 2. Now you can see that item four has taken the place of item one, pushing it out. 
+
+To resolve this, I can apply the same properties to item one. Now, items one and four overlap. As you can see, both items are in the same space. 
+
+I hope so far it is clear to everyone that first, we have to set `display: grid`, then define `grid-template-columns` and `grid-template-rows`. This will tell us how many columns and rows will be created. Items will be placed automatically by default, but if you specify that an item should span from row 1 to row 2 and column 1 to column 2, it will adjust accordingly.
+
+You can also specify that an item should span multiple rows or columns. For example, if I set `grid-row` to start from 1 and go to 3, it will take that space. You can also use shorthand properties like `grid-row-start` and `grid-row-end`. 
+
+You can place items anywhere in the grid. If I want to span item one, I can do that, and I can also use names instead of numbers for better clarity. 
+
+For example, I can say that my grid column should go from "first" to "second" or from "second" to "third." This flexibility allows for more intuitive placement of items in the grid. 
+
+If I change the references accordingly, the items will adjust their positions based on the defined grid structure. I hope you understand this grid concept well. This is one way to place items in a grid. 
+
+If you know only this much, you can effectively use CSS Grid. Naming is secondary; the primary focus should be on defining the grid structure with the appropriate dimensions.
+
+Rows and columns will be automatically created, so it automatically figures out that if there are three rows, then I will have to make two columns according to these items. If you set one thing from these two, then the other thing becomes automatic. After this, you can set any item by making a grid row or grid column. You can make it overlap wherever you want; you can do it as you want. 
+
+Let me tell you some more things. This is one way to use grid. Now I will tell you another way to use it, and I will make a new file. I will name it "grid2," so that you can know that I want to divide it into two parts. I will take the same thing and name it "grade 1." There is no concept of grade 1 and grade 2, but I am doing this because I want you to understand the two ways to place it in grid.
+
+Till now, whatever we have read, we have given the names of the lines. We have said that this is the first line, this is the second line, this is the third line. This is called "start." I can give any name I want. I had given names in Hindi too; I had shown you the first, second, third. Or we can say this is 1, this is 2, this is 3. We can say that we have done 1/3. It means that it has got this much space. 
+
+Let’s say I put a number here too, 1, 2, 3, 4. Then we said 3/4. We wrote 1/3 in the rows and 3/4 in the columns, so it means that automatically it got this area. 
+
+Now, the second way I am going to tell you is how you can name and keep the items. We have seen this grid column row place the item like this. Now, one more way, which I said is grid 2. What is the second way? What you do is give the name of the area. First, you will give display grid to any container. You will say that this grid, in this, the name of this area is "navigation bar." 
+
+What is the name of this area? Navigation bar. This is called navigation bar. This is my main content. What is this? This is my empty area. This is my sidebar. This is my footer. I have divided it. How will I divide it? It has a syntax. You can say that my first column is navigation bar. Suppose I wrote "nav." Then I will say "nav," then I wrote "nav." In a way, I said that this, this, this is nav, and this is main content. This is empty, this is sidebar, and this, this, this is footer. 
+
+Now I can use these names and place the items. To do that, what I will do here in my grid 2, I will keep display grid, but I will remove the syntax which is written in item 4 and item 1. Now I will use the syntax which is grid area syntax. Earlier, I wrote grid template rows; now I will write grid template areas. I will say that my grid template area is "nav nav nav." 
+
+Or I will write "nav nav" because I want to make only 2 columns. This time I will say "nav nav nav." After "nav nav nav," my second one, what will it be? It will be "site," and one more will be, let's say, "col." I have named it. 
+
+Now, see here, I will preview it. I renamed the file, so I wrote display grid. I have told here that in grid template area, you can place items like this. I will place the article here. Then I will say in item 1, grid area is "nav." This is side; this is article. I will also put article here. Then I will say that my item 1 in that grid area is "nav." 
+
+Now, you see what happened here. I will remove the width of this so that you can understand how much width it is taking. Now see, my item 1 is here in nav, which means my item is in nav. These three were nav, so it took up the whole space. 
+
+Then after this, the next one I wrote here is "side." My item 2 will be, I will say that my item 2 will be. I will arrange it a little; I will write it properly because you have to give the code properly. I will bring it up a little: item 1, then I will do item 2, then 3, then 4. 
+
+Now see here, I have put grid area. Now I will put grid area here. What should I do in grid area? I will put it on side. I will say this will come on side, then this will come in article. This will come in my article. I will put grid area in article, and then the next item I will put grid area article. 
+
+Then the next item I want to make the grid area footer. "Footer footer footer footer" means this is the whole footer below. I will say that item 4 is grid area footer. You can see here I have written grid area footer. 
+
+So here, if I show you, see item 1 is here. Now if I give different colors to item 2, 3, let's say I give a background color of this, this, this, background color of this something else, let's say I give this. No, I have already done this. Let's say I give a background color of this, let's say azure. 
+
+So you see it came here. Then I didn't write item 2; I didn't put item 2 class and item 3 class. Item 4 came here and item 5. So all items are here: item 1, item 2, item 3 is here because I wrote here that if I activate the grid, then you can see the grid nav nav nav. The first item took the nav. After this, what was it? It was article. Whatever name I gave, the second took that. 
+
+Then here I wrote both the same. I wrote side side. I don't know what article I wrote; I wrote both the same, but I wrote article article. So they took article article. Item 3 is in these two cells. I hope it is clear. 
+
+Then I wrote footer footer footer. So the fourth one took all the space. The fifth item is left, so he has no other option. He took the next row. He said that this is the only place left. If I insist that 5 should also come in the header, let's say I do something like this. I want to make 5 overlap here, so I can use it in conjunction with. 
+
+Let me show you the complex use case. I can say item 5. If I make its grid area as nav, then you can see the navigation bar. This is also there in nav. You can make it overlap. 
+
+This is all in CSS grid. I think you need to learn more in CSS grid. I will talk about one unit which is very important. If you need to learn more about CSS Grid, then you can learn more about it. I will talk about one unit which is very important, which is the FR unit. 
+
+If I show you here, then you can see my grid items. I was using pixels here. But if I want my container to be 80vw, it means it is taking 80% of the width of the viewport. Now I can say that if we make 3 pieces of width, then 1fr 1fr 1fr. What does it mean? I want to make columns according to this. 
+
+Suppose I want to do something like this. I want to say that see my grid template columns, make my columns that 1fr 1fr 1fr. FR is a unit which is specifically in grid, and FR means that the available width is 1 fraction, 1 fraction, 1 fraction. If you write 3 times, then it will be 1 third. If you write 4 times, then it will be 1 fourth. 
+
+So divide it into 3 parts. If I write 1fr 3 times, let me show you. Let me show you by activating grid. Let me remove width. So 1fr, 1fr, 1fr. Now why is 5 and 4 coming here? Why is 5 and 4 coming here? Because I have put some classes here, which I will comment out for now. I will comment out this one too and this one too. You guys must have understood the concept. 
+
+Now here, 1fr, 1fr, 1fr. Three columns are made. If I make it 1fr 2fr 1fr and I do like this: 1fr 2fr 1fr, then it will take its width. This cell will be the second column; it will be of double width: 1fr, 2fr, 1fr. Can you see it? It is double of 2fr and 1fr. It will set it accordingly, so you can do it like this. 
+
+This is the use of FR units. You can use it on row instead of column; it is totally up to you. One more property I want to tell you is "gap." You can make a gap. If I make a 34px gap, then it will be a 34px row gap and column gap. You can set it differently. 
+
+So you can make row gap like this. Suppose I want the row gap to be 10px, but I want the column gap to be 44px. So the column gap will be more, and the row gap will be less. I can do it like this. You can see row gap and column gap will be less, so I can do it like this. 
+
+I have taken more column gap, so the gap will be between items. Don't use padding in flexbox; use gap in grid. Another benefit of using gap is you don't get padding here; you don't get spacing here. 
+
+Now, one more important thing about grid is if you want to justify align items. This is the benefit. Now after this, I will tell you one more important thing about grid. If you want to justify align items, for which I will put the width again. I removed the width from here; I will make the width again 55 pixels. 
+
+Okay, so you see all these items are like this. Now I want this to be center in the grid. What can I do here? Justify item center. So see, as soon as I wrote justify item center, the items inside it became center in their own cell. Then I can write here align item center. 
+
+As soon as I wrote justify item center, the items in it got centered in their own cell. Then I can write here align item center. Now see the center of the item is not because I have not given any height. If I give height, my container is 50vh. 
+
+Now see, I have given 50vh, and if I write here align item center, I am seeing that why this height is not coming properly. I will make it a little bigger. I will make it 100vh. If I align items here, all the items are aligned in the center of their own cell. 
+
+So I will make it 100vh so that you can understand the height is 100vh, and the justify items was a center, align items was a center. These align items will be center. Now if you want that center is not aligned and it is here and there, you can see the properties. One is flex end, and the other is flex start. 
+
+You can do it accordingly and try all these properties. If you do end, then it will come in the end. If you do start, then it will come in the start. If you do stretch, then it will stretch. If the default setting is set, then you can use all these end, center, and start. You can use flex end also, but don't use flex end; use end only. 
+
+I hope you understood how it works. Now you can apply this property on individual items. See what I have done here. Suppose I want to center this item, or if I want to center item 2, or if I want to align self on this item, start. So see, this item is in start. 
+
+If I want only one item to take itself in start, so this item is in start. Similarly, I can use align self and justify self. In justify self, I have ended it self, so what I will do in justify self, I have ended it, so it is justified at the end. 
+
+This property is appearing inside the individual cell. Keep in mind that this property is appearing inside the individual cell. It means if I am saying start end, that box which you can see above which has 2 inside it is appearing within that box. Vertical center, horizontal center, start, end will do everything within this box. Flexbox will do within flexbox, and here it will do within its cell, so you can do it like this. 
+
+One more thing I want to tell you is sometimes you have to make many columns. If I want to repeat 1fr 5 times, I can use the repeat function. I can say repeat 1fr 4 times, so it will repeat 1fr 4 times. Here it will repeat 1fr 4 times, so you will get 4 columns. I hope this is clear to you. 
+
+There is a min-max property. Minimum should be 100 pixels, which is the width of my cell, and maximum should be 1fr. It means the maximum is 1fr. Now see, the minimum is 100, and the maximum is 1fr, which is calculated by dividing this width into 4 parts. 
+
+1fr width will depend on how many times fr is written. So minimum is this much, and after that, maximum will do 1fr. This min-max function you can use anywhere; it is very useful. 
+
+Now, a confusion that happens in many people is that we have used justify items; why we have not used content? Now I will tell you when we will use content. I have given a black color border in grid. You can see in the grid container, I have given a black color border, and I have used 1fr. 
+
+But what if I use only 40px? I will do one thing; I will comment 1fr so that you can get the code. Now I will make it 40px. So when I am making it 40px, I have said that my column width should be 40px, and I will remove min-max. 
+
+40px, 40px, 4 times. Now see this grid is out. Why is it out? I will show you. My container is starting from here; my items are starting from here. The container is here, and the container is big. I made it 44px. I will make it 60px or 80px. 
+
+See here, my container is big, and items are taking less space. If I want to align items within the container, meaning the whole grid, not items but the whole grid, if I want to align within the container, then I will use justify content. 
+
+If I do center, then the whole grid centers. If I do end, then the whole grid ends. If I do start, which is default, then the whole grid starts. This will only be applicable when our container is big and the grid is small. 
+
+The same thing can be done vertically. Now see here, the items are given in this way that their width is like this. If I make their height like this, I will say that the grid to grid template columns, sorry, rows, and change the height to 40px. 
+
+Let me see how many rows are being created. I want 2 rows, so I will repeat it twice. I will say give me 2 rows. Now you can see that the height of the container is more, and the height of the grid is more. The height of the grid is less, so you can put here align content, and align content will come in the center and will come in the end. 
+
+You can do this. If you want to do within the cell, then you use items. Justify items and align items will be used in the cell. If your container is big and the grid is small, then what you will do is use align content and justify content. 
+
+I hope you understood it. Then there is place content and place items. Let me show you. Place content center, so justify content will be center, align content will be center, and line content will be center. Place content works like this. 
+
+I hope you all have understood, and if you have not accessed the Sigma web development course, then do it. Either click here to bookmark or click here to save, and I will update the code for you. That's it for you guys. Thank you so much for watching this video, and I will see you next time. Thanks for watching!

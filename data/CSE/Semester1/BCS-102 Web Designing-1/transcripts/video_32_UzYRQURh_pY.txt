@@ -1,0 +1,63 @@
+Guys, I gave you a web page builder, and many of you have solved it in this video. First of all, I will give you the solution, and then we will give shoutouts to those who have solved it. Please like this video and write "Sigma Batch OP" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+I have come to my computer screen, and first of all, I will show you the question I gave you in video number 73. I will close it here and make a folder named video number 77. The question I gave you in video number 73 was very simple. Many people said that the question was tricky, but I disagree; the question was very straightforward. What we had to do was to write a function to create a card. As we run that function, the card will be made.
+
+Let's quickly turn on the word wrap and start. In index.html, I have simply made a container. What I have to do is to finish the create card function. I will make a variable for HTML. I will write `let html = ""`. After this, I will add whatever I want to add. Since I want to make a card, first I will open it and set the display to flex. My first job will be to generate this card as it is here, so I will come to index.html and create a `div.card`. 
+
+First of all, I will put some styles in the style tag. The card will have a display of flex, and I want an image to come here along with text. I will divide it into two parts: `div.image` and `div.text`. The image part will have an image, and the link for this image I have put somewhere here, so I will copy it as it is for now. I will say that here an `img` tag will be used, which will come like this. I will also word wrap it using the `alt + z` shortcut if you don't know.
+
+Now, I will see the preview to check how it looks. I have to make the whole card, so I will give the card a border: `border: 2px solid black`. This is a temporary border I am giving to see the card. Now I will put text in `div.text`. I want my text to come vertically down, so I will put this text in my script.js just to show you. Let's say I am making this, so I will put the text in my script.js. The first thing will be an `h1`, and I will put this in `h1`. The second thing will be "Code with Harry". 
+
+I will put a paragraph in it and write the name of the channel: "Code with Harry". After this, a dot is put, and I guess it is written "727k views". After doing this, I will write "two months ago". My target will be to make an exact clone of whatever I am making. I will do this, and after doing this, "727k views" and "two months ago" are done. Let's see how it looks. I know it won't look perfect, but it still looks good. 
+
+To make it better, I will specify the width of my card. I will say the width is maybe 400 pixels. If I make its width like this, it will definitely break. Now that I have made its width 400 pixels, I will have to specify the width of this image and text too. If I don't do this, it will break. It is better for me to specify its width too because I am not going to make a full-width card. I just want to make sure that it is not too much here, so I will increase it a little bit. 
+
+I had kept zoom in and out on the browser, which I had not seen, and I have increased it. I think we are good. I just want to adjust the fonts. For the image, I will say that the `img` in `.image` should have a width of 200px. Let's see what it does. Yes, it's fine. After this, I will check how my font size is looking. 
+
+The text is in one line, and this is a very wide card, so I can make it wider. I will increase the width a little more to 900 pixels. I think this is good; I am not having any problem with it for now. One thing that is challenging is that we have to put the timestamp here. I will center justify the content, and by centering justify content, everything will come in the center. I will also center align items, and when I center align items, then vertically this card will come in the center. 
+
+Now, how will this capsule be made? I will make this capsule inside the image. I am not adding any more styles in this card; you can add it if you want, but I will leave it like this. Now I have made this card template. I will format the document and keep this card template as text, as a string. This will go as a string here in script.js. 
+
+Now I will make some variables in this HTML. First of all, I have to make a variable for the title, so I will write `$title` which is coming from my function. Similarly, I will do this for other things like the channel name. I will make it `$c`, and for the number of views, I will have to make a variable. I will convert it to "k" and "m". I will name the variable `viewsStr` or `viewNumber`. You can name it whatever you want. 
+
+I will say `viewNumber = views < 100000 ? views / 1000 + "k" : views >= 1000000 ? views / 1000000 + "m" : views;`. This is applicable for views less than 1 million. I will check if our logic is working. 
+
+After this, I will pass the image URL, which is coming from the thumbnail. The months old will come here, and now the duration capsule I wanted to make, I will make it quickly. I will set the control on this. 
+
+First of all, I will put `position: relative` for my image. Then, I will set the capsule class to `position: absolute`, `bottom: 0`, and `z-index: 10`. By putting `z-index: 10`, it will come up. I will give it a background color of grey with an opacity of 0.5. The text color will be white. I will give padding of 3 pixels and a border radius of 3 pixels. 
+
+After doing this, I will copy and paste it so my thumbnail is ready. I can make the font size small; I am not going to that. I will put it in styles. I will do the position of `.image` relative. After this, the capsule inside the `.image` will have its styles. 
+
+I will reload the page, and my card is ready. You can see how it is displaying. If you think this is black, you can see the exact color from here. I will remove this border; there is no border in it. I would like to do one more thing on this card: I will give it a padding of 12 pixels so that it is kept away from each other. 
+
+Now, what I will do is put the duration in my capsule, and it will work. When this function runs, it will say `document.querySelector(".container").innerHTML += html;`. If I do this, then this card will come one more time. I will put margin in the card, maybe 5 pixels, so that they are away from each other. 
+
+Now, you can see that cards have started to be added here. As many times as I run this function, these cards will be added. If I show you, let's say I want to run this function again for some other topic. I will do this, and you can see one more card has come here. 
+
+You can do all this. If I don't give width to the video, it will take full width, so maybe I will not take its width.
+
+Now, let's see what happened to 780k. Let's go to the computer screen. I will input a million and check if it shows a million or not. Yes, it is showing 78 million, as you can see. If I keep only 78 here, what will happen? If I only see 78, it shows 0.078k. I need to do one thing here: I have to say that if the views are less than 1000, then do this with the views. Now it's fine; it should work.
+
+If I put 78 here now, it came as 78. However, it still didn't come. Let me see what's wrong. Let's roll the intro. I muted it. As you can see, it didn't come; it's showing 0.078. Let me see what the problem is. I should have kept views as equal to views and not plus k. Now it should work. If I do this, 78 views came, and if I put the old call, you will see here that 78m views came. If I put this call, it will show 780k. Now our function is working perfectly. As much as I run it, it will dynamically generate content and add it to my website.
+
+You can map it with a button click. You should try to make a button and put a click event listener on it. As soon as it is clicked, you can keep adding here. You can design it so that one card comes here and another comes here. A lot of styling can be done.
+
+Now, I am going to give a shoutout to all those people who solved it. I hope you understood my solution. I will quickly flip myself to make it easier for me to give you shoutouts. I hope you all understood this solution. 
+
+Now, what we will do is shout out those people who solved it. Shoutout to Dark Code, Rohit Kumar, and Dilip Khuswa, who have provided their solutions. They have written a lot of styling and tried to solve it in the same way. Let me see if their solution works or not. I will quickly make a solution.html just to check what they have created and whether it works.
+
+Yes, it is running, and it looks very good, but the image is not showing properly. They suggested putting it in the URL. I am not putting it, so let's put it in the URL. The image would have been visible, which would have been good. Big shoutout because your code works. Dilip Khuswa has become the first person who solved it. 
+
+Shoutouts to Ashish, Vishal, Chandrana, Unique, Developer Pankaj, Technical Ved, Shuja Khan, Shakeel Ahmed, Yusuf Kunwar, Musib Zahid, Sonu Center, Mihir, Musaib Zahir, Developer Shakeel Ahmed, User Zubair, Islamic Center, Ansh Dhoklia, Shakir, Paper, Musaib, JoyXP Programmer, Shivameer, FFINX, Ankita Kri Sharma, and Rohan Das. 
+
+Let’s see what Rohan Das has done. Can he solve it or not? Let's check. I am impressed with one thing: his font looks much better. He has also brought a font from Google Fonts, which is very good. However, why didn't he put the URL of the image? They have the URL of 22.webp, but 22.webp will not be on my computer. They would have put the URL of 22.webp from somewhere. No problem; they did a great job and assumed that I would put my URL in it, which I will do now.
+
+I am in this solution because I think the fonts of this solution look amazing. Just looking at it is wow! Here you can see how to get a shoutout on Python CS101. Rohan Das has got 1 million views. Big shoutout!
+
+Next, we will give shoutouts to Ravi Narayan, Parida, Shivam Chaudhary, Rahul VGL, Nani Chan, Bkoder Games, Amaze, Ayush Sharma, and Coding 2 with Udham. Let's see the solution of Coding 2 with Udham, and this will be the last solution. After this, we will end the video.
+
+Here, they have put some video links, which I liked a lot. I will run their solution. What happened here? Your solution didn't work. What happened? Your solution got an error. Let's see what the problem is in their solution. They didn't close a bracket and broke their solution. They also didn't put a comma. No problem; we fixed it. It's right, but they also have the guts. They made it right, so they also get a big shoutout.
+
+Shoutout to Coding 2 with Udham! Big shoutout! Shoutouts to Tarun Payan, Gulam Mustafa, Chetan Singh, Vicky Shukla, Teerth Raj Turkar, Janhvi EditX, TheAlwar02, Code with Rohit, Ravindra Valant, Mahi Faruqi, MD Irfan, and Aishwarya Sinha.
+
+We have given many shoutouts. In the coming videos, you will get more shoutouts. You can access the playlist, and I have updated the source code on GitHub. You will get the updated source code until video number 76. That's it for now, guys. Thank you so much for watching this video, and I will see you next time. Bye!

@@ -1,0 +1,41 @@
+Hello friends, welcome to Gate Smashers. Let's check whether a schedule is conflict serializable or not. I have uploaded a last video in which I've told how to check that a given schedule is conflict serializable or not, so please check that video once. The link of that video I've added in the description box, so you can check it from there. 
+
+Here I have a schedule. Let's call this schedule by the name 'S', and in this schedule, there are 3 transactions: T1, T2, and T3. Obviously, we're talking about parallel transactions, and in parallel transactions, I have to check if this schedule is conflict serializable or not. What do we do for that? We check by making precedence graphs. 
+
+If I make the precedence graph of this, then for T1, T2, and T3, we take three transactions. Since there are 3 transactions, it means there are 3 vertices in the graph. Now what I have to check is the conflict pair. Conflict pair means, if I talk about Read(A), who is in conflict with Read(A)? It is Write, means read has a conflict with write. So read conflict is write, and we check if write is there in T2. Yes, there is a write in T2. So from T1 to T2, because we are checking from T1 and found it on T2, we draw a directed line from T1 to T2. 
+
+In the same way, check if T3 has a write. Yes, it is there in T3 also. So from T1 to T3 also I got a conflict, meaning its work is over. 
+
+For Write(A), the second operation, who is the conflict of write of A? It is Read and Write both. But remember, in the case of write, Write(A) conflict is Read(A) and Write(A) both. So see, Write(A) conflict here—we got it from T2 to T1. So from T2 to T1 I got it here. Even it is from T2 to T3, but you don't need to draw further because if there is a loop in your precedence graph or a cycle comes, then you can say that it is not a conflict serializable schedule. 
+
+So here, the conflict serializable method is saying that no, it is a non-conflict serializable schedule. This gave its output. It has given its answer that it is non-serializable, meaning it is not serializable. Because as I can see, there is a loop from T1 to T2 and from T2 to T1, so there is a loop. Because of this loop, I can say that it is non-conflict serializable according to this. 
+
+However, if I have a graph, and any graph has no loop inside it—meaning there is no loop or cycle—then we say that yes, this schedule is conflict serializable. If there is no loop, it means that it is conflict serializable, and if it is conflict serializable, then a serial schedule must exist. This means we'll find a sequence like T1, T2, and T3, or T1, T3, T2, or any sequence I have. It will form any sequence because it will form a serial schedule, and if it is serial, then it means it is consistent also. So the ACID property's consistency property it follows. 
+
+When? When do you have to follow this hierarchy? When there is no loop in the graph. If there is a loop in the graph, as you can see here, there is a loop in the graph. So we can call it non-conflict serializable. Non-conflict serializable means that it is non-conflict serializable, so isn't it serial? Is this serializable or not? I can't answer this right now. Conflict serializable says that if there is a loop, now I can't do anything, and I can't answer this now as to whether it is serializable or not. But if there is no loop, if the loop is not there, then yes, it is conflict serializable, yes it is serial, and yes it is consistent. 
+
+But if there is a loop, then I don't have an answer. Now I don't know that it is serializable or not. So here, we'll use a second method: the view serializable method. This is the reason why the view serializable method is used. If anywhere it is asked why we use view serializability, this is the best example of this; you can show this to them. 
+
+Now let's check: okay, if there is a loop in it, whether it is serializable or not because it is non-conflict serializable, is it serializable? I don't know that, as the answer here is not coming. Now we'll check this. In this, I'll bring a little change in the schedule. There is no use of the graph now; I'm rearranging it a little bit. 
+
+How? Let's see. T1, T2, and T3. For T1, T2, and T3, we've taken the same transactions: Read(A), Write(A). This Write(A), I'm writing here: Write(A), Write(A). See, I've changed the position of Write(A). This Write(A) I've written above, and this Write(A) below. 
+
+Now see, this graph is a serial schedule: first T1 will finish, then T2, and then T3. But we'll check: does this conflict serializable with each other, or you can say that does it match with each other or not? 
+
+So see, if I take the value of A, initially the value of A is 100. In the database, the value of A is 100. Read(A)—what will Read(A) do? It will read the value of A as 100. So first, what will come? This write came, and what do we call this? A blind write, meaning it is a blind write where A = A - 40. Let's say what this write performs: A = A - 40. So when it performs Write(A), what changes in this value? A's value is 60. 
+
+This write is saying that I'll do A = A - 40. It is also saying that I'll also minus 40 from the value of A. When this minus 40 value—so this blind write which was 60, from 60 40 is minus, so the output was 20. And after this came this write, and this write says that I'll do A = A - 20. You only need to remember these operations. This is saying that A = A - 40, A = A - 40, A = A - 20. So this is A = A - 20, so what is the value of A? It is 20, so 20 - 20, and the final value of A is 0. 
+
+Now, we'll apply it as it is here. This Write(A) I've kept above, and this one below, and this Write(A) position is fixed. A's value initially is 100. It reads 100. This Write(A)—this one—and this Write(A) is A = A - 40. So what it does with the value is make it 60; it minus 40. So this Write(A) now came here, this Write(A) came here, and it writes A = A - 40, so this also does 60 - 40, so the value that is left is 20. This Write(A) and Write(A) is the same and on the same place, so this Write(A) is A = A - 20. So this write also is A = A - 20. So the value of 20 is finally equal to 0. 
+
+So in this, what was the final value of A? It was 0. And in this also, the output was finally 0. So both might not look equivalent, but both are equivalent. Both are equivalent. Both are not equal, it is not the same as you can see, but both are equivalent. 
+
+But is this conflict equivalent? No. It is view equivalent; this is view equivalent. In both, the final output is generated by this write. If you do this write and this write up and down, then there will be no problem. So I did the same, but finally, the write was done by this one, and here also the final write is done by T3—here also T3 and here also T3. I only kept T1 and T2's write up and down, so it won't affect much. 
+
+And now, if you see properly, if you again make a graph of this, so for T1, T2, and T3 (T1, T2, and T3): Read(A) conflict Write—where is it? Here, T1 to T2, T1 to T3 graph will draw a line. Write(A) Write(A) conflict Write(A), T2 to T3. Already, it means you don't even need to make a graph of this also; you can check it by seeing only, because firstly T1 will execute, then T2, and then T3. 
+
+It means this graph, which was saying conflict serializable—conflict serializable was saying that this schedule is not serializable. But View said, "I'll also check; this is serializable." So that's why whenever these questions come and you check conflict serializable, conflict serializable is an easy method to check, do that. But if it has a loop, it means it won't give an output if there is a loop in it. So this is non-answerable. Then who will give answers? Who will? View serializable will answer. This thing you have to keep in your mind. 
+
+So you can check view serializable directly, either first conflict and then view. How view works on that, I'll make a further video, but here I only want to tell what is the introduction of view or why we need view serializable. So on this schedule, the conflict serializable method failed, but view serializable says that it is serializable, I'll check, I'll give the answer. 
+
+So this is how we check view serializable. But what are the conditions and rules in it? That we'll discuss in a further video.

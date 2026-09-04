@@ -1,0 +1,48 @@
+Hello friends, welcome to Gate Smashers. The topic is Joins. Joins is a very important topic of DBMS, and joins is covered in relational algebra as well as in SQL. 
+
+What is relational algebra? It is a mathematical expression. SQL is how we actually implement it using structured query language. In relational algebra, joins have their own syntax, and SQL has a separate syntax. Obviously, because SQL is an implementation language, the actual concept is in relational algebra where we denote joins with mathematical expressions. But when we come to SQL, we write the same mathematical expressions in the form of SQL commands. There is only one concept of joins whether we talk about relational algebra or SQL; the concept is the same, but the way of writing it—the syntax—is different. Relational algebra has a different syntax, and SQL has a different syntax.
+
+What are joins? It is clear from the name itself: when we have to join two or more tables to find any result, meaning we have to find such a result which we are not getting from a single table. 
+
+For that, I have made one simple example here. Let's say there is an employee table. The employee table has three attributes: employee's number, employee's name, and address. Now, if you see carefully, what information can I get from the employee table? Suppose I have to find out an employee's ID whose name is Varun, or tell the employee's name whose ID is a certain value, or tell the address of an employee. From this table, what information can I get? Only details of employees. 
+
+Let's say I ask a simple question: "I have to find out the address of the employee whose name is Varun." For this, I only need the help of the employee table; I can find out the data directly from it. How do we write the query? There is a simple way of writing the query:
+`SELECT address FROM employee WHERE E_name = 'Varun'`
+Where `E_name` is equal to Varun, its address will be finally printed out. What will come in the final output? CHD, that is Chandigarh.
+
+If I talk about the department table, what is the department table telling me? Department's number, department's name, and employee's number. Why have I written the employee's number here? Because I have to find out which employee is working in which department. Therefore, I have kept the employee number common here. The employee number is in this table and also in the employee table. In this table, it will act as a foreign key, taking reference from the primary key (meaning in the employee table, employee number is the primary key, and from here it will take reference). 
+
+I have already explained the concept of foreign keys and primary keys—why do we use them and what is their purpose? I am making a basic assumption that you know about these things. Join is an advanced topic where you should already know about basic SQL, foreign keys, and primary keys. In case you don't know about these, you can check my videos on foreign keys, primary keys, and keys; their links I will share with you in the description box.
+
+Now, what answer am I getting from the department table? Only details of the department—meaning which employee is working in which department and what is the name of that department. If I say that I have to find the name of the department whose department number is D3, how will I find it? The same way:
+`SELECT name FROM department WHERE department_no = 'D3'`
+
+This is a simple concept: if you want details of an employee, you find out from the employee table, and if you want details of a department, you find out from the department table. To solve these basic questions, you don't need a join. 
+
+But if I change the question here—let's say the question is: "Find the employee name, or display the employee name of employees who are working in HR." 
+
+Now look at the question carefully, because when we know in which scenario we have to use joins, only then can we explain it in the best way and grab that concept. If I do not know where joins are used and in which scenario they are used, there is no point in cramming them. This is a very good topic in its entirety. If you follow my videos on joins one by one, you will easily understand the concept of joins. This is heavily tested in UGC NET exams, GATE exams, other competitive exams, college and university exams, and especially in interviews if any company asks questions about DBMS and SQL.
+
+The question is: "Find the name of the employee who is working in the HR department." Whenever you get this type of question, first look carefully: the HR department is in the department table, and the employee's name is in the employee table. To solve this question, I need the help of both the employee table and the department table. Wherever you need the help of two or more tables, what do you have to use? Joins. Only with the help of joins can you solve these questions. 
+
+Although we can use subqueries, the way of writing subqueries and joins is different, but the usage is similar because both joins and subqueries will give the same answer. However, subqueries are somewhat more complex to write because you have to write the query multiple times, whereas it is easier to write queries using joins. Therefore, I am first discussing the concept of joins and not subqueries.
+
+Before using joins, in which scenario do you apply them? The two tables here—employee and department—can only be joined if there is something common between them. Do remember this assumption: there must be a common attribute between the two tables where you are using joins. 
+
+Look carefully: is there something common in the tables, any common attribute? Yes, the employee number. If the employee number is not present in both tables, you cannot join them. There is no benefit of doing so until there is something common in the two tables. Why would I join them? Therefore, this is the first requirement: in two tables, there must be something common, and at least one attribute must be common.
+
+Second, in joins, always remember what a join is. It is a cross product plus some condition, or we can say it is a cross product plus a select statement, which we also call a condition statement (because from `SELECT`, we write conditions). What is a join? It is a cross product plus selection. I have already explained cross joins and cross products in a previous video, but when we start joins, I will once again explain them. 
+
+Here in this video, I only had to explain what joins are, in which scenario we use them, and the types of joins. 
+
+The basic types of joins used most often are:
+* **Cross join** (or cross product)
+* **Natural join** (this is the most important one)
+* **Conditional join**
+* **Equi join**
+* **Self join** (also very important)
+* **Outer join** (which is further divided into three types: **Left outer**, **Right outer**, and **Full outer join**)
+
+This is a basic video on why we use joins, where they are used, and what their types are. Now, we will discuss joins one by one with examples. 
+
+If you liked my video, then please like it, share it, and please subscribe to my channel. Thank you.

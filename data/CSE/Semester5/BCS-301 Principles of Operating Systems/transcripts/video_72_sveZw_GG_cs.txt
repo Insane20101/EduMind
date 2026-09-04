@@ -1,0 +1,53 @@
+Hello friends, you are welcome in Gate Smashers. In this video, we are going to discuss disk architecture. Guys, this is an important topic because this also comes in Operating System and in Computer Organisation also. They ask about it or whatever the subjects are there related to storage there, about hard disk architecture or magnetic disk architecture, so many questions of this type are asked. 
+
+So, here I am going to explain to you with the help of a very simple example the architecture of a hard disk or disk architecture, how it happens. So guys, let's start the video. First of all, I would like to tell you that the architecture of a disk actually, that is divided in a sequence. That sequence itself you have to remember. 
+
+First of all, what we have are platters, like this way. You can have multiple platters. Let's say here I have drawn four platters. So these platters, this way, along with a spindle, they are connected with a spindle. What is the work of a spindle over here? To make it move, means either it will rotate right-wise, that is clockwise, or it will rotate anticlockwise, but it will be unidirectional. So either it will move clockwise or anticlockwise. As soon as the spindle will start moving, means all these four platters will move. What will we call this? Platters.
+
+Now, what is there above every platter? There is a surface. This is the upper surface, and this is the lower surface. You will have to visualize a bit. This is your upper surface, and the lower portion is the lower surface. This one platter's upper surface, and this one platter's lower surface. And we use the upper and lower surface of every platter. 
+
+And what's there above these platters? Above these platters, we have read-write heads, like these. What do we call these? Read-write heads, which are connected to an actuator arm—you can say arm or actuator arm. And what is the job of the read-write head? The job of the read-write head is to fetch data. These are used to read data, and their movement is back and forth, means their movement is possible only backward and forward. It's not like it can go anywhere; their movement will only be forward or backward. 
+
+Now here, let's say that I am using both the surfaces, means the upper surface as well as the lower surface. So the actuator arm will be like this, so that it can read the upper surface as well as it can read the lower surface. If you want to draw, then you can draw like this, means it is holding the upper and lower surface like this. If you want to visualize this, in movies many times they show a gramophone, what it has is a black CD which they lift up and keep, then music starts playing. Now what they are lifting like this, that is what a read-write head, which you can call an actuator arm, and that which appears as a CD, you can consider that as a platter. 
+
+If I talk about this platter, what is there on this platter? There are tracks on this platter. Tracks are made over here. Like CDs, earlier we used to have these, but now we do not use them, but earlier there used to be CDs. If you see a CD carefully, in CD also, here like this, you can see so many circular lines on them that we call as tracks. Like this. This one, what is it? It is a track. 
+
+Obviously, if tracks are there in the upper surface, then there will also be tracks in the lower surface. Same number of tracks in upper, same in lower, same upper, same lower. So firstly, we had a platter. After the platter, what we got? Surface—you can also say surface, or you can also say head. So upper surface and lower surface. So how many surfaces will a platter have? Obviously, it will be 2: upper surface and lower surface. 
+
+And what do we have on every surface? On every surface, we have tracks. So the next thing which comes in sequence is track. So tracks are above and below, in both the surfaces we have tracks. 
+
+Now, this read-write head we have, actually this read-write head is sitting upon any of the tracks. Now, let's say I have to go to an inner track. As I have already told you, either this movement is forward or backward only. This can not move in any other direction, but yea, disk can rotate, but the read-write head either it will forward or it will go towards internal tracks. Like you can say this one as an internal track. External tracks is your outer track. 
+
+Now, what actually there is on this track? On this track, you have sectors. Like this one, the sectors are made. So next what we got? On every track, we have sectors. There are fixed numbers of sectors. Let's say I say that this is tracks. On this track, let's say there are 256 sectors. Means how many sectors we have above every sector? 256. May it be upper, lower, upper, lower. 
+
+Now what we did inside these sectors? Inside these sectors, we put the data. Next we get is data. So this sequence you should be familiar with: at first platters come, then surfaces, then tracks, then sectors, and at last data, which we keep inside these sectors.
+
+Now here, what type of questions are asked? So the first question is possible—although there can be a variety of questions, there can be the questions related to disk access time, but that we will discuss in the next video; here we are discussing only about the disk architecture. 
+
+Let's say you are asked in a question: the number of platters are 8. The number of platters are 8. Now in every platter, we have upper and lower surface. So how many total surfaces will there be? 16 (upper, lower; upper, lower; upper, lower). So total platters we have 8, and how many surfaces I am using? 2. Many times it is given that only the upper surface is being used, the lower is not being used. Questions—they can give anything in the questions. By default, of course, we will use both the surfaces, but many times they also give one. But if nothing is given, then by default you can use both the surfaces. 
+
+So we have 8 platters, and how many surfaces do we have on every platter? 2. 
+
+Next, let's say we have 256 tracks are there on every surface. So what do you do? Multiply it with 256. Now what you got here? Here you got total number of tracks, means inside the whole disk if you are to find out total number of tracks, then how will you find out? Platter into surface into tracks, you will get the number of tracks. 
+
+Now let's say on every track, in every track, let's say there are 512 number of sectors. Means on every track, over here, there are 512 number of sectors. So if it is asked in the question to find out the total number of sectors on the disk, so what do you do? Platter into surface into tracks into what is the number of sectors on every track? That is 512. So what you got these? You got total number of sectors. 
+
+Next, data. What is the last over here? Data. In data, let's say, on every sector—all these details will be given in the question—on every sector, let's say that I can keep 512 kilobytes of data. Just for example, I am taking this: 512 kilobytes of data can be kept in on each one of the sectors. 
+
+So they can ask what is the total disk size. They can ask disk size. So you got the way to find out the disk size: platter into surface into tracks into sectors into data, which can come in every sector. So like this, you multiply. And how you have to find out in the option? In the option, it might be given in MBs, GBs. So how you have to find out? Remember, in most of the time, whenever it will be asked in question, surely you will be given values in 2 raised to the power, due to which it will be easier for you to calculate. 
+
+So here, what you can write 8 as? 2 raised to the power 3. 2 raised to the power 1, 2 raised to the power 8. These points you will have to remember: 2 raised to the power 8, 9, 10. At least you learn till 2 raised to the power 15 so that you can evaluate easily. 
+
+Now 512, 512 is 2 raised to the power 9. 512 kilobyte—what is 512? 2 raised to the power 9. Now kilobyte, what is kilo equal to? 2 raised to the power 10. One M, that is mega, that is 2 raised to the power 20. One Giga, 2 raised to the power 30. One Tera, 2 raised to the power 40. These points also you should be aware of. 
+
+So what is given over here? Kilo means 2 raised to the power 10. Let the byte be byte itself. If you want to change it to bit, then multiply it by 2 raised to the power 3 because there are 8 bits in every byte. But if in options there is no such case, by default it is asked in byte, so no need to convert it. 
+
+See here, base is same. By adding power, what will it be? 18 plus 10, 28. 28 plus 4, 32. 32 plus 8, 40. 2 raised to the power 40 bytes, this you got. 2 raised to the power 40 bytes. So when you will add, this will be 10 plus 28, 32—yes, so it will be 2 raised to the power 40 bytes. 
+
+What you can write 2 raised to the power 40 bytes as? One terabyte. So this is how you have to solve questions related to the disk size. So remember this point, guys. It may be you are given options as terabyte, megabyte, gigabyte, so you have to remember these points. So simply, after converting, you have to give the answer over here. 
+
+Like this, one more type of question they can ask—many times it comes like this: number of bits required, number of bits required to represent, to represent disk size. There is no point in it. What is the disk size? One terabyte. Number of bits required to represent the disk size. What is the meaning of number of bits required? What is the answer coming in 2 raised to power? What is coming in 2 raised to power? Answer 40 is coming. So what you write? What is the simple answer? 40. 
+
+Because let's say I have to represent 0 to 15, so to represent 0 to 15, obviously what will I do? From 0000 till 1111. So from 0 to 15, how many numbers are there? There are 16 numbers. So to represent 16 numbers, not to 16, to represent 16 numbers, means to represent numbers from 0 to 15, how many bits will be used? 4 bits will be used. That's what I asked for over here: to represent one terabyte, 40 bits. 
+
+So these types of questions can be asked. If number of tracks are to be found out, just multiply till here. If number of sectors are to be found out, multiply till here. If they ask number of bits, so till wherever you got the answer, just calculate their bits. That is all we have to solve it. Thank you.

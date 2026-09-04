@@ -1,0 +1,83 @@
+In today's video, I will tell you about headings and paragraphs. Along with that, I will discuss anchor text. If you have found this course awesome so far, please like this video. Your likes will help me in creating more free courses. In this video, we will make a small project, which will be a bookmark website. This bookmark website will help you gather all your favorite websites in one place. You will be able to use this in practice. 
+
+Let's start quickly. Write down in the comment section below "Sigma batch op." Let's roll the intro.
+
+As you can see, I have entered my computer screen. If you haven't accessed the playlist yet, you can do so now. Additionally, if you go to github.com/codewithari, you will find the GitHub repository for the Sigma Web Dev course. I have organized folders for all the videos, and the commits are made according to different folders. You must access it to get the source code. I will also put the source code in the description, so there is no problem.
+
+Now, we will make a very basic website, but it will be important for us because it will be our first useful website. Without taking much time, I will create a new folder in the Sigma Web Dev folder and name it "video4" since this is our fourth video. I will create it by right-clicking, selecting "Shift + I," and clicking on "Open with Code" so that this folder opens in our VS Code.
+
+After doing this, I will create the usual three files: index.html, main.css (or style.css), and script.js. If I write "css," I will put it here; if I write "script," I will put it here. For now, I will write an exclamation mark here and write "My Bookmarks" in the document since we are going to make a bookmark website. 
+
+I will write "Codeway Diary" here as the title. You must have seen such titles. Now I will write an H1 tag here. The H1 tag allows you to add a heading to your webpage. We discussed the basic structure, stating that it indicates this is an HTML page. The attribute "lang" is set to "en," meaning the content of this page is in English. This informs search engines and anyone accessing the link that this webpage is in English, allowing them to parse it accordingly. The browser will also recognize that your webpage is in English.
+
+The head section contains metadata, including the title of the page and linked CSS. The main content resides inside the body. Inside the body, there is a tag for headings, which is H1. I will write "My Bookmarks" within this tag. If I write "My Bookmarks" here, we will use the H1 tag. If I want to see it live, I will click here and open it in the browser. 
+
+Now, why should we always use H1? Why didn't I write "My Bookmarks" directly? Because I am informing the browser that this is my heading and it is my first-level heading. Suppose I want to keep two types of bookmarks: one main bookmark and one secondary bookmark. I will use H2, which represents a second-level heading. 
+
+If you have used Microsoft Word, you would know what H1 and H2 are. If you don't know, H1 is your main level heading, and H2 is the secondary heading. I will write "Main Bookmarks" and "Secondary Bookmarks" here. To replicate this, I will press "Alt + Shift + Down Arrow." 
+
+Let me turn on screencast mode. By pressing "Alt + Shift + Down Arrow," I can replicate the line. This is a shortcut in VS Code. Another useful shortcut is pressing "Alt" on your keyboard and clicking wherever you want to create a cursor. For example, if I click here, there will be one cursor, but if I click somewhere else, I will have multiple cursors. 
+
+For instance, if I want to change all instances of "Bookmarks" to "Bookmarks - Code with Harry," I can do that easily. I clicked here, then pressed "Alt," and wherever I clicked, I created multiple cursors. Whatever I type will appear in all those locations. Isn't it fun? 
+
+Now, I will remove it, and you will see it will be updated. This is my main heading, and this is my H2. Similarly, we have headings from H1 to H6. For example, after the main heading, you can have secondary headings, and so on. You can create subheadings up to H6. H6 is more than enough in HTML; you will rarely need H7. 
+
+Now, I will replicate it using "Alt + Shift + Down Arrow." I will click here, press "Alt," and change it to H3. I will click here, press "Alt," and change it to H4. I will do the same for H5 and H6. 
+
+I will write "Using H1" so that you can understand. I will write "Using" and then add numbers 2, 3, 4, 5, and 6. You can see how H1 is larger, H2 is smaller, and so on down to H6. 
+
+Let me show you a practical demonstration. Suppose this is my HTML tutorial. Here, I have given the main heading "HTML Introduction," followed by "What is HTML?" as an H2. The features of HTML are listed under H3. In building the hierarchy, we use H1, H2, H3, H4, H5, and H6. 
+
+I hope you all understood. Many people are commenting that I am starting too slowly. I am making this course as a beginner course. When I teach you HTML, you will find it very easy. Then I will introduce CSS, and you will find that easy too. After that, we will move on to JavaScript, Bootstrap, React, and more advanced topics. 
+
+Now, if we want to write a paragraph, we can use the P tag. You will hit "P" and press "Enter," and this paragraph will appear. I will show you a shortcut trick to bring in dummy text in VS Code using Emmet. You can write "lorem," followed by a number. For example, if I write "lorem 23," it will generate 23 words of dummy text. 
+
+Sometimes we want dummy text because we are creating a template and need to fill it with something. For instance, if you are making a website that looks like OYO Rooms, you can use "lorem" to fill in placeholders. 
+
+Now, let's see how to style paragraphs and other elements using CSS. When I wrote "lorem 23," a lot of text appeared. If I write "lorem 10," only 10 words will come. This lorem trick is very useful, especially when we make clones of popular websites. 
+
+Many people have asked if this course will make them job-ready. The answer is yes; this course is designed to prepare you for industry-level jobs. 
+
+Now, let's talk about attributes in HTML. For example, I used the HTML tag with the attribute "lang" set to "en." We did not use any attributes in the body, H1, or P tags, but I can use a style attribute in the P tag, which is also called inline CSS. If I set the background color to red, it will change. 
+
+This is called inline CSS through the style attribute. However, when creating industry-level websites, we use inline styles very sparingly because it decreases maintainability and reusability. 
+
+Attributes enhance the functionality of an element. For instance, the link tag has a "rel" attribute and an "href" attribute that allows us to link a CSS stylesheet. 
+
+Let me show you a ninja technique in VS Code. If you hover over the mouse, you can choose any color for the background. This technique is very useful. 
+
+Now, we are going to quickly make a bookmark manager. I will create a file named "bookmark_manager.html" because I have discussed different types of headings. I will write "Bookmark Manager" as the title. 
+
+You might say that Chrome already has a bookmark manager, but this will be our own creation. You will have a different attachment to it because you made it yourself. 
+
+Now, I will write "My Bookmarks" as an H1 tag, followed by "Primary Bookmarks" and "Secondary Bookmarks" as H2 tags. I will write "Google" in a paragraph. We will use lists for bookmarks, but I will explain that in the coming videos. For now, you can understand it like this.
+
+Google. Let's say I write "Google" here. I will open Google using an anchor tag. As soon as I type in "A," the anchor tag has a mandatory attribute, "href." The "href" attribute specifies the link to which it will direct users when clicked. I will write `href="https://www.google.com"`, so it will send users to this address whenever someone clicks on "Open Google." 
+
+I will cut "Open Google" and place it inside the anchor tag. The content of the anchor tag will look like this: `<a href="https://www.google.com">Open Google</a>`. This is called an anchor tag, which helps us create links. You must have seen many such links. 
+
+Now, if I go to `bookmarkmanager.html`, you can see all the bookmarks, including "Open Google." If I click on it, Google will open. You may have noticed that when I did not click on it, its color was blue. After visiting it, its color changed to purple, indicating that it has been converted to a visited link. This color change helps me know that I have visited it.
+
+If we want the link to open in a new tab, there are two ways to do this. One way is to click the mouse wheel. The other way is to use an attribute. You can write `target="_blank"` in the anchor tag. Visual Studio Code (VS Code) provides suggestions, so I can write it quickly. However, if you use a basic text editor, you would need to type `target="_blank"` completely, which can be a bit tedious. 
+
+Now, when I click on the link, it opens in a new tab. If I click the mouse wheel, it will also open in a new tab. I have written a very simple link for "Open Google." You can add your favorite websites, such as "Open Facebook" with `href="https://www.facebook.com"`, `quora.com`, `codewithhari.com`, and `youtube.com`.
+
+You may have noticed that all the links are coming in one line. If you want them not to appear in one line, you can enclose each link in paragraph tags. However, this is not an ideal way to create a list. We should ideally use list tags, but since we have not covered lists yet, we are using paragraphs. 
+
+I will use the functionality of VS Code to create multiple cursors. By pressing "Alt" and clicking, I can bring up multiple cursors. This allows me to make changes quickly. The links that I have not visited remain blue, while the visited links, such as Facebook and Quora, have changed to purple.
+
+Now, let's add two secondary bookmarks. These are websites that you visit occasionally. I will add `wikipedia.com` and `stackoverflow.com`. Now you can see that the secondary bookmarks, Wikipedia and Stack Overflow, are listed.
+
+This is your bookmark manager, and you can improve it further. We will learn styling with CSS later, so if you find it looks ugly, don’t worry. We will address that in the future. 
+
+The title of the bookmark manager is coded with an `<h3>` tag, and I will change it to an `<h1>` tag so that both the title and the heading are the same. In this way, you can create a bookmark manager. You can save it as `bookmarkmanager.html` and place it on your desktop. Whenever you want to open a website, just double-click it.
+
+If it opens with VS Code, you need to right-click, choose "Open with," and select Google Chrome. Then, set it to always open with Google Chrome. This way, whenever you double-click it, it will open in Google Chrome.
+
+This was our bookmark manager. I hope you liked it. I have a request for you: today, we have completed four videos. If you enjoyed this course, please share it with your friends in groups. I know very few people will share, but if you do, it will encourage me to create more courses like this.
+
+Many people are surprised that this course is free and wonder how I will earn from it. I will find other ways to generate income. However, I am committed to making this course the best web development course possible, including everything you need to know. I aim to teach you as much as possible in a short time.
+
+Many edtech companies have expressed their dissatisfaction with me for offering this course for free. They have suggested that I launch it as a paid course on their platforms. I won’t name them, but they have urged me to reconsider. Despite their concerns, I believe I won’t regret my decision to keep this course free. I will earn money in other ways and will also teach you how to earn more through web development.
+
+With that said, I will put the source code in the description. Otherwise, you can access it from this repository. That's all for now in this video. Thank you so much for watching, and I will see you next time!

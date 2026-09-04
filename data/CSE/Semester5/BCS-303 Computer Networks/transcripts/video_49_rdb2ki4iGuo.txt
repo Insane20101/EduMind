@@ -1,0 +1,111 @@
+Hello friends, welcome to Gate Smashers. In today's video, we are going to discuss subnetting. Subnetting is discussed in classful addressing, where we divide IP addresses into different classes: Class A, Class B, Class C, Class D, and Class E. 
+
+If we talk about one of the most important topics in computer networks, it is subnetting. Students very easily get confused about what subnetting is and how we actually divide a network into subnets. So, in this video, I am going to explain to you with examples why subnetting is actually done, what it is, and how we actually implement it.
+
+First of all, what is subnetting? It is dividing a big network into small networks—meaning we have a big network that we have to divide into small networks. That is the simple meaning of subnetting. 
+
+So question number one comes: What is its purpose? Why are we dividing it? If we take a simple example, let's say we have a big university or a big organization. Now, the bigger the organization or university, the more you will find it difficult to maintain it. How? 
+
+Let's say we take an address of Class A. In Class A, we know that $2^{24}$ numbers of hosts are possible inside every Class A network. Now, this number is in crores—this many numbers of hosts are possible. To maintain all these and to manage all these will obviously be difficult. But if we divide this into small, small parts, then the maintenance will become easy. 
+
+Suppose we have a big university. In a big university, there are different departments for examinations, placements, co-curricular activities, academics, and a library system. To manage all these, either you appoint one administrator—but obviously, managing all this is very difficult—or we divide this into separate parts. 
+
+Let's say we make one subnet for examinations, telling them that you handle examinations only. We make one for placements, which will see placement-related activities. We make one for academics, and one for co-curricular activities, which will handle things related to that only. So we logically divide the big network in our organization. We can divide it into multiple subnets as well. 
+
+The network whose address we take has been assigned on the internet by a number authority, where we will need an assigned authority. But what we are doing internally, we always do subnetting within the organization with our own choice, so we can make multiple subnets. 
+
+Obviously, this will have a separate network admin for their respective blocks and their own subnets to take care of. So maintenance is easy, and managing all this is easy. And here, when Class A has so many numbers of hosts, the wastage there will also be less.
+
+The second thing we will talk about here is security. In such a large organization, when there are a number of hosts, I have to authorize each of those hosts. Users have made passwords, and we have to provide them IP addresses—so somewhere here, it will be difficult. But if I make different departments and divide this separately here, then security will be enhanced. So this is the main advantage of subnetting. However, there are problems also, which we will discuss after this. This is the basic *funda* why we do subnetting.
+
+Now comes question number two: How is subnetting done? How do we actually implement subnetting? 
+
+For that, we take an example. Here I have taken a network from Class C, and in the network of Class C, what do we have to do? What is the first Class C network we have taken? `200.10.20.0`. How do we know it is Class C? From the starting octet, we can know. What is the range? From 192 to 223, so from here we come to know this is Class C. 
+
+You can do subnetting in Class A, B, and C—all three. We are doing it in C because writing the range would be easy; otherwise, writing the range will be difficult because there are many hosts in Class A and Class B. 
+
+But what do we have here? How many hosts do we have here within Class C? Total, obviously, 256. Because the last octet we have defines the number of hosts. But how many are usable hosts? The zeroth one manages the entire network. If we want to represent the whole network, then we don't use the first host and the last one, i.e., 255. So we don't use these two because this is the direct broadcast address and the starting address is the address of this network. 
+
+And how do we define in Class A, B, and C what the broadcast address is? I have already made a video on this; you must check that video once. Because subnetting is the next topic—first, you should know what classful addressing is, how we divide, and how we define octets and all other things. If you check that video once, you will find subnetting very easy, and the link is already given in the description box. 
+
+So here, this is the direct broadcast address and this is the starting address of this whole network. What does a whole network mean? The whole world means `www` identifies you with which IP address? It knows you with this IP address. So obviously, this IP address you will not give to any internal host. So how many total usable hosts will you have now? 254.
+
+Now what are we saying? No, I want to divide 254 logically into two subnets. This means this is the total network within which there are multiple hosts, i.e., 254, but further, I have to divide this also logically. 
+
+What is the meaning of dividing logically? Let's say I have to divide it into two parts. How do we do it here? Let's say `200.10.20.0`. 
+
+The first important point is that whenever we do subnetting, the network bits should not have any effect on them; they should remain as they are. And in Class C, what are the first three octets? Network. If you disturb any bit here—if you changed any bit—then the entire network will change. This means you had to go to Delhi and you reached Bombay; this will happen if you change the network ID. 
+
+So in order to fix the network ID—since the three octets in Class C belong to the network—you don't even open them, and don't even represent them in binary. But the last octet, you open that. What is there in the last octet? `1, 2, 3, 4, 5, 6, 7, 8`. There are eight positions because it is an octet. Octet means eight bits, so we had written the places eight times. 
+
+Similarly, let's say what I am doing: `200.10.20. [1, 2, 3, 4, 5, 6, 7, 8]`. What are we doing here? The first ID—meaning the three octets of this network, which are 24 bits (8, 8, and 8)—do not disturb this. We will use this last octet. 
+
+To use it, the first position—which is the MSB here—what will we do to the MSB bit? We will fix it. This one MSB here, I have fixed it here. Fixing it means that the whole network, what did I do? I divided it into two parts. Dividing it into two parts means that network one is Subnet 1 and the other is Subnet 2. 
+
+What did we do in Subnet 1? In the first value, what did we do there? We made it `0`. And the other one, which is Subnet 2—the bit there, what will it become? It will become `1`. This means it is fixed. This `0` is fixed, you can't change it, and this `1` is fixed here, you can't change it. 
+
+So now what to do? It's easy. How many are left at the last? 7 bits. Fill them! How will you fill them? First, what will you fill? `0, 0, 0, 0, 0, 0, 0`. What will be next? `0, 0, 0, 0, 0, 0, 1`. Up to `2, 3, 4, 5, 6, 7`. What will you do to the 7th position? You make the 7th position `1`, and this position—what it is already—`0` fixed, and the network after that is fixed. Doing similarly, you do `1, 0, 1, 1`, doing like that in the last 7 bits you have to make variations. 
+
+Up to where will you make variations? What is the last octet formed? What is the last value formed? This first `0` we have is fixed: `1, 1, 1, 1, 1, 1, 1` (7 ones). 
+
+So how will you write it in decimals? `200.10.20.0` from here up to where? `200.10.20. [see this one is the last octet, so what are 7 ones?] 127`. Because the last value—it is `0`, you don't have to change it, you had fixed it. Then only we have divided it logically into two parts. 
+
+Always we have to reserve the host bit. So we reserved one bit of the host, that is the MSB; it is divided into two parts. If we reserve two bits of the host, then this can be divided into four parts. And if we reserve the first three bits of the host, then we have eight parts. So in this way, we can divide. 
+
+So what did it become? 127. All these became 127. 
+
+Now, if we see this: What will it become? What will be the first value here? `0, 0, 0, 0, 0, 0, 0`. What will be next? `0, 0, 0, 0, 0, 0, 1`. Next: `0, 0, 0, 0, 0, 1, 0`. Doing like that, the last one: `1, 1, 1, 1, 1, 1, 1`. And what is next? Next to this, you have `1` fixed. Look here, `1` is also fixed here, here also, and here too, it is fixed. 
+
+If you rewrite this overall in decimal, what will it become? `200.10.20. [What is 1 followed by seven zeroes?] 128` to `200.10.20. [don't even disturb this; the first three octets you don't have to disturb this at all, don't even move a single bit]`. Now what is the last one? What is eight ones? 255. 
+
+Simple meaning: Simply we reserved one bit—always reserve MSB, you will have it divided into two parts. So this has become Subnet 1, whose range is this. This is Subnet 2, whose range is this. 
+
+So in which way do questions come here? 
+At first, this question comes: If you have to divide into two parts, then write the range. So we have written here ranges for both. 
+What can come as the next question? That what will be the network ID of this subnet? Meaning, what will be its subnet ID? So its subnet ID basically will be this. 
+And for this subnet, what will be the broadcast address? What is the direct broadcast address? The last one. So what is 127 for this? It is the direct broadcast address. 
+Now, if a third question comes: What is the total number of hosts possible within this S1? What are the total numbers of hosts? That is `0` to `127`, meaning 128. But out of that, how many are usable? For usable, do minus 2, meaning 126. Why did we do minus 2? We always do minus 2 because the first IP address—what it will be for that subnet? Its network ID. And the last one—what it will be for this subnet? Direct broadcast address. 
+
+Now come to S2. If we talk about S2, S2 will also have a subnet ID. So what is the subnet ID? The first one, that is 128. And what is the direct broadcast address of this subnet? The last one, that is 255. 
+
+So here, the total number of IP addresses is how much? 128. But how many are usable? That you will actually give to the host, either you are giving through DHCP or manually. So how much will you give? 126, because you have to minus 2 here. 
+
+So if we look here overall, at first when we had not used subnetting, we have written here that 254 are usable. But now see, how many are usable? `126 + 126`, meaning 252 are usable. So somewhere you got a little less number of IPs because of this—there are two subnets, each has its own ID, and each one has its direct broadcast address. 
+
+So what we do like this? In case you have a little bit of confusion, you check this video once again, and everything will be completely clear. 
+
+Next, what can we ask here, or which question can come basically? That here we said that of this S1, what is the ID of this subnet? This one. And what is the ID of this full network? This one. Meaning, this is the ID of this entire network. And what is the ID of this S1 subnet? It is also this. 
+
+So sometimes we get confused that we are giving this as the network ID also, and the same is the ID of subnet S1. Same way, if we talk about the direct broadcast address, what was the direct broadcast address of the entire network before subnetting? That was this one, i.e., 255. And the direct broadcast address of S2—what is it? That is also 255. 
+
+So don't get confused at all, because this depends on whether you are inside the network or outside the network. How can you understand this? Let's say you purchased a plot. The empty plot you have purchased—that is your whole network. Now inside that plot, you are putting multiple rooms there—that is subnetting. 
+
+So if someone is standing outside the house, so he knows your house number. The house number is 180. Now, the house number 180 I will know obviously that we are talking about this network. So as soon as any packet will come on this router—this is an external gateway—the gateway will come to this router, and there it will be written `200.10.20.0`, or anything is written: 10, 20, or 30. 
+
+So what will it do? Default mask. What is the default mask of Class C? `255.255.255.0`. So we will add it, and what will you get as soon as you add it? This IP address you will get. Because this subnet—this router does not know what we have done inside. 
+
+So to know internally, what did we do to find out internally? Simple, what have we placed here? We placed one internal router. What to do with this internal router now? The packet which is from here will be sent here, the packet from here will be sent here. Now, how will it do this? How will the packet from here be sent here basically? What do we need here to send it? Mask. 
+
+What is the default mask of Class C? `255.255.255.0`. So whatever packet came from outside, that will move to this network. But in this network, whether we have to go to S1 or to S2, how will we find out? With the subnet mask. 
+
+So the subnet mask will obviously be where we did subnetting. Subnetting we did inside. So the internal router—what do we have to give to it? Subnet mask. The default mask is here, so mask—how will we find the subnet mask? 
+
+So the subnet mask obviously will be `255.255.255`, because for the outer world this is Class C only, so this will be the default mask of Class C. But what did we do? We have divided this subnet, this network, into two subnets. How many numbers of bits did we reserve? How many numbers of bits are reserved here? 1 bit is reserved. 
+
+So that much bit you reserved, write it as 1. All the bits you reserved—so you reserved 1 bit, after the dot you reserved 1 bit, so 1 followed by all zeroes, seven zeroes: `1, 2, 3, 4, 5, 6, 7` zeroes. So this is 128. Meaning the actual subnet mask that will come is this. So what subnet mask will you give here? `255.255.255.128`. 
+
+What is its benefit? You will see now. Let's say one packet came, and inside that packet, what is the destination address written? Let's say the destination address is `200.10.20.15`. `15` is written: `200.10.20.15`. 
+
+Now this packet will come internally. From here, as it came internally, what is the subnet mask? `255.255.255.128`. So when we masked this and this, what will happen? When you mask this—what is 128? One followed by seven zeroes: `1, 2, 3, 4, 5, 6, 7`. And what is 15? `0, 0, 0, 0, 1, 1, 1, 1`. So you will add this. What will happen? All zeroes. All zeroes means which subnet? This one or this one? Obviously, this with `0`, so the packet will move towards this side. It's a simple *funda*.
+
+And if its address is more than this, let's say the destination address of the packet is 130. So when you add here with 130, the subnet mask above will remain fixed. And when you open 130, what will it become? 1, 0, 0, 0, 0, 0, 1, 0. When you add this, what will be the answer? One followed by seven zeros. It's simple, we added here. So what is this? 128. 
+
+So where is 128? 128 is the subnet ID of S2. So the packet will move this side. This actually is the fundamental of subnetting. In subnetting, this is also a question: how do we divide into ranges? We have to write ranges along with that also, to write the direct broadcast address of each subnet, network ID, direct broadcast address, and at last, subnet mask. 
+
+To write the subnet mask, for all the bits you have reserved, you make them as 1 and the rest as they are. You know what the default mask is: 255.255.255. If it is class B, then according to class B; if it is class A, then according to class A. This is the basic fundamental of subnetting under classful addressing. 
+
+At last, let me tell you a small point about the disadvantage. We had talked about advantages, but not talked about disadvantages. So what is the disadvantage? A small point students have to keep in mind: we generally find IP addresses. What are IP addresses? Network ID and host ID. This means first you have to find its network ID, and inside the network, find the host. Then you will get the host. Inside the host, you will have to find out the port number, that is your process ID. After doing these three steps, you will reach that particular user or on that particular process. 
+
+But now, your number of steps has increased. How? First, you have to find the network ID; you came to this network—this is the complete network of your organization. In that network, on which subnet do you want to go? You want to go to S1 or S2? One step is increased then. Let's say you have to go to S1, on which host on S1 do you have to go? And in that host, on which process do you want to go? So overall, this you will have to find out. 
+
+So here, a little computation has increased, but your maintenance and management have become easy, and security has increased. So these are the benefits of subnetting. Thank you.

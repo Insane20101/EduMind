@@ -1,0 +1,17 @@
+Now the algorithm is LOOK. It is also one of the disk scheduling algorithms. We are solving these also with questions, where I have 200 tracks, 0 to 199, and these are the requests which I have to cover, which I have to service, that I already have in the queue. The current position is given at 50. 
+
+The algorithm which I am using here is LOOK, and here what is the concept of LOOK? LOOK, like SCAN, is somewhat similar, with a little difference that it has, which I will explain here in this video. If we are starting from 50, here also at first I should know about the direction. In FCFS and FFTS, direction is not required, but you should know direction in SCAN as well as in LOOK. Otherwise, you will not know in which direction you have to move. 
+
+So here I have written the direction, that I have to move towards a larger value. So which is the larger value than 50? Definitely, it is 82. So first of all, I will move to 82. First, we have covered 82. Then after 82, where will I go? 140. Means I have to move towards a larger value, and whatever be the last value, I have to reach up to there, and then have to cover all the requests one by one in between. So the next request coming after 140 is 170. So covered 170 also, and then next is 190, so covered 190 too. 
+
+In SCAN, the direction in which we move, we go up to the last in that direction. I have told you in the last video, you have to go up to 199. But LOOK says, why is there a need to go to 199 because the last request is 190, so why should I make an extra move? So LOOK will move from 190 and come back from 190. So the first request while coming back is 43, so covered 43. After 43, the next request I have is 24, so covered that. And then the last request is 16, so covered that too. 
+
+Means what was there in SCAN, meaning this portion 190 to 199, this portion was extra there, but LOOK will not cover this portion. If you want to do this in the other direction, here also you have to do the same. If we move from 50 towards a lower value, so first we will go to 43. From 43, we move to 24, and from 24, we move to 16. So in SCAN, it moved to 0 after 16; it will go up to zero value, but LOOK will not go up to 0 value. It will go past 16, meaning that the extra portion we were following in SCAN, that portion will not come here. 
+
+So in this, when you will calculate the value, there is no need to calculate the value one by one. You can do in that way one by one, but it is best to see the last value in the direction you are moving. So what is the last value? It is 190. So (190 – 50) + (190 – 16). You will get the answer directly. If you want to calculate one by one, that also you can do; that is your own choice. 
+
+So what answer am I getting here? 314, which is less than the SCAN. And obviously, it will be less, because in SCAN we were covering this extra portion due to which the value was coming more, that extra is like an overhead. Therefore, LOOK is performing better as compared to SCAN. 
+
+And here is the same thing that we have discussed in the last question: If the time to move from one track to another is 1 nanosecond, then what is the total time? So to find the total time, at first, you have to find the movement. So the movement you have is 314, meaning you have to move 314 tracks to cover these requests by using the LOOK. So you are moving 314 tracks. To cover 1 track, you take 1 nanosecond, so to cover 314, 314 nanoseconds is the answer. 
+
+This is all about the LOOK. Thank you.

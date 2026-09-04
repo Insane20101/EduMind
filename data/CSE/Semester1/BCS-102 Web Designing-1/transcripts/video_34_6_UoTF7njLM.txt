@@ -1,0 +1,27 @@
+In today's video, we will understand the concepts of float and clear. Since the introduction of Flexbox, the use of these properties has diminished significantly. However, if a client presents a website that employs float and clear, it is essential to understand these concepts. In this video, we will explore these properties in detail. 
+
+Let's head to the computer screen. Before we dive in, I want to explain how float and clear work. I will create a folder named "video number 34" and open it in VS Code. We will use this folder to illustrate the concepts of float and clear in HTML and CSS.
+
+First, I will create a div with the class name `.cards`, and within it, I will create three cards using the syntax `.card * 3`. This means there will be one card containing three additional cards, which I will label as card 1, card 2, and card 3. I will write a simple HTML structure and open it in the browser. It looks great!
+
+Now, let's discuss float and clear. I will insert an image into card 1. I will select an image from the web and use it in our project. For demonstration purposes, I will set the width of the image to 230 pixels so that it is visible. Below the image, I will add a paragraph with some text.
+
+Initially, the paragraph will appear below the image. However, if I apply the CSS property `float: left` to the image, it will float to the left, allowing the content on the right side to wrap around it. Before applying float, the content was not allowed to flow beside the image, but now it is.
+
+Next, I will add some styles to the `.cards` class, giving it a border of 2 pixels solid black. I will also style the `.card` class with a border of 2 pixels solid red. This will help us visualize the layout and understand how float works. 
+
+When we use the float property, if an image overflows its container, it does not accommodate within it. To resolve this issue, we can use the property `display: flow-root` on the parent container. By applying this, the overflow issue is resolved, and the elements fit within the container.
+
+If I were to float the image to the right instead, the content would flow to the left side. For example, if I added more text, the image would float to the right, and the text would wrap around it on the left. This technique was commonly used in older layouts, especially in blogs, where an image would be on one side and text on the other.
+
+Now, let's discuss the clear property. If I want a specific div not to allow any elements to float on its right side, I will use the clear property. I will apply `clear: right` to the second child of the card. This means that this div will not allow any floating elements on its right side. 
+
+When I apply `clear: right`, the div will take its place below the floated element. If I want to ensure that no elements float on either side of the div, I can use `clear: both`. This will prevent any floating elements from appearing on the left or right sides.
+
+If I apply `clear: left`, the div will allow elements to float on the right side but not on the left. This is useful when you want to control the layout and positioning of elements. 
+
+In summary, we have explored the float and clear properties, including how to use them effectively. However, I want to emphasize that I personally avoid using float and clear altogether. While it is important to understand these properties for maintaining older websites, modern layouts should be created using CSS Grid or Flexbox. 
+
+These modern techniques are more intuitive and provide better control over layout design. I encourage you to focus on using Flexbox for layout creation, as it simplifies the process and avoids the confusion that can arise from using float and clear.
+
+If you haven't accessed the Sigma web development playlist yet, I encourage you to do so. Click here to bookmark it, access the source code, like the video, subscribe to the channel, and share it with your community. Thank you so much for watching!

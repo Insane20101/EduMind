@@ -1,0 +1,49 @@
+Hello friends! Welcome to Gate Smashers. In this video, I am going to explain the difference between alter and update, which is an important portion of SQL. And I am telling you this is important in four aspects. 
+
+First, if we talk from the point of view of your competitive exams, whether it is GATE, NET exam, KVS, STET, or any exam in which the CS portion is coming, for that it is important. 
+
+Second, for your college and university level exams, it is also important. 
+
+Third, this is important for your placements because all the companies, if they are asking database-related questions in placement, then for them what is on top priority? SQL is on top priority. 
+
+And the fourth one is OCE, that is Oracle Certification Program. For that also, if you want to do OCE certification, then the basic concepts of SQL you should know. So all my videos related to SQL cover all these four aspects. 
+
+Over here, we will start with the difference between alter and update. The first basic difference is that alter is a DDL command, which means Data Definition Language, in which we create the structure and table, we can alter, and we can drop them. Update comes under DML, that is Data Manipulation Language. If we want to manipulate the data, if we want to do changes, then we use the update command.
+
+Now, here we will start with an example. Over here, I am trying to explain to you, let's say I have an employee table, and in the employee table, we will take three columns: ID, name, and let's say, salary. Now, I will take data over here, which means we will take tuples, which we call rows. Let's say:
+1, A, 10000
+2, B, 20000
+3, C, 30000
+Anything, you can take any data over here. We just have to see this difference: alter and update, what do they do or what is the difference between them?
+
+So first of all, if we talk about alter, I have already made a video on alter. In that, I have explained all the variations of alter with code, where I have explained with execution what all alter can do and how does it work. But again, I am giving you an overview. 
+
+Alter is—whenever we talk about structure, means this table structure—what comes in table structure? Table name, which all columns are there in the table like ID, name, salary columns, and what are its datatypes? Let's say for ID, it can be integer, name datatype is varchar, salary datatype is integer. You can take number. These are the datatypes where we just talk about structure. 
+
+So if you talk about structure, if you hide this data, then this is your structure. Now, if you want to do any change in this structure, only in structure—there is no change in data—whenever you want to make changes in just structure, what will I do? I will use the alter command. 
+
+How? What can be the first example? Let's say I want to add a new column, email. Means, already a structure is made, and in the already created structure, I want to update something, I want to bring something new, I want to add a new column, email. How will I do it? With the alter command.
+
+Next, now suppose I want to delete any column. I feel this column is unnecessary, I don't want to keep it in this. Let's suppose I want to remove name from here, just for example I am taking, I want to remove name, I want to remove this whole column from here. So how will I remove it? Again, with the alter command. If I want to add a column or delete a column, I can use the alter command.
+
+What is the third technique over here? What is the third thing that we can do over here? Let's suppose, over here ID, datatype of ID is int, and if tomorrow I want to change it from int to varchar. Now, if I want to change from int to varchar, means I want to change any datatype, but it should be corresponding to the data. It is not so that the data is varchar and tomorrow you are changing it to int, no. From the point of view of conditions, if we talk, then I am talking over here. If suppose you want to change from int to varchar, then how will you do the change in datatype? Alter or update? With alter.
+
+And what is the fourth one that you can do over here? Let's suppose that, take any datatype, let's say over here name is there, and the datatype of name is varchar. Now the size of varchar is, let's say, 10. Now let's suppose I want to make it 20 from 10. Means whatever is its width, the number of characters that can come in varchar, that I have kept by default as 10. Tomorrow I want to increase the size. Now the employees' names are big; to store big names, I want that I want to make the size of varchar from 10 to 20 or 30. How will I do it? Again with alter.
+
+And last, what can we do with alter? If I want to change the column name. Let's suppose ID is there, the name of ID, from ID I want to change it to Eid. So how will I change this? With the help of alter. 
+
+And over here, even if I want to change the name of the table, let's suppose the table name is employee and I want to make it employee detail, just for example we are taking over here, so if we want to change the table name, how will we do it? Again with alter. 
+
+And what are its commands? I have told you earlier that I have made a video on this, that whatever are the commands, you will get in that video. So you definitely check that video; in that, all the commands are covered.
+
+Now we will come to update. What work does update do? Update will just work on the data. Suppose this is the data over here. Now, if I want to make any changes on this data, there will be no change in the structure. Whenever there will be change in data only—what can you change? 
+
+Let's suppose I want to change the salary. Means, let's say I write a command over here: `update table name`. Let's say the table name is employee. `update table name employee set salary`. In this, we use three keywords: first, `update`, then the table name, `set` what you want to set, in what you want to make changes, which column? Let's say I want to make changes in salary, then I will do `set salary = salary * 2`. What I want to do to salary? I want to double it. So what I did: `salary = salary * 2`. 
+
+So if you will execute this command, then what will happen? As you will execute this command, all the salaries will be doubled. All the salaries, what will happen? They will be doubled. So over here with update—and this command earlier also I have told you, all the commands I am writing from the point of view of Oracle. Oracle means 9i, 10g, 12c, 18c. If you are writing a command over here, then this will be your syntax, because in MySQL or in SQL Server, many times there is a difference in syntax, but the logic stays the same. So I am writing all the commands with the viewpoint of Oracle. So if the command you will write directly in Oracle 9i, 10g, on any Oracle server, if you will execute, then it will run as it is. 
+
+So over here, `update employee set salary = salary * 2`. So salary is doubled. With this, I have one more variation: I can also add a `where` clause over here, means I can also give a condition that I need not change the salary of all the employees. Let's suppose I want to change the salary of only one employee, he was working good, I want to let's suppose double his salary. Then what will we do? `set salary = salary * 2`. You can apply any formula. Where, over here, you will have to give a condition. Let's suppose you want to double the salary of ID 1, then give the condition over here: `where ID = 1`. 
+
+So in this way, any condition from the point of view of ID you can give, name if you know the name you can change the salary from the point of view of name, you can change the name of any employee, you can change ID, salary, email, anything. Whenever you want to do changes in data, then we use update, and if you want to do changes in structure, then in structure we do it through what? Through the alter command. 
+
+So this is the basic difference between alter and update. Thank you!

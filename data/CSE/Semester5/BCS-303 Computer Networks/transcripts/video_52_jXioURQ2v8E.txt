@@ -1,0 +1,82 @@
+Hello, this is a great session. Today, we are going to discuss a question on CIDR, which is Classless Inter-Domain Routing. A key concept you have already studied in class—unlike classful addressing or even subnetting, where part of it you have already discussed—focuses on this concept. 
+
+This type of question is very important from the perspective of GATE, UGC NET, or any other competitive exam where computer networks are part of the syllabus. You will definitely see questions like this frequently. Therefore, you must know how to apply this concept. The question we are looking at appeared in the GATE exam (GATE 2014), and similar questions of this type come up very often in UGC NET as well. You will find this type of question many times in previous years' GATE questions.
+
+In this question, we have the following definition: CIDR receives a packet with an address. This means a packet arrived, and we received this packet on the network. For that packet, we have an address written on it—namely, where the packet came from. We know that when a packet arrives from some network, the source IP is generally written on it, but the destination IP is also written. That means, if a packet is coming into our network, the IP address written inside that packet for the destination—we need to figure out where to forward this particular host's packet. 
+
+The router has a routing table with the following entries. The router looks up its routing table and, by matching entries, figures out which direction or interface to send it to. Here, we have prefixes and interfaces. A prefix means the network ID, and the interface tells us which interface to send it through. 
+
+Let's say, if we talk about a router connected to multiple networks or subnets through interfaces 1, 2, 3, and 4. As soon as a packet arrives, the router takes that packet's destination address, performs an AND operation with its subnet mask (or default mask), and figures out which server, router, or interface to send it to. This is what the interface tells us. In our question, we are given prefixes (network IDs) and their corresponding interfaces. Our packet will be forwarded to which interface? For this type of question, the simple rule is: 
+
+First of all, take the given IP address and write it down: $131.23.151.76$. 
+
+Next, for each interface, perform an AND operation using the interface's subnet mask. For example, let's look at the first interface: $131.16.0.0 /12$. 
+
+The $/12$ means—as we have already discussed—that $/12$ has 12 consecutive ones. That is the default mask. How many bits are in the host portion? 12 bits are for the network, leaving the remaining bits for the host. 
+
+To solve this, you need to perform an AND operation between the IP address you received and the network ID for each network. Let's look at the first one. 
+
+For $/12$, we have 12 ones. $12$ ones mean:
+First 8 bits = $255$ (which is $8$ ones).
+For the next octet, we need $4$ ones and $4$ zeros ($11110000$), so that $8 + 4 = 12$ ones.
+Thus, the mask is $255.240.0.0$.
+
+If you want to solve any such question, remember that each octet represents $8$ bits. The positional values of the bits from right to left are:
+$2^0, 2^1, 2^2, 2^3, 2^4, 2^5, 2^6, 2^7$
+Which evaluate to:
+$1, 2, 4, 8, 16, 32, 64, 128$.
+Writing numbers in binary this way helps you do calculations quickly without wasting time.
+
+Now, let's open up $131.23$. 
+For $131$, we can leave it as it is because we are ANDing it with $255$ (which is all ones, so the value remains $131$). 
+Next is $23$. We need to open $23$ in binary. To make $23$:
+$128$ is $0$, $64$ is $0$, $32$ is $0$.
+$16$ is $1$ ($16$).
+$8$ is $0$ ($16 + 8 = 24$, which is too big, so $8$ is $0$).
+$4$ is $1$ ($16 + 4 = 20$).
+$2$ is $1$ ($20 + 2 = 22$).
+$1$ is $1$ ($22 + 1 = 23$).
+So, $23$ in binary is `00010111`.
+
+What about $131$? We can keep $131$ as it is.
+Now let's look at the mask for $/12$, which is $255.240.0.0$.
+$255$ has 8 ones (`11111111`).
+$240$ has 4 ones and 4 zeros (`11110000`) because $128 + 64 + 32 + 16 = 240$.
+The remaining octets for the mask are zeros (`00000000`).
+
+Now, perform the bitwise AND operation between the IP address and the mask:
+For $131$: ANDed with $255$ gives $131$.
+For $23$ (`00010111`) ANDed with $240$ (`11110000`):
+`00010111` AND `11110000` = `00010000`, which evaluates to $16$.
+For the remaining octets ($151$ and $76$), they are ANDed with $0$, so they become $0$ and $0$.
+Thus, the resulting network address is $131.16.0.0$.
+
+Does this match the first interface entry ($131.16.0.0 /12$)? Yes, it matches! Therefore, this packet could be forwarded to interface 3 (or interface 1, depending on the options). 
+
+Now let's check the second option: $131.28.0.0 /14$.
+Here the mask has $/14$ ones. 
+$12$ ones plus $2$ more ones gives $14$ ones. 
+So the second octet has $6$ ones and $2$ zeros (`11111100`), which is $252$.
+Let's perform the AND operation with the IP address ($131.23.151.76$):
+$131$ AND $255$ = $131$.
+$23$ (`00010111`) ANDed with `11111100`:
+`00010111` AND `11111100` = `00010100`, which evaluates to $16 + 4 = 20$.
+So we get $131.20.0.0$.
+Does this match the second interface's network ID ($131.28.0.0$)? No, it does not match.
+
+Now let's check the third option: $131.22.0.0 /15$.
+Here the mask has $/15$ ones ($14$ ones plus $1$ more one, so $7$ ones and $1$ zero in the second octet: `11111110`, which is $254$).
+Let's perform the AND operation:
+$131$ AND $255$ = $131$.
+$23$ (`00010111`) ANDed with `11111110`:
+`00010111` AND `11111110` = `00010110`, which evaluates to $16 + 4 + 2 = 22$.
+So we get $131.22.0.0$.
+Does this match the network ID $131.22.0.0 /15$? Yes, it matches! 
+
+Notice that we now have more than one matching option (both $/12$ and $/15$ match). When multiple entries match, which one do we choose? 
+As a point of note—please star mark this—whenever multiple entries match, you should choose the one where the prefix has a larger number of ones (i.e., a longer prefix / smaller subnet). 
+
+What is the reason for this? 
+If a prefix has a larger number of ones, it means more bits are used for the network ID and fewer bits are left for the host portion. Consequently, the number of hosts in that subnet is smaller. When the number of hosts is smaller, searching through it is faster and more specific. This is a basic rule: when multiple entries match, choose the one with the larger number of ones in the prefix (e.g., $/15$ has more ones than $/12$, so $/15$ is more specific). 
+
+This is how you check and find the correct interface when multiple matches occur.

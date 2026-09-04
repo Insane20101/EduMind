@@ -1,0 +1,77 @@
+**Introduction to Magnetic Circuits**
+
+Welcome to the video on Basic Electrical Engineering. In this video, we will discuss the introduction of magnetic circuits. I will cover two main topics: the introduction of magnetic circuits and the basic terms used in this context. Before we dive into the details, let's first understand what magnetic circuits are, how they operate, how to identify them, and their basic characteristics, including electrical and magnetic properties.
+
+**Understanding Magnetic Circuits**
+
+To begin, let’s clarify the meaning of the term "circuit." A circuit is a path formed by various elements through which a quantity can be transported. When we talk about magnetic circuits, we must be specific. A magnetic circuit is dominated by magnetic materials, and it can be constructed using different types of magnetic materials. Magnetic flux can be transferred through these materials, similar to how electrical current operates in electrical circuits.
+
+For example, consider a magnetic circuit where we have a section with some windings. When we supply current to this circuit, magnetic flux will start to transfer throughout the system. In a magnetic circuit, the entire system is interconnected, allowing for the transfer of magnetic flux.
+
+**Basic Terms Used in Magnetic Circuits**
+
+Now, let’s discuss some basic terms related to magnetic circuits. The first term is "magnetic flux." Magnetic flux is defined as the amount of magnetic field lines passing through a given area. The direction of these lines flows from the north pole to the south pole of a magnet. Magnetic flux is denoted by the symbol Φ and is measured in Weber (Wb).
+
+When we talk about magnetic flux density, it refers to the amount of magnetic flux per unit area. The unit of magnetic flux density is Tesla (T), which is equivalent to Weber per square meter (Wb/m²). 
+
+**Magnetic Field Intensity**
+
+Next, we have "magnetic field intensity." This term describes the strength of the magnetic field produced by a magnetic source. It can be expressed in terms of the number of turns of the conductor winding and the current flowing through it. The formula for magnetic field intensity (H) is given by:
+
+\[ H = \frac{N \cdot I}{L} \]
+
+where:
+- N = number of turns of the winding,
+- I = current in amperes,
+- L = length of the magnetic circuit in meters.
+
+**Magnetic Reluctance**
+
+Moving on, we need to understand "magnetic reluctance." This is the property of a magnetic circuit that opposes the flow of magnetic flux, similar to how electrical resistance opposes current flow in an electrical circuit. Magnetic reluctance (R) is defined as:
+
+\[ R = \frac{L}{\mu A} \]
+
+where:
+- L = length of the magnetic path,
+- μ = permeability of the material,
+- A = cross-sectional area.
+
+**Magnetic Permeability**
+
+Lastly, let’s discuss "magnetic permeability." This property indicates how easily a material can support the formation of a magnetic field within itself. The unit of magnetic permeability is Henry per meter (H/m). 
+
+In summary, we have covered the introduction to magnetic circuits, basic terms such as magnetic flux, magnetic flux density, magnetic field intensity, magnetic reluctance, and magnetic permeability. Understanding these concepts is crucial for further studies in electrical engineering and magnetic circuit analysis. 
+
+Thank you for watching, and I hope you found this introduction helpful!
+
+लोगों से ऑपरेट कर लेते हैं डेट्स फॉर मैग्नेटिक फ्लक्स डेंसिटी। इसे मैं ले सकता हूं। आप AEM से प्लस टू B बेल अपॉन यू नॉट न्यू यॉर्क और न्यू नोट में लिख सकते हैं। न्यू लेटेस्ट परमीबिलिटी A है। 
+
+तो MMS बेलकम्स इक्वल टू Bell Icon न्यू 18। अगर आपने ध्यान दिया होगा, तो B और H के बीच में रिएक्शन होता है। हम लोगों ने देखा है या पढ़ा होगा अपने मकसद से। तो आपको यह चीज मिल जाएगी कि B प्रोफेशनल टू टेक होता है। हमेशा नेगेटिव प्लैनेट्स प्रोपोर्शनल टो मैग्नेटिक फील्ड इंटेंसिटी। 
+
+इंटेंसिटी एंड सब्सक्राइब करें वीडियो चाहिए और सब्सक्राइब टो वो। तो ए रिक्वेस्ट टो बे अपॉन में होना चाहिए। ऐसा लिख सकते हैं रिक्वेस्ट टो बे अपॉन यू। 
+
+अब इस क्वेश्चन को आप देखेंगे। अगर यह फर्स्ट क्वेश्चन है, तो यह रिएक्शन होता है। ठीक है, तो यहां पर आप देख सकते हैं। यहां से आप कि इस इक्वल टू ए स्पेल। यह सेकंड वाला फॉर नॉलेज हुए इस पॉइंट से बनकर आता है हमारे पास। 
+
+तो यह इसका स्टैंड फर्स्ट फॉर्म है। यह हमने इसका सेकंड फॉर्म अब आप देखेंगे। इस क्वेश्चन आ रहा होगा कि Mi वहां से आता है। मैं फिर कछुए भी उसका नोटिफिकेशन देखते हैं। 
+
+तो देखिए, हम F1 प्लस टू का फॉर्म लास्ट करने वाले हैं। सच मैग्नेटिक फील्ड इंटेंसिटी ऑफ मैग्नेटिक फील्ड इंटेंसिटी मिक्स करते हैं। हम लोग यह पौन इंच और मल्टीपल में एक ऑयल और है। दोनों वायर्स को गिरा कैन सिलेक्ट कर दें। 
+
+तो देखिए, MMS है एक वस्तु एन आई का फॉर्म ज्वेल। यह बिल्कुल जाएगा। नो द क्वेश्चन है इस की मैग्नेटिक पंजी होता है। उसके लिए बटन पर व क्यों लिखा हुआ है। मैंने प्लेट के मास्क यूनिट किया है। पहले इसको देख लेते हैं। 
+
+MS-SQL यूनिट है एमपी 10th और नोट किया इसको 5 कि इस ठीक है। MS की वैल्यू एमपी 28 में तो एक होना चाहिए। टेस्ट बिलकुल 2mp आइटम्स पॉइंट पांच बोलने का मतलब है MS Word सफेद। 
+
+सब्सक्राइब बटन पर क्लिक करते हैं। तो यह थे पूरे बेसिक जितने भी होते हैं, इन सब की रिप्रेजेंटेशन कैसे घ्र से हो। आपको समझ में आएंगे और आप इनको पूरा प्रॉपर स्टार्ट करेंगे। इतना जस्टिफिकेशन इन सबके साथ इन सब चीजों को समझेंगे। 
+
+क्योंकि टाइम पर अपने के वीडियोस में डिस्कस करने वाले संघ के अंदर इंट्रोडक्शन टो क्विट अलांग विद ऑल ऑफ यू। कि इन आर्किटेक्चर के समय कोशिश करूंगा कि बेशक कुछ इंपोर्टेंट इतने टाइम से डिस्कस कर लें। 
+
+तो इसकी जो न्यूमेरिकल से इंपोर्टेंट जो जैसे मैसेज बैटिंग माइकल साथ हैं, वह सारा कुछ आपसे फील करते बन जाए। ठीक है, तो मैं इस वीडियो को यहां पर कंट्रोल करता हूं। 
+
+ओवरऑल मैग्नेटिक 1007 है। आप इन सबको स्टडी कीजिए प्रॉपरली। इन सबको देखिए और इसके साथ-साथ इंट्रोडक्शन ऑफ़ किड्स को सब्सक्राइब कर लीजिए। 
+
+नेक्स्ट वीडियो में जब हम मिलेंगे, तो शॉर्ट वीडियो रखेंगे। उसमें हम बात करेंगे मेनली कैश लक्ष्य होता है मैग्नेटिक प्रिंटिंग कौन सी कंडीशन होती है इन दो चीजों के बारे में। 
+
+तो अभी फिलहाल इस वीडियो में यह कंपलीट करता हूं। मिलता है वह जल्दी नेक्स्ट टाइम। और अगर आपने पिछला वीडियो नहीं देखा होगा, आपको सेलेब्स नहीं पता होगा कि हम इस हॉट मॉडल में क्या पढ़ने वाले हैं। 
+
+तो डेफिनेटली पिछला वीडियो देख लीजिए। इसमें आपको और सिलेबस से भी मिल जाएगा। और बने रहिए हमारे साथ केटेगरी Plus के बेसिक इलेक्ट्रिकल इंजीनियरिंग के वीडियो में। अभी आपसे अलविदा कहता हूं। मैं नेक्स्ट मिलूंगा बिल्कुल जल्दी। 
+
+थैंक यू वेरी मच फॉर कि अ अजय को।

@@ -1,0 +1,55 @@
+Binary Semaphore. To synchronize the processes we use semaphore. As we discussed before, semaphores are of two types: Counting Semaphore and Binary Semaphore. In a Counting Semaphore, the value—because what is a semaphore actually? It is an integer variable. It is an integer variable which is shared by a lot of processes in a mutually exclusive manner. 
+
+Now, in a Counting Semaphore, the values vary from minus infinity to plus infinity, meaning we implement all the cases with the help of a semaphore, but the value of the semaphore varies from minus infinity to plus infinity. But in a Binary Semaphore, when the name itself is binary, it means there are only two values: 0 and 1. So we will use only two numbers here, 0 and 1, and we will check all codes to see how we implement it. 
+
+So if in a Counting Semaphore values are infinite and the same work we are doing with just two digits, 0 and 1, then what is the need of using the Counting Semaphore? Therefore, Counting Semaphore is used very less; this is easy to use. 
+
+Now we start operations: Down and Up. There are two operations, Down and Up. We call Down as the P operation, or we call Down as Wait. Similarly, we call Up as V and Signal, we call it as Signal. These are synonyms only. Down, P, Wait are the same; Up, V, Signal are the same. 
+
+So let's see what the Down operation is. Down means let's say the semaphore value is initialized with 1. What is the meaning of down? Down means if the semaphore value is double equal to 1—yes, the semaphore value is 1—then it will make the value 0. This means it is a successful operation. We call this a successful operation. 
+
+If you get the semaphore value as 1, and after that there is a Down operation, then simply what you have to do: Down means make the value from 1 to 0. That is called the successful operation, meaning that process performed a successful operation on Down. 
+
+But if the semaphore value is 0—in any case, the semaphore value can only be two values, 0 or 1. If the value is 1, now we are talking about only Down, the value can be either 0 or 1; if the value is 1 then we will do Down to change the value from 1 to 0, that is called the successful operation, meaning this line has run successfully and the process has a chance to enter the critical section. 
+
+But if the semaphore value is 0, then we can't do Down from 0 because we have only two values, 0 and 1, so don't write -1 here; the value will stay at 0, but that process will be blocked, meaning it will go into the suspended list, or what we call an unsuccessful operation. This is called the unsuccessful operation. 
+
+So that's what is written: if the semaphore value is double equal to 1, means if it is 1, make the value 0, and this is called successful. And else, means if it is not 1, block the process and place it in the suspended list, or what we call Sleep. Meaning its Process Control Block, the PCB, we will keep it in a blocked state, meaning in a blocked queue. Later on, at some time, it will again be unblocked and run. How will it run? We will see in Up. 
+
+So this is the meaning of the Down operation. This is very important because you get many questions, but you don't have to remember the code in any standard problem, whether Producer-Consumer, Dining Philosopher, or any question that comes, you don't need to remember the code. You just need to remember what Up and Down do and how they work, and you can solve any question. 
+
+Let's say Up, the second operation is Up, which we call V or Signal. Up means let's say S value is 0. Again, the values of S can be only two, either 0 or 1. If the value of S is 0, then what will it make the value? 1. And if the value of S is 1, then it will stay as 1. 
+
+Meaning, if—Up means, if(suspend list is empty)—first let's check this condition, meaning it should not happen that some process is already in the critical section. Let's say a process has already entered the critical section, and some other process tries. Let's say P1 enters. How will P1 enter the critical section? It will first perform a Down operation. If the value of S was 1 at the start, yes, it will make that value 0, meaning the value of S which was 1 goes from 1 to 0, successful, and the process enters the critical section. 
+
+Now some other process tries. Let's say P2 tries or P3 tries. If P2 tries, what is the value of the semaphore? 0. So is the semaphore value double equal to 1? No. Then what is the else condition? Block this process. Meaning P2, P3, P4, whatever number of processes come after this, all of them will be blocked. 
+
+So in Up, we first check: is any process already blocked? Was it blocked in the past? Was it blocked because of this condition? Because we will first bring them into an unblocked state, meaning we will bring them into the ready queue so that we can give them a chance to execute; if they are blocked then they won't get a turn. 
+
+So that's why first we check the suspend list, meaning the blocked queue. Is the queue empty? If the queue is empty, then we will make the S value 1. Meaning if S value—let's say S value is 0 initially. If S value is 0, first it will check whether this suspend list is empty or not. If the suspend list is empty, then the value of 0 will be successfully made 1. 
+
+If the suspend list is not empty, meaning already some processes are lying in a blocked state, then this will keep the value of S as 0 only, and come into the 'else' state. Because let's suppose that some processes were lying in a blocked state, so if in case even a single process is there in the blocked state, it will jump to the else condition, and there what will it do? Select a process from the suspend list and wake it up, meaning it will pick a process from the blocked list, wake it up. Wake up means put it in the ready state so that it can run in the future. 
+
+And if the value of S is, let's say, 1—whether the value of S is 0 or 1—this will first start from the suspend list. If the suspend list is empty, then if the value of the semaphore is 1, it will stay 1. And in case if the suspend list is not empty, meaning some processes are lying in a blocked state, then your first priority is that it will first unblock some processes from the blocked state, after that it will move further. 
+
+So that's it: whether the value of S is 0 or 1, this will first check the suspend list. If there is a process lying there in a blocked state, if it is there in the blocked state, then this will first wake it up. If nothing is in the block, then simply make the value of the semaphore 1. If the value of S is 0, it will become 1; if it is already 1, it will stay 1. This is the only meaning of Down and Up. 
+
+Let's see with a small example how we execute this. Let's say there are two processes, P1 and P2. P1 is executing: Down of S, critical section, Up of S. P2 is executing the same: Down of S, Up of S. Now either process out of P1 and P2—both are parallel processes, cooperative processes (cooperative means both share something common, and where is that common? In the critical section). 
+
+Let's say if P1 comes—either of the two can come first, both can come parallelly also. Let's say if P1 comes: Down of S. If at start my S value is 0, let's say at start value of S is 0. Then what is my operation? Down of S. What is the meaning of Down? if (S Value == 1), false. Then this process will be blocked. Meaning P1 is blocked. 
+
+P2 says, good, if this is blocked, then control comes to P2. P2 says that maybe I can run. But what is written in P2 also? Down(S). And what is the S value? 0. So the S value is 0, so what will this also be? Blocked. 
+
+So that's why when we initialize the value of a semaphore, do it very carefully. But in this, you don't need to worry; in GATE or other competitive exams, it will already be given to you what the value of the semaphore is. So let's say the value of the semaphore is 1. If the value of the semaphore was 0, then P1 and P2 would both be blocked, meaning a deadlock situation would have arisen and neither would be executed. 
+
+So let's say S value is 1. Down(S)—either of the two can run. Let's say P2 runs. Down(S): what is the meaning of Down(S)? if (S Value == 1), true, S value becomes 0. So this line is successful; the successful operation I was talking about means this operation is successfully done, so means P2 enters the critical section. 
+
+Now let's say that P1 comes. At the same time P1 comes, P1 says that now I want to use the critical section. Can it use it? Let's see. Down(S): what is the meaning of that Down(S)? What is the S value? 1—and here, what is the S value? 0. Is 0 equal to 1? False. Block this process. Meaning what will happen to P1? Blocked. This is the meaning of the semaphore Down. 
+
+So now what happens? P1 is blocked, P1 will not get a turn, and that is what we want: mutual exclusion. Mutual exclusion means if one process is using the critical section, then the second one cannot. So P2 obviously is sitting inside, so we are not letting P1 in. 
+
+Now let's say that P2 exits, meaning it does Up(S), comes out. So while coming out, what will it do? Up(S): if (Suspended list is empty), No. In the suspended list, P1 is there. So if P1 is there in the suspended list, then what does this have to do? Select a process. There is just one process, that is P1. It will wake up P1 from the suspended list, meaning it will put it in the ready queue so that its turn comes. 
+
+So this is how we perform the Down operation and Up operation. This is all about how we perform Down and Up in these two operations. At any time you get any GATE question, or anywhere you see this question in competitive exams, you don't need to remember the code; you just have to check these two operations and how they are executed. 
+
+So if you liked this video, then please like it, share it, and in case if you have any doubt, then you can ask me in the comments. And please subscribe to my channel. Thank you.

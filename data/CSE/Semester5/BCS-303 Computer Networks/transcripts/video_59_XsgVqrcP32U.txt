@@ -1,0 +1,33 @@
+Dear students, welcome to Gate Smashers. Today in this video, I am going to explain the IP security protocol, that we call as the IPsec protocol. 
+
+Whenever we talk about the protocols of the network layer, we talk about the IPv4, IPv6, ICMP, and IGMP protocols there. But from the last few years, in your competitive exams and college university exams, they have started to ask about IPsec—what is IP security or about the IPsec protocol—meaning things are being asked about this. That is why you should know each and everything in detail and depth about this. So I am going to clear every point with an example in this video. Quickly like the video and subscribe to the channel if you haven't done yet, and even if you have, you can subscribe by other devices. Subscribers are really important. 
+
+Let's start. First, I am telling you the main points here, then we will see them in detail one by one. 
+
+First, regarding the IP security protocol, as I said, it is a protocol of the network layer, which is layer 3. If we talk from the bottom in the OSI model, then the 3rd layer from the bottom is the network layer (after the physical and data link layers). This protocol is defined in the network layer. 
+
+If we talk about whether it uses IPv4 or IPv6—because now we've moved to IPv6, so students think that it is using IPv6—no guys, the IPv4 protocol can also be used. This standard, this protocol, is given by the IETF, i.e., the Internet Engineering Task Force. By them, this standard of protocol is created, and actually, this is not a single protocol; it is a collection of protocols, and that's why it is called a standard set of protocols. Because there are multiple protocols in this, like:
+
+*   **ESP** (Encapsulating Security Payload protocol): The basic purpose of this is that it is used for encryption here and to provide security. As the name suggests, the protocol will be related to security.
+*   **Authentication Header Protocol (AHP)**: We use the authentication header protocol for the authentication of the message, and we use it for the integrity of the message. We'll see this in detail one by one, don't worry.
+*   **Internet Key Exchange (IKE)**: This internet key exchange protocol is used when we want to exchange the key. Like we talk about public keys—that I want to exchange the key—or we say in the case of symmetric keys that I have to exchange the key, then we have to exchange that key with security. For that, we use this.
+
+So it is a collection of protocols. 
+
+Now, what is its use? Why are we using IPsec? 
+
+Its first use is **confidentiality**. Whenever we talk about how no one should read our data in the path—because the internet we are using is full of threats, there are many loopholes and vulnerabilities, and anyone can attack the message or the channel in the path and can acquire the message—what we try to ensure is that if there is an unauthorized person in the way (like A sending a message to B, if there is someone in the way who is unauthorized), we want that person not to be able to read the message, they can't read that. It is called confidentiality. We call this as privacy also. For that, we use encryption. We need a protocol that provides encryption, and this is defined in IPsec. 
+
+The second feature is **authentication or integrity**. What does authentication and integrity mean? It is also of two types: one is the authentication or integrity of the message, and the other is of the source. 
+
+If I talk about the message: if A sent some message to B, and someone changed it in the way—some unauthorized person changed it—and when that message was received by B, then B didn't know that it was changed. It will be messed up like this. At least B should know that the message is changed, and that some wrong modification has been made. Checking that is actually checking the integrity of the message, or checking the authentication of the message. We use hashing for this, but the same thing is defined in IPsec. 
+
+Similarly, consider the source: A sent a message to B. B is happy. But if someone else sends a message as A by using the IP address of A, and it sends a message to B, then it should be authenticated. B should know if it is the real A or if someone is pretending to be A. So the authentication of the source is also important, and for that also we use IPsec. It provides this as well.
+
+The third feature is **replay attack protection**. This means when A sends some message to B, someone acquires this message in the path, and it is sending that message again and again after making some changes. "Replay" means it is sending that message repeatedly. 
+
+Let's say, if a message is sent to B saying "send 1000 rupees in my account," it is done. B thinks that A has sent that message, so it sends 1000 rupees (replay happened there). After some time, again that message appeared: "send me 1000 more, send me 1000 more, send me 1000 more." The same message is sent repeatedly, so there may be a chance that B thinks it is genuine. And if it happens, B will be in a loss. Meaning, if these messages are replayed continuously, that is what a replay attack is. We use IPsec to give protection from this replay attack. 
+
+You can use all of these features, or you can use only one of them. If someone says that I want this only—I want only authentication, or integrity, or just confidentiality—so you can use just a particular one also, or you can use the entire collection. 
+
+And it works in **two modes of operation**: transport mode and tunnel mode. It is very important to understand how it works in transport mode and how it works in tunnel mode; we will see this in detail in the next video. I told you the main features in this about IPsec. Wherever you are asked about this, it is enough. Thank you.

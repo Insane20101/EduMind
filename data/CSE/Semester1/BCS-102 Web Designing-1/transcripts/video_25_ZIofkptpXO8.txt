@@ -1,0 +1,41 @@
+We read about different lists in HTML. We saw that there are ordered lists, unordered lists, and definition lists. There are list items in each of these. If you are making a website, for example, in the navigation bar, you will have to put list items in an unordered list. You will have to change a lot of things. In this video, I will tell you about list items and the CSS properties associated with them. I am really enjoying this course, and we are going to reach our first project after finishing all these properties, so do write "sigma batch op" in the comment section.
+
+Let's go to the computer screen. Let's roll the intro!
+
+I have come inside my computer screen, and the first thing I will do is make video 25. Here, I will open it with code by right-clicking and selecting "Open with Code." People celebrate the century, they celebrate fifty and a half century; I will also celebrate the quarter century—25 videos have been made! Write "congratulations" in the comment.
+
+Now, while making index.html, I will tell you how to style a list. List styling is so important that if you want to make a navigation bar, you will use list items 70-80% of the time. I will quickly toggle word wrap and turn on screen cast mode so that you can see what I am doing. I will write "CSS list." Suppose I want to make a nav bar; I will start with a typical example. 
+
+I will write "nav," make an unordered list, and create list items (li) for "Home," "About," and "Contact." Now, first of all, you should access this playlist; otherwise, I will come to your house and snatch your computer to access it myself! You should bookmark the playlist on your computer. You may like it or not, but you should do it yourself.
+
+Here, you can see that I have provided all the source code at github.com/codewithari/sigma-web-dev-course. You have to access this too. If you do all these things yourself, I will like it. Now, let me open it in the browser and show you. 
+
+You can see that it is rendered in this way, which is the default behavior. Now, you can do some styling on the list, which is very useful if you want to show it as a nav bar. Whenever a list is made by default, I will inspect and hide my face so that you can see what I am pointing at. 
+
+You can see that its display property is "list-item." We read about display properties like block, inline, flex, and grid. The display value is "list-item," which means that there will be a marker and an item. If you want to change the display, you can do it. If I change the display to block, then its display will be blocked. However, that's not a good approach to remove this marker.
+
+To remove the marker, you can use the "list-style" property. If you set "list-style: none," you will see that the circle will disappear, meaning the marker will disappear. If you set "list-style" to any other value, you can see how it changes. For example, if you use "devnagri," you will see 1, 2, 3, 4. You can also use devnagri for styling, but usually, we target this list item. 
+
+Let me close this. In the nav, I will write "li in ul" and set "list-style." If I want to make a nav bar, I will set "list-style: none." I will show you by doing "devnagri." As soon as I do "devnagri," you will see 1, 2, 3.
+
+You can change the list style by changing the property. Now you can see that the marker and the content are combined. If I change the background to yellow, you will see that the marker is outside the list item. I want my marker to come inside the list item. How will I do it? By using "list-style-position." I will set "list-style-position: inside," which means the marker will be inside. 
+
+Now, if I add a border, for example, "border: 2px solid black," you will see that as soon as I add the border, your markers are inside. This is because I have set "list-style-position" to inside. 
+
+Can I replace the marker with an image? Yes, I can use the "list-style-image" property and set an image URL. Let me show you. If I want to use an image, I can set the URL. However, if the image is not accessible for some reason, I will use another image. You can see that as soon as I use this image, it replaces the marker.
+
+I can also set the list style type as an emoji. For example, if I set this monkey emoji, you will see that the monkey has appeared. If I want to use a syntax like "list-style-type," I can set it to "disc" and also insert the position and image URL. 
+
+You can see that if I remove the URL, only the disk will appear. If I remove the disk, only the URL will appear. You will want to use either the disk or the URL at one time. For syntax purposes, I will keep all three, but you should know that you will either use these two at one time or these two, obviously for obvious reasons.
+
+I hope you have understood how to use the list style image and the shorthand property. I will comment it out and let the disk remain. In fact, I like this monkey emoji. If I put a smiley or a fire emoji, it will look good too.
+
+The list is used a lot. As I told you, to make a nav bar, we usually do some work. I will show you that all the things I have put on my list items, I will remove them and also remove the border. Usually, we set "list-style: none." I will do this in "li" so that it applies to all. 
+
+Whenever you write anything here in "element.style," it will be added as inline style. You can see that whatever I type or add or remove here will be added in "element.style." 
+
+I will write "list-style: none," and you can see that it is gone. We usually set the display to flex so that it becomes horizontal. We will do that on its container, on "ul." Let's set the display to flex on its container so that all its items become flex. 
+
+What we usually do on the list item is set the padding, let's say 23 pixels. Now, our nav bar is made like this. But that's not the point of this video. In the coming videos, we will make great website ideas. Don't worry at all; access the playlist now. Either click and bookmark or click and save. 
+
+Thank you so much for watching this video, and I will see you next time. Don't take any decision; just access the playlist. Click here to bookmark, click here to save. Thank you so much for watching this video, and I will see you next time!

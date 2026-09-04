@@ -1,0 +1,55 @@
+Hello friends, welcome to Gate Smashers. In this video, I'm going to explain an important question on B+ tree. This is important for your competitive exam and even for your college and university exam, because this question has been asked many times in exams and there are chances that it will come in future also. 
+
+Let's start. Consider a B+ tree with key size 10 bytes, block size 512 bytes, data pointer of size 8 bytes, and block pointer of size 5 bytes. What is the order of leaf and non-leaf node in B+ tree? 
+
+This same question I've explained in B tree, and when we find out order in B tree, always remember that whether it is leaf node or non-leaf node, the order remains the same. What is order in that case? Maximum number of children possible, or you can say what we are adding in a single node, how many block pointers are there, and how many keys and data pointers are there—that is what an order is called. 
+
+Here, if we talk about B+ tree, order of B+ tree is different from the B tree because its structure is different. If you want to check the previous question on B tree, the link of that is given in the description box, you do check that video. If you want to discuss the structure of B+ tree, how its structure is and how the B tree structure is, on this there is a very important video on difference—meaning what is the difference between B and B+ tree—that video I've made already. The link of that also you'll get in the description box. 
+
+So let's start with the order of leaf and non-leaf node. Firstly, we'll talk of the non-leaf node. The meaning of non-leaf node is internal node. Like if we talk, this is our tree. In this tree, obviously you know which one are leaf nodes—this one—and non-leaf are root and internal node. So whether it is root or internal node, in that case we find out order. What will be the order in that case? 
+
+First you should know the structure. What is there in non-leaf node? See, in non-leaf, on every node we've firstly block pointer, then we've key, and then again block pointer, and again key, then again block pointer and again key—meaning in such a way it works—and finally block pointer. 
+
+Means: Block pointer, key, block pointer, key. Like this is the structure of internal node in B+ tree. So what didn't come here? Here, data pointer is not there. Here we've block pointer, which points out children at the downside, and key, which is the basis on which we're doing search. 
+
+So here, if we've order—we can call this order also or actually what is there in node—in this, your order is the maximum number of block pointers or maximum number of children. The total number of block pointers are the same number of children they are denoting. This is the order in actual of internal node or non-leaf node in case of B+ tree. 
+
+So if we suppose that, let's say, there are $n$ number of block pointers, so what will be the equation? $n$ number of block pointers are there, so the size of every block pointer—it will acquire that much total space—plus what we've after block pointers: keys. And how many keys are there? $n-1$. 
+
+How? Let's say we've 3 block pointers: Block pointer 1, key, Block pointer 2, key, and block pointer 3. So see, on both sides of a key there are block pointers, and the same on a key at this side also there is a block pointer, and on the other side also, which is denoting to its children. 
+
+So what is the order of internal node? Number of block pointers, means 3, or you can say number of children is 3, or you can say total number of keys is $n-1$—means one less than total block pointer. 
+
+So what is the equation? $n$ number of block pointers and the size of every block pointer when you multiply—so that much space is taken by block pointer. $n-1$ number of keys, and you'll multiply it with the size of the key. So that much space keys will acquire. So the total of this will be less than—it should be total less than the size of the block, meaning the size of 1 node. Then it is less than equal to. So this is the equation that is formed. 
+
+Now, in this equation we've to apply values. Let's put the values: $n$ value, number of block pointers we've $n$, and the size of each is 5, plus $(n-1)$, the size of key is 10, less than equal to block size, that is 512. 
+
+So it is $5n + 10n - 10 \le 512$, which can be written as $15n \le 522$, so $n \le 522/15$, that you can write as 34.8. 
+
+So what you'll say here? That 34 block pointers will fit completely, but the 35th one will not fit completely; the 35th one will remain to a certain portion. So you can say how many maximum block pointers are possible? 34. 
+
+So what is the order of internal node and non-leaf order? It is 34. Don't take maximum, you've to take the floor value, not ceiling value, because the 35th one will not completely fit in, there will be no space left for it. So you can say maximum block pointer is 34. How many maximum children are possible? 34. This is the order of non-leaf node, internal node, or root node order. 
+
+Now here we'll talk about the leaf node. In the leaf node, in the B+ tree case, what will be there in the leaf node? 
+
+In the leaf node, firstly we've key, and with key there is data pointer, and then again key and with key data pointer, then again key and with key there is data pointer. Data that is corresponding to data that is present in memory, point out that. 
+
+So finally, at last, what do we have? Block pointer, which points out the next node. It works like a linked list. So the next node will be pointed out by the last block pointer that we've. So the last 1 block pointer that is denoting the next one—in the rest of cases there is no block pointer, because in the case of leaf there is no use of block pointers, as leaf will further not have any children, since leaf is itself the last value. So it will not have further any children, so there is no use of block pointer, but there will be one block pointer that will point out the next leaf, like a linked list. 
+
+So see, its structure is different as compared to the internal node structure. In this you can't say that order is maximum number of children or maximum number of block pointers, because in this case block pointers are not there, there is only 1 block pointer. 
+
+So in this case—in case of leaf node—order of B+ tree is the maximum value of key and data pointer pair, means maximum number of key and data pointer pairs is known as the order of leaf node in case of B+ tree. So in case of leaf, how many key and data pointers there will be, that will be your order. 
+
+Let's say we've $x$ number of keys, and obviously keys will be equal to data pointers, because for every key there will be a corresponding data pointer that is pointing out data. So $x$ number of keys, then there will be $x$ number of data pointers. You can write that if $x$ number of keys are there, there will be $x$ number of data pointers in the leaf node. 
+
+And how many block pointers are there? There will be only 1 block pointer if we talk about each node. In a single node, what will be there in the leaf node case? Number of key and data pointers—let's say $x$ number of key and data pointers are there—plus finally I've 1 block pointer. So this equation is formed. 
+
+So the size of this block will be less than the block size which is given to you. So put the value: $x$, what is the key value and size of key is 10, data pointer is 8, block pointer is 5, less than equal to 512, that is your block size. 
+
+$18x \le 507$, and $x \le 507/18$. So when you'll solve this, this value will be 28 point something—sorry, it will be 28 point something, 28.2 or whatever value is coming, 28 point something value is coming. 
+
+So obviously you can say how many keys and data pointers are possible? 28. The 29th one will not fit fully, so you can say that the order of the leaf node is 28. 
+
+So the order of leaf node is 28, because in this there are keys and data pointer, key and data pointer, and finally block pointer. And the order of non-leaf node is 34. So the order of non-leaf is maximum number of children or maximum number of block pointers possible, and what is the order of leaf node in B+ tree? Key-value pair, mean key-value data pointer pair. So that is the order of leaf node. 
+
+So like this you can find out the value. Although it is a theoretical question, not a practical one. Theoretically these values will be given to you. So in this, GATE, NET exam, and even for college-university exams, this type of question is very popular. Thank you.

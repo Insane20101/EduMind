@@ -1,0 +1,126 @@
+Whenever we normalize a table, it means we need to decompose the table. Whenever we normalize a table—taking it through first, second, third normal form, up to BCNF—it means I have to decompose the table. Now, whenever we decompose the table, there are two rules by Edgar F. Codd which we have to follow, and these rules are very important. 
+
+The first rule is that in lossless versus lossy decomposition, whenever we decompose the table, the decomposition always should be lossless. The second one is dependency-preserving decomposition. So in this video, we are going to discuss lossless versus lossy decomposition, specifically what happens when we decompose a table and then have to join that table afterward. Why do we have to do it? We will see in the example. So, is our join lossless or lossy? 
+
+Okay, let's examine the table. For example, there is a relation $R$, and in $R$ we are having some values over there. Now, for the example, we need to normalize the table. For normalization, we had already discussed that we need to decompose the table. If we decompose this table—like I decompose this table into two parts, $R1$ and $R2$ (the $R1$ table and $R2$ table)—we are dividing the $R$ table into two subtables, $R1$ and $R2$. 
+
+In $R1$, the attributes are $A$ and $B$. In $R2$, the attributes are $B$ and $C$. 
+
+Now, if $R1$ will be $AB$, then how will it look? In $R1$, I have $A$ and $B$, and you can copy the values as they are:
+* $1, 2, 3$
+* $2, 2, 3$ (It's $2, 2, 3$)
+
+And in $R2$, we are putting two elements, two attributes $B$ and $C$, placed here. So in $B$ and $C$:
+* $2, 2, 3$
+* $1, 2, 2$
+
+Now, there is a rule of decomposition that whenever we divide the table into two parts, there should be some common attribute between the two tables. At least one common attribute must be there. Like here, I have put $B$ as common. Why do we keep it common? Next time or in the future, if we get any query and in that query we have to rejoin both tables, we will join them on the basis of this common attribute. 
+
+If there is nothing common between the two—if there are two sets in which nothing is common—we don't need to join the sets. Here, if there is no relationship between these two tables, there will be no query that requires me to join these two tables. So when do you need to join? One table and the other table are related to each other, and to show that relation, at least one common attribute should be there. Here, I have kept the common attribute $B$. Now, you can keep more than one, but there must be at least one. So I kept $B$ common here and simply divided the base relation into two tables: $A$ and $B$ are placed here, and $B$ and $C$ are placed here, copying the values as they are. 
+
+Now, the $R$ table no longer exists in the database; it means I have two tables, $R1$ and $R2$. 
+
+Now let's suppose there is a query. If a query comes that you need to find the value of $C$ if the value of $A$ is $1$—meaning if the value of $A$ is $1$, then correspondingly, what will be the value of $C$? If you look carefully, the $A$ attribute is in the $R1$ table, and the $C$ attribute is in the $R2$ table. So if these two are in different tables, then you can't give the answer to this query directly. To answer this query, we need to join these tables. I have to join these tables. 
+
+Join is again a very important topic in databases. Basically, in a join, we are merging both tables in a way. Now, how do we write the query for that? 
+"Select the value of $C$ if the value of $A$ is $1$." 
+Where is the value of $C$? In $R2$. 
+So it means: `Select R2.C from R2 natural join R1 where R1.A = 1`. 
+
+Where `R1.A = 1` means where in the table $R1$ the value of $A$ is $1$, corresponding to that I have to find the value of $C$ in $R2$. Here, the most important thing is the natural join. This is the important part. What actually is a natural join? In a database join, we first cross-product two tables, and then apply a condition on it. 
+
+So firstly, I have to cross-product these two tables. How do we do the cross-product? The first row of this table will be multiplied with all the other rows. It means if I have $X$ number of rows in this table and $Y$ number of rows in this table, the total number of rows in the cross-product will be $X \times Y$. So here we are going to multiply the first row with these three rows. You just need to follow this. 
+
+Like in $R1$, I have two attributes, $A$ and $B$. In $R2$, I have two attributes, $B$ and $C$. 
+
+Now, the first row of $R1$ is $1, 2$. This $1, 2$ will be multiplied with all three rows of the other table. What are the three rows? 
+* $2, 1$
+* $1, 2$
+* $2, 2$
+* $3, 2$
+* $3, 2$
+
+So we copy $1, 2$ from here. 
+
+Now, the second row of the first table will be multiplied with all three: $2, 2$. 
+* The first will be multiplied with all: $2, 1$, $2, 2$, $3, 2$. 
+* So we will copy from above. 
+
+Now, the third row, $3, 3$, will be multiplied with all three rows: $2, 1$. 
+* $3, 3$ will be multiplied by all three: $3, 3, 2$, $2, 3, 3$, $3, 2$. 
+
+As we have discussed, $R1$ has $X$ number of rows and $R2$ has $Y$ number of rows, so the total number of rows will be $X \times Y$. It means if there are three rows in this and three rows in that, the total will be nine. So you can count that your total nine rows are here. 
+
+So what we have discussed is: what is actually a join? A join is actually a cross-product plus some condition. So what is this natural join? Natural join is a cross-product plus some condition. What is its condition? A natural join always checks the equivalence of the common attributes—meaning, in two tables that have a common attribute, where are their values equal to each other? Whatever the common attributes in the two tables are, since $B$ is the common attribute here, wherever $B$ is equal in this table and that table, it will pick that row and reject the rest of the rows. 
+
+So if you see here, these are $R1$ rows and these are $R2$ rows. If you look carefully:
+* First, $R1.2$ and here $2$ of $R2$. This one and this one, both are equivalent. So if these two are equal, that means it will select it. Otherwise, it will reject it. 
+* Here, the value of $B$ on both sides is equal, so it will select that row also. 
+* Now see here: here the $B$ value is $2$, and here $R1.B$'s value is $2$, but $R2.B$'s value is $3$. It means they are not equal, so the natural join will reject this row. 
+* $2, 2$ again equal, so this row will be selected. 
+* $2, 2$ again equal, this row will be selected. 
+* $2, 3$: here $B$'s value is $2$, and here $B$'s value is $3$. It means they are unequal, so it will reject this row. 
+* $3, 2$ rejected. 
+* $3, 2$ again rejected. 
+* $3, 3$ selected. 
+
+Now, whatever the number of rows that are selected—from here, $B$ is a common attribute in $R1$ and $R2$. So if I join these two, after joining you can write $B$ once instead of writing it twice, because it has already selected the value of $B$ where the value is the same on both sides. So instead of writing $B$ twice, you can merge this table and write it even once. How? 
+
+This new table can be rewritten like this. After joining, a new table has come. We give it a name $R$ or $R'$ ($R$ dash). $A$ came in it, $B$, and $C$. $B$ is written once because already in the natural join, wherever the value of $B$ is equal, it selects those rows and rejects the rest of them. So now you can remove those rows from here. 
+
+Let's remove those rows from here after merging them and write them into the $R'$ table. So the $R'$ table will be having now:
+* $1, 2, 1$
+* $1, 2, 2$
+* $2, 2, 1$
+* $2, 2, 2$
+* $3, 3, 3$ (where $A$ will be $3$, $B$ will be $3$, and $C$ is $3$)
+
+So this is the table after the join. 
+
+Now let's see our query: `Select R2.C from this where R1.A = 1`. 
+Here the value of $A$ is $1$ at this point. The value of $A$ is $1$, but the value of $C$ is $1$ and $2$ as well. For the value of $A$ as $1$, the value of $C$ is coming as $2$ (i.e., $1$ and $2$). 
+
+And if you compare this with the original table—because we divided this table into two and then joined it again, that means this is the original table, and we re-joined the original table which we had earlier—if you look carefully, in the original table three tuples are there. But when we saw them after joining, then how many tuples are there? Five tuples. 
+
+It is not like magic; it is actually a flaw that we call **lossy decomposition**. Here, when there are three rows in the original table, so after joining—we divided that table and joined it again—how can the table contain five numbers of rows? Because of that, here, if you see the original: if I have to answer this query according to the original table—that we need to find the value of $C$ where the value of $A$ is $1$—here the value of $A$ is $1$, and corresponding to it, the value of $C$ is $1$ here. So the answer should be $1$ only. 
+
+But if you look at this table carefully, after joining it, if you see the answer in this table, here for the value of $A$ as $1$, the value of $C$ is coming as two values, that is $1$ and $2$. This is inconsistent! That means there is a big problem in the database: according to one, here there are two values, while the original table says that according to one, there is only one value. 
+
+So this is called **lossy decomposition**. Why are we saying lossy? You might be thinking that here I am getting something extra, that I have not lost anything, there were three in the original table and rather I am getting five, so I am getting a profit here. No, no, no, guys! We are not talking about the number of tuples, that it became three to five. In these five, are all five valid? No! So that means we have to see why we are saying lossy. We are saying lossy in terms of **inconsistency**—there is a duplicacy in the database, there is a problem in the database. So that problem is what we call lossy decomposition. 
+
+If you see carefully, in the original table:
+* $1, 2, 1$ is already there.
+* $2, 2, 2$ is already there.
+* $3, 3, 2$ was there.
+
+That means there are only three tuples in the original table: $1, 2, 1$, $2, 2, 2$, and $3, 3, 2$. 
+
+If you see these two tuples carefully: $1, 2, 2$ and $2, 2, 1$, they are not in the original table. So these are extra; it means there is inconsistency in the database. So this is a big flaw; it should not be there. In technical terms, we call these extra tuples **spurious tuples**. 
+
+Fine! So these two tuples are extra because of which this decomposition is lossy, not lossless—lossy in what term? In terms of inconsistency. There is a very big problem in the database, due to which we call it lossy decomposition. 
+
+Now, if we summarize this whole thing: why is this problem coming? We just divided one table into two and then joined it again. So what did we do wrong here, that the rows became three to five? 
+
+If you look carefully, when we divide the table into $R1$ and $R2$, what was the common attribute there? We kept the common attribute $B$. So can we keep any attributes common here, or is there any criteria to keep something common? Yes, there is a criteria for that! There is a rule to keep something common. What is the criteria? Just note it down, this is very important:
+
+**The common attribute should be a candidate key or super key of either $R1$, or $R2$, or both.**
+
+This is the very important condition for that: the common attribute—whatever you are putting as a common attribute in these two tables—that common attribute must be or should be the candidate key or super key of either $R1$ or $R2$ (and you can say both), meaning the candidate key in the original table is what we have to keep common between these two. 
+
+So here, we made a huge mistake that we kept $B$ common here. Because what are the values that came in $B$? $2, 2, 3$, which itself contains duplicacy! Then how will it bring consistency in the database? That's why we have to... If you look at $A$, then $1, 2, 3$—yes, this can be the... this is what the candidate key is. So this can be the common between the two attributes. If you check for $C$ ($1, 2, 2$), no, there is also duplicacy. And in $B$, there is duplicacy in the data. So neither $B$ can be kept common here nor $C$. 
+
+For practice, in both the tables, you can keep $C$ common here—like here you can put $AC$ in $R1$ and $BC$ in $R2$. But if you see carefully, you will get spurious tuples in it as well; it means you will get a lossy decomposition. 
+
+Then what is the final solution? The final solution is: in both the tables, whatever will be common, that will be a candidate key. So according to this table, we have the candidate key, i.e., $A$. Because what is a candidate key? It is unique. So what is unique here? $A$ ($1, 2, 3$). It means whenever you decompose the table, you have to put $AB$ in one and $AC$ in the other ($AB$ and $AC$). 
+
+If you follow this one—in which you keep the candidate key common in both—definitely you will not get any spurious tuples. You can try for that: you have three tuples, and when you decompose and join again, again three tuples will come. This is called **lossless join decomposition**. 
+
+So you can note down the conditions for that:
+
+1. **First condition:** Whenever you are decomposing the table into two, three, or four, whenever you take the union of it—like if you do $R1 \cup R2$—that must be equivalent to $R$. It means if you take the union of the attributes which are in $R1$ and the attributes in $R2$, then the attributes of the original table should be equal. Like we have taken $AB$ in $R1$, then $AB \cup AC$, so it is $ABC$. And if you look at the original table, we have three attributes in the original table ($ABC$). It means this is equivalent to $ABC$. This is the first condition.
+2. **Second condition:** Whenever we divide the table into two, three, or four—like we decomposed it into two—if I check the intersection between them, it must not be equivalent to $\phi$ (null). It means $AB$ is in $R1$, $AC$ is in $R2$. If we take the intersection between them, what will be the intersection? It is $A$, which is not equivalent to $\phi$. What does this mean? Whenever we decompose the two tables, there must be at least one common attribute between them.
+3. **Third condition (which is the most important condition):** Whatever you keep common here, that must be the candidate key or super key of either $R1$, or $R2$, or both. It means either it is the candidate key of $R1$, or the candidate key of $R2$, or both—meaning the candidate key can be either of the two. So this is a very important point over there, you can note it down.
+
+Fine! So this is all about lossless versus lossy decomposition. This is the same condition we use in the fifth normal form (5NF).
+
+Right. So, you note it down. This is all about the lossless versus lossy decomposition. Thank you.

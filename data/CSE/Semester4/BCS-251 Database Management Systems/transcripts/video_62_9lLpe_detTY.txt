@@ -1,0 +1,48 @@
+Hello friends, welcome to Gate Smashers! The next query is: write a SQL query to display the second-highest salary from the employee table. As I had discussed in SQL query part 1, we are making all the queries on this table. This table is of employee, where I have 4 columns, and there are 5 tuples. 
+
+In the first part, we discussed how to find the highest salary from the table, and we had to find the employee name who is taking the highest salary. Now, in part 2, we are going to discuss how to find the second-highest salary. First of all, what is the second-highest salary? We will find that. Then, which employee is taking that second-highest salary? We want that employee's name or ID. If I want to find that employee's information, how will we find that information?
+
+So the first question is: write a SQL query to display the second-highest salary. If I talk about the table, then in the table, the highest salary is 50,000, and the second-highest salary is 40,000. This is visible over here in the table. But we don't have to find the answer by seeing the table. We have to write a SQL query which, when we apply on any table—without seeing the table, on any table we apply—I should know the table name, and I should know the column name, so that the query will be applicable on all the tables, and it will find the second-highest value in the table. 
+
+So, how do we find the highest salary? What is the way to do this? We know that if we want to find the second-highest salary, then first of all, I should know the highest salary. If from this table I find the highest salary is 50,000, and if I find one more highest salary which is from the rest of the values—means, how will we design its logic? Whenever you do a SQL query, then for that you should know a table. If the table is not given in the question, if the table is not given, then you make a dummy table. According to the question, you create a dummy table. Like this table is given over here. 
+
+So what is its logic? That the highest salary is 50,000. What do we mean by second highest? If I exclude this 50,000 value, if I remove it, and take the highest from the rest of the values. How to find the highest salary? I know. And if we want to exclude that highest, then how will we do it? That logic or that syntax we have to write. 
+
+So how to find the maximum salary? `Select max(salary) from table`. Simple. `Select max(salary) from tablename`. So the table name is employee. So simply, `select max(salary) from employee`. What is the output of this? 50,000. 
+
+Now, if this 50,000 I keep in a bracket—let's say that this query is giving me the output 50,000—I take one more value where 50,000 will not come. Means, if I write over here, let's say, `select salary from employee where salary !=`. How do we denote not equal to? Like this. You can do it like this also, or you can denote it like this also (`!=` or `<>`). So this is not equal to. If it is not equal to, then what is the meaning of this not equal to? `Select salary from employee where salary !=` (inner query). 
+
+Always, inner query—whenever I talk about a nested query, the inner query will give output for one time. It will be executed once, and it will give the output 50,000. Now I want to compare this with the outer salary: `Select salary from employee where salary != (subquery)`. 
+
+What is the salary? First salary is 10,000. `10,000 != 50,000` is True. `20,000 != 50,000` is True. `30,000 != 50,000` is True. So in this way, we will compare the values over here. Over here, my all the salaries have come: 30, 40, and 50. We have written `where salary != (inner query output)`. What is the inner query output? 50,000. Because the inner query will execute just once, and we can neglect it from here. 
+
+Whenever in a nested query or in a subquery we do an inner query, it is executed only once. Because this is a bottom-up approach. First bottom, means the inner query will be executed once, and the 50,000 output came. Now, compare all the outer values with 50,000. So compare 10,000: `10,000 != 50,000` True or False? True. `20,000 != 50,000` True. `30,000 != 50,000` True. `40,000 != 50,000` True. `50,000 != 50,000` This is false. 
+
+So means over here, the 50,000 value row will be neglected. The rest of all 4 rows will be selected. So what came in the output? 10000, 20000, 30000, and 40000. This is the output of what? This is the output of that query: "I want to display all the salaries other than the maximum salary." You can say that these 4 values came. What are the corresponding salaries? These 10, 20, 30, 40 came in the output. 
+
+But if we want to find the second-highest salary, then the output that this query has given—that other than the maximum salary, print all the salaries—all my salaries are printed over here. But we don't have to print all these salaries. What is our question? Second-highest salary. 
+
+So what logic did we apply? We removed the highest salary from the remaining queries. Again, find the maximum from the remaining queries. Again, find the maximum. Simple: `Select max(salary) from employee where salary != (subquery)`. So what is the rest of the queries? The rest of the salaries are 10, 20, 30, 40 thousand. What is the maximum from them? 40,000. So in the output, only 1 value will come, that is 40,000. So this is how we actually find out how we print the second-highest salary. So the second-highest is printed over here. This is the logic. 
+
+Now, what is the second question? The second query is: write a SQL query to display the employee name who is taking the second-highest salary. Now, this is my output. What does this whole query give? 40,000. What is the corresponding employee name that we have to find out? How will we do it? Simple, outside we will again write the query. 
+
+This whole query—if you look at this whole query carefully, `select max(salary) from employee where salary != ...`—I will keep this whole thing in one bracket. We will keep this whole value in a bracket, and outside we will write one more query: `Select Ename` (you can find anything: employee name, his department, Eid, or write `*`), `Select Ename from Employee where salary =` (you can use `in` also and `=` also). 
+
+Because what is the difference between `=` and `in`? We use `=` when we have to compare with just 1 value. When we have to compare with 1 value, we use `=`. When do we use `in`? When we compare multiple values. Like if I say `2 = 2` or not, True or False? True, means on the left-hand side and right-hand side there is one value. If I want to check `2 = (1, 3, 2, 4, 5)` or not, what is this? No. If you want to check like this—means if you want to compare 1 value with multiple values—then it is better to write `in`: `2 in (1, 3, 2, 4, 5)`. If you will compare in this way, then what will be the output? True, because 2 is included in this. 
+
+So over here, you can use `in` or `=`. In this query, it will work properly. In case if it is giving multiple values, then it is possible that we have to use `in` over here. 
+
+So, `select ename from emp where salary = (inner query)`. Now, what output has this inner query given? 40,000. What output did this whole inner query give? 40,000. We compared that: `select ename from employee where salary = (40000)`. Now over here, salary values are 10000, 20000, 30000, 40000, 50000. 
+`10000 = 40000` False. 
+`20000 = 40000` False. 
+`30000 = 40000` False. 
+`40000 = 40000` True. 
+So corresponding to 40, what is the employee name? Nitin. So what will be printed? Nitin. 
+
+So this is how we write the subqueries. Now see, a query inside a query, and in that query, one more query—we wrote 3 queries! But if you will try this direct question, then you will think about how to find this out. But if you will follow step-by-step, that's why how am I making the videos? Start from the basic, from scratch, where we will write 1 query, then we will start the inner query. Whatever type of subqueries—even if it is a correlated nested query, or it is a query from source, or it is a multi-attribute query—we will discuss all the types of queries, but one by one, so that you can know how to frame a query. 
+
+If you will know how to frame a query, if you will know how to make queries, then you can easily solve any question. Because what will be there in the question? A query will be given, there are 4 options, find out the output; or the output is given, 4 queries are there, find out which query will give the correct answer. So when queries are given, then I will find out easily. And if I know to frame queries, then nothing is better than that. Because the one who can frame queries can apply logic, and can solve all the queries. 
+
+And I have already told that this is the only topic where students in interviews—this is not only for GATE, it is necessary in GATE, it is necessary in UGC NET, in PSU exams it is necessary, most important in your interviews! Because interview time is going on, so obviously all the companies that are coming, where there are database questions to be asked, they will try to ask students questions maximum from where? From SQL. And where do students get stuck in SQL? In nested queries. 
+
+So you follow these videos one by one. This is all about subqueries part 2. And if you like this video, then please like it, share it, and please subscribe to my channel. Thank you!

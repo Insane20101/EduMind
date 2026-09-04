@@ -1,0 +1,37 @@
+Guys, we talked about the box model in CSS. You saw that if the width of any element is less than the content inside it, then the items inside it overflow. We can manage this kind of overflow by using the CSS overflow property. We can bring a scroll bar inside CSS, both horizontally and vertically. We will learn these things in this video, and we will also use them practically in the coming projects. I want you to keep high energy; do write "sigma batch op" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+*Music*
+
+So, guys, I have come to my computer screen. The first thing I am going to do here is create a new folder, and I am going to name it "video 26." Today's video is on our overflow property. What is this overflow property? You have a box, and in that box, you have put an item that is bigger than the box. What will it do? It will overflow; that is obvious. 
+
+Now, in this case, how do you want the overflow to be handled? It is up to you. Suppose I have this box that says, "I am a good boy, and I love to write lorem 45." Obviously, you will write something meaningful in the box. I will fix it here and add a style tag. I will write CSS for the class `.box`. 
+
+First, I will give it a width. Let's say I give it a width of 40vw. It will take 40% of the viewport width. I will also give it a height of 40vh, which is 40% of the viewport height. After this, I will add a border of 2px solid black. 
+
+Now, let’s preview it in the browser. Oh, this is not overflowing. To make it overflow, I will change the dimensions to 10vh by 10vw. Now I made it 10x10, so obviously, it will overflow. If I make it 30x10, you can see that it is overflowing now.
+
+Since it is overflowing, how can I fix it? It can be fixed in two ways. The first way to fix it is to use the overflow property. I will set `overflow: scroll;`. If I make it overflow scroll, then a horizontal scroll bar will appear, and the items that were overflowing from this box will now be contained within it. 
+
+There are many other properties related to overflow. For example, I can use `overflow: auto;`. By using auto overflow, it will show the scroll bar only if there is an overflow. If there is no overflow, then the scroll bar will not be visible. For instance, if the viewport width and height are sufficient, there is no chance of overflow. By setting overflow to auto, it says that if it overflows, then show the scroll bar; if it does not overflow, then do not show the scroll bar. 
+
+If I set `overflow: scroll;`, then even if everything is fine, you will still see the scroll bar. That is why it is always a good idea to use `overflow: auto;`. 
+
+Now, if I use `white-space: nowrap;` in my code, what will happen? It will take the whole space, and the text will not wrap down. If I reduce the width further, let’s say I make it 40, then it will become this big, and you can see that the scroll is increasing. When I set `white-space: nowrap;`, it means that the text will not drop down.
+
+Now, if I set `overflow: ellipsis;`, I can show you how to implement it. After doing this, I can set one more property, which is `text-overflow: ellipsis;`. This gives you dots at the end of the text. So, `white-space: nowrap;` and `text-overflow: ellipsis;` work together. 
+
+One thing to note is that this is not the same as overflow; this is text overflow. You have to take care of this distinction. Overflow is different, and text overflow is different. I have set auto overflow, so I am getting three dots here. If I had set hidden overflow, I would still get three dots. If I set scroll overflow, I would also get three dots because I told the text overflow to show an ellipsis.
+
+If I remove the ellipsis, you can see that the scroll bar is still there. I hope this is clear to you regarding how to use the text overflow property. 
+
+After this, there is another value called `overflow: clip;`. This is similar to hidden overflow, but the only difference is that clip disables programmatic scrolling. If you set `overflow: clip;`, then you cannot scroll programmatically. 
+
+Overflow can be handled individually. I will increase the text and remove `white-space: nowrap;` because I want my content to look like this. You can see that I have auto overflow, which means it is not overflowing. To make it overflow, I will make its height a little smaller. I will also make its width smaller or set both to 30x30. Now, if I make it 30x30, it will overflow.
+
+I can control overflow-x and overflow-y separately. I can say that overflow-x should be hidden, but if overflow occurs in y, then scroll it. I can add these properties individually. If I write `overflow-x: hidden;` and `overflow-y: auto;`, you can see that overflow-x is hidden, and overflow-y is scrollable. 
+
+You can also use the shorthand for overflow. If I write all three names in this way, `overflow: hidden auto;`, you can see that it is auto in y and hidden in x. If I reverse it, saying auto in x and hidden in y, you will see that it is hidden in y.
+
+Now, many people ask how to remember which is x and which is y. You do not need to memorize anything. If you scroll, you will see which is x and which is y. I recommend using auto as much as possible because when you set it to auto, it will show the scroll bar only if needed.
+
+I hope you understood this concept. That was all about scrolling and overflow. I hope you learned how to add scroll bars. We will use this a lot when we create real-world websites. If you have not yet accessed the playlist of the sigma web development course, do it. Click here to bookmark and save. I am regularly updating the source code on GitHub. Thank you so much for watching!

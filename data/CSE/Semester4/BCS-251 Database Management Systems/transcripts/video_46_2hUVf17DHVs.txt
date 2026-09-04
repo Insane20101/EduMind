@@ -1,0 +1,31 @@
+Hello friends, welcome to Gate Smashers. The next operator is the selection operator, sigma. Let's understand the use of the selection operator with an example. 
+
+Here, as I have discussed in the previous video about this example, we are taking that example further to discuss the selection. First of all, here, as I have said, we are talking about relational databases. How do we save data in a relational database? In tabular form. Here I have three columns: roll number, name, and age. 
+
+And what is the question, which we also called a query? Retrieve the name of the student whose roll number is equal to 2; means, find the name of that student whose roll number is 2. 
+
+Now, here, first of all, you have to check: "retrieve the name" means what do you want to show in the final? At the final, what do you want to show? You first see the answer here. If I talk in the table, where is roll number 2? Here. What is the corresponding name to roll number 2? B. If I say simply leave the query, just tell the answer, what the answer will be, what answer you will say? B. Means, what is the name of the guy? B, whose roll number is 2. 
+
+But now, how to write this query? To write this query, what am I doing? First, "retrieve the name." This name, what is retrieve? Pi. We have to apply projection operation, but projection operation we apply at last. Its example I will give. Roll number = 2. 
+
+So first of all, we are applying selection operator. How will we write this query? `student`, which is the name of the table that we will represent in the bracket. What is the first thing you want? First, the table from which you have to take the data. So what is the first step? Write the name of the table. 
+
+After that, from this table, sigma means what are we selecting? That row where roll number is 2. Because when we are writing `student` table, visualize that this whole table has come. Do we need this whole table? From this whole table, what do I have to find? Where there is roll number 2. So where is such a row where there is roll number 2? Here it is. 
+
+So if I see the output of this thing only, what is its output? `2 B 21`. This is your roll number, this is name, and this is age. Means, in this way, it will be represented in tabular form if you just talk about its output. 
+
+But what output do we want in the final? Name of the student. So how will we find the name of the student from this output? Pi, means pi of name. So in the final, we will project name from here. 
+
+What is the funda of selection here? What is the meaning of selection here? On what does selection work? Selection works on rows, works on tuples. Means first you take out the desired tuples; what output we have to show from that tuple, that you write in the final. 
+
+If I write this query in another way, in case if you say, "Sir, first we will do pi," in case if you say we will do pi first, what will you do in pi first? In case if you do `pi of name` first—we want name in the final—after doing `pi of name`, what output will come? What output will we have? `A B`. What output will we have? `A B`. 
+
+Now, if you are applying here `select roll number`, then tell me, what is the output? This much. What is the output of this? `A B`. So `A B` is name, roll number is nowhere. Pi will always come later; it will always be last. First, select will come. If you put pi first, then you will fetch some column from the table, but the condition—the condition of selection—is maybe on some other column, so you will not get the output. 
+
+So therefore, first of all, what we have to do? First select. What is the meaning of select? We will put a select condition on the row. From the whole row, which desired row we want, which has a roll number 2? Therefore, we did `sigma roll number = 2`. So from the whole table, this output came. From that output, what do I have to show? Find the name. So to find the name, you do `pi of name`. 
+
+If you are asked to retrieve the name and age also, find both, there is no problem, `pi of name, age` you can write here only. So this is the important point here. Although there is a very simple logic in it, many times students do mistakes here and there. Such topics are where you don't have to waste your marks, because this topic comes always in every competitive exam—if we talk of GATE, UGC NET, or your normal college or university exam—and this is a secure topic, means to secure marks this topic you must know. So therefore, you should not do any mistakes here. 
+
+So for this, first of all, you have to keep in mind that selection does not work on tables, but it works on rows, and projection works on columns. I mentioned here: projection always works on columns. Columns means this is a column, which we also call attributes. And the selection, that is sigma, what does it always work on? Rows. Rows means tuples. This always works on tuples. 
+
+So this is how the actual working of selection with projection is. In this query, we saw the use of selection, plus we also saw the use of projection. Thank you.

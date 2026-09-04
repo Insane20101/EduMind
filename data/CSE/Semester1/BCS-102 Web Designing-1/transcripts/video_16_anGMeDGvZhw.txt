@@ -1,0 +1,25 @@
+In video number 12, I gave you an exercise and asked you all to post your solution. In today's video, I will solve that exercise and provide the solution. I am also going to give a shoutout to all those people who have solved the exercise. I am very excited to see your solutions. Let's go to the computer screen. ♪ Music ♪
+
+I have accessed my computer screen. The first thing I will do is make a folder named "video 16." I will create it, open it, and then Shift + right-click to open it with VS Code. After doing this, I will create a boilerplate HTML template. Today we are going to do something special because you will receive shoutouts.
+
+First of all, if you have not accessed the playlist, please do so now. I am going to open the video in which I gave you the exercise. This exercise was about creating a pure HTML media player. I am sorting the comments by "newest first" and scrolling down to give shoutouts to everyone who solved this. It took me a lot of time to scroll, to be honest. I will give shoutouts to all, but before that, I want to solve this question myself.
+
+I have media files: `1.mp3`, `1.mp4`, `2.mp3`, all the way up to `5.mp3`. First, I will add an `<h1>` tag for "My Videos for the Day" and an `<h2>` tag for "Some Audios for the Day." I will toggle screencast mode because it is easier to see.
+
+I will then place the videos within a `<div>`. Using the `<video>` tag with the `controls` attribute, I will add `1.mp4`. I will replicate this by pressing "Shift + Alt + Down Arrow" for `2.mp4`, `3.mp4`, and `5.mp4`.
+
+Similarly, for audio, I will use the `<audio>` tag with `controls` for `1.mp3`. I will replicate this for `3.mp3`, `4.mp3`, and `5.mp3`. I will then preview the result.
+
+A current issue is that the media players are taking full width, which is problematic. This might be because I am zoomed in. If it were a persistent problem, we would reset it with CSS. For now, it seems acceptable, and we can explore how to resize and improve things later. Our videos and audios are now displayed. If you used songs, they would appear. My videos are playing, including some of my personal favorites. Many people said this exercise was very easy and simple. However, remember my words: we will significantly raise the bar in future challenges.
+
+Now, for the shoutouts! Shoutout to Soumya172, Code with Rohit who accepted the challenge, Multi Atmos Desi Reddy, Shantop, Harsh Gularia, Thenia, Hellstar Kun, Team Rewa, Kulsum Sakibward, Bobby01th, Mohan, 2492, Prakash, Arnav, Jilan, HR, Nikhil, and Ashutosh.
+
+Now I will give shoutouts to those who have solved the exercise. Has anyone solved it? I'll even check the replies. No one has solved it yet... Wait, Coder Anderson! Congratulations to you! You've done great. You used a table, which is functional, though ideally tables are not typically used for this kind of layout. They displayed videos from 1 to 6 and even included `width` and `height` attributes in the video tag, which is excellent. Actually, I also do this in my videos. In fact, what I will do is write `width="239"` for my video tags. Let's see how it changes. Oh, wow! It is looking much better. Coder Anderson, shoutout to you for that idea!
+
+Next, Saif0981, you solved it beautifully! Very good. Then, shoutout to Czar Murti and also to Jheel Maheshwari.
+
+I want to address that many of you did not solve it, and this was not the participation I was looking for. I wanted more people to solve it. Saksham Jain solved it. I want maximum people to participate. I saw that very few people solved it, and I don't see any other code.
+
+In the coming videos, I want everyone to solve the challenges. Whoever solves it first, I will give them a shoutout in the comments, so you guys have to respond fast! Shoutout to all the people who are accepting the challenge. I hope you are enjoying this course. Remember to access all the source code and playlists. The playlist is looking very populated now. A few days back, there were only two videos, but now I have filled it with many. Your enthusiasm should also be consistent. If you have not accessed the source code, please do so.
+
+That's all for now, guys. Thank you so much for watching!

@@ -1,0 +1,39 @@
+Today's exercise will test your CSS Grid skills. I will give you an exercise in which you have to apply your CSS Grid skills to create a layout. If you are going to solve this question, please write "Challenge Accepted" in the comment section below. This will let me know that you are going to tackle this question. 
+
+Now, let's go to the computer screen. Let's roll the intro.
+
+**Intro Music**
+
+Alright, I have come to my computer screen, and now I am going to give you Exercise Number 7. You will need to design the lower part of the UltraEdit website. I will create a folder named "video 44" and open it in VS Code. I will put a boilerplate template here in an `index.html` file. 
+
+In this file, I will comment on the website and write "Design the body of this website." You have to do this, and I will open it and show you the UltraEdit website that we created in the last exercise. Now, what you need to do is recreate this using CSS Grid.
+
+The catch here is that you first need to download UltraEdit. Once the file is downloaded, you have to serve it right from your computer. If you are on Windows like me, you should click on "Download 32 bit." As soon as you click on it, UltraEdit will be downloaded. I will then move this file, which is named `ue-english`, into my folder.
+
+I will write the following in my HTML: 
+
+```html
+<a href="ue-english.exe">Download UltraEdit</a>
+```
+
+If I show you this website, you will see that as soon as I click on "Download UltraEdit," it will initiate the download. This time, the download will come from here. 
+
+On your local computer, there should be a file named `ue-english.exe`, and you will serve it from here. This means that the links you are going to use should come from this location. When you click on this link, it should trigger the download. 
+
+You need to design this using CSS Grid, and on your desktop, you should see three columns. On your phone, it should display one column. If I check how UltraEdit does this, you can see that on the phone, it shows one column, and when viewed on a desktop, it shows three columns. 
+
+You need to design this portion using CSS Grid. We designed the navbar in our last video, and you can copy it from there. If you design this portion as well, it will look great. However, I won't keep this portion as part of the exercise; you can start directly from here. You can delete the existing portion if you prefer.
+
+If I inspect this website, I can highlight the portion I want to delete. I will select and delete it. After reloading, you will see that the portion with "Download UltraEdit" is gone. 
+
+You can format it in this way, and even if the languages are different, you can still use the same link. If you download different versions and put all the links, it will be a special shoutout to you. But again, I want to teach you CSS Grid, and that's why I want you to download it once and use the same link. 
+
+You need to ensure that the file is served from your local computer. I will give a shoutout to everyone who solves it. Please write "Challenge Accepted" and like the video. I know very few people like the video, but if you do, it makes me feel good. 
+
+I will share a lot of information in the coming videos. I had a lot of fun with this exercise, and I also analyzed the solutions from many of you. I was amazed by your approaches and how you understood where to use the links. 
+
+As we code and work, our common sense builds up. We explore on our own, and maybe you have discovered something that I don't know. When you use it, I learn as well. We are all students, and we learn throughout life.
+
+For now, I will wait for your exercise solutions. If you have not accessed the Sigma web development playlist, please do so. Either click and bookmark it or save it. 
+
+Thank you so much for watching!

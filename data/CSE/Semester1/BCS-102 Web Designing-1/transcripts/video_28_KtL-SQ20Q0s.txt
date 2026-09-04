@@ -1,0 +1,41 @@
+In today's video, I'll give you an exercise involving a website builder that will help you create your desired website. I'll explain what you need to do, and through this exercise, you'll understand the use of the DOMs we discussed. Please like this video and write "Challenge Accepted" in the comment section below. 
+
+Let's go to the computer screen. 
+
+**Intro**
+
+Here, I am going to give you an exercise. I will create a folder named "video folder 73," and within this folder, I will create a simple VS Code folder and make an `index.html` file. I will spend some time setting up a boilerplate. 
+
+Now, let me explain the task. I will provide you with a card image, and your job is to create that card with some data. The data in the card should be added whenever you run a function, and you will define those functions for the card. 
+
+Let me clarify what you need to do. This is the `card.png` file. You need to design a card that includes a title, the channel name, the number of views, and how old the video is. You will also need to include this image, and the time should be provided as input.
+
+You need to write a function, and I will create a `script.js` file for you to work in. I don't know what you will write in this function, but you need to complete it. One thing I will add is a `div.container` that will hold multiple cards. You will use the class `card`, which means you need to include a class called `card` in your design.
+
+What will this input take? First, it will take the title. Second, it will take the channel name, which I will refer to as `cName`. The third input will be the number of views, which should be an integer. If the views are 727,000, you should write it as 727k. If the views are 7,270,000, you should write it as 727m. You will need to handle this formatting yourself. 
+
+Next, how old is the video? I will keep it simple and say it is measured in months. Although I could provide a date when it was published, I am not doing that now. 
+
+The duration is a string that you will need to include as is. I will show you a sample call for the `createCard` function. Let's say the title of the video is "Sigma Web Dev Video Number 2," and we are writing "Introduction to Backend." 
+
+The second argument is the channel name, which is "Code with Harry." 
+
+Let me toggle word wrap so you can see everything clearly. 
+
+The third input is the number of views. Let's say there are 560,000 views. You should write it as 560k. 
+
+Next, how old is the video in months? I will set it to 7 months old. 
+
+The duration, as I mentioned, is a string, so let's assume it is "31:22." 
+
+You will also need to provide a thumbnail image. I will take the link from here and open the image in a new tab. You will need to give a URL for the thumbnail. If I want to open the image in a new tab, I will paste the link here. 
+
+Note that the duration is not burned into the thumbnail; it is applied separately using the position property. You will need to implement that as well. 
+
+You have a lot of work to do, so write down "Challenge Accepted" and start working. 
+
+Additionally, whenever I run the `createCard` function, the card should be added inside the container. Ideally, we will map this with a button, so that when you click the button, the card will be added dynamically. You also need to style the container so that the cards are displayed properly when added. 
+
+There is a lot to do, and it will be fun. If you haven't accessed the playlist, do so. There are many amazing things coming in this course. For those who may be losing interest, there are exciting projects ahead. 
+
+That's it for now, guys. Thank you so much for watching this video, and I will see you next time. Bye!

@@ -1,0 +1,53 @@
+Dear Students, welcome to Gate Smashers. In this video, I am going to explain the Unix Inode Structure. In this video, I will explain all the important points related to the Unix Inode Structure. And apart from this, I will also explain a question to you, so that you get the idea of what type of question can be asked. Theory and numericals in every aspect will be covered. 
+
+So guys, please like this video immediately and subscribe to the channel if you haven't yet. And even if you did, you can subscribe from other devices and you can share; subscribers are required. So let's get started. 
+
+If we talk about the Unix Inode, what is your Unix operating system? An operating system that uses the Inode file system to keep proper maintenance of the data inside the files and to store files, what do we use? Inode! 
+
+Now, what does the "I" in it stand for? "Index", and node means your block. So look here, we got to you in the last video—I will also tell you the lecture number. In the operating system's playlist, you will go to lecture 7.6. All the points related to index allocation were discussed in front, and in that, I said that, man, what happens when the file size is too big? When we store that file in blocks, when we store that file in the blocks of the disk and we create an index ahead of it, obviously the index becomes very big. When the index becomes big enough, storing it in a block of the disk, in a block, is not possible. Then what do we do? We apply multiple disk blocks, because of which the index allocation scheme becomes complex; it becomes just like multi-level indexing. 
+
+So what are we doing here? Unix Inode says that it is the Inode. What is this? Inode! There is a block. What are we storing in that block? What are we storing in that block, in the index block? We are using a hybrid approach. 
+
+What is meant by a hybrid approach? We are storing attributes. In these attributes, we store anyway. What is meant by attributes? Metadata, the information related to data. That is called an attribute—meaning, when was it last modified, what permissions, name of the file, size of the file, path of the file. Each and every information related to the file we have stored it here. There is a very small amount of information, but it is very important. 
+
+Then, direct blocks. What is meant by direct blocks? What have we stored on these pointers? Pointers have been inserted. To whom are those pointers pointing directly? To the data blocks. Meaning, like you have a file, we put that file in the blocks of the disk, which block did you put it in? We have stored their address in the direct block. That's why its name is direct. What does direct mean? The pointers you are getting here are talking to you directly about the data block. 
+
+Then, single indirect. What does single indirect mean? Indirect giving you points here. What is meant by single or indirect? That from here you will go to a block, you will go to a data block. That data block will not give you the data. That data block will give you the pointers—addresses, you can say. Addresses, pointers, it is the same thing. What you will find there are pointers or addresses. What will that pointer take you to next? Take you to the data block. 
+
+What does it mean to say? First, I got a direct block, which is taking me directly to the data block. Then we got the single indirect! First, you went to the pointer, you went to the data block beyond the pointer. 
+
+Then we got the double indirect! What is meant by double indirect? Double! Two times! Meaning, from here you went one block, meaning you went to a data block. That data block will not give you the data. From there, you will get pointers. Again, you will go from that pointer to a data block. Even there, you will not get the data. There you will also get pointers, then you will get the data. So that's why double—double means a pointer goes from here, pointer to pointer. What did I get from the pointer? Data. 
+
+And then finally comes our triple indirect! If it is needed, then we have to make triple indirect as well. By the way, the work goes on till double indirect, but anything can be given in the question. The fundamentals of triple indirect are the same; there will be 3 steps here. So we got a pointer, got an address, we went to that data block. From there, I will get the pointer, you will get another address, we went to that address. From there, we will get another address, we went to that address. And that address will take me to the data block. That's why there are 3 steps: 1, 2, 3. What did I get from there? Data. 
+
+Here, direct data went here to step 1, then data went here to step 2, then data. That's why this is a hybrid approach. So what do we call this? Inode. Getting the point? So in this way, you can be asked whatever question there is. So in theory, you can note all these points, you can note this diagram and each and every point. 
+
+Now, let's quickly see a numerical. A file system uses the Unix Inode data structure. It's just a data structure, isn't it? Because it actually—how are you storing the data? That structure is defined to you in this way. There is a direct block, one indirect, one double, and one triple indirect given to you. The size of each disk block address is 128 bytes, and the size of each block address is 8 bytes. Find the max possible file size? Meaning I have to find the size of the file. What is the size of the original file? He gave me the complete structure of the Unix Inode in this manner. 
+
+Watch now! First of all, you have 8 direct blocks. Meaning how many direct blocks do I have here? Eight! That is, where is this block taking me? Directly taking it to the data blocks. Meaning taking it to the block of the disk. So from here, you simply got to know how many I have? Pointing how many? Pointing how many data blocks? Pointing 8 data blocks. 
+
+Now, how big is each one? 128 is the size. So there is no need to multiply now. First, you get all the addresses. First, you find out how many total pointers are here. So here you have 8 direct pointers. After that, we have single indirect. What does single indirect mean? Single indirect taking you to a disk block first. There is a pointer inside it, that pointer is going to take you further to the data. So what do you have to take out here? You have to take out that this is the block, isn't it? How many points is this in the block? Then I'll know, won't it? Only then will he tell me how many data blocks he is taking ahead. 
+
+So how do you get it out here? What is the way out of here? Same! From here to me, first look! Each block size—what is the block size of the disk given to it? 128 B. Meaning a disk block is 128 bytes. It is 128 bytes. And every single byte means what is the size of an address in each disk block? 8 bytes. So what are you getting out of it? How many? Total number of pointers in 1 disk block. You are getting out of one disk block. 
+
+How do you take it out? What is the size of the block of one disk? It is 128 bytes. And the size of an address, 1 pointer, is 8 bytes! So what will come to you? Total number of pointers will come. So you solve it! What will it become? $16$. $2^7$ divided by $2^3$ means $2^4$, which is equal to what? $16$. That is, this single indirect, where is it taking you? It is showing 16 pointers. 16 pointers ahead are showing data blocks. So yes, we have added 16. 
+
+Now you have to get double indirect. One is double indirect. Note that one is double, one is triple, and one is indirect. If it were double only, then we would have taken that much accordingly. So here I have a double indirect. See! This $16$. The story is the same, isn't it? How many of me came here? 16. How? A complete disk block is 128 bytes, and inside a pointer is 8 bytes. So that means how many such pointers will come? 16. 
+
+Now this 16 looks forward! This is the first of 16, that is on 16. The second of 16 is next to 16. So that means that this is the total 16, it is showing on the next 16. So how many are my $16 \times 16$? Getting the point? In double's case, $16 \times 16$. 
+
+Then—triple. Look, there are 16 pointers here. It will be the first of the 16, that will be on the next 16. The first of those 16 will be the next 16. So that means how many have become here? The power of 16 is 3. Means $16 \times 16 \times 16$. 
+
+So what has come to you? This total has come to you—addresses! Total you have got the pointers! What is each pointer showing now? To the data block. The actual data of the file is lying here actually. So it is already given to you, of 128 bytes. 
+
+So just you solve this whole. That is the size of the file. So what do you have to do to solve this? Here: $8 + 16 + 16 \times 16 + 16 \times 16 \times 16$. It has become yours. And what's in multiplicity? It is 128 bytes, keep in mind, it is the byte. 
+
+So here you take common $8$: 
+It becomes $(1 + 2 + 2 \times 16 + 2 \times 16 \times 16) \times 128$. 
+Write 128 bytes! So it's $8 \times 128$ bytes. What is this $2^7$? This is $2^3$. So if you do $128 \times 8$, then it is $1024$, that is a kilobyte. What became? Kilobyte. 
+
+Solve the inside. If you solve the inner one, then it is $32$. $34 + 1 = 35$. Plus $35 + 16 \times 16 = 256 \times 2 = 512$. 
+
+So solve this whole. So this becomes your 547 kilobytes! Kilobyte has also come with this. Did you know it? If you multiply $8 \times 128$, then it will become a kilobyte. When $1024$ is made, we have written it as a kilobyte. The inside was simply solved. 
+
+So this is your file size. This is how we actually define the Unix Inode. Will not ask you more than this anywhere, whether in competitive exams, college, or university. This is more than sufficient. Thank you!

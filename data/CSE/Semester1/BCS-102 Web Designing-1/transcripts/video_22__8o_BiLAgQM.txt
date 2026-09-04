@@ -1,0 +1,91 @@
+We saw the DOM in JavaScript very closely. In today's video, we will explore how to access nodes, parents, and children, and how to target an element to add styles or manipulate any element inside it. Like this video and write "Sigma Batch" in the comments. Let's go to the computer screen. Let's roll the intro.
+
+Alright, guys, I have come to my computer screen, and I will create a new folder named "video 67." I want to emphasize that what we are going to do now in JavaScript, when we make websites, is going to be used a lot. This is very important because many people have read about variables, the rules of making variables, `let`, `const`, `for`, and `by` loops. However, what I am going to tell you now will be used in practice. So, increase your focus a little bit.
+
+I am going to explain how to select elements and how to add children in the DOM. I have mentioned the nodes from where you have to pick them up. Now, I will show you how to find the first child, last child, and child nodes systematically. First, I will create an `index.html` file in this VSCode instance. You can put the script directly in the HTML file.
+
+I will create a `div.container` and then `div.box` multiplied by 5. I will name them box1, box2, box3, box4, and box5. There are no surprises there. I will run it, and you will see box1, box2, box3, box4, and box5. 
+
+Next, I will quickly add some CSS. I will create a class named `.box` and set the height and width to 56 pixels. I will also set the border to 2 pixels solid black. I won't take much time; I will do it quickly. I will set the margin to 5 pixels and the padding to 5 pixels. After doing this, the boxes will look something like this. You can see the boxes I have created quickly.
+
+Now, I want all my boxes to have a red background color. I can do this with JavaScript. I will add a script here, linking to `script.js`, and write `console.log("Hello World")`. This means my JavaScript is running now. 
+
+Suppose I want to know how many child nodes are there in my container. How will I do it? I will say `document.body`. I am showing you this because it is easy to understand. I said `document.body`, so the whole body is here. Inside the body is our container, and the script is also in the body, along with further elements in the container. 
+
+If I say `document.body.childNodes`, I can get all its child nodes. The first child node, which I can access by zeroing it, is a text node. Why is it a text node? Because inside that text node, I have given this space; it is considered a text node. 
+
+Now, if I want the next element, I will say `document.body.childNodes[1]`. That is the array I called `document.body.childNodes`. As I say `document.body.childNodes`, I get text, container, script, and text. Now, I said I want the first element of this, so I got the text. Then I said I want the first element of this, and I got this container. You can see that.
+
+Now, I will say I want the child nodes of this container. I will do `childNodes`, and the child nodes inside this will include text and `div.box`. Why is it coming? Because it is considered text. If you enter the container, the first thing that will come is this text node, which is considered HTML. After this, the `div` will come, followed by another text node, then another `div`, and so on.
+
+If you want to avoid this text node, you can write it like this, and the text node won't come. It will come in the container. I'll show you if I write `document.body.childNodes`, then `div`, then text, then `div`, then text. Why is text coming? Here I have given space, so this way you can find out child nodes of `document.body` or any element by using `childNodes`. 
+
+Now, I will quickly show you the first child, last child, and child nodes. If I say here that I have a container, I will make a variable here. I will say `let cont = document.body.childNodes[1]`, which is the second child node. The index starts from 0, so 0 is the first node, and 1 is the second node. 
+
+If I do `document.body.childNodes`, then first a text node will come, followed by the container. The new line is also considered a text node. Listen carefully; this video is very important. Now we are starting important things from here, so you will have to focus.
+
+If I want to do anything further in this container, I can access it from `cont`. I can say `cont.childNodes` or `cont.firstChild`. The first child is a text node, which I highlighted. 
+
+If I ask for the last child, it will also be a text node. However, whenever you ask what's inside the container, you'll be told it's a box. No one will say it has text. So, if I say first child, I'll get this text node. To avoid this, I will use `firstElementChild`. 
+
+If I type `cont.firstElementChild`, then I will get the first child that is an element, not a text node. For example, if there is a boy who is the eldest and has a younger sister, if we say who is the first female child, it will be his sister because she is female, and he is male. 
+
+In the same way, the way we did `firstElementChild`, I can also do `lastElementChild`. If I type `cont.lastElementChild`, you can see the last element child is getting highlighted. I can say `.style.color = "red"`. 
+
+Inside this, I will set the background color. As soon as I write here, the CSS properties shown have started. I will set `.backgroundColor = "green"`. You can see here it is green. In this way, you can change the CSS by changing the `lastElementChild.style.backgroundColor`. 
+
+Now, I have told you how to get the first child, how to get child nodes, and how to get the last child. Next, I will explain how you can get the parent node. If you want to get the parent node of any element, you can do it like this: `cont.lastElementChild.parentElement`. 
+
+This will show you its parent, which is the container. You can navigate up the tree in the DOM tree we are exploring now. 
+
+Another important method is `previousElementSibling`. What is this? It refers to the previous sibling that is an element. Now, I will tell you how you can get all the children of any element. If I write `document.body.firstElementChild`, I will get the first element child. 
+
+If I do `firstChild`, then nodes will come, but if I do `firstElementChild`, I will get only the elements. What comes in the nodes? Text comes in it, text nodes, and comments. For example, if I put a comment like "this is me," it will be a separate comment, and it will be a text node in which only some spaces are there. 
+
+When we talk about only children, we will say that all the child nodes of any element will come in it. This includes text nodes, comment nodes, and element nodes. However, if I say I only want elements, then I will get box1, box2, box3, box4, and box5. 
+
+Is it clear till here? Everyone write in the comments, "It is clear." Let's have a two-way interaction; it's fun. If I say `document.body.firstElementChild`, I will get the first element child, which is a `div` with the class "container." 
+
+Now, I will say that I want the first element child of this too or I want all child nodes of this. What will I get? I will get a text node, a comment node, another text node, and my `div.box`, which is the element. 
+
+I will explain why this happened. First of all, this text node, which I have highlighted, is the first one. After this, there will be a comment node, followed by another text node, and then my element. 
+
+So, this is how your text, comment, text, and element nodes are structured. If I want only elements, then I will write `children`, and I will get only the elements. I will copy this and provide it to you because I want you to have a record of it. 
+
+I want you to have it, so I will toggle the word wrap. All these methods should be known to you. First of all, `firstElementChild` gives you the first child that is an element. After this, if I say `childNodes`, then all the nodes will come, which will include text nodes, comment nodes, and elements. 
+
+If I say `children`, then I will get only the HTML elements inside it. I hope this is clear to everyone. If you are not able to understand, then listen carefully. I am repeating it. 
+
+As soon as I say `document.body.firstElementChild.children`, I get all the element nodes. After this, I can get the first, second, third element by doing 0, 1, 2, 3. If I write 0 here, then 1 here, and if I write 3 here, then I will get this. 
+
+The index starts from 0, so 0, 1, 2, 3, 4. Therefore, 3 will be box4 because my count starts from 0. Now, if I say that my box4, which is `document.body.firstElementChild.children[3]`, I want to get the next element sibling. 
+
+Which one will be the next element sibling of box4? It will be box5, meaning siblings whose parent is the same are called siblings. This and this parent is the container, so the next sibling of box4 is box5. The previous sibling of box4 is box3. 
+
+If I do `previousElementSibling`, we are talking about elements only. The previous sibling means the sibling that is an element. In most cases, we target elements only. So here box3 is there. 
+
+What will happen if I type `previousSibling`? If I type `previousSibling`, then I will get a text node because everything will be included. In siblings, we will get comment nodes, text nodes, whatever is before that. 
+
+What's before box3? We're not talking about element; any node will do. This is before box4, which I have selected. This is a text node, even though it has only spaces and new lines, but it will be called a text node. 
+
+So, that's why it is called a text node. You can read this from the start to understand the methods I have told you about first child and last child. I have explained what you will do when you need only element children. 
+
+If you want any element's parent, you will simply say `.parentElement`, and you will get its parent, which is the container. You can do it like this, and along with that, you can find the first element child and the last element child. 
+
+The first child which is an element and the last child which is an element can be found. I would like you to explore the HTML table yourself. You can do it by using `table.rows`, `table.caption`, `table.thead`. 
+
+For example, if I have a table here, I will create a table after a container. I will bring a sample table here, go to an HTML table, and copy a sample table. After this, I will paste the table here. 
+
+Now, what I can do is say that the body has a second element child to target the table. I will say `document.body`.
+
+Children, when I do this, the second child is a table, so I will make it 1. Now I have the table. After this, I will use `.rows` to get all the rows of this table. I will use `.columns` to get the columns of this table. I think `.rows` is not `.columns`; `.table.rows` is `.rows`, so you will get all the `<tr>` elements. 
+
+You have to try out all these methods, and you will get to know how these table methods work. I will say there is no need to remember them. As we work on projects, we will automatically remember them. For example, for the next sibling, you can use `nextElementSibling`. I start typing directly, and my IDE tells me that I have to find out what the next element sibling is. 
+
+I will write here, `nextElementSibling`, and I will get its next element sibling. It is easy; you just have to keep typing, and the rest of the suggestions will be given by the IDE. After that, you have to put your idea into it a little bit, and everything is done. I will never tell you to memorize anything. When we make projects, these concepts will become clear.
+
+I request you to download the notes and read "Walking the DOM" before watching the next video. Even if you don't listen to me, your work will be done, but I will say read "Walking the DOM." Clarity will be there, and it will be fun. I will also enjoy teaching.
+
+In the next video, we will see how to target elements by ID and how to target elements by classes. If I want to get the class element in the box, then I can find out which elements are there, and after that, I can change the styling of those elements by looping. All those things can be done.
+
+So this is my request to you: read "Walking the DOM," and you must have accessed this playlist. For now, that's all in this video. Thank you so much, guys, for watching this video, and I will see you next time. Thanks for watching!

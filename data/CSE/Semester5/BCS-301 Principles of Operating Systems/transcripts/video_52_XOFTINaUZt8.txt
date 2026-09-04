@@ -1,0 +1,59 @@
+The question was asked in GATE 2007 for 2 marks. The question is on memory allocation, meaning how we are allocating memory to processes. 
+
+Here we are given eight jobs (jobs means processes only) and their request size, meaning how much memory they need in the RAM. As well as one more thing is given, that is a usage time. For example, J1 takes 2K space in the RAM, but for how much time? For 4. Although it is not given in the question whether that is seconds, milliseconds, or nanoseconds, you can take it as seconds. So for 4 seconds, it will allocate its space in the memory. 
+
+This is what is mentioned in the question. This thing is new; before also we have solved many questions where we had checked best fit, first fit, worst fit. But the usage time concept is asked now. What is asked here is: calculate the time at which J7 will be completed. That means when J7 completes, I have to find that time or that point of time. So let's solve it one by one. 
+
+The algorithm is given as best fit, meaning we will put jobs or processes according to best fit only. The requests are from J1 to J8. That should be fulfilled respectively, meaning we have to choose them sequence-wise; we cannot choose them randomly. It is given in the question that you have to choose it sequence-wise. 
+
+Let's start with J1. J1 needs 2K of memory. Now according to the best fit, initially all four slots are empty. So according to best fit, when we put processes in the memory, the remaining space should be least. This is the concept of best fit. 
+
+If I put 2K in 4K, then 2 space will remain. I cannot put it in this, nor in this also. Yea, if I put 2K in this slot, how much remaining space will be there? Zero, nothing will be left, because J1 will totally fit in this slot. So here I can fit J1 properly, so internal fragmentation will not be there. The best fit concept is this only: that after putting the process, the remaining space should be least. But here no space is left, because it has fit exactly. 
+
+The point is, J1 will be using this slot for how much time? For 4. To manage this, you will have to consider a timeline, otherwise it will be a bit complex. It is a bit tricky question, but obviously if it is asked in GATE, then it will be tricky. So if I solve it according to the timeline, let's start with time 0. If we talk at time 0, all the processes came at the same time—meaning this is also not mentioned, when those jobs came, so we can assume that all the jobs came at the same time, but we will put these in RAM one by one only. 
+
+So if we talk at time 0, then J1 came first, so I have put J1 here. But when will J1 go out? When it completes time 4, meaning when the time in the clock will be 4. What I mean to say is, when the time will reach 4 from 0, then automatically we will send J1 out, and the slot will then become empty, so any other process or job can be sent there. So I will mention here that J1 will complete at time 4. 
+
+Now J2: when J2 came, you can say initially J2 also came at time 0, because it is not mentioned. This time is for how long they will wait there, for how long they will be there in RAM. So if we talk about it, what is the size? 14K. So 14K cannot fit here, cannot fit here too. One slot is there, so there isn't a concept of best fit because only one slot is there where J2 can be fitted. So it is simple that I will fit J2 here, or you can say that I put J2 here. 
+
+Although here the space is 14K, a small space of 6K will be left. So no worry, we are not talking here about internal fragmentation; we are simply putting sequences or jobs, we are just checking their sequence. So if I put J2 over there, for how long will it sit there? When the time will be 10, then J2's work in RAM will be completed. So here I can mention J2, that till 10 J2 will be there in this slot. 
+
+Next is J3. What is the size of J3? 3K. At what time did this come? It also came at time 0. So I am checking it once again: keep J2 and J1 there itself, because J2 is till 10 and J1 is till 4 inside. If J3 came at 0, what is the size it needs? 3K. 
+
+If I fit 3K here, or I put here, the least space is remained, because 1K will be remained. But if I put here, then more space will be remained. So according to best fit, which is already given, that I must best fit, it is best that you put J3 in this slot, because other two slots are already busy. Among these, J2 whose size is 3K... if I put it here, then how much space will be remained? 1K. If I put here, then 5K of space will be remained. So here more space will be remained, so according to best fit, this is the best. So according to this, I have put it here. What is the time? J3 needs 2, so until it will be 2 in the clock, till then J3 will be inside. So I am mentioning it here that J3 will be inside till 2. 
+
+Next is J4. J4 also came at time 0, but how much memory does J4 need? 6K. So at this time, how many slots are available? Only one slot is available. So obviously I can put J4 in this slot, so there is no problem, just put J4 here. The time needed is 8, so for how long will it be there? Till 8. When it will be 8 in the clock, then it comes out after finishing its work. So let's say that till 8, J4 has also gone inside. 
+
+Now it is J5. How much memory does J5 need? 6K. Now which slot is empty here? None. When time will pass 2, when time will be 2, which slot will be empty at 2? J3. So at 2 it will be J3. Where is J3? It is here. So even if J3 comes out at 2, then also, see that, then also I cannot put J5, because what is the size of J5? It is 6K, so I cannot fit 6K here. So even if it is 2 in the clock and J3 comes out, then also I cannot put J5 here. The problem is the size is 6K. 
+
+So let's see at 4. At time 4, J1 will go out. Where is J1? It is here. As soon as it is 4 in the clock, J1 has gone out. J1 is out, but where was J1? At the 2K slot. But see the process size—we are talking about this process. See the process size, 6K. Then how can we fit it? I can fit it here, meaning somewhere in these two places it can fit among these two places. 
+
+So from J1 and J2, which one is ending first? Check it, it is J4. J4 at time 8 will complete. So if J4 completes at time 8, then bring it out. So let's say J4 has completed at time 8, so I am sending it out from there; its work is done, so send J4 out from there and put J5 here. 
+
+Meaning when will J5 come in the RAM? When the needle will reach 8 on the clock. When the time will be 8, then J5 will come inside. But when will J5 go out? That is mentioned here: how much time does it need? It will need 4 more seconds, meaning 8 and 4 = 12. What I mean to say is that when the time in the clock will be 12, when the needle will be at 12, at that time only I will send J5 out. 
+
+The question is a little tricky, but if you see it carefully, it will be clear to you, because J5 came at 8. Although it came at 8, until it is 8 it will not be able to come into memory, because at 8 J4 will go out and we have put J5 in its place. And for how long does it want it? For 4 seconds. So 8 and 4 = 12, it has now placed there. 
+
+Now J6. J6 came. What is the size of J6? Let's mention it with red color. J6, the size of J6 is 10. The size of J6 is 10, so in 10 seconds, meaning it will require 10K size. So 10K size can come only here, because other slots' sizes are very small. So the process needs 10K; it will have to wait for J2, that when will it complete, because there is no other slot where I can put it. All the other slots are empty at time 2. J3 has gone out—if you want you can empty it. At time 4 J1 is out. But there is no use of their going out; allocation is contiguous, so we cannot divide and put in contiguous slots. 
+
+So where can we put 10K? Only here. So we will have to wait for J2, and when will J2 go out? At 10. So let's say at time 10 J2's work is over, so if J2 has gone, it is okay. So we can send it out, and in place of that we can put J6. 
+
+So when did J6 come? When will it go in memory? At time 10, because at time 10 J2 has gone out. Once J2 is out, which one entered next? J6. And for J6, how long does it have to stay there? Only for 1 second. So we can say at time 11—I am mentioning it here—at time 11 J6 will be finishing. 
+
+Now J7. We have to find about J7, that when will it complete. First let J7 come to memory. To come to memory it will need 7K space, so we can put 7K here as well as here. According to the size, we can put 7K here as well as here. If you put it here, according to best fit, it should come here. But to put it here, first J5 will have to go out, and when is J5 going out? At 12, when it will be 12, then J5—when the needle will reach 12, then J5 will go out. 
+
+But here this only is the trick. Many students will put J7 after sending it out at 12. But pay attention: at time 11, at time 11 J6 will be out. See here, when it will be 12, obviously first it will be 11 in the clock; 12 will be after 1 second. Meaning when the time will be 11, J6, which is already in this slot, will go out. 
+
+Let's suppose the moment the needle came to 11, meaning the moment time reached here, J6 has gone out. If J6 has gone out, then at this point of time this slot is empty. So remember this: if at this point of time this slot is empty, then may it be best fit or any other fit, you do not have to wait for it, that "I will wait for one more second and then I will send J5 out so that my internal fragmentation will be less." No, no, no! Now it is time 11, then how can you know about the future, that when a 13 or 14 will go out? At this point of time, means at 11, this slot is empty. 
+
+So since it is empty, in that I will have to put J7. You cannot wait for one second, that when it will be 12, time will be 12, J5 will go out, because when J5 will go out then how much slot will be empty? 8K. And how much size of process do I have to put? 7K. So best fit is working fine over here... no, best fit will work when the needle will reach 12. When this slot is empty at 11 only, then we do not have to wait for 1 second. At 11 itself you put J7 inside, because the 20K slot is now empty the moment the needle reached 11 over here from the 20K slot after sending out J6, because its time is over. It was needed for one second, and one second is over. At that point of time itself only I will put J7. 
+
+If I have put J7 at 11, then how much time does J7 need? Till 8. Means 11 and 8 = 19. Means J7's time is till 19, meaning till 19 J7 will be in the memory. 
+
+So the same thing is asked in the question: calculate the time at which J7 will be completed. So when will J7 complete? At 19. So the answer is B. 
+
+If they would ask the time at which J7 will enter into the RAM, that will be 11, that will be 11. Yes, that will be 11, even by mistake do not make it 12. So if you take 12 and add 8 in it, it will be 20. So here one option is 20, and I can bet more than 90% of the students have marked this option. But this is the trick: you do not have to make it wait for 1 second, when it comes at 12 then I will put it according to best fit... no. If one slot is empty at 11, then you do not have to predict the future. At 11 the slot is empty, put J7 there. So J7 needs time till 8, so 11 and 8 = 19. It will work till 19; at 19 it will go out, meaning at 19 its work is over, so the answer will be B. 
+
+This is how you have to solve tricky questions in the GATE. Many a times, simple questions are also asked, and sometimes a bit tricky, so you will have to expand your way of thinking a little bit. Many times questions are asked one step further. Usually most of the questions are asked one step further only. Try to study about the concept in a broad sense, and the best is you try as many questions as possible. 
+
+So this is all about how we have to solve this question. So if you loved this video, then please like it, share it, and subscribe to my channel. Thank you.

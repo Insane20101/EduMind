@@ -1,0 +1,129 @@
+In today's video, I will tell you about the events of JavaScript. There are many events in JavaScript, such as taking the mouse inside an element or taking the mouse out of an element. You can click on any element or double-click on it. We will cover all these events in this video. If you are enjoying JavaScript, like this video and write "JavaScript" in the comment section. 
+
+Let's go to the computer screen. 
+
+Alright, guys, I have come to my computer screen. I will make video 74 here, and today we will talk about events, why they are very important, and why you will want to use them so much. I will start by creating an `index.html` file, putting in the boilerplate, and adding a script with the source `script.js`. 
+
+I will explain that we have some events that we need. A browser event is a signal that something has happened. You can also create custom events, but there are many events that you can see in JavaScript. You can listen for events, and there are different types of events that you can find on MDN. 
+
+I will take a very fast start here and create a button. I will create a container with the class `container`. Inside this container, I will create a box and write "Change Content" on a button. I will give an ID to this button named `btn`. 
+
+Now, I can say `let btn = document.getElementById('btn')`, which will take the button with the ID `btn`. I can name it anything; I can name it `button`, `btn`, it's my choice. I will say `button.addEventListener`, where the first argument is the event you want to listen for, and the second argument is the function that will run once you listen for the event. 
+
+If you find this a little overwhelming, let me explain. The first element I took here is the button. Now, when I click on the button, I have written the name of this event as `click`. This event could have been something else; it could have been `dblclick`, or `mouseover`. 
+
+After that, what I will do is change the content. I will use `document` to do anything on this click; I can put an alert saying "I was clicked." When I run it and click on it, it means that this click is working properly. 
+
+Now, I want to show you that I can do anything. I can say `document.getElementsByClassName` or use `querySelector` whenever I want to select an element. I will say `.box` here because it has the class `box`. I will change its inner HTML to "Yay, you were clicked!" 
+
+As soon as I click on this button, its content will change. I will show you; I clicked, and it says "You are clicked, enjoy your click." If I reload, things will be normal. I will click on "Change Content" again, and now you see "You are clicked, enjoy your click." 
+
+In this way, we can listen for events. If I search for "browser events MDN," I will get a reference of the events, which will tell me what events are available. There are many types of events related to the mouse. If I want to see all the events, I will open "Mouse Events." 
+
+Here, I got this page, and I will copy and paste this page for you so that you can easily see all the events. I will comment out and write "List of all mouse events." This will give you a list of all mouse events, making it easy for you. 
+
+Now, suppose I want to double-click. You can read all these methods. There is an event called `dblclick`. Whenever you want to do anything, if you want to double-click, you can search on the internet for an event that allows you to listen to double-clicks. 
+
+I will do one thing. The `index.html` is already running. If I click on it, I clicked again. I can listen to the double-click. I can also make a Windows clone. I can listen to the double-click. 
+
+Then, `mousedown` means when you press the mouse button. `mouseleave` is fired when the pointer of a pointing device is moved out of an element that has a listener attached to it. This means you took the mouse up arrow. `mouseenter` and `mouseleave` mean you took it and removed it. `mouseout` means when you leave the element to which the listener is attached or one of its children. 
+
+These events don't need to be kept. To be honest, I don't care about it. While working, you will encounter these through trial and error. Some things are definitely kept, like `contextmenu`, which opens with a right-click. This event will fire when you right-click. 
+
+If I want to show you the context menu, I will make one more copy of it and say that when the context menu opens, it will alert "Don't right-click, don't hack us by right-clicking, please." 
+
+Suppose I did this, and as soon as I reload it, I right-click. I don't know why it didn't work. Let me see why it didn't work. I right-clicked, and I don't know why it didn't work. Let me see why it didn't work. If I right-click on it, then see "Don't hack us by right-clicking, please." 
+
+So what will happen if it is listening to the right-click? There are many events like this that you can use. There are keyboard events, such as `keydown` and `keyup`. If you want to see keyboard events, you can go to keyboard events. 
+
+There are many events in JavaScript, not only mouse events but also keyboard events. If you want to see keyboard events, you can look at `keydown`, `keypress`, and `keyup`. These events are enumerated on this page. 
+
+Now, I will show you a `keydown` event. If I say `keydown`, what happens is the second argument takes the event object, which is called the event object. If I log this to the console, you can see the event printed here. 
+
+Let me inspect, and as soon as I press any button on the keyboard, I pressed `G`, but nothing happened. For `keydown`, I have to take my mouse here because I have put this event on it. If I press `D`, or suppose I clicked on it, after that I will press any key. 
+
+Now, this is showing me all this. If I want this event to work forever, I will put it on the document. Whenever I press a key, see whatever key I am pressing. I pressed `H`, `A`, `R`, `R`, `Y`, so it is showing here. 
+
+I can say to print `e.key` or print `e.keyCode`. You can see that I am pressing anything in the document. This is the key, and this is the key code. Sometimes, what happens with the key code is that if we have to take a key as a number, we can take it. 
+
+For example, if I want to make a game and want Mario to jump when I press the up arrow key, I pressed the up arrow key, and what is the key? The key code is this. Now, see this key code is cut, and this property is deprecated, which means we don't want to use it. We want to use `key` only; we don't want to use `keyCode`. 
+
+I will check which key it is. If I press the up arrow, the code becomes intuitive to see. You can use all these things. You can see keyboard events, document events, and all these things. 
+
+Then there are some events related to forms, such as what to do when the form is submitted, what to do when the form is focused, and what to do when the input is focused. You can check out all these events. 
+
+If I search for the events of the form, I hope I will get the form events. I will search for `focus`, `focusin`, and `focusout`. Whenever an element comes into focus, like an input, you will see this event getting fired. 
+
+The concept I am going to teach you is very important, and for that, I will make a whole file named `event bubbling`. What is event bubbling? It is asked a lot in interviews. Listen carefully. 
+
+I will create a `div` with the class `container` and write "Container One" in it. I will create another `div` with the class `child container`. After this, I will write a `div` and span it. I will explain why I am doing this; I have spanned it to clarify things. 
+
+Now, I will put a `div` in it with the class `child`, and I will write "I am a child" in it. That's it; I have done this. Now, what will happen? You understand this; it is a very important concept. 
+
+I will put a script here. I will say whenever someone clicks on the child, then an alert will pop up saying "Child was clicked." I will say `document.querySelector('.child').addEventListener('click', function() { alert('Child was clicked'); });`. 
+
+I will copy the whole code; I will not waste much time. I will say as soon as it is clicked, then what to do? I will write "Child was clicked." After this, I will put one more event listener, and this time I will put this event listener on the child container. I will say put this event listener on the child container and write "Child container was clicked." 
+
+I will do the same thing on the container and say "Container was clicked." Now, see, I have put an event listener on the child, one on the child container, and one on the container. 
+
+Now, when I click on the child, this event will bubble up. JavaScript says you clicked on the child. Now, if you are saying you live in UP, if you are in UP, then you live in India automatically, in Asia also, and if you live in this world, the answer is yes. 
+
+JavaScript says that if you click on this child, then technically you clicked on the child container because the child is inside the container. You clicked on the container because the container is complete. This is the complete container, so technically you clicked on the container. 
+
+That's why events bubble up. It seems like the click event was on this, but it was on this, then on this, then you clicked on the body, then on HTML. I will show you; I will give some styling to this child. 
+
+I will say to make the background of `.child` `alice blue` and make the border `2 pixels solid black`. I will give padding `34 pixels` and margin `34 pixels`. If I run the page, "I am a child" is here. 
+
+So I clicked on the child, and "Child was clicked." I will say "Okay, child container was clicked," and "Container was also clicked." If I click on the child, I will put the cursor pointer on the child so that you can see how far the child is. 
+
+If I click on the child, "Child container was clicked" and "Container was clicked." Everything clicked. If I work outside this, I will give padding everywhere. I will give the child container also `padding`, and I will give it a background. 
+
+I will also put this margin and padding in it, and I will do the same thing in the container. I will say to do it in the container, and this time I will change the color a little. I will make it yellow and make it `14x14`. 
+
+Now you see one thing here; this is our child container. There is a container inside the child container, and I have put a span here. Let me do one thing; let me divvy it up because a span is an inline element, or I can section it, so it will be a little easier. 
+
+See, this is the child; this is our parent of this, and this is the parent of this. If I click here, you saw all three events were fired on "I am a child." If I click here, then "Child container was clicked" and "Container was also clicked." But if I click here, then only "Container was clicked." 
+
+I have put these three events. By the way, if you are thinking why the body was not clicked, it's because there are three event listeners. I am answering all your questions. 
+
+Now you will say that I don't want this. If I click on the child container, then I only want the child container. Why is it happening? I don't want bubbling. JavaScript says that we will do bubbling by default because if I click on the child container, I need only the child container. Why is it bubbling? JavaScript says we will do bubbling by default because technically things are sitting. You clicked on this and this. You said it's the same, but I don't want it.
+
+JavaScript says if you don't want it, stop propagation. What does it mean? I will tell you what it means. Stop the propagation—what does it mean? I told you that if you are using any event listener, then you can take an event object, and with that event, you can play with the fire. You say `e.stopPropagation()`. What will this method do? It will stop the propagation, which means there will be no bubbling; this behavior will not be shown.
+
+When I click on this child, only the child will show. Let me comment this. I have stopped the propagation on the child. When I click on the child, it says "child was clicked." That's it; the propagation stopped. The event didn't propagate. It didn't happen that it went to the child, parent, parent's parent—no. It happened to the child only because I stopped the propagation. I told them to handle the event on the child. I don't want propagation beyond this. 
+
+If I click outside it, the child container was clicked. Yes, I clicked; the container was also clicked. I will stop propagation here also, so above this event, there will be no event fire. This is called stop event bubbling. The question is asked in interviews: what is event bubbling? You will say that you will listen to an event on any element, so its listener will be activated, but its parent will also be activated because you are clicking on an element. Technically, you are clicking on its parent.
+
+If you are dancing in your room number 4, then you are dancing in your house, in your city, in your state, in this country, in this world, in the solar system. Technically, what you are doing is your event is propagated. Someone will ask you from above, and he will say you are dancing on Earth; he will not say you are dancing in room number 4. He will say you are dancing on Earth. This is called event bubbling. If you want to be told that you are dancing in this room, you don't want people to say you are dancing in this world, in this planet, you stop the propagation. You say that I am dancing here; neither am I dancing in this house nor in this state. 
+
+This is your way to stop event propagation. I hope you understood and enjoyed understanding this concept. In the notes, I have written everything very well. The way we add an event listener, we can also remove an event listener. `addEventListener` is used to assign multiple handlers to an event. Along with that, `removeEventListener` can be used with the same function object to remove an event listener. 
+
+You can make a variable object, and by giving a handler, you can add an event listener. If you want to remove it, you can use the same variable and remove it, so that event listener will be removed. I have already told you about the event object: `event.type`, `event.currentTarget`, `event.clientX`, and `event.clientY` in the case of your cursor mouse events. All these are the properties of the event.
+
+By the way, why don't you do one thing? If I press any key, then see here `event.x`, `event.key`, and `event.keyCode` are printed. Why don't you print the event and see the object? Inspect it yourself. If I pressed a key, see what happened; this event is printed. If you want to know what all is there in this event, you can see it has key, key code, location, meta key, repeat, return value, shift key, and many other properties. You can see if bubbles are true or false. If you press the alt key, then it will be true; if you press alt and C, you can see that alt and C are not pressed. 
+
+It is a very simple and straightforward thing, and I have written it in the notes with more detail. There are practice sets in it which you can solve, but I have covered everything here. Now you can handle events through HTML attributes. You can write `onclick` and run a JavaScript function like this, or you can do it like this: `element.onclick = this function`. You saw this in the notes, and you can do it. 
+
+But the traditional method, the mostly used method, is to use `element.addEventListener`. You will write the name of the event and put a function that runs this function if this event is fired. 
+
+Now, one thing is left that I want to tell you, and that is `setTimeout` and `setInterval`. I want to cover that in this video. I don't want to make more videos about this because this is a very straightforward concept. If I want something to happen repeatedly, I can use `setInterval`. `setInterval` is a function that takes a function and a time in milliseconds. If I write 3000 here, it means every 3 seconds you will see whatever is happening inside it. 
+
+For example, I say that every 3 seconds, change the color of the child container. The child container's `style.background` is equal to red. I want to generate a random color here every 3 seconds. I will pick up a random color generator from the previous video because I don't want to repeat the same thing. 
+
+I will open the code here, and this was our random color generator. I will delete this because I did the solution for you guys. I will copy the `getRandomColor` function from here and bring it into my script. I will format the document and use `getRandomColor`. 
+
+Now, I will get a random color every 3 seconds. If I show you a page, see every 3 seconds its color is changing. If you want to change the color every 1 second, you can see here that the color is changing every second. What will `setInterval` do? It will make you repeat the same thing again and again. If you want to run some set of code every second, you can do it through `setInterval`.
+
+Then there is `clearInterval`. If I say `let a = this` and `console.log(a)`, what will it give me? If I reload it again, what will it give me? Oops, I want to inspect; I want to open the console. It gave me 1 here. I can say `clearInterval` and pass 1. What will happen? It will stop happening. I will hit enter, and this interval is cleared. It means whatever number it returned, you can use it with `clearInterval`, and with that, the `setInterval` will stop running. 
+
+Now, I will tell you the same thing by making a copy of it. You will say, "Why are you making a copy?" I am making a copy because the syntax is the same. I will say exactly the same: this is `setTimeout`. `setTimeout` runs only once after a certain period of time. I will say exactly the same: `setTimeout` runs only once after a certain period of time. 
+
+So you see here I said that after 5 seconds or after 1 second, change the color. After 1 second, the color changed only once. If I want to work after a few seconds, then I can use `setTimeout`. I have set `setTimeout`, and you can see after 1 second the color changed. I can clear `setTimeout`. If I want to change color after 5 seconds, I will reload it. Count 5 seconds; the color is going to change after 5 seconds. 
+
+If I don't want to change the color, I will write `clearTimeout`. I will keep it as a copy, so before it starts, if I write `clearTimeout`, now see the color is this. If I run `clearTimeout`, it is clear. I changed my mind; now I don't want the color to change after 5 seconds. If I run `clearTimeout`, then it is clear. I changed my mind. 
+
+To cancel `setInterval`, we use `clearInterval`. To cancel `setTimeout`, we use `clearTimeout`. It's a very simple thing. I hope you understood. We have covered a lot with that set, and it is very important to access the notes because it will remind you of all the things you have done in the course. 
+
+Then there is the MDN reference. The internet is there. You are giving 400 rupees per month, whatever you are giving. Tell me in the comment section. I hope you are understanding how important it is to download notes and you are understanding all the concepts. One thing you have to do is go and review this course in the first video. Give me 5 stars out of 5. I am not giving any compulsion for this, but if you do it, it will feel good from the heart. New people who are joining this course will find it very helpful; they will be able to know whether they want to do this course or not.
+
+That's all for now, guys. Thank you so much for watching this video, and I will see you next time.

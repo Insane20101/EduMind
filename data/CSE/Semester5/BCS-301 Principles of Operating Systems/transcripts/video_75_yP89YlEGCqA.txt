@@ -1,0 +1,37 @@
+Hello friends, welcome to the Gate Smashers. The topic is First-Come, First-Served (FCFS) in disk scheduling algorithms. 
+
+First of all, I am going to discuss this with a question. A disk contains 200 tracks; the numbering is 0 to 199. The request queue contains the track numbers: 82, 170, 43, 140, 24, 16, 190. This is the detail or this is the list of the track numbers. 
+
+Over here, the first important point is what a request queue means. Every disk has a request queue, and what comes in that queue is: the moment any user creates the request—let's say I want to access some data, and that data is stored in what particular track in memory management—after mapping it, whatever the track number comes, it inserts it into the queue number. Let's say at a point of time, the queue contains 82, 170. This is the queue number, this is the request number. The current position of the read-write head is 50. This is an important point, otherwise we will not know where we have to start. That's why it's very important to know the current position. 
+
+We need to calculate the total number of track movements by the read-write head. That is what the meaning of seek time is: how many movements the read-write head is doing to come to the desired track. That is called the seek time. And what the meaning of seek time over here is: this is the number of movements by the read-write head. So here we are finding the number of movements. 
+
+To solve this question, or to solve any question of this type, first of all, what you have to do is: whatever the tracks you are given, just represent them like this, 0 to 199. Although this is not in this manner—it is in circular shape, meaning the tracks will be like this internally, if I see the top view of any platter. So what will be on that top view? There will be multiple tracks, track number 1, 2, 3, 4, 5, 6 up to 200. But now we are solving the numericals, so that's why I have represented it properly. I have written the numbering from 0 to 199. 
+
+Why 50 is written over here? Because we know that the current position of the read-write head is 50, meaning the read-write head is standing on 50 now. What I have to do is, I have to pick the requests one by one, and what is the algorithm? FCFS. 
+
+So what is the first request? 82. Without thinking much, we have to reach to 82 directly from 50. I went to the 82 track. In the 82 track, from whichever sector I had to pick the data, I fetched it from that place. 
+
+Now, after the desired track 82, what is my next request? 170. So from 82, where did I make my next movement? 170. This way you keep writing simultaneously so that you know how your movement is progressing. 
+
+Then 43. After 170, the desired track, the data I have to find, is stored in the 43 track number. So for track number 43, I will have to come back, and here track number 43 is kept, and I fetched the data from there. 
+
+Then 140. So again I have to go to 140. I will have to make a movement again so I can cover 140 here. 
+
+After 140, the next request is 24. So again I have to go to the next one, 24, so I am making a movement towards 24. Over here, the read-write head is following a kind of zigzag path. We reached 24. 
+
+After 24, 16. So to go to 16, there is no need to change the direction of movement, so in the same direction, 16 will come. So I read 16 from here. 
+
+Then the last request is 190. Again here, I will have to change the direction, and I am moving to 190. So 190, which was my last request, I completed that. 
+
+What I have to find out is the total number of track movements. This point or this diagram, it might be asked: the total number of track movements, or how many times the direction has changed. Meaning this direction is changing. What is the meaning of changing the direction? That the read-write head only moves back and forth. So these are the tracks, so either it will go forward or backward. It is going towards this direction or that direction. That's why it is following the zigzag path, because one request is coming more than 50 and another less than 50. 
+
+Now finally, to find out the total number of movements, you have to simply subtract. How? One way is this: your first request was 82, so what you do is 82 minus 50. Plus, then you went to 170, so 170 minus 82, plus. After that, you went to 43 from 170, so do not do 43 minus 170, otherwise the answer will be in minus, and movement, obviously we are talking about the time, so it will only be in plus. So 170 minus 43, plus. We reached 43 and then we went to 140, so 140 minus 43, plus. From 140 we went to 24, so 140 minus 24, plus. From 24 we went to 16, so 24 minus 16. And the last one, 190 minus 16. This calculation you will have to do. 
+
+Here, let me tell you one more point. In place of doing only calculation, you know that this movement has gone till here, so you can also find it directly: 170 minus 50, plus. Or 170 minus 43—means where the direction is same, take that till the end. 170 minus 43, plus. Again here direction has changed: 140 minus 43, plus. Here the next direction came, this one: 140 minus 16, take it till the very last. 140 minus 16, plus the very last value is this one, that is 190 minus 16. You can follow this method or this method. Through this, your calculation will be easy, and definitely the chances to get the right result will be more. And when you solve it, you'll get the answer 642, and you can do the calculations. 
+
+So the advantage of FCFS is that there is no starvation in this algorithm. Starvation means one request is waiting for its turn, wondering when it will be serviced. But over here, in whatever sequence the requests have entered, on that sequence itself we are servicing it. So there is no such request which will wait for a long time for its turn. In whichever term, whichever sequence they have, on that same sequence we are servicing the request. That's why there is no problem of starvation over here. 
+
+But here, the problem we are facing is about the performance. Meaning this one: without looking at data, it can also happen that from 50 onwards—or let's say when one point came that from 50 we're going to 170, and I also know that I have to go at a point 190 somewhere, although I have to go towards the future, but I also have to cover 190—so if I can cover quickly the nearer values so that the movement or the direction change will be minimized, but FCFS doesn't follow this. That's why here the performance suffers; at some point, the seek time value comes more as compared to other algorithms. 
+
+So this is all about FCFS. Thank you.

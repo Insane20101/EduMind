@@ -1,0 +1,107 @@
+Hello students, I am Dr. Gaj Purohit, and you are watching my YouTube channel. If you are preparing for B.Sc., M.Sc., or any entrance exam where higher-level mathematics is asked, then my channel is very helpful for you. 
+
+Today, students, I am going to discuss what a vector subspace is, plus the necessary and sufficient conditions to prove a subspace, which are often asked in exams and whose proofs are frequently tested. I will cover that proof for you, and I will also take some examples to show whether a given set is a subspace or not by applying conditions. So, I will be taking some numerical examples with you.
+
+Before this, let me tell you that I have already uploaded videos on vector spaces and their properties under linear algebra. You can click on the i-tab here to watch those videos. Plus, if you are preparing for the CSIR NET exam with Life Sciences, Physics, Chemistry, or Mathematics in any subject, my General Aptitude videos are very helpful. I am uploading aptitude videos on my new channel, so you can check out those videos via the i-tab.
+
+Now students, let us look at what a vector subspace is. We need to understand the subspace. What is a subspace? Just as we have a subgroup in group theory, we have the concept of a subspace. That is, if we have a vector space $V(F)$ and we take a subset of it, and if that subset fulfills all the properties—meaning the properties in the sense of its definition—of the vector space, then it becomes our subspace, right?
+
+So, the definition is: Let $V$ be a vector space over the field $F$. Let $W$ be a subset of $V$. $W$ is called a subspace of $V$ if $W$ itself is a vector space over $F$, meaning $W$ fulfills all the definitions of a vector space. That is, $W$ under addition forms an abelian group, and if we take scalar elements (scalars) and vectors, then the distributive properties and other five-six properties are all satisfied. Then $W$ becomes a vector subspace, right? With respect to the operations of vector addition and scalar multiplication—these must be the same operations, right?
+
+Students, I must tell you that all these things we study in vector spaces rely heavily on content from group theory. In group theory, you need to know a little bit about groups, rings, and fields. So, there is an i-tab here; go and watch the videos on group theory. You will understand it very well, right?
+
+Now, the first theorem is a very important theorem, and its proof comes 100% in exams, alright? So let's see: A subspace $W$ of a vector space $V(F)$ if and only if $\alpha, \beta \in W \implies a\alpha + b\beta \in W$ for all $a, b \in F$ and for all $\alpha, \beta \in W$. That is, we take two vectors and two scalars, and their linear combination, which is $a\alpha + b\beta$, must also belong to $W$. If this happens, then $W$ will be a vector subspace. This means that if we want to prove that something is a subspace, we don't need to check all the properties—meaning all the definitions of a vector space. We can just check this condition. If this property is satisfied, then it becomes a vector subspace, and we don't need to check anything else. This is what the theorem states, right?
+
+Now, let's look at the proof. First of all, this condition is necessary, as we have necessary and sufficient conditions here. So we need to prove both the necessary part and the sufficient part, right?
+
+First, we will discuss that the condition is necessary. Let's understand this: Let $V(F)$ be a vector space over $F$, and let $W$ be a subspace of $V$. Hence, it must be closed—obviously, since it's a subspace, we assume it is a subspace, and we are proving this property. It is already given that $W$ is a subset of the vector space $V$ and is a subspace of $V$. This is already given, right?
+
+So we will prove that this condition is necessary. Then, in the sufficient part, we will prove that this condition is correct, and from this, we can prove all the definitions of a subspace. We will show that $W(+)$ becomes an abelian group, and the distributive properties are also proved there. That is our sufficient part, right?
+
+Whenever you prove a theorem in an exam, you must keep in mind what needs to be proved in the necessary part and what needs to be proved in the sufficient part, right? So in the necessary condition, we will prove that if it is a subspace, then this condition will definitely hold—100% it will hold, how could it not?
+
+Look here: since it is a subspace, it must be closed with respect to vector addition and scalar multiplication. So, vector addition is happening here because $\alpha$ is a vector and $\beta$ is a vector, so the addition of two vectors obviously belongs to the vector space. And this is scalar multiplication; we know that $a\alpha$ is a scalar and a vector. The multiplication of a vector and a scalar is a vector, so this vector belongs back to $W$. Very simple!
+
+So here is what I want to explain: Hence, it must be closed with respect to vector addition and scalar multiplication. Look here, if $a \in F$ and $\alpha \in W$, then $a\alpha \in W$. If $a \in F$ and $\beta \in W$, then $a\beta \in W$. Since this belongs to $W$ and that belongs to $W$, their addition also belongs to $W$ because it is closed, right? So this part of the theorem is easily proved, right?
+
+Now let's discuss the sufficient condition. The condition is sufficient means that we will take that condition, and from that condition, we will derive all the definitions. Look here, how? We will derive the entire definition of the vector space.
+
+Let us assume that $W$ is a non-empty subset of $V$ subject to the condition: $a\alpha + b\beta \in W$ for all $\alpha, \beta \in W$ and $a, b \in F$. This is given to us, right?
+
+Now we need to derive each condition one by one. Since $W$ is closed with respect to vector addition and scalar multiplication, we are required to prove that $W$ is a vector subspace of $V(F)$.
+
+To prove $W(+)$ is an abelian group, let us take $a = 1$ and $b = 1$ from $F$. If we take $a = 1$ and $b = 1$, then it becomes $\alpha + \beta \in W$. We know that if we take $\alpha, \beta \in W$, then $\alpha + \beta$ is inside $W$, which means it is closed. So $W(+)$ should be an abelian group. The first property of $W(+)$ is that it is closed.
+
+For the second property, what do we do? Let's take $a = 0$ and $b = 0$. If we take both as zero, then the value becomes zero, and $0 \in W$, which means the additive identity is present.
+
+Now, let's take $a = -1$ and $b = 0$ (or better yet, let $\beta = 0$ and $a = -1$). Let me take $a = -1$ and $b = 0$. If you put $a = -1$, then $-\alpha \in W$. Since $\alpha \in W$, we get $-\alpha \in W$, which means the additive inverse also exists. In this way, and obviously, addition is commutative, so $W(+)$ becomes an abelian group.
+
+So, look here, I have done the same thing: when I took $1, 1$, it became closed. Next, when I took $-1$ and $0$, the additive inverse existed. Hence, the additive inverse of each element of $W$ also exists.
+
+Now, taking $a = 0$ and $b = 0$, we get the additive identity. So you see, the zero vector of $V$ belongs to $W$, and it is also the zero vector of $W$.
+
+Since $W$ is a subset of $V$, vector addition will be associative as well as commutative. Thus, $W(+)$ becomes an abelian group.
+
+Now, the distributive properties will hold because they hold naturally; we don't need to stress about them. Again, taking $b = 0$, we get $a\alpha = 0$, which is our property that if there is a field element and a scalar... wait, the scalar multiplication of a scalar and a vector is a vector, so the second property is proved. Hence, $W$ is closed with respect to scalar multiplication. So the remaining properties will also hold, and we can easily prove that it is a subspace in this manner. That is all we need to do.
+
+Next, let's look at this theorem. This theorem is a part of the first theorem; it is just written in two different ways. The necessary and sufficient condition for a non-empty subset $W$ of a vector space $V$ to be a subspace of $W$ is: $\alpha, \beta \in W \implies \alpha - \beta \in W$, and for $a \in F$ and $\alpha \in W \implies a\alpha \in W$. If we combine both properly, it gives the previous question that I proved. Here they are separated. You might say, "Sir, there is a minus here!" Well, $a$ and $b$ are scalars; take $a = 1$ and $b = -1$, and you get this. So there is no issue, right?
+
+Let's see: The conditions are necessary. First, we take the necessary condition. In the necessary condition, we assume $W$ is a subspace, and we prove these two. If $W$ is a subspace, then $W(+)$ is an abelian group with respect to addition. Since it is an abelian group, if $\beta \in W$, then $-\beta \in W$. And since $\alpha \in W$ and $-\beta \in W$, by the closure property, $\alpha - \beta$ also belongs to $W$. So this property is easily proved.
+
+Similarly, for the second part, if $a \in F$ and $\alpha \in W$, by the definition of a subspace, scalar multiplication is closed, so $a\alpha \in W$. Thus, the necessary condition is very easily proved.
+
+In the sufficient condition, it's the exact same thing we did in the previous question: we show that $W(+)$ is an abelian group, and all remaining properties of the vector space can be easily derived using these two conditions. With these two conditions, we prove that $W(+)$ is an abelian group and the remaining properties—distributive and scalar multiplication—are easily proved.
+
+Let's prove it: The condition is sufficient. Now suppose that $W$ is a non-empty subset and $V$ is such that conditions 1 and 2 hold. Then prove that $W$ is a subspace of $V(F)$.
+
+Let's take condition 1: Let $\alpha \in W$ and $\alpha \in W$. By replacing $\beta$ with $\alpha$, we get $\alpha - \alpha \in W$, which means $0 \in W$. So the zero vector of $V$ is in $W$, which means the additive identity is present.
+
+Now, take $0 \in W$ and $\beta \in W$. By the condition, $0 - \beta \in W$, which means $-\beta \in W$. So the additive inverse also exists.
+
+Now, since $\alpha - \beta \in W$, if we take $\alpha - (-\beta)$, it becomes $\alpha + \beta \in W$. So the closure property holds. Association is already true for addition, so $W(+)$ is an abelian group.
+
+For the second condition, we have $a \in F$ and $\alpha \in W \implies a\alpha \in W$. This gives us the closure property with respect to scalar multiplication. The remaining properties of the vector space will hold in $W$ as they hold in $V$, since $W$ is a subset of $V$. The main property is to make $W(+)$ an abelian group and prove scalar multiplication. Thus, $W$ itself is a vector space, and $W$ is a subspace of $V(F)$.
+
+So, to summarize, the two conditions for a subspace are: 
+1. For $a, b \in F$ and $\alpha, \beta \in W$, $a\alpha + b\beta \in W$.
+2. Alternatively, $\alpha, \beta \in W \implies \alpha - \beta \in W$, and $a \in F, \alpha \in W \implies a\alpha \in W$. 
+This is scalar multiplication, and this is the vector property. You can apply either of these; any question can be solved using either of these methods to prove it's a subspace.
+
+Now let's take a problem. 
+Problem 1: Let $V$ be the set of $n \times n$ matrices over a field $F$. Show that the set of $n \times n$ symmetric matrices forms a vector subspace of $V(F)$.
+
+To show that symmetric matrices form a vector subspace of $V(F)$, it is enough to show that $W$ is closed under vector addition and scalar multiplication, and that $a\alpha + b\beta$ goes into $W$. If we prove this, our work is done, right? Or we can apply the other concept. Let's see what is done here: $W$ is closed under vector addition and scalar multiplication, and doing this much will get the job done. Let's take a matrix $A$ of order $n \times n$ which is symmetric...
+
+मैट्रिक्स यदि हम जानते हैं $A = A^T$, अगर कोई मैट्रिक्स सिमेट्रिक कब होती है जब $A$ इक्वल टू क्या हो जाता है $A^T$ हो जाता है। तो लेट $A, B \in M_{n \times n}$ विद द टू सिमेट्रिक मैट्रिक्स। देन हम जानते हैं $A + B$ जो होगा, ऑब्वियसली अगर दो मैट्रिक्स सिमेट्रिक हैं, तो उसका जो सम होता है, वो भी क्या होता है? सिमेट्रिक होता है। तो ऑब्वियसली, ये तो बहुत इजली हमारे पास प्रूव हो जाएगा। तो क्लोज वाली प्रॉपर्टी तो सीधी, वेक्टर एडिशन वाली प्रॉपर्टी तो सीधी यहां पे प्रूव हो गई।
+
+अब स्टूडेंट, यहां पे स्केलर मल्टीप्लिकेशन की देख लीजिए आप। तो स्केलर मल्टीप्लिकेशन क्या होगा? द सम ऑफ़ टू सिमेट्रिक मैट्रिक्स अगेन सिमेट्रिक मैट्रिक्स, हेंस $W$ इज़ क्लोज्ड विथ द मैट्रिक्स। राइट? तो अगर हमने $A + B$, $W$ में, $A, B$ $W$ में लिया, तो $A + B$ भी कहां चला गया? $W$ में चला गया।
+
+अब स्टूडेंट, यहां पे किसी भी स्केलर को किसी मैट्रिक्स से मल्टीप्लाई करते हैं, है ना, तो हम जानते हैं कि वो मैट्रिक्स अगर सिमेट्रिक है, तो उसके स्केलर से मल्टीप्लाई करने पर भी कोई फर्क नहीं पड़ता, वो सिमेट्रिक ही रहती है। तो यही कांसेप्ट हम यहां प्रूफ कर रहे हैं, $cA$ है, तो $c$ को जैसे ही हम इसमें मल्टीप्लाई करेंगे, तो ये वापस ये सिमेट्रिक मैट्रिक्स ही रहेगी। सो $cA$ इज सिमेट्रिक मैट्रिक्स, हेंस $W$ इज क्लोज्ड विथ द स्केलर मल्टीप्लिकेशन। हेंस $W$ इज अ वेक्टर स्पेस।
+
+और स्टूडेंट, आपके मन में सवाल उठेगा कि सर यार, ये आपने अभी जो कराया था, उसमें तो माइनस बताया था। अरे भैया, प्लस की जगह माइनस ले लो यार, टेंशन मत लो। माइनस भी ले लोगे, तो भी ये उसका जो हमारे पास जो मैट्रिक्स आएगी, उसके ट्रांसपोजर कोई फर्क पड़ने वाला नहीं है। ना, $A \pm B$ जो होता है ना, उसका ट्रांसपोजर है, $A^T \pm B^T$ होता है। ना, अगर $A$ और $B$ सिमेट्रिक मैट्रिक्स है, तो उसका जो ट्रांसपोजर, वो भी हमारे पास क्या होगा? सिमेट्रिक ही होगा, है ना। तो माइनस में आने से भी कोई फर्क पड़ने वाला नहीं है। सो डोंट वरी अबाउट दैट, राइट।
+
+सो नेक्स्ट देखिए, हमारे पास यहां पे, नेक्स्ट देखिए स्टूडेंट, यहां पे अगला क्वेश्चन। तो सेकंड प्रॉब्लम क्या बोल रही है? लेट $V(R)$ be द वेक्टर स्पेस ऑफ कंप्लीट रियल कंटीन्यूअस फंक्शन। देन द शो दैट द सॉल्यूशन ऑफ सेट $W$ ऑफ डिफरेंशियल इक्वेशन दिस, ये आपको एक डिफरेंशियल इक्वेशन दी है, इसका जो सेट ऑफ सॉल्यूशन है, है ना, $y = f(x)$ जो भी बनेगा, राइट, आपको ये पूछा जा रहा है, राइट। ये बोल रहा है कि $V(R)$ be द वेक्टर स्पेस ऑफ कंप्लीट रियल कंटीन्यूअस फंक्शन, देन द शो दैट द सॉल्यूशन सेट $W$, है ना, जो इसका सॉल्यूशन सेट है, वो भी क्या होगा? सबस्पेस होगा, राइट।
+
+तो स्टूडेंट, देखिए यहां पे, चूंकि हमारे पास ये डिफरेंशियल इक्वेशन सेकंड ऑर्डर की है, तो यहां पे दो सॉल्यूशन होगा, है ना। एक $y_1$ होगा और एक $y_2$ होगा, मान लेते हैं $y_1$ और $y_2$, है ना, क्योंकि हमारे पास ये डिफरेंशियल इक्वेशन, इसका सॉल्यूशन क्या होगा? $y_1$ और $y_2$ होगा। राइट, अगर $y_1, y_2$ अगर इसका सॉल्यूशन है, हम ये प्रूव करेंगे कि $y_1 + y_2$ भी इसका सॉल्यूशन होगा। माने हमने क्या करा? अल्फा और बीटा को हमने क्या ले लिया, अ सॉरी, जो हमारे पास, हमारे पास जो होता है, आप यहां पे अल्फा, बीटा भी ले सकते हैं ना, ये $\alpha y_1 + \beta y_2$ ले लेते हैं, और जहां पर भी $y$ है, वहां पे $\alpha y_1 + \beta y_2$ रख दीजिए, है ना। अगर उसको रखने पर भी ये जीरो आ जाए, है ना, अगर वो सेटिस्फाई कर जाए मतलब अगर मैं यहां पे ले लूं, $\alpha y_1 + \beta y_2$, अगर ये भी इसका, ये भी इसको सेटिस्फाई कर जाए, है ना, तो इसका मतलब ये भी क्या हो जाएगा? ये भी इसका सॉल्यूशन हो जाएगा, और ये भी इसका सॉल्यूशन रहेगा, मतलब ये सबस्पेस प्रूव हो जाएगा, राइट।
+
+तो बड़ा सिंपल सा क्वेश्चन है, देखिए कैसे करेंगे हम, है ना। वही सम करेंगे, यहां पे हमने $a y_1 + b y_2$ ले लिया यहां पे, है ना। अल्फा, मतलब $a y_1 + b y_2$ ले लिया, है ना। कोई सम नहीं, यहाँ पे मैंने यहाँ पे आपको बोला कि $\alpha y_1$, तो इसकी जगह $a$, चूंकि हम जो स्केलर है, उसको $a$ और $b$ लेंगे, राइट, तो $a, b$ ले लीजिए, राइट। तो $a y_1 + b y_2$ ले लिया, $a y_1 + b y_2$ ले लिया, राइट।
+
+अब स्टूडेंट, यहां पे हम जानते हैं इसका $y_1$ का डबल डेरिवेटिव हो जाएगा, ये भी डबल डेरिवेटिव हो जाएगा, है ना। ये इसका डिफरेंशियल, क्योंकि $a$ और $b$ तो हमारे पास स्केलर है, तो वो तो कांस्टेंट है, उसका डिफरेंशिएशन बाहर आ जाएगा। तो फर्स्ट ये ले लो, इन दोनों को ले लो, फिर इसको ले लो, तो हमारे पास ये इक्वेशन बन जाएगी। फिर इसको ले लो, इसको ले लो, ये हमारे पास हम जानते हैं इसकी वैल्यू जीरो है, क्योंकि ये $y_1$ इसको सेटिस्फाई करता है, क्योंकि $y_1$ उसका सॉल्यूशन है। इसी टाइप से $y_2$ भी इसको क्या करेगा? सेटिस्फाई करेगा, तो वो भी इसका सॉल्यूशन है, ये भी जीरो कर देगा। स्टूडेंट, ये जीरो हो गया और जीरो हो गया, तो हमारा ये क्या चला गया? $W$ में चला गया, और $W$ में चला गया, इसका मतलब $W$ इसका क्या हो जाएगा? सबस्पेस हो जाएगा, क्योंकि कंडीशन सेटिस्फाई हो रही है, राइट। तो देखिए इस तरह से इसको हम प्रूव करते हैं।
+
+नेक्स्ट क्वेश्चन देखिए, प्रॉब्लम नंबर थ्री। शो दैट द सेट $W = \{(a, b, 0)\}$ वेयर $a$ एंड $b$ बिलॉन्ग्स टू $F$, इज़ अ सबस्पेस ऑफ़ $V_3(F)$। आपको ये प्रूव करना है कि ये इसका क्या है? सबस्पेस है, राइट।
+
+तो स्टूडेंट, हम क्या करेंगे? दो ले लेते हैं यहां पे, अल्फा एंड बीटा, है ना। दो हमने यहां पे ले लिया, अल्फा, बीटा ले लिया, राइट। अब हम जानते हैं $a_1, a$ एंड $b$ बिलॉन्ग्स टू $F$ है, दो हमने यहां पे स्केलर ले लिए और ये हमारे पास वेक्टर ले लिए, क्लियर है। तो हम क्या करेंगे स्टूडेंट, यहां पे, अब अल्फा + बीटा निकालेंगे, अल्फा + बीटा निकालेंगे तो स्टूडेंट क्या होगा? $a_1 + a_2$, ये सेकंड वाली जो थ्योरम है ना, वो वाली है ना कि हम यहां पे प्रूव करेंगे कि अल्फा + बीटा भी क्या होगा? हमारे पास $W$ में जाएगा और $c$ अल्फा, है ना, ये भी हमारे पास क्या आ जाएगा? $W$ में जाएगा। अगर हम ये प्रूव कर देंगे तो हमारा काम हो जाएगा, राइट।
+
+आप माइनस भी कर सकते हैं उसमें, टेंशन लेने की जरूरत नहीं है, है ना। आप माइनस भी ले सकते हैं, या ना, यहां पे अभी क्या हो रहा है कि आप बोलोगे सर, आपने डेफिनेशन में तो आपने ऐसा बता रखा है, यहाँ आप ऐसा कर रहे हो, तो भैया, टेंशन लेने की जरूरत नहीं है, आप माइनस भी लोगे ना, तो चूंकि $a_1$ अगर $F$ में है और $a_2$ भी अगर $F$ में है, तो $a_1 - a_2$ भी क्या होगा? $F$ में जाएगा, राइट। तो आप यहां माइनस ले लीजिए, ज्यादा अच्छा रहेगा, तो माइनस ले लीजिए आप। माइनस लेंगे तो भी कोई फर्क पड़ने वाला नहीं है, तो ये भी, ये भी $F$ में जाएगा, ये भी $F$ में जाएगा, इसका मतलब ये कहां चला जाएगा? $W$ में चला जाएगा, राइट।
+
+स्टूडेंट, $c$ मतलब हम क्या करेंगे? किसी कांस्टेंट से इसको, मतलब स्केलर से इसको मल्टीप्लाई करेंगे। तो स्केलर से इसको मल्टीप्लाई करेंगे तो $ca_1 + ca_2$, और हम जानते हैं ये भी क्या हो जाएगा हमारे पास, उसमें चला जाएगा, राइट, $W$ में चला जाएगा, राइट। तो ये हमारे पास क्या हो जाएगा? दोनों कंडीशन यहां पे क्या हो गई? सेटिस्फाई हो गई, इसका मतलब ये क्या हो जाएगा? $V_3(F)$ जो होगा, हमारा क्या होगा? $W$ जो होगा, वो $V_3(F)$ का क्या हो जाएगा? सबस्पेस हो जाएगा। तो इस तरीके से इस क्वेश्चन को यहां पे हम इजली प्रूव कर सकते हैं।
+
+स्टूडेंट, मैं आपको बताना चाहता हूं कि आपके मन में ये सवाल उठ रहा कि सर यार, आपने अभी तो डेफिनेशन बताई थी $a\alpha + b\beta$ बिलॉन्ग्स टू $F$, तो आप उससे भी तो बता सकते हैं ना भाई, ये भी तो कर सकते हैं। भले ही कर सकते हो यार, उससे भी करोगे तो आंसर ये आएगा, करके देख लो यार, है ना। आपको लग रहा है कि सर, उससे क्यों नहीं कर रहे हो? तो उससे भी कर सकते हैं, टेंशन लेने की जरूरत नहीं है। यहां पे $a_1, b_1$ ले लो, $a_2, b_2$ ले लो। देखो यहां पे क्या करेंगे आप? $a$ यहां ले लो, ये $(a_1, b_1, 0) + b$ इंटू यहां पे क्या आएगा? ये $(a_2, b_2, 0)$ ले लो, राइट, है ना। इसको चेक कर लो यहां पे, तो क्या आएगा स्टूडेंट? $(a a_1 + b a_2)$ हो जाएगा। फिर ये आएगा $(a b_1 + b b_2)$ हो जाएगा, है ना। यहाँ पे $a a_1$ प्लस यहाँ पे क्या होगा? $b a_2$ हो जाएगा, राइट। और $a b_1$ और $b b_2$ हो जाएगा, राइट, एंड यहाँ पे ये जीरो हो जाएगा। तो भैया, ये भी कहां चला जाएगा? $W$ में चला जाएगा, राइट। क्यों? ये भी स्केलर और ये भी स्केलर है, और हम जानते हैं ये दोनों क्या होना चाहिए? ये दोनों $F$ में जाना चाहिए। तो ये भी $F$ में जाएगा, ये भी $F$ में जाएगा, इसका मतलब ये पूरा कहां चला जाएगा? $W$ में चला जाएगा। तो इस तरीके से आप क्वेश्चन को प्रूव कर सकते हैं, बिल्कुल टेंशन लेने की आवश्यकता नहीं है कि सर आप क्या बता रहे हो, यहाँ प्रूफ कैसे करा रहे हो? भैया, किसी तरीके से आप क्वेश्चन को प्रूव कर सकते हैं, राइट।
+
+सो मुझे लगता है कि आपको यहां पे मेरा जो पढ़ाया कांसेप्ट है, वो आपको समझ में आया होगा। स्टूडेंट, मैं आपको बताना चाहता हूं कि जो मैं कांसेप्ट पढ़ा रहा हूं यहां पे, वेक्टर स्पेस का, वो कंटिन्यू रहेगा। आगे जो मैं आपके पढ़ाने वाला हूं, वो है अलजेब्रा ऑफ सबस्पेसिस, जिसके अंदर मैं इंटरसेक्शन और यूनियन के बारे में बताऊंगा कि वो भी यहां पे सबस्पेस होते हैं, प्लस उसपे बेस्ड कुछ एग्जांपल लेंगे। सो स्टूडेंट, बने रहिए आप मेरे साथ, बहुत अच्छा कंटेंट मैं आपके लिए अपलोड कर रहा हूं और आगे भी करता रहूंगा।
+
+इस, मेरी लास्ट प्लेलिस्ट है, ये मेरी एप्टीट्यूड की प्लेलिस्ट है, जहाँ पर मैं सीएसआईआर नेट के एप्टीट्यूड के वीडियोस पढ़ा रहा हूँ। इस, ये मेरी लीनियर अलजेब्रा की प्लेलिस्ट है, जहाँ पर आप मेरे वीडियोस को देख सकते हैं। ये दोनों मेरे चैनल हैं, ये मेरा नया चैनल है, जहाँ पर मैं वीडियोस अपलोड कर रहा हूँ फॉर एप्टीट्यूड। स्टूडेंट, ये मेरा पुराना चैनल है, जहाँ पर आप मेरे हायर मैथमेटिक्स के वीडियोस देख सकते हैं।
+
+और स्टूडेंट, मैं बताना चाहता हूँ कि सीएसआईआर नेट के तो वीडियोस मैं अपलोड कर ही रहा हूँ, साथ-साथ में जो गेट के इंजीनियरिंग मैथमेटिक्स के साथ, अगर आप गेट एग्ज़ाम की तैयारी कर रहे हैं, जहाँ पर मैकेनिकल, सिविल, इलेक्ट्रिकल, इलेक्ट्रॉनिक्स, जो भी आपके ब्रांचेस हैं, उसके साथ तैयारी कर रहे हैं, तो उसमें जो इंजीनियरिंग मैथमेटिक्स है, बहुत अच्छा रोल प्ले करता है। तो उस पर भी मैंने वीडियोस अपलोड करना स्टार्ट किए हैं, मेरे पुराने वाले चैनल पे, तो आप मेरे वीडियोस को देख सकते हैं, जहाँ पर मैं कॉम्प्लेक्स एनालिसिस अभी ले रहा हूँ, जिसमें कॉम्प्लेक्स एनालिसिस में 2019 में सभी ब्रांचेस में कौन से क्वेश्चंस पूछे गए हैं, 2018 में कौन से क्वेश्चन पूछे गए हैं, 2017 में कौन से क्वेश्चन पूछे गए हैं, वो सब मैं करा रहा हूँ। नेक्स्ट फिर उसके बाद लीनियर अलजेब्रा लूंगा, कैलकुलस लूंगा, प्रोबेबिलिटी लूंगा। सो सभी टॉपिक्स मैं यहां पे करने वाला हूँ।
+
+सो बने रहिए मेरे साथ, बहुत अच्छा कंटेंट मैं आपके लिए अपलोड कर रहा हूँ और आगे भी करता रहूंगा। सो थैंक यू सो मच फॉर वाचिंग मी। बाय-बाय!

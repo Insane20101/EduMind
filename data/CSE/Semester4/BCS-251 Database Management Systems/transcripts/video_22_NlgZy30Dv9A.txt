@@ -1,0 +1,61 @@
+First Normal Form
+
+Today we're going to discuss the First Normal Form. What is the rule for the first normal form? According to E.F. Codd—guys, E.F. Codd is the father of DBMS—the rule of the First Normal Form is that a table should not contain any multivalued attribute. This means that in a table, there should not be a single attribute in which more than one value exists for a single particular person. 
+
+For example, if I have a student table, I put the roll number, name, and course in it. Now, suppose we have roll number 1, Sai, C, and C++. What is the meaning of that? Sai has registered in both C and C++ courses. Yes, it is possible that a student has enrolled in more than one course. But here my motive is how to represent it, and this representation is wrong. We cannot represent it like this because there is more than one value here for a student. 
+
+Apart from courses, there can be an address with more than one value for a student. A phone number can also have more than two values. So if we look at this table here, I can clearly say this table is not in the First Normal Form because of the course. Who is having the problem here? The course, because there is more than one value for Sai, and even for Omkar, there is more than one value. Therefore, if even a single attribute in your table has a value of more than one, you can clearly say that the table is not in the First Normal Form. So in GATE, if you get such a representation of the table, you can clearly write that no, the table is not in the First Normal Form.
+
+Converting to First Normal Form
+
+The next question comes: how to convert this table into the first normal form? We have three solutions for that. Let's check all the solutions one by one.
+
+The first solution is to draw or create the table using the same attributes: Roll Number, Name, and Course. I have written the same three attributes there. But how will we insert the rows? 
+- 1, Sai, C
+- 1, Sai, C++ (I converted it into two rows)
+- 2, Harsh, JAVA
+- 3, Omkar, C
+- 3, Omkar, DBMS
+
+Now the representation will be like this. I divided the table such that the row containing the roll number is written multiple times. 
+
+If you are asked what the primary key can become in this table, you can clearly check that values are repeating in the roll number, so it cannot be the primary key. The name also cannot be the primary key. Can the course alone be a primary key? No, because C and C values are repeating over there. But if I combine roll number and course, then definitely it will be the primary key. So if I mention it separately, the primary key will be Roll Number and Course combined, which we call a composite primary key. This is the first representation.
+
+The Second Representation
+
+The second representation uses the same table, represented like this: Roll Number, Name of the Student, Course One, and Course Two. 
+
+Now, in the courses, I know what the maximum value of the course is—meaning, the maximum number of courses a student is enrolled in. Here, a student is enrolled in a maximum of two courses. So I make two separate columns here: Course One and Course Two. 
+- Roll number 1: Sai, C, and C++
+- Roll number 2: Harsh, JAVA. Now, the important part is: what will be Course Two for Harsh? Since he is not registered in a second course, that value will be null. Null means empty. It is not zero; actually, null means not available, the value is not existing over there, so you have to leave it empty. 
+- Roll number 3: Omkar, C, and DBMS. 
+
+So this will be the second kind of representation. In this, you can be asked: what can be the primary key? The same question applies. The primary key directly can be your roll number. Only the roll number alone can be a primary key, so we can say that it is a simple primary key, which is the roll number. 
+
+However, if you look at this, the problem is that it is possible that one student is enrolled in N number of courses, while another student is enrolled in only one course. So what will happen, guys? For one student, you are writing N number of columns again and again, and there will be some values for that as well. But there will also be a student who is enrolled in only one course, for whom you will have to write "null." If you represent null here so many times in the overall table, there will be a large number of nulls in the representation, which is not a good representation.
+
+The Third Representation
+
+Therefore, you can represent it in a third format. The third format is to divide this table into two tables: a base table and a referencing table. 
+
+In the base table, we can have Roll Number and Name:
+- Roll number 1, Sai
+- Roll number 2, Harsh
+- Roll number 3, Omkar
+
+And there will be another referencing table that will contain Roll Number and Course:
+- 1, C
+- 1, C++
+- 2, Java
+- 3, C
+- 3, DBMS
+
+Why are we calling the first one a base table? Because the primary key exists in it, which is the roll number. Here, we call the second one a referencing table because the roll number here is working as a foreign key. Where will you get the reference from? As we already know, a foreign key always takes the reference from the primary key. So in this table, the above primary key is the roll number, and this foreign key will take the reference from it. 
+
+If you want to see what the primary keys are:
+- For the base table, the primary key is Roll Number, and there is no foreign key because this is a base table.
+- For the referencing table, the primary key is Roll Number and Course combined. The foreign key is Roll Number, which takes the reference from the Roll Number of the base table.
+
+You can represent it like this. If a student enrolls in N number of courses, you can easily enter the values over there in the referencing table, but in the base table, there will be only one entry for that student. So this is a good representation of the First Normal Form. 
+
+That means if you have any table, you can convert it into the first normal form in three ways. You can implement these three methods one by one and compare them. Thank you.

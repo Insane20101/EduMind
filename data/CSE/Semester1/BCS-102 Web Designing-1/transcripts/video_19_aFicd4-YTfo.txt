@@ -1,0 +1,133 @@
+Today's video will cover how fonts and colors work in CSS. I will also demonstrate how to use external fonts on your website, how to change font sizes, and the concept of fallback fonts. All of this will be explained with examples. Let's begin.
+
+This video is very important because fonts and colors are fundamental to any website you create. To start, I will right-click to create a new folder, naming it "video 19." I'll then open this folder with VS Code. Inside, I've created an `index.html` file where I will write internal CSS, keeping all styles on the same page for simplicity.
+
+First, I will create a `div`, an `h1` inside it with the text "Fonts," and a paragraph saying, "This is a video on fonts."
+
+If you haven't accessed the playlist yet, please bookmark or save it. The source code is also being updated regularly.
+
+**Understanding Font Families**
+
+Many beginners may not know what a font is. Different fonts make text appear distinct. To change the font of any element, we use the `font-family` property. I can easily add a `<style>` tag and target the paragraph:
+
+```css
+p {
+  font-family: /* options */
+}
+```
+
+VS Code provides many options automatically, such as `Segoe UI`, `Tahoma`, and others. These are comma-separated values. The browser will try to apply the first font in the list; if it's not available on the user's system, it will try the next one, and so on. These subsequent fonts are called **fallback fonts**. For example, in `Segoe UI, Tahoma, Geneva, Verdana, sans-serif`, `Segoe UI` is the main font, and the rest are fallbacks.
+
+After applying a `font-family`, you'll notice a subtle change in the font. If I want to change the font family of my `h1`, for instance, to "Times New Roman," I would set `font-family: "Times New Roman";`. By default, it's often Times New Roman, so there might not be a noticeable difference. Let's try something else, like "Lucida Sans." This font looks a little better than the previous one. So, you can change fonts using `font-family`.
+
+It's a best practice to always include at least one generic font family (like `serif`, `sans-serif`, `monospace`, or `cursive`) at the end of your `font-family` list. This ensures that if none of your specified fonts are available on the user's computer, a default, readable font will still be used.
+
+**Other Font Properties**
+
+CSS offers many other font-related properties.
+*   **`font-style`**: You can set `font-style` to `italic`, `normal`, or `oblique`. For example, `font-style: italic;` will make the text italic.
+*   **`font-weight`**: To make text bold, we use `font-weight`. Values like `bold`, `bolder`, `lighter`, or numeric values (e.g., `700`, `900`) can be used. For instance, `font-weight: 700;` will make the text thicker.
+*   **`text-decoration`**: For underlining text, use `text-decoration: underline;`. You can also use `overline` for a line above the text, but it's less commonly used.
+
+I will provide a CodePen link that illustrates what different generic font families look like: `serif`, `sans-serif`, `monospace`, and `cursive`. This CodePen helps visualize how these font families appear.
+
+**Using External Fonts (Google Fonts)**
+
+When doing web development, you often want to use special fonts. For example, I really like a font called Ballu Bhai (and Ballu Behna, Ballu Bhai 2). I'll show you how to use Google Fonts to include such fonts.
+
+Open a new tab and search for "Google Fonts." Once on the Google Fonts website, you can search for a specific font. For instance, searching for "Ballu Bhai" shows options like Ballu Bhai 2. Clicking on it previews how the font looks in English.
+
+To use a font, click on it, select the desired styles (e.g., Regular 400), and click the "plus" button. Google Fonts offers two main ways to include fonts:
+1.  **`<link>` tag**: This is placed in the `<head>` section of your HTML.
+2.  **`@import` statement**: This is placed inside a `<style>` tag in your CSS.
+
+Let's demonstrate using `@import`. Google Fonts provides the `@import` URL. You would place this statement within your `<style>` tag:
+
+```css
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Ballu+Bhai+2&display=swap');
+  /* ... your other styles ... */
+</style>
+```
+
+Then, to apply the font, you use the `font-family` property, which Google Fonts also provides. For Ballu Bhai 2, it would be `font-family: 'Ballu Bhai 2', sans-serif;`. This ensures that if Ballu Bhai 2 isn't available, `sans-serif` acts as a fallback. After applying, you'll see the font change on your page. I'll remove any `font-style` or `font-weight` that might interfere, so the font looks exactly as downloaded.
+
+Alternatively, to use the `<link>` method, copy the `<link>` tag provided by Google Fonts and paste it into the `<head>` section of your `index.html`. Remember to remove the `@import` statement if you're using the `<link>` tag, as you only need one method. Both methods achieve the same result: including the font on your webpage.
+
+It's recommended to include all desired fonts in a single request. For example, if you also want to use the "Poppins" font (one of my favorites), you can add it to the same Google Fonts selection. The `@import` or `<link>` statement will then include both fonts. This is more efficient as it's one request for multiple fonts. You won't typically need 50 fonts on a single webpage. Now, if I want my `h1` to use Poppins, I'll set `font-family: 'Poppins', sans-serif;`. You'll see the `h1` update to Poppins. I encourage you to explore Google Fonts; it's a very enjoyable experience.
+
+**Font Size and Line Height**
+
+Another important font property is `font-size`. You can change the font size using various units like `large`, `medium`, `x-small`, `xx-large`, but I recommend using `pixel` units (`px`). For instance, `font-size: 20px;` will increase the font size.
+
+By default, browsers apply specific font sizes. If no `font-size` is explicitly set, an `h1` might be 32 pixels and a paragraph 16 pixels. You can verify this by inspecting the element in your browser's developer tools under the "Computed" tab.
+
+Let's set our paragraph's `font-size` to `20px`. You can also dynamically adjust the font size in the developer tools using the up and down arrow keys when an element's `font-size` property is selected. This allows for quick experimentation with font sizes, weights (e.g., `font-weight: 600;`), and even colors (e.g., `color: red;`). Remember that changes made in the developer tools are temporary; to make them permanent, copy the styles and paste them into your CSS code.
+
+Next is the concept of `line-height`. `line-height` controls the vertical space between lines of text. For a paragraph, if I set `line-height: 4;`, you'll see a significant increase in spacing between lines. Reducing it, for example, to `1.4` or `1.8`, will reduce the spacing. If you want to know the default `line-height`, you might need to search online, as it can vary slightly, but it's typically around 1.1 to 1.2, or 110% to 120%. `line-height` is crucial for readability and visual appeal.
+
+**Letter Spacing, Text Transform, Text Decoration Details**
+
+*   **`letter-spacing`**: This property controls the horizontal space between individual letters. Increasing `letter-spacing` will spread out the letters. While it exists, I personally don't use it much in my own websites. However, it's good to know about all properties in case you need them.
+*   **`text-transform`**: This property allows you to change the capitalization of text.
+    *   `capitalize`: Capitalizes the first letter of each word.
+    *   `lowercase`: Converts all text to lowercase.
+    *   `uppercase`: Converts all text to uppercase.
+    This property can be very useful for styling headings or specific text sections.
+*   **`text-decoration` revisited**: Earlier, we discussed `underline` for `text-decoration`. You can also customize the underline further:
+    *   **`text-decoration-color`**: Changes the color of the underline. For example, `text-decoration-color: aqua;` will make the underline aqua. This is very helpful for navigation bars where the underline color might change on hover.
+    *   **`text-decoration-style`**: Defines the style of the underline. Options include `dotted`, `dashed`, `double`, `solid`, and `wavy`. For example, `text-decoration-style: dotted;` will create a dotted underline. While `wavy` or `dotted` might not be used frequently, knowing they exist is important if a design requires them.
+    *   **`text-decoration-thickness`**: Controls the thickness of the underline. You can specify a pixel value, e.g., `text-decoration-thickness: 7px;`. This can be useful for creating a visually prominent underline.
+
+**Text Indent, Text Overflow, Word Break, Text Align**
+
+*   **`text-indent`**: This property adds an indent to the first line of a block of text. For instance, `text-indent: 45px;` will push the first line 45 pixels to the right.
+*   **`text-overflow`**: This property determines how overflowing content that is not displayed (because of `overflow: hidden`) should be signaled to the user.
+    *   `ellipsis`: Displays an ellipsis (...) to indicate that the text has been clipped.
+    *   `clip`: Clips the text without indicating that it has been clipped.
+    For `text-overflow` to work, the element needs a fixed `width` and `overflow: hidden;`. For example, a paragraph with a `border: 2px solid red;`, `width: 45px;`, and `overflow: hidden; text-overflow: ellipsis;` will display an ellipsis if the text exceeds the 45-pixel width.
+*   **`word-break`**: This property specifies how words should break when reaching the end of a line. `word-break: break-all;` will break words at arbitrary characters if necessary to fit within the container. If not set, longer words might extend beyond the box or wrap to the next line as a whole.
+*   **`text-align`**: This property controls the horizontal alignment of text within an element. `text-align: center;` will center the text. Other values include `left`, `right`, and `justify`.
+
+These are crucial text properties. To create good websites, you must understand how to control your text. I will provide a link in the description for additional learning, which will make these concepts even more intuitive.
+
+**Working with Colors**
+
+Now, let's move on to colors. I'll create a new HTML file called `colors.html` to keep our color examples separate, as our `index.html` has become cluttered with font examples.
+
+In `colors.html`, I'll add an `h1` with the text "Let's learn about colors." To change the color of the `h1`, we use the `color` property.
+
+```css
+h1 {
+  color: red; /* Using a color keyword */
+}
+```
+
+As expected, the text becomes red. We can change it to `orange`, and it will update.
+
+**Color Keywords and Limitations**
+
+These are **color keywords**. However, it's important to note that not every color you can imagine is a CSS color keyword. For instance, "dark yellow" might not be a valid keyword, while "dark red" and "dark grey" are. There's a comprehensive list of CSS color keywords (like `AliceBlue`, `AntiqueWhite`, `Aqua`, `Aquamarine`, `Azure`, etc.) available online. You don't need to memorize them; it's just useful to be aware of their existence. Color keywords are the easiest way to apply colors.
+
+**Other Color Representation Methods**
+
+However, colors can be represented in millions of ways, and sometimes you'll need to specify a very particular color that isn't a keyword. There are three common ways to represent colors beyond keywords:
+1.  **Hexadecimal (Hex) Color Codes**: These codes use a hashtag followed by six hexadecimal characters (e.g., `#RRGGBB` or `#RGB` for shorthand). You can find hex color codes using online tools or color pickers. For example, `#3CB371` represents a green color. Designers often use hex codes in their work.
+2.  **RGB (Red, Green, Blue) Values**: `rgb()` allows you to specify the intensity of red, green, and blue light, each ranging from 0 to 255. For example, `rgb(23, 100, 200)` will create a specific color. Setting all to 0 (`rgb(0,0,0)`) makes black, and setting all to 255 (`rgb(255,255,255)`) makes white.
+3.  **RGBA (Red, Green, Blue, Alpha) Values**: `rgba()` is similar to `rgb()`, but it adds an **alpha** channel, which controls the opacity or transparency of the color. The alpha value ranges from 0 (fully transparent) to 1 (fully opaque). For example, `rgba(23, 100, 200, 0.5)` will apply the same color as before but with 50% opacity.
+4.  **HSL (Hue, Saturation, Lightness) Values**: `hsl()` allows you to define colors using a different model:
+    *   **Hue**: The color's tint (0-360 degrees, representing colors on a color wheel).
+    *   **Saturation**: The intensity or purity of the color (0-100%).
+    *   **Lightness**: How light or dark the color is (0-100%).
+
+Regarding usage, color keywords are most common for simple colors. After that, hex color codes are widely used, especially when working with designers who often provide colors in hex format. RGB, RGBA, and HSL are also used, particularly when needing to specify transparency (RGBA) or when working with a color model that's more intuitive for color adjustments (HSL). You'll use the method required by your design or team.
+
+If a developer has used a particular color in an Android app and needs to use the exact same color on their website, they should use the exact color code: hex color code or RGB values. Sometimes, HSL is also used. I will tell you, it is used less. I personally do not use HSL in my website, but HSL is used. I want to tell you that H in HSL is Hue, which represents the type of color. S means intensity and purity, and L determines lightness.
+
+Now you can see how an HSL color can be made. I will copy the color from here and show you. Personally, I am not a big fan of HSL, to be honest. I will copy the color from here and show you. I am not a big fan of HSL, to be honest, but sometimes I encounter colors that require its use. If you hover over here and change it, it will reflect in HSL values. You can also change the alpha value; there is also HSLA. Again, it is not that useful, but you should know that HSLA exists. It is not used that much, but you should know that HSLA is also there; you can also specify an alpha value in it, something like this. While I can also add HSLA, for now, we will keep alpha at 100% and focus on HSL because if you are making your website, you have full creative control over the colors you are using.
+
+This was about color. If you want to add color to the background, we use the same concept with `background-color`. Exactly the way I demonstrated applying color, you can apply it there. For example, if you want to give a color in the background, you can provide RGB, HSL, or RGBA values. You can also use color keywords or hex codes. The sky is the limit; it is your choice. You might say, "It's my choice, whatever color I use," if you are making your own website. However, if you are making one for someone else, they will say, "It's my choice; you are a developer, make a website, and use the color I am telling you."
+Now, for `border-color` and `text-decoration-color`, and many other color properties throughout CSS, such as the color of the border, wherever we need to specify colors, we can use these kinds of values. This concludes the discussion about colors in CSS.
+
+Now, there are many things, like how to read HSL or how to tweak values to create a particular color. Those topics will be covered in design lessons. You should have a goal for how to make a website; those things will go towards design lessons. You should have a goal here: how to make a good website.
+I hope in this longer video, I have explained fonts and colors to you. Many people were saying that the videos were getting short, so I thought a longer video should also be provided. So, I have tried to explain fonts and colors in today's video. I am enjoying teaching you in the comment section of this course, but people are not bookmarking the playlist and not liking the videos, which I think is wrong. I think you should access this playlist, bookmark it, like this video, share it with your friends, and prepare to meet me in the next video. Thank you so much for watching this video, and I will see you in the next video.

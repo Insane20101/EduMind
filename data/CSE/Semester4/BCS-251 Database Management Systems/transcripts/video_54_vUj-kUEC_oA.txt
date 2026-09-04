@@ -1,0 +1,65 @@
+Hello friends, welcome to Gate Smashers. In today's video, we are going to discuss the types of SQL commands. 
+
+What is SQL? Structured Query Language. We use Structured Query Language to deal with structured data. Structured data means data that we normally store in the form of tables, or you can say, in the form of relations. So when we store the data in the form of a table, I need some commands in the language. And if I store the data, then to retrieve it also I need some commands or a language. So which are the languages, or you can say what are the commands, that we use inside SQL, inside Structured Query Language, to deal with structured data?
+
+### DDL Commands (Data Definition Language)
+
+First of all, we have DDL commands. DDL stands for Data Definition Language. Which DDL commands do we have? `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, and `RENAME`. 
+
+DDL commands mean they deal with the schema. What do they deal with? The schema. What is a schema here? Structure. Structure means a table, meaning the data we want to store and where we are storing it. As I just told you, structured data we store in the form of tables. So it deals with the creation of that table. 
+
+For example, if I take a real-life example here, any data or any items I have, I have to courier them. The items we have, what are they? Data. But to courier those items, what do we actually need? We want a box in which we can put the goods. Then this box, what is this box? It is the schema, meaning the structure. So how to make this box? For that, we use here `CREATE TABLE`. What is the box here with us? Tables. In structured data, always remember that we store data only in the form of tables. So whenever anyone asks you about a schema or structure—which structure do we use in SQL and which data model do we use?—what is the model here? A table. 
+
+So the same thing I am talking about here: the box we have to make in which we can courier and put the goods, how to create that box? By `CREATE TABLE`, meaning by the `CREATE` command here. 
+
+If I want to change anything in that box—let's say I want to increase the size of this box or increase the width of that box, if I want to change anything—then we use the `ALTER` command. If we talk about the table here, if I want to change anything in the table, I have to change the data type of the table, add a column inside the table, delete a column—meaning whatever has to be changed in the structure, that we do with `ALTER`. 
+
+If we want to remove the structure, we use the `DROP` command. To remove data from inside the structure, we use `TRUNCATE`. And to change the name of the structure, then we use `RENAME`. 
+
+So what is the structure here? A table. Whatever these commands are in the table, actually we will see these commands one by one in detail with explanations of how they work and what their syntax is. But here in this video, I just want to give you an overview so that you can know in which language which commands come and what their use is in actuality. 
+
+Then you have DDL, meaning data definition. The data we have to enter, the data we have to store—before storing, I need a structure in which I can put that data. So who looks after all the work related to structure? DDL commands see to that.
+
+### DML Commands (Data Manipulation Language)
+
+Next is data manipulation. Both of these are very important, and you cannot do data manipulation unless you do DDL. Why? Because if I take the same example, I have to courier something. To courier, let's say I have a lot of items which I have to courier. Courier you will do it later; what you first need is a box. You need a place where you can put that data together. 
+
+So what is the meaning of manipulation here? Data manipulation means we have to insert data. If we want to change something in the data, then which one do we use? Manipulation. If data is to be fetched, then the `SELECT` command, `INSERT` command, `UPDATE` command, and if data is to be deleted, then the `DELETE` command. 
+
+If we look at a simple example, let's say I want to save the information of a student. Then what do we have with the student's information? Student Name, Student Father's Name, Student Mother's Name, Student Age, Student Date of Birth. What are all these? Columns, meaning data types about the student. So where do we create all these values, all these attributes? In DDL. 
+
+But what are their values? Meaning what is the student's name, what is his father's name, mother's name, or what is her age? Where do we put all that data? What do we use through Data Manipulation Language? `SELECT`, `INSERT`, `UPDATE`, `DELETE`. 
+
+What do we use `INSERT` for? When we have made the box, when we have created the structure, and in that structure we have to insert data, delete data, or change some value, for this we use DML commands here.
+
+### DCL Commands (Data Control Language)
+
+Then third comes to us: Data Control Language. Data control means, by the name we are getting to know, who has control over that data? Who is actually authorized on that data? Who can delete from that data? Who can get insight into that data and who can get values from that data, or can `SELECT`? 
+
+So in general, we have different types of users. If we talk about a company, what happens inside the company? They keep centralized data. And what do different employees do? If we fetch that data, then it is not that we give all the privileges to every fellow. Each person has some pre-defined privileges. So which privileges are to be given? We grant that with the `GRANT` command. And if I think that the guy is leaving the company, then I have all that privilege and have to take the permission back, then we use the `REVOKE` command. 
+
+So what privileges have to be given over the data? That privilege is generally whether that data I can create, insert, delete, update, or something else. Privilege comes around that. So if I want to grant something, I can grant it. If we want to take it back from a user, then we use the `REVOKE` command.
+
+### TCL Commands (Transaction Control Language)
+
+Then we have Transaction Control Language. In Transaction Control Language, we use it generally inside transactions. As in today's time, what are we doing all the work in general? Trying to do things online, meaning paying bills online, shopping—what are they doing? Online. So all these things we are doing, in which our transactions are used. 
+
+What do we do in transactions? If I want to credit money, debit money, or transfer money, then what word do we use for all these things? Transactions. And controlling transactions in DBMS is a very major *funda* in itself. 
+
+So if we talk about commands, then it is used for our `COMMIT`. `COMMIT` means if the transaction is completed, we will put all the values in the database, we have to save it. `ROLLBACK`: If the transaction fails, then we rollback. In actual ACID properties, which are ACID properties inside the transaction, we have to use them. If in a proper way, then we will `COMMIT`, `ROLLBACK`, `SAVEPOINT`. 
+
+`SAVEPOINT`, what does it mean? That if the transaction is going on somewhere in between, then after twenty percent or thirty percent, we save it. Just like downloading. Like in downloading or buffering, we have points in between. What happens if our buffering or our downloading, let's say, fails at 90%? If it starts again from zero or from 90%? We use different types of commands for these things. 
+
+And I want to tell you all these commands: this is the point of competitive exams. Why did I bring it? Not for the certification exam of Oracle or Microsoft SQL Server, although all these commands can be used there too. But if you are preparing for a certification exam, then in a certification exam, maybe apart from this we have more commands. But if we talk about competitive exams like GATE, NTA, NEET, KVS, talking about any competitive exam, then these commands which are in it are more than enough. 
+
+And if these commands you want to execute, then you use the software which is from Oracle—Oracle line 10g, 11, 12, 15, 16. We have many different versions, or you can use MySQL, you can use SQL Server. Different platforms are available. But all these commands, they are used in general, and we get direct names in competitive exams: What is the use of these commands? What is their purpose?
+
+### Constraints
+
+Next, we have Constraints. In the constraint section, there is not any type of language. I have written the constraint here because when we create the data or insert the data, these constraints we normally use here. DDL and DML come to us in the constraint, like primary key, foreign key, check, unique, default, and not null. 
+
+* **Primary Key:** As we know, what does primary mean? If I have any one table in the data, I have to create a table of students, but I want that no duplication should come, no data should be such that it is duplicate, meaning that the whole row which is there should not be the same. So for that, we use the functionality of like a primary key.
+* **Foreign Key:** We use it for reference. And if you want to know in detail about the foreign key, then I have already made a video on it. What is its purpose? A video is made on the primary key, does it have a purpose? So you can please check that video. Its link I have already given in the description box.
+* **Check, Unique, Default, and Not Null:** Like `NOT NULL` we use here for mandatory fields. Many times on web pages, we often fill out web forms online. So what happens in it? When we submit, some of the options are pending, meaning a star comes written: "This is a mandatory field, in which the data there, we can't leave it null." 
+
+Then what is the different type of constraint? We have made some rules to enter the data. We call those rules as constraints. We will see all these commands one by one in complete detail. But here you can check an overview of which type of commands, which is what we normally use inside SQL, and what is important from a competitive point of view. What can come and what cannot come? So this is more than enough for the competitive point of view. Thank you.

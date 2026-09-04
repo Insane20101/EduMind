@@ -1,0 +1,61 @@
+Hello friends, welcome to Gate Smashers. Now we are going to discuss "In" and "Not In" use in subqueries. 
+
+In the previous video, I have just discussed that "In" and "Not In" keywords we use in SQL in normal queries. We saw that, and now we are going to discuss that "In" and "Not In," how can we use them in a subquery. 
+
+Over here, I am going to make you go through an example. But what am I expecting from you all? That it doesn't mean that "In" and "Not In" is just used in this case. What you have to understand from this video is "In" and "Not In," how do they work? What is their functionality? 
+
+Now, if I say that "In" and "Not In" works like this, then in any scenario—over here, I am taking a scenario of Emp and project; it is possible that in an exam, in Gate there is some other scenario, in UGC NET there is some other scenario, in other competitive exams there is some other scenario. So, "In" and "Not In" is a very easy concept. If you easily come to know that this is the meaning of this thing and this means this, then no matter whatever is the scenario—if there is any query—you just have to use it. 
+
+So, "In" and "Not In" we are going to use in this query. First of all, I am going to tell the query: "Find the name of the employee or employees." It can also be more than one value. "Find the name of the employees who are working on a project." 
+
+Means, we have to find those people's names. We have to find those employees' names who are working on some project. So, whenever you get such a query, then I am telling you with my experience that first of all—first of all, you take a dummy table. With a dummy table only, you can solve this query properly. Or you have four options, but in four options also you have to neglect three options and you have to correct one. Then the best solution is that you take a dummy table. 
+
+So I have taken two tables: Emp and Project. One table is telling employee detail, and the second table is telling project detail. And in both, I have kept a common attribute: Eid. The Eid that I have kept common, it is acting as a foreign key. Now, in this table you can also keep Pid; that is your wish. Any case from both, there should be something common, then only they are related. If there is nothing common in both the things, then how are they related with each other? So that's why I have kept a common attribute. 
+
+So, find the name of the employee who are working on a project. So first of all, if I find that who are such employees that are working on some project, how will we come to know that which employees are working on some project? Go to the project table. In the project table, Eid is there. Eid is written only of them who are working on some project. You will easily get from here. 
+
+But what do you have to show in output? Name of the employee. But where is the name of the employee? In this table [Emp]. So you need both the tables over here. You will get the name from the above table, and from the table below you will come to know that which person is working on which project. It can also happen that some employee is sitting on the bench, means he is not working on any project. So I want to neglect those values. 
+
+So first of all, I will find that which employee is working on some project. So it is simple: `select Eid`. Because what is common in both? Eid. So we will take Eid and compare. `select Eid from project`. You can also write over here `distinct(Eid)`. Because it is possible that an employee is working on multiple projects. So over here, my work is done simply with this also: `select Eid from Project`. 
+
+So over here, what is the output of `select Eid from project`? This output: 1, 5, 3, 4. Means they are those employees who are working on some project. If over here, let's say that over here there would be one more value 5, there would be multiple 5s, then 5 would be printed two times over here. To stop that thing, you can also use over here `distinct(Eid)`. So `select distinct(Eid)`. Over here, I have not taken such data. If you want to take, then you can take. So distinct you can apply. 
+
+So `select distinct(Eid) from project`. This is the output: 1, 5, 3, 4. If you see 1, 5, 3, 4, they are those people who are working on some project. Like, 1 is working on an IoT project, 5 is working on some big data project, 3 is working on some retail project, and 4 is working on Android—what is Android? It is a technology. So there will be some project on technology, on that he is working. This is the output that I have got. 
+
+But I have to print employee name. I don't have to print ID. If I had to print ID, then the question was done. My query would have been over. Employee's name—employee name is over here. So outer query—this was inner query. We call this inner query. What is a subquery? Nested query. Nested query means inside query, one more query. As there is a nested loop, for loop. So this is the outer query. The one which is written inside is the inner query. 
+
+So I have written the inner query. Now, outer query. Outer is from where I will get my final output, from where I will get the final value. So final value: employee name. So we have kept attribute name `ename`. 
+`select ename from Emp where`, we will compare this. What is common in both? `Eid`. 
+`where Eid In (...)` 
+That's it. 
+`where Eid In (select distinct(Eid) from Project)`
+
+Now see how does it work. Whenever nested query—if I talk about nested query of subquery—then always nested query is bottom-up. Bottom-up means first of all, the inner query will be executed. The inner query gave output 1, 5, 3, 4. Now we will come on the outer query: `select ename from Emp where Eid ...`. Take Eid from Emp. Where is Eid in employee? It is here. 
+
+So the first value, what is it? 1. `In`. Over here, `In` will only come. Over here, you cannot use `=` because if you use `=`, then the inner query is not giving one output. The inner query is giving multiple values output. So if this inner query was giving only one output, then you could easily use `=` over here. But due to multiple values, over here you will have to use `In` only. 
+
+So 1 `In`—is it there in this [1, 5, 3, 4]? Is 1 included? True or false? True, 1 is included. So what is the employee name corresponding to 1? You print corresponding to 1, which is Ravi. 
+
+Then 2. `In` Eid 2. You have to compare one by one. Eid 2—is 2 included in this? 2 is not included. So the name corresponding to 2, it will not come. 
+
+Is 3 included? 3 included? Yes. So corresponding to it, what is the name? Nitin. 
+
+Then 4. Next 4. 4 is included in this? Yes. So what is the name corresponding to 4? Robin. 
+
+Then 5. Is 5 included in this? 5 is included. True. So what is the name corresponding to 5? Amey. So this will be the output. 
+
+So this is how `In` works in the nested query. So this is one scenario. We saw one scenario in the last video. So from here, you just have to compare this: where do we use `In`? In nested queries. And always when one value is to be compared to multiple values, then we use `In`. 
+
+Along with that, you also see `Not In`. Because it is the same only. `Not In`: 
+`where Eid Not In (...)`
+Not equal to, you can say not equal to or not included. 
+1 not included? False. 
+2 not included? True. So 2 not included is in this? No, so it is true. So what is the name corresponding to 2? Varun. So this will be printed. 
+
+But will this stop the comparison? No, comparison he will do completely. It is possible that the last row also is not matched, then it will not stop. Compare it with 3: 3 not included? False, 3 is included. 
+4 not included? False, 4 is included. 
+5 not included? False, 5 is included. 
+
+Now the comparisons will be stopped. And what is the output in final? Varun. 
+
+So this is how `In` and `Not In` actually work in a subquery. If you liked this video, then please like it, please share my videos, and please subscribe my channel if still you have not done. Thank you.

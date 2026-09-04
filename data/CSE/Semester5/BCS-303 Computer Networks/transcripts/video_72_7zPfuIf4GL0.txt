@@ -1,0 +1,73 @@
+Hello friends, I welcome you to Gate Smashers. In this video, I'm going to explain TCP data transfer. I have explained in the last video the TCP connection establishment, in which we have discussed a very important term: 3-way handshaking. So, the 3-way handshaking method is very important for your university exam and even your competitive exam. Through that method, the client and server establish a connection through the 3-way handshaking theorem. 
+
+After the establishment of the connection, we have to do data transfer. How does TCP do data transfer? What are the important points in this? I am going to explain it in this video, which will be very beneficial for your competitive exams and for your college or university level exams. So please, guys, like this video fast. If you haven't subscribed to the channel, please subscribe to it and press the bell button to get all the notifications. So let's start!
+
+### Data Transfer
+
+Before data transfer, I have to tell you that when TCP establishes a connection, what happens through it is that both the client and server reserve their resources. What is meant by reserving the resources? It is that they have already established their buffers. One has kept its buffer, the other has kept its bandwidth, and they have reserved their resources. They are waiting for the data to come to them. 
+
+The first important point of TCP data transfer is that it is a duplex mode. What is meant by duplex? It is that data transfer will take place from client to server and also from server to client. This means the connection is like this: from client to server and from server to client also. This means the client can send data to the server, and at the same time, the server can also send data to the client. That is called full duplex. This means both the client and server can communicate with each other and do data transfer. 
+
+If we talk here first, make sure to check the connection establishment video because the terms I am telling you in the beginning, I have explained them with examples in that video. 
+
+### Window Size and Sequence Numbers
+
+After reserving resources, both the client and server have negotiated the size of the window. Let's suppose I have negotiated the size of the window to 10 bytes. It had said, "I will send 10 bytes," and the other one had also said, "I will also send 10 bytes." Although the size of the window can be up to 16 bits—obviously, you can send $2^{16}$, a huge segment number—only for the sake of simplicity, I have used only 10 bytes here so you can understand easily. 
+
+When it sends 10 bytes, the other will send 10 bytes also, just for making you understand. Otherwise, the size of the window and all these, I have explained in the TCP header video, so that all these points are linked with each other. 
+
+Now, let's suppose its sequence number—means if the first client had sent the data, so the client has sent 21 to 30, meaning here are 10 bytes. So, the client is sending 10 bytes, and 21 to 30 means the starting sequence is 21 and the last sequence number is 30. But we only send the starting sequence number. So, see what am I doing here? What had the client sent first? The client has sent data with sequence number 21. This means the data I am sending to you, the segment I am sending to you, the starting sequence number of that segment is 21. 
+
+Now, after 21, what else can be here other than this? If before that, connection was established, obviously, if we suppose that before that the server has also sent data, so it will obviously send the acknowledgment also. The flag of acknowledgment—the flag value has turned to 1. I have also explained flags in the TCP header video. The flag has been set, meaning the flag has been turned to 1, and also the acknowledgment number is sent. 
+
+What is the acknowledgment number actually? Acknowledgment is that the client is now expecting this data from server: "I want this segment." Let's say it has sent acknowledgment number 71. We're assuming here that earlier than this, the server has sent between 60 to 70. Obviously, we have to start from somewhere, so it has sent number 71. 
+
+As soon as this whole packet—in which it has data in it, and along with that, we have inserted header values in the header field—now this data has reached the server. The server has now understood that I have data from 21 to 30. Further, the server has to accept this data and send it to its application layer. Along with that, the acknowledgment has also been sent, which is of value 1, and the acknowledgment number is 71. 
+
+### Server Response and Data Exchange
+
+Now, 71 means what will the server do? The server will now send data. Now the server has transferred the data. When the server is transferring data, it has sequence number 71 because it was expecting 71. So, let's suppose the server has data from 71 to 80 (10 bytes; I have already fixed it that the window size for both is 10 bytes). So, it has sent the data of 10 bytes with sequence number 71. 
+
+We have to give acknowledgment to this also. Why will we do so? Because it has previously accepted data. How will the client know that its data has been accepted? Through acknowledgment. So the flag of acknowledgment is 1. 
+
+So what will be the acknowledgment number? See, from 21 to 30 has been accepted, so obviously the next sequence number is 31. So, it is expecting data starting from 31. Points are simple; you only have to remember these. 
+
+So see, here data transfer will take place like this only. It will send 31 to 40. It will send next 81 to 90. Like this, data transfer will further take place. But what are the important points? Meaning, what can be asked in competitive and college/university exams?
+
+### Piggybacking vs. Pure Acknowledgement
+
+The first point is: When we send acknowledgment, we can send it by two methods. 
+
+#### 1. Piggybacking
+What is meant by piggybacking? When we are sending data, with data we are sending acknowledgment also. See, we've sent the data of 10 bytes, and with that, we have sent the acknowledgment also that I have accepted your data, now I am sending data. 
+
+Like this only, before that, the client said, "Take this data from my side, and this is the acknowledgment of the last data you have sent." Here, the server gets to know that its data has reached. In the next packet, the client gets to know its data has reached, and data has come from the server also. 
+
+So when we send data and acknowledgment together, that is called a piggybacked package. Why do we use this piggybacking? Obviously, for reducing the traffic of the network. Otherwise, what will happen? You have sent data, and then acknowledgment. Then data, then acknowledgment. So, obviously, your traffic, your network—you are sending data and acknowledgment in the network in different packets. So the network data will have many packets. For reducing that, we are using piggybacking, in which we send data and acknowledgment together. 
+
+#### 2. Pure Acknowledgement
+Other than this, there is another method: pure acknowledgment. Pure acknowledgment means we can send acknowledgment alone. Let's see this with an example. Why will we do this? 
+
+When we have piggybacking—in which we're sending data and acknowledgment together, due to which I will not get unnecessary packets in the network, and congestion will also be low—then why will I send pure acknowledgment alone? This can be the situation that someone does not have any data to be sent. Either I will wait for data, that data will come—when data will come, I will send it then. 
+
+Because of that, there can be a time-out. Because of time-out, the person who has sent the data first, he is waiting: when will his acknowledgment come? When will I get to know that my data has reached or not? 
+
+Normally, when you do any third-party payment—Paytm or Amazon, any one we use—when you have all details and OTP, at last we wait for acknowledgment. We get a transaction number. If you only wait for that, it keeps buffering. What happens till then? Till then, you somewhere feel anxious: When will my transaction be completed? When will it be complete? When it says, "Your transaction completed, your transaction number is this," somewhere we feel easiness that the transaction has completed. So that is acknowledgment. 
+
+So if I do not have any data to send, so I have to send acknowledgment so that person does not wait for it. Let's say the client does not have data to send, but it has received data from the server. So, you have to send acknowledgment. When we send acknowledgment alone, it is called pure acknowledgment. 
+
+See what it is sending: sequence number. When we send pure acknowledgment, the sequence number is not used. Meaning, what it has expected sequence number here—31. We are sending 31, but we can use it next time also. It has not been consumed. It has not been used. It is just for informing that you have asked for 31, I'm sending 31. But it has not been used; it is only attached to it. Meaning it does not have any data with it, only 31. The acknowledgment flag is 1. 
+
+Now see what the acknowledgment number is: it has sent from 71 to 80. Now, it is expecting the next to be 81. As this packet reaches here, the server gets to know that its package has been received. 
+
+Now, let's say after some time, the client got some 10 bytes of data. He will send it. What's the problem? He has sent it. Now what will he do? He will send sequence number 31. Now here, data—and with that, data of 31 to 40—along with it, if he wants to send acknowledgment again, he can do it. Otherwise, he can send data alone also. What does it mean? It is pure acknowledgment, and this is your data transfer. 
+
+### Conclusion
+
+So these points can be asked to you somewhere: What is pure acknowledgment? What is piggybacking? So that's how both do data transfer with each other. 
+
+And other than these, small points can be asked to you. First is: we have further flags in it, like push flag, urgent pointer, urgent flag. What is the usage of that? That we will discuss in the next video. 
+
+So this is the simple way of data transfer. The client and server transfer data in full duplex, and what is the use of piggybacking and pure acknowledgment? Like this, data transfer takes place between each other, from client to server and server to client. And after this, there will occur termination. How we terminate the connection, that we will discuss in the next video. 
+
+Thank you!

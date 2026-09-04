@@ -1,0 +1,27 @@
+Hello friends, welcome to Gate Smashers. The topic is cross product in relational algebra. Cross product is a basic operator in relational algebra, as I have told you in earlier videos. Here, we are seeing cross product by executing it with a simple example. 
+
+Here, I have first taken two relations. Relation means a table, because we are talking about RDBMS—relational database—where we store our data in the form of a table, which is a type of database. There can be different types of databases: subject-oriented databases, hierarchy-oriented databases, network databases, entity-relation databases. There are various types of databases that we can use to represent the data. Here, we are using a relational database, which is used the most. 
+
+So, R1 and R2 are two tables. We can call it a relation or simply a table. Here, I have taken three attributes, A, B, and C, and there are two rows, which we also call tuples. Here also, there are three attributes and two tuples. 
+
+Here, we are talking about cross product. If you talk about cross product, we can multiply a table with itself. It does not mean that for a cross product I need two different tables. Yes, for a cross product I need two tables, but the two tables can be the same also. Why would we multiply a table two times? This is what I will tell you in other videos when we will talk about self-join. Presently, we are talking about two tables. I have to cross-product these two tables, and what will be the final result is what I will show here. 
+
+The first point I want to tell you is what is the benefit of cross product? Why do we do it? Why do we do cross product? Because in relational algebra and SQL, the most important function here is join. We need to join the tables. Why do we have to join? When we receive a query, the answer to a query can't be given from one table; it needs to be given from multiple tables. For that, what do I have to do to all the tables? Join. Now, to do a join, what is the first condition? Cross product. This means you cannot join two tables or multiple tables without doing a cross product. That means what I have to do first is a cross product. The first use of cross product is this, that to do a join, you have to do a cross product. 
+
+Now, if you talk about functionality or characteristics, what are the characteristics of cross product? In the R1 table, how many columns are there? Three. In the R2 table, how many columns are there? Three. So the total number of columns in the product will be six. That means if there are $m$ number of columns in one table and $n$ number of columns in a second table, the total number of columns will be $m + n$. This I have already noted here. 
+
+The second point is tuples. If I talk about rows, how many are there in this first table? Two. How many tuples are there in the second table? Two. So what is the total? Four. That means if in one table $x$ number of tuples are there, and in a second table $y$ number of tuples are there, the total number of tuples will be $x \times y$. That means how many tuples will come here? The multiplication of both. And for the number of columns, it is the addition. Although this is a very simple point, it is important because because of these small points your question can go wrong. 
+
+Therefore, now we are doing cross product. What do we have to do? Very simple. Take one table. What I have taken: $R1 \times R2$. $R1$ is taken from the left side; columns of $R1$, A, B, C, I have written here, and columns of $R2$, C, D, E, I have written here. 
+
+Now, pick the first row of the first table, `1 2 3`, and write it as it is. Now this row I have to multiply with all the rows of the other table. That means I have to multiply this with these two rows. What does it mean by multiply? Write this row here, `3 4 5`, and what is the second row? `2 1 2`. Write `2 1 2` and copy this first row as it is. 
+
+Very simple. Pick the second row of the first table, `2 1 4`, and multiply this with all the rows of the second table. How many rows are there? Two. So multiply with both: `3 4 5`, and the second row is `2 1 2`. I write `2 1 2` as it is, and I copy the `2 1 4` row here. 
+
+So here, I have $R1 \times R2$ ready. Now, when we will do joins, we will see further what its use is further, why we are doing this, or what output we are getting from it. 
+
+But here, one more point I would like to tell you. It may come to your mind that why I have taken the same attributes in two tables? Yes, in two tables there can be different attributes, but according to the DBMS concept, whenever we have to join two tables, to join that there is only one condition: there should be something common in the two tables. That means at least one column—at least one column should be common. Common means the same. Otherwise, we cannot do a join. 
+
+And what is the funda of doing a join? One table is $R1$, the other is $R2$, and there is no similarity in between them, then there is no need to join them. Always we do a join when there is something common between them. It can be one column, or more than one column can also be the same. 
+
+This is the simple funda of cross product. Further, we will see how to do set operators. The extension of this cross product we will see in joins—that is, different types of joins. Thank you.

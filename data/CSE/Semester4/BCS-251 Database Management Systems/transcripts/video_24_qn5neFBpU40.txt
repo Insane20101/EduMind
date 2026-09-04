@@ -1,0 +1,73 @@
+Functional dependency is a method which describes the relationship between attributes. That means if I have a lot of attributes in my table, what is the dependency between them, what are the relationships between them—that we represent through functional dependency. How? Let's see. 
+
+The general format is like $X$ goes to $Y$. What is the meaning of $X$ goes to $Y$? It means $X$ determines $Y$, or you can say $Y$ is determined by $X$. Here, $X$ is a determinant—an attribute $X$ that is determining, which is the main attribute—and $Y$ is a dependent attribute. 
+
+Let's see with a simple example. If I have one dependency given, like `SID` goes to `S.name`. Here I wrote `SID` instead of $X$ and `S.name` instead of $Y$. Now, what is this funda of functional dependency? If I have some value in `S.name`—like if I'm putting two values here: "Ranjit" and "Ranjit". What is the meaning of this? Now I have a confusion here. What is the confusion? Are these two different Ranjits, or is it the same Ranjit whose value is written twice? 
+
+Suppose in my class, I am writing the student names: Ranjit Singh and Ranjit, Ranjit and Ranjit. So there are two Ranjits here. Here, I may have a confusion whether there is only one Ranjit whose data is coming twice, or if it is two different Ranjits. So how do we remove this thing? I will go to the `SID`. `SID` is a kind of roll number. In the roll number, I saw here it was written "1", and here it was written "2". This means this is Ranjit whose roll number is 1, and this is Ranjit whose roll number is 2. So here my confusion is cleared that these are two different students, but their names are same. 
+
+Similarly, I take another combination. If again I am writing two names, "Ranjit" and "Ranjit". Again, the same confusion: is this a student whose data has been written twice, or are these two different students? Guys, when we are in class, we can easily tell by standing two guys in class and can easily examine whether they are two different students or they are the same student. But when we use the database online—meaning the server is at some other location and the user is using the interfaces from a different location—there, when calling the database online, it's very difficult to determine whether these are two different students or the same student. 
+
+So I went to the `SID` again, and it's written in `SID`: "1" and "1". Again, my confusion is cleared here. This is only one student, Ranjit, but accidentally his data was written twice. That means my confusion is cleared here. This is the same student, Ranjit. That means whenever you have a problem in the dependent variable, you go to the determinant variable attribute, and it will clear your confusion. Is it clear? 
+
+Then let's see what different combinations can be formed in it. If we take the values of $X$ and $Y$, like $X$ goes to $Y$—if `SID` goes to `S.name`—four combinations can be made:
+* Case 1: `S.name` is "Ranjit", "Ranjit"; `SID` is "1", "1".
+* Case 2: `S.name` is "Ranjit", "Ranjit"; `SID` is "1", "2".
+* Case 3: `S.name` is "Ranjit", "Varun"; `SID` is "1", "2".
+* Case 4: `S.name` is "Ranjit", "Varun"; `SID` is "1", "1".
+
+What I did is I kept both values the same in some cases, and different in others. These four cases are possible. 
+
+Let's see case number one: `S.name` is "Ranjit", "Ranjit"; `SID` is "1", "1". Now, there is a confusion: are they the same student or two different ones? I went to the `SID`. It said both are the same student; his data may have been written twice by mistake. That means my confusion has cleared. So this case is true. This case is valid. You have to check whether it is valid or invalid. Yes, it is a valid case. 
+
+Now check for case two: `S.name` is "Ranjit", "Ranjit"; `SID` is "1", "2". Is there one student or two students? So I went to the `SID`. It said roll number 1 and 2. Ranjit and Ranjit—means there are two students and their names are by chance the same. So this case is also valid. I am getting the answer here too. 
+
+Come to the third case: `S.name` is "Ranjit", "Varun"; `SID` is "1", "2". Two students are different. As the name suggests, Ranjit and Varun are two different students. Still, I check from the `SID`, and `SID` is also saying that roll number 1 is of Ranjit and roll number 2 is of Varun. Yes, this case is valid. It is also giving me the correct output. 
+
+Let's check for the fourth case: `S.name` is "Ranjit", "Varun"; `SID` is "1", "1". Student names are Ranjit and Varun—meaning there are two students here, Ranjit and Varun. Once again, we go to the `SID`. But see, guys, what is the `SID` saying here? "1" and "1"—meaning there is only one `SID` value, which is 1. But how can the `S.name` be two? When the determining attribute (which is the determinant, the main variable, the main attribute) is saying there is only one student here, but the dependent is saying that there are two students, this is an invalid case. 
+
+Why? Because what is the student name saying? There are two students: one is Ranjit, the other is Varun. But what is `SID` saying? `SID` is saying that there is only one student. So, if the one who is determining says that there is only one student, then how can the student name say that there are two different students here? So this case is invalid. 
+
+Many times we get questions in GATE or in normal exams also where we have to check which cases are valid or invalid. If I am saying that the `SID` is determining the `S.name`, then this is the only invalid case. The rest of all three are valid cases. In this, I am assuming that `SID` is determining the student name. Is it clear, guys? So this is an important part.
+
+***
+
+Now, functional dependencies are of two types: trivial and non-trivial. Let's check what trivial and non-trivial are. 
+
+What is a trivial functional dependency? A trivial FD occurs if, for any dependency $X \rightarrow Y$, $Y$ is a subset of $X$. That is called trivial. You can write it down: if $X \rightarrow Y$ is any functional dependency, then $Y$ is a subset of $X$. This is a general format, guys. You can have any student ID, student name, student's father's name, phone number, roll number—you can fill the value of any attribute in it. 
+
+If I'm saying here $Y$ will be a subset of $X$, what is the meaning of that? If I am saying that `SID` goes to `SID`—meaning this is $X$, this is $Y$—then $Y$ is a subset of $X$? Yes, `SID` is a subset of `SID`. These trivial functional dependencies are always valid. They are always true. Meaning you don't have to make those four cases because it's always valid and always true. The reason being that the thing we are determining, the attribute we are determining, is a subset of the left-hand side. In a way, there is a reflexive property that I am determining myself. When an attribute is determining itself, there is no need to check the values because it will always be valid. 
+
+There is another way to check it. If $X \rightarrow Y$, and if you take the intersection of the left-hand side and the right-hand side, that will never come empty ($\phi$). In the case of a trivial functional dependency, if you take the intersection of the left-hand side and the right-hand side, that will never come $\phi$. 
+
+Another example: `SID, S.name` goes to `SID`. Meaning we created a functional dependency where `SID` and `S.name` combinedly determine the `SID`. If we take the intersection of the left-hand side and the right-hand side, then what will come? `SID`. So yes, it is trivial. It is always valid. 
+
+Now, check for non-trivial FDs. Non-trivial FD means if I am writing $X \rightarrow Y$, then $Y$ is not a subset of $X$. Meaning if I take the intersection of $X$ and $Y$, $\phi$ will always come. For example:
+* Student ID goes to Semester
+* Student ID goes to Phone Number
+* Employee ID goes to Employee Name
+* Employee ID goes to Location
+
+These are all non-trivial functional dependencies. In these, if you take the intersection of the left-hand and right-hand sides, it will always come $\phi$. In this case, you have to check the cases, and among these you have to find out which is valid or which is invalid. 
+
+***
+
+Okay, guys. These are some properties, please note them down: properties of functional dependency.
+
+1. **Reflexivity:** Reflexive, as I discussed in trivial, states that if $Y$ is a subset of $X$, then $X \rightarrow Y$. This is trivial, meaning reflexive—an attribute determining itself. That is called reflexive. And guys, you don't need to check whether it is valid or invalid because it is always valid.
+
+2. **Augmentation:** Augmentation means if $X \rightarrow Y$, then $XZ \rightarrow YZ$. For example, if `SID` is determining student name, so you augment any attribute by putting extra in it—like Phone Number. So the student's name and phone number—this is also valid. Meaning, similarly, if `SID` is determining `S.name`, then `SID` + Phone Number will determine `S.name` + Phone Number as well.
+
+3. **Transitive:** The transitive property is again a very important property because this is going to be used a lot in the future. What is the transitive property? If $X \rightarrow Y$ and $Y \rightarrow Z$, then $X \rightarrow Z$. Meaning, if the student's ID is determining the student's name, and the student's name is determining, say, City, then the student's ID will determine the City. It is used very much in the future.
+
+4. **Union:** If $X \rightarrow Y$ and $X \rightarrow Z$, then $X \rightarrow YZ$. Meaning we just simply union $Y$ and $Z$.
+
+5. **Decomposition:** If $X \rightarrow YZ$, then $X \rightarrow Y$ and $X \rightarrow Z$. But here, guys, you have to check very carefully. If here I say $XY \rightarrow Z$, can we write $X \rightarrow Z$ and $Y \rightarrow Z$? No! $XY \rightarrow Z$ implying $X \rightarrow Z$ and $Y \rightarrow Z$ is invalid. Why? What is the meaning of this? $XY$ together determine some $Z$, and you broke them—meaning you separated $X$ and $Y$ and then you are saying that they individually determine $Z$. No, this is wrong. This means that $XY$ together determine some $Z$, and you've written that $X$ alone and $Y$ alone determine it—this is invalid. You cannot decompose the left-hand side. On the left-hand side, you can never put a decomposition. On the right-hand side, you can easily write them separately because it means $X$ is determining $YZ$. What is the meaning of this? How can you say it? $X$ is determining $YZ$, so I wrote like this: $X$ is determining $Y$, $X$ is determining $Z$. This is valid, no problem. But you can never decompose the left-hand side.
+
+6. **Pseudo-transitivity:** Pseudo-transitivity means if $X \rightarrow Y$ and $WY \rightarrow Z$. Notice here $X \rightarrow Y$ and $Y \rightarrow Z$ is not there; $W$ is extra added here. Then what are they saying? $WX \rightarrow Z$. What is common on the left-hand side—that will definitely come on the left side. Here, $X \rightarrow Y$ and $WY \rightarrow Z$ means $WX \rightarrow Z$.
+
+7. **Composition:** If $X \rightarrow Y$ and $Z \rightarrow W$, then $XZ \rightarrow YW$. The left-hand sides are gathered here ($XZ$), and the right-hand sides are gathered here ($YW$).
+
+Many times these properties will come in the exam, like in 5-mark or 10-mark questions. But out of these properties, the ones you are going to use mostly are transitive and reflexive. Remember it, it is very important. And also remember: in decomposition, never break the left-hand side, and whenever we check validity or invalidity, always check in non-trivial functional dependencies, because trivial is a kind of reflexive which is always valid. 
+
+Fine. So guys, if you liked this video, please like it and make a comment on that, because this will give me motivation and definitely I will bring more good videos. Please subscribe to my channel. Thank you.

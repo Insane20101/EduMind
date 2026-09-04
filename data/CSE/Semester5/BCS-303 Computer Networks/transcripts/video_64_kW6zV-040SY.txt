@@ -1,0 +1,67 @@
+Hello friends, welcome to Gate Smashers. In this video, I am going to explain link-state routing. Almost all the playlist for computer networks is ready, with only a few videos pending, one of them being link-state routing. We will complete the entire playlist soon because computer networks is obviously a very important subject for all competitive exams, as well as your college or university exams. After completing these one or two pending videos, all the playlists including computer network security will be completed, meaning your portion of network as well as security will be completed. In this video, I am going to explain all the important points related to link state. 
+
+So guys, quickly like the video and subscribe to the channel if you haven't yet, and please press the bell button so that you can get all the latest notifications. Let's start with link-state routing. First, let me tell you that I have explained distance vector routing before this, and next is link state. 
+
+In link-state routing, first we have been given six routers which are connected to each other like this. First of all, we use link-state routing or distance vector so that the routers can make their routing tables and update them regularly. For making routing tables, one of the methods used is link state. Remember that the routers we have in link state initially will make their link-state table. Initially, for example, R1, R2, and R3 are its neighbors; it will send them a hello message. After sending the hello message, R1 will get to know who it is connected with and what its distance is. 
+
+Let's say, first of all, R1 will make its link-state table. Link state means: "link" means this edge—how they are connected to each other, that means link—and "state" means whether the link is up or down, meaning if the link is running or not. That is the actual meaning of a link state. 
+
+So see, here I am making the link-state table of R1. We are not making a routing table yet; it is initial. At step 1, R1 knows that here I am connected with R2 and R3. The distance from R1 to R2 is 6, and the distance from R1 to R3 is 3, meaning R1 knows this only. In the distance vector, the distance metric—we share that only with each other. What we share with neighbors is only the distance vector, meaning what is the distance between each other, that only. If you haven't checked that video, do check it because distance vector is one of the most important routing algorithms, so that you get to know what routing algorithms are and what their basics are, because link state is made to remove the problems of distance vector. 
+
+So see, in link state, we have the distance, which is the distance between each other. Other than that, there is also extra information: extra information related to the sequence number and the Time to Live, i.e., TTL field. Meaning, it is not just giving a simple information of who I'm connected with and what the distance is; along with that, there is more information. This whole packet has many pieces of information in it. So obviously, if there is more information, then the bandwidth will be utilized more. Obviously, bandwidth will be utilized more because bandwidth is directly proportional to the message size. So if my message size is bigger, then bandwidth will be utilized more. This is the simple concept. 
+
+Now see, if I make this for R3: initially, R3 doesn't know who it is connected with. R3 is connected with R1, R2, and R5. Its distance with R1 is 3, distance with R2 is 2, and distance with R5 is 9. So initially, all of them sent hello messages to each other and made their link-state tables before the routing table. 
+
+Now, in the link-state table of R5, it knows it is connected with R3, R4, and R6. The distance with R3 is 9, distance with R6 is 4, and distance with R4 is 1. Everyone will make their own routing table like this. 
+
+If we talk about R6, the link-state table that R6 will make before making the routing table: in that, it will state that I am connected with R5 and R4, the distance with R4 is 8, and the distance with R5 is 4. 
+
+Similarly, R2 will also make it. R2 will say that I am connected with R1, R3, and R4. The distance initially with R1 is 6, after that the distance with R3 is 2, and the distance with R4 is 7. Similarly, you have to make it for R4. 
+
+Meaning, initially everyone will make their own link-state table, and in making that, the hello message helps. When you send the neighbors a hello message, then you will get to know the distance and the link—whether the link is running or not. 
+
+Now the story starts. What is the next step? When we all have made our link-state tables, the second step is that we have to share it with each other. Now, at the time of sharing, remember that in distance vector we only shared with the neighbor, meaning R1 will share with R2 and R3, not with anyone else. Similarly, if we talk about R2, it will share with R4, R1, and R3. "Neighbor" means those who are directly connected with them, which you can know by the graph. But in link-state routing, we use flooding. 
+
+There are many questions—it is not necessary that you will always get numericals; you can get many theoretical questions related to this. So the first step: we made our link-state table, and all nodes made their own. In this, the sequence number—what number should be given to every packet—we generally use a 32-bit sequence number. We generally use that because we flood the packets, as you'll find out later. The TTL field: if a packet is stuck in a loop, to save that, we made the TTL field, alongside the connections and the distances. 
+
+The second step is flooding. Now we have to do flooding. Flooding means R1 will send to everyone, meaning it will flood in the whole network. R5, R6, and R4 will send to everyone. The meaning of flood is that we want reliability here. Reliability means that if R1 floods, packets will go from here also and there also, from both sides. Similarly from here also, meaning you will get packets in the whole network. So if a packet is lost, there is no problem; it will reach by any other path. So we'll flood here. 
+
+If you are using flooding, will the bandwidth be utilized more? Will the conditions be worse? Obviously, bandwidth will be utilized more, and congestion will be more because we're sending packets from different routes by flooding. We'll send it not only to the neighbors, but to everyone. So the second step is flood. 
+
+Now after flooding, what will happen at R1? We can examine this by making it at any node. Let's suppose what happens at R1. When we flooded, when everyone flooded their link-state table, now R1 will receive the link-state table of R2, R3, R4, R5, and R6—everyone. From that, R1 will make its database. 
+
+Database means R1 gets to know: "I am connected with R2, and my distance with R2 is 6. Similarly, I am connected with R3, and my distance with R3 is 3." Similarly, when the packet of R3 will reach here, R3 will tell that "you are connected with R5 through me, and the distance is 9," meaning R3 to R5 distance is 9. Similarly, when R5's table will reach at R1, then R5 will tell it that "yes, I am connected to R4 with 1 and to R6 with 4," meaning I am connected to R4 with distance 1, and I am connected to R6 with distance 4. Like this, everyone is sharing their information. Then R1 will get all the information, and this is called global knowledge. 
+
+What do we call it? Global knowledge. That wasn't in distance vector. So here two points are clear: the difference between distance vector and link-state routing, and how link-state routing works. So like this, R1 will get to know everything—with whom it is connected and what the distance between them is. Everyone will tell this. In this way, R1 gets to know the full diagram of what the scenario is. 
+
+Now the next step is single-source shortest path, i.e., Dijkstra's algorithm. Now here it will use Dijkstra's algorithm, that is, single-source shortest path. With the help of that, R1 will find the shortest distance to reach R2, R3, R4, R5, and R6 from R1. 
+
+So if you know Dijkstra's algorithm, then obviously you can do it easily. If you don't know, let me tell you by a simple point how it works. One side is our source R1, and the others are our destination R3, R4, R5, R6. Initially, I know R1 to R2 is 6, R1 to R3 initially I know is 3, but initially the others are infinite, meaning I don't know anything in the starting. I am telling you Dijkstra's algorithm—obviously you should know how Dijkstra's algorithm works. 
+
+So the minimum distance is of R3. Now R1 and R3 have become the source. Next, we'll know the distance of others through R1 and R3. 
+
+So if I go to R2 through R1 and R3, then my distance is reduced from 6 to 5. How? First, it was 6 directly. Now if I go through R3, then the distance becomes 5. 
+
+Similarly, let R3 be fixed because we've already selected that. Now we have to go to R4. Now we can't go to R4 directly through R3. For R5, we can go to R5 through R3, then the distance is 12. Similarly, if we want to go to R6, we can't go there yet. 
+
+Now our R1, R3, and R2 are at one side because they have the minimum values among them. Now, these three came; now we'll try to go to R4. If I go to R4 through R2, the distance is 13. If I go through this, then 9 + 3 = 12. So obviously, I'll go for the lesser one, so my distance is 12. 
+
+If I want to go to R5, I can go through R2 also—meaning like this—or I can go directly through R3, so 12, so obviously this 12 will be my minimum. 
+
+Similarly, if we have to go to R6, you can't go there now either, because neither R2 takes you there nor R3. 
+
+So let suppose I took R4 next. So R1, R3, R2, and R4 became my final set. Now, if you go to R5 through R4, your distance will obviously become 14, which is more. So obviously your minimum distance will remain 12, that is through R3. 
+
+If you want to go to R6, you can go through this; the distance here is 8. So now also your distance will come out to be more because through R4 your distance is 13 + 8 = 21, which is much more distance. So now I will take R5, so R1, R3, R2, R4, and then R5. 
+
+Like this, we'll go finally to R6. So from here, 9 + 3 = 12, and 12 + 4 = 16. Meaning I'll reach by a distance of 16. By using Dijkstra's algorithm here for single-source shortest path, finally R1 will make its routing table. 
+
+So R1, R2, R3, R4, R5, R6, and I have the distance here: the distance from R1 to R1 is obviously 0. We've found out the distance between R1 and R2, that is 5. We've found out the distance between R1 and R3, that is 3. We've found out the distance between R1 and R4, that is 12. We've found out the distance between R1 and R5, that is 12. We've found out the distance between R1 and R6, that is 12 + 4 = 16. 
+
+So actually, this routing table is made via "via"—via means through where we're going. From R1 to R1, we're going through R1, obviously. To R2, obviously we're going directly. We're also going to R3 directly. To go to R4, here I'm taking the help of R3 and then R2; I'm going from this path. Similarly, if we talk about going to R5, I'm taking the help of R3. And to go to R6, I'm going via R3 and R5. 
+
+So actually, your whole routing table will be made like this. We've made it for only R1; similarly, you can make it for R2, R3, or any router. 
+
+So the main points are: flooding will be used here so that we can send link-state packets to each other; after that, we'll use Dijkstra's algorithm so that everyone can make their routing table. In this way, the routing table will be made. In the next part, we'll discuss what the problems in this are, or what the advantages are, or why we use sequence numbers or TTL. 
+
+Thank you.

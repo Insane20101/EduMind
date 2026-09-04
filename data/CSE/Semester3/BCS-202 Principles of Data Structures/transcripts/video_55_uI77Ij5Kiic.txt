@@ -1,0 +1,45 @@
+Hello friends, welcome to Gate Smashers. Today's question is from tree traversal. Let's read the statement first. The pre-order traversal sequence of a binary search tree is given to us. Which of the following is a post-order traversal of the same?
+
+Here in the question, we have a binary search tree, and we have been given its pre-order traversal, and they have asked what will be its post-order traversal. First of all, I will tell you, if we talk about a binary search tree, what is the property of the binary search tree? That if we take the in-order of elements, if we do tree traversal of the tree, and if we take in-order, then in-order elements will always come in increasing order.
+
+And definitely, if you want to do this type of question, then you should always know two sequences for this type of question: either pre and post are known, or pre and in-order are known, or in-order and post-order are known. But if you have been given only one sequence, then you can't find out what will be its post-order. So here, this is the trick in it. 
+
+My main motive to bring this question is that many times questions in the GATE exam are trick-based. What is the meaning of a trick? In which somewhere you have a property, somewhere you have some tree, some graph. Whatever you ask about a property, they don't ask directly, but it is hidden. Similarly, here this thing is hidden. 
+
+So you have to remember properties: what is the property of every tree, how much time it takes to search if we have to search elements among them, how much the height will go, if we have to insert one element, if we have to insert $L$ elements, if we have to delete. So what is the complexity? What is its property? You have to remember this quickly because these points will help you a lot in the exam.
+
+So if we see this question, first of all, we are given the pre-order: 30, 20, 10, 15, 25, 23, 39, 35, 42. And here, the in-order will always be in increasing order. So if we write it in increasing order, what will it be? 10, then 15. After 15 comes 20. After 20 comes 23, 25. After 25 comes 30. After 30 comes 35, 39, 42. 
+
+So we wrote it in increasing order, so what can you say? It is the in-order. And what is this? This is given here as pre-order. So what is the meaning of pre-order? Here it is root, left, and then right. And what is the meaning of in-order? Here it means first we have left, root, and right. So this is the meaning of pre-order and in-order. Now it will be very easy to solve the question.
+
+So first of all, if we talk about pre-order, in pre-order, the root is always first. That means 30 will be the root of this tree. So if we write 30 here, 30 is its root. Now see the in-order. In-order always has the root in the middle. That means the root is in the middle, the rest of the elements are in its left, and the rest of the elements are in the right. That means all the elements on this side will be in its left, and all the elements on this side will be in its right.
+
+For the next element, we talk about 20. So see, 20 is somewhere in the left of 30. So 20 is the next root. That means 30 is the main root element. The next subtree will be made from 30, which is the left subtree. Which is the next root of the left subtree? It is becoming 20. Because all the left elements here, the next root of these—because pre-order always says root first—so 20 is the root here. 15 and 10 are in its left, 23 and 25 are in its right. If you want to write, then you can write in this way: 15 and 10 are in its left, 23 and 25 are in its right.
+
+Then if we talk about the next element, which is 10. If we talk about 10, 10 is coming here. That means it is in the left of 20. The next root here, after 20, the root is becoming 10. So from here we place one element—that means to the left of 20 will be 10. And anyway it will come in the left because it is a binary search tree, so 10 is smaller than 20 here.
+
+Then we talk about the next element, 15. The next root is becoming 15. And see, 15 is in the left of 20 and right of 10. That means in the left of 20, but in the right of 10. So here we added 15.
+
+Next, after 15, we talk about 25. So see, 25 is coming here. If we add 25 here, see, 25 is becoming the root here because pre-order says after 15 is 25. So what is 25 made of? It became the root. And what is being made in the left of 25? 23. So 23 is coming here.
+
+Next, if we talk, all these elements are completed in a way. 25 and 23 also came. Talking about the next 3 elements, first of all, who is coming according to this order? 39. 39 means 39 will become the root here. Root means 39 will become the parent node. So if 39 becomes the parent node, 39 is the parent of the right subtree. So in the left of the right subtree parent is 35, and 42 is in the right. Because what is 39 telling here? 39 is telling in pre-order why 39 is written first. Because the root of these 3, the parent, is 39. We got to know this, so we went to this order. When we went to this order, we got to know here, okay, 39 is in the middle, 35 is here, 42 is in the right. So you can make it here in one go: this is 35, and this became 42. So this is your final tree coming here.
+
+Now we have to find out the post-order. Finding out the post-order means, guys, here we have left, right, and then in the final we have the root. The root always has to be written on the extreme right. But to write the post-order, I have made a first video in which I had told a very shortcut way. I will share the link of that video with you. But here we will see it again. 
+
+What you have to do is, you have to start from the root, and you always note the third time—that means when you are reaching the third time on any element, what will yours be? According to post-order, let's trace it here so that it becomes easy. Let's say we go from 30. We reached the first time on 30, the first time on 20, the first time on 10. See, we have come on 10 for the second time. Here we have reached the second time on 10. Then we reached the first time on 15, the second time on 15, the third time on 15. That means 15 is your first element. 
+
+Then we came here first time on 10, second time here. Now you just have to keep going. We reached the third time on 10. So here the next element is your 10. 
+
+Next, if we talk about 20, we have come the second time on 20. First time we came here, second time we came here. First time on 25, first time on 23, second time on 23, third time on 23. Then we came on 25 the second time, third time on 25. See, you came the third time on 20. So write 20 here. You just have to complete it here one by one. 
+
+Then if we talk about 30, we came the second time on 30 because we came here the first time, so you don't have to write now. First time on 39, first time on 35, here the second time, here the third time. So you are reaching here the third time on 35. 
+
+Then if we talk about 39, we reached the second time on 42. First time on 42, second time on 42, third time on 42. So next here is 42. And after 42, if we talk, 39 is the third time, and finally 30 is the third time here. 
+
+So if we check, this option is your D option. Option D is sitting here right, so option D is your right option.
+
+What you have to do here when we have to traverse on any element—and why I have made a dummy child below, so that you can know on which element you have reached. If you are reaching any element the first time, means if you are coming the first time, then it gives the pre-order. If you reach any element the second time, it gives the in-order. If you reach it the third time, it gives the post-order. I have told this with a very good example; you check that video once, you will get its idea clear.
+
+So guys, these types of tricky questions come in the GATE exam many times. You have to do it very carefully. Along with numericals, their theory also has to be read a little so that you should remember about their properties. 
+
+So guys, if you liked the video, then please like it, share it, and please subscribe to my channel. Thank you.

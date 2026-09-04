@@ -1,0 +1,71 @@
+Hello friends, welcome to Gate Smashers. Today's topic is the secondary index. 
+
+The secondary index is important from the point of view of UGC-NET and GATE. The biggest problem here is that all the material available online and even offline in books does not make the secondary index topic 100% clear. So in this video, I am starting from a very basic level so that you can clearly understand the whole topic and concept. 
+
+We are starting the secondary index by discussing why we use it, what it is, what the time complexity is, and the whole scenario. Among the types of indexes, we have the primary index, clustered index, and secondary index. For the primary and clustered indexes, I have already made a video, and the link for that I will share with you in the description box. Here we are starting the secondary index. 
+
+As the name suggests, "second." Second means the second one. Already in the database, there is one index, and you have to make one more index, and the reason for that I will tell you now. 
+
+### Why We Use a Secondary Index
+
+When do we use a secondary index? A secondary index is used when our data is unordered. Always remember: when data is unordered. I have shared a table in the "types of indexes" topic; you can check from that table also. When our data is unordered, meaning when it is not sorted, in that case, we use a secondary index. 
+
+In that case, two further cases form: either the data is a key or the data is a non-key. 
+
+If I talk about secondary indexes, why do we use them when there is already one? Why are we applying another? For example, I have entered data of employees in a hard disk: Employee ID, Name, and let's say PAN number. The data is already sorted on the basis of Employee ID because Employee ID is a primary key. Meaning it is a key value, it is unique. And that data is already sorted on the basis of Employee ID because most of the searches are about finding the name of the employee whose Employee ID is this, finding the detail of the employee whose Employee ID is 10, or finding the address/detail of the employee whose Employee ID is this. 
+
+If all the queries are coming on the basis of Employee ID, you use a primary index. A primary index is always sparse. The index at the beginning of a book is also known as a primary index. So this index is already applied where the key value is the Employee ID; it is made on the basis of Employee ID. 
+
+### When Primary Indexes Fail
+
+But sometimes, what happens when queries—when the user is writing a query—most of the times the user will write on the basis of Employee ID? Or if I talk about a student table, how do we search student data? By registration number or roll number. From IRCTC, how do we search train information? From the train number. But it is not a necessity. Sometimes, for searching anything, we might need some other column. 
+
+Like if I use the employee name: "Find the detail of the employee whose name is Ram," or "Find the detail of the employee whose PAN card number is this." In that case, the primary index will fail. Why? Because the primary index is applied on the Employee ID, and the query is on the basis of the employee name or PAN card. In that case, the primary index will fail in a way—fail in the sense that in some cases it will work, but in some cases, it will not perform well. 
+
+So in those cases, we will use a secondary index. 
+
+As I have told you, for a secondary index, key or non-key data will be unordered. Unordered means A, B, A, B, C, D; there is no order in it. There is no order, and second, it can be a key also and a non-key also. 
+
+### Case 1: Secondary Index on a Key (Candidate Key / Unique)
+
+If I'm taking the first case of a key: key means a candidate key, or you can say unique, where our data is unique. If I've taken PAN as unique because the PAN card number is unique, but it is not ordered, and you can't even make it ordered because data is already ordered on the basis of Employee ID. If you ordered this also, all of this will be shuffled, and if this got shuffled, then the primary index will fail. So the primary index is important, and we are applying a secondary index. 
+
+See how we make a secondary index: it is very simple. The data of the PAN card is unique but not ordered. But when we're making its index—this index—we always take sorted data. What is the use of an unsorted index? You can use binary search later, and binary search is obviously time-saving. So here you make it sorted, make it ordered, along with pointers. 
+
+Now, what question comes here? If I'm applying a secondary index on a key value, will it be dense or sparse? It is always dense. It is always dense. Why? Like a primary index, you can't make an anchor. An anchor means there is no leader. If I talk about block 1, who is the leader in this block? No one is the leader. 23 will say that I'm the leader, 62 will say I'm the leader, and this and that. A leader in the sense of who will represent this whole block—no one can, because it is not sorted. Meaning here this one is not sorted (40, 51, 62, 33). This block is not sorted. 
+
+So here what we've done: we arrange it in a sorted form. 23 is representing 33, 40... for every record. For every record in the database, we have to make a pointer. So this is called dense. 
+
+How many will be the total number of records in the index? How many number of records will it have? The total number of records present in the hard disk. I'll write here: the number of records in the index is always equal to the number of records in the hard disk. That's why we call it dense. 
+
+So this is solved if we're making it dense on the basis of a key. We're making a secondary index on the basis of a PAN card. This will form. 
+
+#### Time Complexity (Key)
+What will be the complexity? $\log N$, where $N$ is the number of blocks where $N$ is the number of blocks in the index table. $N$ is the number of blocks in the index table $+ 1$. Why $+1$? Because from here you will only get a page number, that page number or block number will take you to that block, then you have to find data after searching that block. So $\log N + 1$.
+
+### Case 2: Secondary Index on an Unordered Non-Key
+
+Now we'll talk about if our data is unordered and a non-key—meaning this is the worst case, where neither data is ordered nor is it a key. Like if I talk about names: A, B, A, C, A, D, E, like that. So neither is this ordered, nor does it have a key—meaning the data is not even unique. 
+
+In this case also, which index will be used? Secondary. But how will it apply? That also you can see here. 
+
+I am making a secondary index. Which key value am I using to make the secondary index? Key means search key value. Here I am searching on the basis of name. So in the index, you don't need to take multiple A's or B's. How will it be? Like if I'm searching A, let's say if I want to search A, I'll remove these arrows from here because this is representing this index table. 
+
+Now we're talking about another index table where I'm making it on the basis of name. If I make a pointer for A, where will I make it, as A is present at multiple places? So here always remember there will be an intermediate layer also—an intermediate layer. And what will be that intermediate layer? A block of record pointers. 
+
+As there are multiple A's, multiple B's, multiple C's, but in the index table, you won't make multiple—there is no use of that, the index will also be duplicate. So in the index, you make a single A, and as you know here there are multiple A's, so you make a different block for A's: a mean of A's whole block, where this block is representing this block A. This A is representing this and this A, let's say, representing this, and here, let's say, one more A is there, so this is representing this A, and this whole block is represented by this. And the same we have to make for B: one more for B, a block of record pointers, where it will represent B. Let's say one B is here, and let's if I take B here, so one B is here and for one B is here, and this will form an intermediate layer. 
+
+So here, searching first is—if I talk about this, what it will be? It will be a mix of dense and sparse. Mix of dense and sparse, because if you talk about intermediate and index—this secondary index and intermediate—this will become sparse, because for A, one block pointer, and for B, one block pointer. But if we talk from intermediate to data, what will it form? It will form dense, because see, there are multiple A's; for every A, you have to make an arrow pointer. So here dense and sparse are mixed in a way, so you can say it is dense only, because overall, if seen from both dense and sparse, dense has more problems, so we'll consider it dense only, and it will form dense only. 
+
+#### Time Complexity (Non-Key)
+And in this, time complexity—if we talk about time complexity, so see carefully: time complexity, $\log_2 N$. This will take time to search whatever time it takes. Like I've $N$ number of blocks, so $\log_2 N$ for this plus this number of blocks—how many blocks this can be? This can also be multiple numbers of blocks. Like for A, B, C, D, this can also be a multiple number of blocks. So from here, you'll get to know from A you get to know that you have to go this side, so one search is this. Then that A you have searched; inside that A, you'll point towards another A, so one more extra search is added here. 
+
+Time complexity increases here. Time complexity increased because the first search you have to do here, then you have to search here, and from here also—one is not there, maybe there can be many pointers here, there can be many number of pointers. So don't consider it $\log N + 2$; it will be more than that. First, you have to search $\log N$ here, so in this, there can be so many blocks, there can be so many record pointers, maybe there is $N$ number of pointers. So here I have $N$ pointers, I have to search that will take me to a value. So in this, there is an extra layer—one layer is extra. 
+
+### Conclusion
+
+This is how we actually represent the secondary index on the basis of key and non-key. This we've made on the basis of key, and this on the basis of non-key. 
+
+This can be asked: will it be dense or sparse? The secondary index is always dense. That which is at the end of the book is a secondary index, because it will be already at the starting of the book, but at the end of the book also one index can be there. If the size of the book is very big, then sometimes it is also at the end of the book. That is called a secondary index. 
+
+Thank you.

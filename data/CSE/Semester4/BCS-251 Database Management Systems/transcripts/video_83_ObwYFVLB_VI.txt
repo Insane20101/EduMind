@@ -1,0 +1,53 @@
+Hello friends! Welcome to Gate Smashers. The topic is Transaction States. It means, when a transaction is executed, then it passes through which states? 
+
+So first of all, if we talk about when a transaction begins, then by default, it will come into an active state. What is the meaning of an active state? That a transaction is in a passive state. As we start executing it, it will come into which state? In an active state. 
+
+If we talk about it in the term of operating system—if I tell you—then in operating system, we say it as a program. Like we have written a program, we have written some program in C, C++, we have saved it. So where is that program? It is in the hard disk. It is in an idle state. But as we will execute it, as we will compile it, it will come into RAM and it is called an active state. 
+
+So the same concept is over here. When you are not doing any transaction, then by default where is the transaction? In a passive state. But as you started it, it will come into an active state. 
+
+And what is the meaning of an active state? First of all, you will have to understand this architecture, because whatever material you will get on transaction states, they will tell you normally that it is an active state, this state. They are theoretical concepts. But I will compare it with an actual real-life example, that transactions are crossed from which state. 
+
+So for that, first you have to see this architecture: that CPU and hard disk. Hard disk is where all the data is permanently stored. Whenever CPU executes—whenever it executes any transaction—so to execute the transaction, what does it need? It needs data. And where is that data? It is kept in the hard disk. But CPU cannot go into the hard disk and execute any operation, because CPU's speed is very high. Generally, CPU's speed is in MIPS (Million Instructions Per Second) and hard disk is very slow. Hard disk does 10-20 instructions comparative to the CPU. So CPU never can be compatible with the hard disk for execution. 
+
+So in between, an intermediate RAM is required, an intermediate memory. Let's say RAM or cache memory. So what will happen with that? We will get speed over here. CPU will say I want this data, we will call that data in RAM, CPU will change that data, and then finally we will save that data permanently. 
+
+I am telling you this in the term of operating system also. We discuss this in operating system also, and in Computer Organization also we discuss this type of concept. But actually, this concept is used in transactions also. So I will compare that only. 
+
+Active state: What is the meaning of an active state? That CPU is executing any transaction. Obviously, CPU will only do it, because what is in CPU? ALU, Arithmetic Logical Unit. So what does Arithmetic Logical Unit do? To execute any transaction means some plus, minus, multiplication—some operation is to be performed. So that operation will be performed by CPU. 
+
+But active state means that where have we called the data? In RAM. In faster memory, we have called it. Now we are calling it an active state. Now CPU is executing it. And CPU in transaction—which operations do we perform? Read operation, write operation. These are the two major operations that we perform. 
+
+So read means from database, from permanent database, we have read. Now write means we are doing some change in it. Some plus, minus, multiplication, division—whatever the operation we are performing, now we are doing some change in it. So when we performed the operations—let's say, we did read of A, we did A = A - 50, we did write of A, we did read of B—we are performing many operations. When all those operations will be performed, then at last there is an operation: commit. When all the operations get completed, then at last we write the operation commit. 
+
+So over here, partially committed means that you are performing operations. You have performed all the operations. Only one operation is left, which one? Commit. So if there are N number of operations in your transaction, then N-1 operations you have performed. Because which is the Nth operation? Commit. 
+
+So when you have performed all the operations at your end, we call it partially committed. What have you done in partially committed? You have done some change. You have done some multiplication. You performed all the operations. Now the transaction is in a partially committed state. 
+
+But still, have we done any change in the database? Where are these all changes present? In RAM. In local memory or in shared memory, they are present, these all changes. So in final, we write commit. The Nth operation about which I am talking, what is that final? Commit. 
+
+So doing commit means whatever changes you have done over here, save all those changes in the hard disk. When they are saved in the hard disk, they will be permanently saved. So over here, in commit, we are talking about what? About hard disk. In partially committed, we talk about which memory? Generally about RAM. And in active state also, we talk about which memory? Generally about RAM. Where is the transaction going on? In RAM. Where are the changes saved? In RAM. But as you committed, where will all the changes be? In hard disk. 
+
+When you performed all the changes, free the memory. Deallocation. Deallocation means termination. So all the resources that are occupied by it—which are the resources? It is obvious, we don't have a dedicated resource for each transaction. In the whole world, in a day, more than trillion transactions are done. So there cannot be a dedicated resource for each transaction. They use those resources only in sharable mode. First I am using, then you use, then they will use it. In this way. 
+
+So what all resources are there? If it is CPU, it is RAM, or they are registers, bandwidth is there, network is there. All the resources, all the resources we will free from it. We will do deallocation. And then to whom will we give? We will give it to someone else. Because all these resources are limited. It is not that one transaction has kept it, that only I will keep it, and when I will come again, then I will use it again. When that transaction is completed, all the resources are operating system's responsibility. Operating system takes all the resources back. So that is termination. Termination means deallocation: take all the resources back. 
+
+Now over here we'll talk about failed. Active, partially commit, commit, and termination. But over here, failed. Failed means no system is 100% full-proof. Anytime any error can occur. There is power failure, some outage occurred, some switch is not working, router is spoiled, there was fire. Many types of outages can occur. Outages means any problem has occurred. 
+
+So in case your transaction was going on, but in the middle power failure occurred, or let's say in the middle your wire connection, connection broke—whatever problem came, due to that problem, your transaction is failed. So if the transaction fails, then it can fail in which state? In active state. We had just started right now, and it failed in the first operation. Or it has performed N-1 operations: I had almost performed all the operations, but just before commit, they failed. Because after commit, it cannot be failed. You can never draw this line: after commit, it will always be terminated. 
+
+So either it failed in the first operation—like many times in IRCTC, because I like this example very much, in Indian railways, it is an Indian railways example: whenever we do reservation in Indian railways of a train, then it can also happen that as I filled my information, to, from, I selected the train, and over there only the transaction failed, network went, internet connection was lost. So from active state, you directly came into a failed state. 
+
+Or you filled all the information, you went on payment portal. After going to the payment portal, as you did the payment, you reached till N-1 operation. You also entered the OTP. But as you entered the OTP, what is written in the next page? "Don't press back button" or "Don't refresh". But as you did refresh by mistake, or you pressed the back button, over there only the transaction will be failed. So your transaction was totally done, it was done till N-1, just the last operation was left: commit. But in that state, as you pressed refresh or back button, along with that what happened to your transaction? It failed. 
+
+So meaning of failed: we had seen in the properties, atomicity—either it will be completed, or it will be completely rolled back. So in this case, I will have to roll back the failed transaction, or it will have to be aborted. Abort means we are killing it in a way. When we will kill, then what will we do? We will restart it. When? In the near future. 
+
+The transaction is failed. You can never bring the failed transaction into an active state directly, nor can you take a failed state to partially committed. After failed, it will always abort. Abort means restart. You can resume it? Not at all, never. A failed transaction will be resumed; it will always restart. 
+
+Because what will recovery manager do? Recovery manager will come, recovery manager will say, "Ok, it had performed 10 operations, so I will have to roll back all those 10 so that consistency can be maintained." It should not happen that you withdraw money from ATM, you got the message, you got the message that money has been withdrawn, but you did not get the cash. So in that case, recovery manager will say, "No, over here there is some problem." So it will recover, it will roll back. So what will happen in roll back state? Your money will come back. So in today's time, first this task used to take many days, but in today's time, if you are facing this thing, then along with it, along with auto debit, auto credit is also done, means your money will also along with that come back. 
+
+So this is the thing, that after failed, abort. So you will again start the transaction. Because as abort is done, it will be killed. Restarting means that it will have to be started again, and all the resources—it has taken some resources—you take back all the resources. 
+
+So this is the actual implementation of what the transaction states are. So you remember these states, that where, how work is done, because many times from the point of view of theory, questions come in GATE, UGC-NET, or in many competitive exams where they can ask basic questions from this. 
+
+So this is all about the transaction states. Thank you!

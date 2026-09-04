@@ -1,0 +1,13 @@
+Today, we will see who has the guts. In this video, I am going to give you all the concepts that we have learned in the Sigma web development course. I will provide you with an exercise based on that, which you have to solve. If you have decided that you are going to tackle this question, then write "Challenge Accepted" in the comment section below. Everyone, please write that, and also like this video because my energy is high to start!
+
+Let's go to the computer screen and roll the intro. 
+
+Now that I am at the computer screen, I have created a folder named "video 33." I will explain what you need to do for this exercise. I have uploaded the shoutouts from the last exercise, and if you haven't seen that video, I encourage you to check it out. This time, I want to let you know that you will receive a shoutout if you write "Challenge Accepted" in the comment section below.
+
+For this exercise, you need to design a navbar. After designing the navbar, you will create a stylesheet in which I will change a variable. According to those variables, the color of your navbar will change, meaning you have to make a multicolored navbar. You can achieve this simply by using CSS variables. I discussed CSS variables in video number 30, so you need to use the concepts from that video to create this multicolored navbar.
+
+I also want to mention that we will gradually transition to making a full website. There are some important concepts we need to cover first, such as Flexbox, Grid, transitions, and animations. We will be creating full websites soon, and many people are eagerly waiting for that. 
+
+I hope you have accessed this playlist, and the source code is also being uploaded, so please make sure to access that as well. 
+
+That's it for now, guys. Thank you so much for watching this video, and I will see you next time. Bye!

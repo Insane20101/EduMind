@@ -1,0 +1,75 @@
+Hello friends, welcome to Gate Smashers. Today we are going to discuss equi join. It is clear from the name which operator we will use: "equal". Which operator do we have to use between any attribute? Equal. It depends on the question. In this video, we will see an example, an example in which we will frame the SQL query. But most of the time what happens? The query is given, and on that basis, I have to find the answer. However, if a scenario is given here, tables are given, and based on that you can write queries—if you can write queries on the basis of a question, then this is the most important task. Because if we know how to frame queries, then obviously I can easily solve any question in SQL. 
+
+Here I have two tables: employee and department. In the employee table, there are employee number, employee name, employee address, department number, location, and employee number. The department table has three columns. And what is the question here? "Find the employee name who worked in a department having location same as their address." 
+
+What is asked in the question? I want to find out the names of the employees, but whose? Who are working in some department, and the location of their department should be the same as the employee's address. Meaning, Employee One, whose name is Ram, if he is working in Delhi, if he belongs to Delhi, then he should work in Delhi only, meaning his department should be in Delhi only. So I want to find out that output. 
+
+Now let me tell you one thing here: before watching the video on equi join, you must cover the video on natural join. You must watch the video on natural join because it's all linked. All the videos I cover in joins are linked because this question is a very important question. We are not discussing any simple question; it is a big, complex question. So before immediately discussing the complex question, you should know a little about the basics of joins—what is a join, what is a natural join? I have already made that video, and I will definitely share its link in the description box. You must watch that video first. 
+
+Now, if I see the output by looking at both these tables, what output will come? One is Ram, who belongs to Delhi, and he is working in department 1. The location of department 1 is also Delhi. So what should come up in my output? Ram should come. 
+
+If I see another, Varun: Varun, whose employee number is 2. 2 is working in Pune. 2 is working in a department which is in Pune. But from where does Varun belong? From Chandigarh. It should not come in the output. 
+
+Ravi: Employee 3. Employee 3 is not there at all in the department table; the employee number employee 3 is not there. What does it mean? That Ravi is an employee, but he has not been allotted any department till now. Because this employee number is a foreign key here, which is taking reference from this primary key, from the primary key of employee. So here we will put the same value, which should be in this table. 
+
+Similarly, if I talk about 4, Amrit: he belongs to Delhi, and he is working in a department d3, which is in Patna. So this address is also not the same. What should come in the output? Ram. 
+
+So how do I have to write the query to fetch the output? I am writing this query with the help of joins. So what do we always do in joins? With `SELECT`, we write what I want to show in the output, what I need to display in the output. With `SELECT`, I want to print the name of the employee, so:
+
+`SELECT Employee Name`
+
+`FROM`
+
+Now, whenever we write an SQL query, first of all, I want to find out which tables do I need. Do I just want the employee table, or do I just want the department, or do I need both tables? So obviously, in this, you need both tables because the name of the employee is in the employee table, and where is he working? In which department is he working? What is the location of that department? That is in the department table. So I have to take the help of both the tables. 
+
+So what do I write? `SELECT employee name FROM employee table name one, table name two`. Whenever we start a query, whenever the query is compiled, it is always from `FROM`. Because the first thing we see is the table. As soon as I wrote `Employee, Department`, what is the meaning of `Employee, Department`? Automatically, there is a cross product between these two tables. 
+
+Now, I have already explained the funda of the cross product: that what is a join? It is a cross product plus a condition. It is a cross product plus some condition. Meaning, whenever we do a join, there will be a cross product. After that, some condition has to be applied. So cross product—as soon as I write `employee, dept`, by default you understand what happened between these two tables: cross multiplication, cross product took place. 
+
+And what happens in a cross product? If there are $m$ number of rows in this table and $n$ number of rows in this table, then the total number of rows in the cross product will be $m \times n$. Meaning, if it has 4 and it has 3, so what will be the total? 12. So I have already written the cross product here just to save time. 
+
+What do you have to do? Pick the first row (One, Ram, Delhi), multiply them by all three rows, multiplied with three. Then pick up another row, multiply it by all three of the second table. Pick up the third row and multiply it by all three. Pick up the fourth, multiply them by all three. So how much is the total number of rows? 12. Out of them, the first three columns belong to the employee, and these three columns are of the department. But all of this will be visible like a temporary table. This whole will be visible like a table. 
+
+So now, after having the cross product, I have to apply a condition in the end, because a join is always a cross product plus some condition. Now what is the condition to be set here? `WHERE`. How to set the condition? By using the `WHERE` clause. 
+
+First of all, whenever we have to join two tables, first of all, what you have to do is keep the common attribute between both the tables the same. You have to do that because this table is giving the details of the employee, it is giving the details of the department, but what the employee number in it is telling is which employee is working in which department. So this table will tell who is the employee, and this table will tell which employee is working in which department. So I have to keep the employee number of these two tables equal. You will have to set this minimum condition, otherwise your queries will not work properly. 
+
+So `WHERE employee.employee number = dept.emp No.`
+Meaning, the employee number inside the employee table, its value should be equal to the employee number inside the department table. What is the meaning of this condition? That the number of the employee which is also in the employee table, the same number should also be in the department table of the employee. Only then will we get the authentic result. When will we get the authentic result? When he also belongs to the employee table, and its value also belongs to the department table. Because there may be some employees who are employees, but they haven't got the department yet—like Ravi. Ravi is a part of the employee table, but he hasn't got any department yet; employee 3 hasn't got one. So we have to neglect such values. I have to get these values out. So for that, I have to put this condition minimum. 
+
+So wherever you got equal, you understand that this is the condition of an equi join. Although the same condition we have applied in a natural join also, but what is the difference between a natural join and an equi join? A natural join always equals the common attribute. And what is the common attribute in both the tables? `emp_no`. So whenever you put equal between them, that is a natural join. But in an equi join, we can put equal between any of the attributes. 
+
+And that's what I said in the question first: find the name of the employee who works in the department. This query will give me the name of the employee who works in any of the departments. But the location of his department should be same as the address of the employee. That is, here I have to put another condition by putting `AND` here: 
+
+`AND employee.address = department.location`
+(Sorry, it is location, the column name must be the same. If you write the column name wrong, then the query will probably give the wrong output or will create an error. But at the moment, we are not running on any interface; we are just looking at its concept. So in the concept also, you have to keep the column name the same which is inside the table.) So `employee.address = department.location`. 
+
+Now we implement this on it, because whenever this query will run, first of all, `FROM Emp, dept`—as soon as what is the meaning of `employee, dept`? Cross product between the two. So this output will come. 
+
+Now you have to run two conditions on this output with `AND`: an employee who also works in some department, and the address of that employee is equal to the location of the department. 
+
+First row: The number of the employee is equal to the number of the employee in the department? True. This condition became true (first employee number is equal to employee number two). And address is equal to city location? Yes, this condition is also valid. So the first row is true. 
+
+Now, another row: 1 employee number is equal to department employee number? One is equal to 2? No, false. So if there is a false here, then you do not need to check another condition, because false and whatever it is—whether it is false or true—the output will always be false. Because if the first condition becomes false, `AND` will always create a false. So this row will be rejected. 
+
+Similarly, 1 is equal to 4? No. 
+2 is equal to 1? No. 
+2 is equal to 2? Yes. This condition is valid because employee number is equal to employee number (2 is equal to 2). Now the second condition: `AND` Chandigarh is equal to Pune (address is equal to location)? No. This is invalid, it is not equal, therefore it is false. Then the overall result is also false. False means this row will be rejected. In the final, this row will not come. 
+
+Then 2 is equal to 4: the first condition is false. 
+3 is equal to 1: first condition is false. 
+3 is equal to 2: first condition is false. 
+3 is equal to 4: first condition is false. 
+4 is equal to 1: first condition is false. 
+
+But if I tell this row to you carefully—check carefully, that Delhi is equal to Delhi. Here the location and city, which is the address of the employee and city location, both are coming the same. But that employee is not working in that department where that employee is working; we have to take the same value. So 4 is equal to 1, so this 4 value is also not equal to 2, so this row will be rejected. 
+
+Now 4 is equal to 4: yes, employee number inside employee and employee number inside department—both values are equal. But city—see the address: address is Delhi, and here the location is Patna. So this is not valid. So all this row gets rejected. 
+
+Only this row is getting selected. Now what did all this—what was the output given by this whole query? What was the output? This row. 
+
+Now what do I have to select from this row? Employee name only. So what is the employee name? Ram. So what came to me in the final output? Ram. 
+
+So this is how the equi join actually works. Always remember, in an equi join we can use the equal operator in between any attribute. But if two tables have something in common, you always have to put equals in the middle of the common attribute if you want an authentic result. 
+
+So this is all about the equi join. If you like this video, please like, share, and subscribe to my channel. Thank you.

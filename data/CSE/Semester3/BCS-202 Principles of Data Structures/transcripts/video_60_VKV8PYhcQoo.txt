@@ -1,0 +1,91 @@
+Hello friends, welcome to Gate Smashers. Today's question is from AVL tree. Let's read the statement first. How many rotations are required during nunsconstruction of an AVL tree if the following elements are added in the given order? 
+
+Means these elements are given here, you have to add them according to their order in the AVL tree. And then you have to find out how many rotations will be required. And here you have 4 options, 2 left, 3 right, 3 left, 2 right, in this way you have options given here. 
+
+First of all I will tell you, AVL tree is an extension of binary search tree. What is the property of Binary search tree? That in left element, means if we have 20 in root, then in left element there is always less element and in right there is always bigger element from parent. 
+
+Here what is the problem in Binary search tree is, searching! If your elements are coming in this way that all the elements are in one direction, let's say 10, then 20 comes, so we will put in right, 30 comes, 40 comes, 50 comes, all in right. If your elements are coming in this way, then see your elements are always going in one direction. Going in one direction means it has become like a right skewed tree. 
+
+So in this case, what can be the maximum height of Binary search tree? Order of N. So in worst case if it can be of order of N, then how much time can you take in searching? Order of N. 
+
+So the problem created here in Binary search tree, that AVL tree removes it. Because AVL tree goes on which funda? On Balanced funda. Means it always keeps the tree balanced and how it keeps balance, we will see that in this example. 
+
+Let's start making AVL tree. First of all if we talk about 35, so we inserted 35 element, then came 50. So 50 element is bigger than 35, so we put it in right of 35. Then 40, if 40 element comes then you know 40 is bigger than 35 but smaller than 50. So we put it in left of 50. Putting it is according to Binary search tree only. 
+
+But you have to count balance factor here. So always count balance factor. The element which you have put just now, 50 is put, after that 40 is put. So first of all we remove balance factor of 40. So see if there is someone in its left, see in right. Take their height and do minus. 
+
+Here see there is no one in left, no one in right. So its balance factor is 0 and balance factor should always be between minus 1, 0 and plus 1. 
+
+Let's talk about 50, there is one element in left of 50, height is 1, no one in right. So if you do 1 minus 0, then no problem. But see there is no one in left of 35, means 0. And the height of the elements in right is maximum 2. So if you do 0 minus 2, then it means minus 2 is coming. 
+
+So in case of 0 minus 2 you know that if there is any problem in these three then there is no problem. Otherwise whether it is minus 2 or plus 2, you have to balance it. So in this case when you know that its balance factor is coming wrong, then how will you fix it? 
+
+First of all see the rotation which is coming here. To find out rotation what you have to do is, the node whose balance factor is coming wrong or not coming right, you have to start from there and go towards the element which we have just applied. When we are counting the balance factor, then we go from the element which we have applied just now. And when we have counted and you got to know that yes there is an element in this which has a wrong balance factor. So now to find out rotation that is left right here, right left here, left left here or right right here. 
+
+So to find that out, start from where your balance factor is coming wrong. So we started from 35, we have to go towards the new node. So first you went to right then to left. So here which rotation is there? Right left. 
+
+If you want to fix right left, then you have to remember that in case of right left we need 2 rotations. And in case of left and right we need 2 rotations. Now you will get to know that if you want to fix it in right and left, balance factor, then what you have to do? You have to convert right left into right right first. How will you do that? 
+
+How will you make it right right? Means how will you make it in this direction? You have to visualize it a little. If we see it here in this way, then you have to move it like this. Means 50 and 40 are there, you have to move it like this. If you move it like this, then 40 will come up and 50 will go down. 
+
+So which rotation is there? This one. This one is on the right side. Means you are going to the right side. Means you count here, you will go to one side on the right side. 
+
+How will you get it? 35, 40 and this 50. So which one is it? Now right right. 
+
+Now what you have to do to fix right right? You have to come like this. Means bring 40 in the middle and write 35 and 50 like this. You will visualize it a little. If you will easily find out here, you will have to practice a little. You have to move it like this. 35 down, 50 here and see your balance factor is done. 
+
+So which rotation is there? Left side, this side. So left side means you have one rotation in left too. And this is your new tree which is balanced. And you can check its factor, it is coming right. 
+
+Now 25, you know 25 is less than 35 so you put it here. Then 30, you know 30 is more than 25 but less than 35 so you put it here. Now again stop because you have to check balance factor. 
+
+So see, 30's balance factor is okay, 0, 25 will also make your minus 1 which is fine. But see 35, you have to count from below. I have always told you that when you are looking at balance factor, then look from below. See what is coming of 35's balance factor. First you went to left, means left and right. 
+
+Means here left sub tree's height is 2 and right sub tree is right. So it doesn't have it. So 2 minus 0 means 2. Stop here. Although you can get confusion here students that sir 40 is also wrong. Because look 40, 40 has 3 heights in left and 1 height in right. So it is also 2. 
+
+But no, you have to start from the one which you just added from below. As soon as you get the first confusion, stop there. Stop and now you have to see rotation. 
+
+Rotation means is it left or right? Right is left, right is right, left is left. So I also told you that from where you got confusion, start moving from there to below. Whichever element you have just added, go towards 30. So see first you went to left, then you went to right. First left then right. So I just told you that if left and right or right and left come then you have to do two rotations. 
+
+Now you have to convert left-right first into left-left. To convert left-left, what you have to do here is you have to do rotation here. To do rotation you have to bring 30 up, 25 down. 
+
+See you will visualize it a little like this. This is 25 and this is 30. So rotate like this. As soon as you rotate, how will it be formed? 40, 35 and 35 will come here, this is up. 25 will come here and 50 will come here. Like this. 
+
+And what is the rotation? See you made 30 up, 25 down like this, in left side. So one more came in left side, so count it. So how it is formed here? Like this. Now it's not that there is no problem in this. 
+
+I just told you that with one rotation you got left-left. See now in which it is converted? Left-left. 
+
+Now if you want to fix it then you have to rotate one like this so that 30 comes up, 35 comes here. And you will get it perfectly here. So what you make? 40, 30, 35 will come here because it is bigger than 30. 25 will come here because it is smaller than 30 and 50 will come here. 
+
+What did you do here? You moved it like this. 30 was kept here, 35 was brought down. So which rotation did you take? You took one more right rotation and your balance factor is coming right here. 
+
+How? See this is 40, 2 is height, right height is 1, so 2 minus 1 is 1. So means all the tree is balanced till now. 
+
+Then next element we will insert, 30 was last done in this, after that we will do 60. So see 60 is your, it is bigger than 50, it will come here. Balance factor is coming right here. 
+
+So the next element is 78. So where will we insert 78? In right of 60. So in right of 60 we inserted 78. 
+
+Now again here you have to stop and check balance factor. So let's check balance factor of 78. So 0 will come because neither in left nor in right. 60 is also coming right here because it is not in left but height is 1 in right. 
+
+So if height of right is 1, so 0 minus 1 means minus 1 which is fine according to the balance factor of AVL. But if you check 50 here, then 50, if there is no one in left then 0. But in right height is 2, so 0 minus 2 is minus 2. 
+
+So here you have to check balance factor. As soon as you checked balance factor, so it is wrong. Now you have to check rotation. So which rotation is coming here? Right-right. 
+
+So if there is right-right rotation and left-left rotation, then in that case you will be fine in one rotation only. How? You just have to fix 60 here and bring 50 down. Means you have to move here like this. 
+
+If I write 50 and 60 here, then you have to move like this. Means in left side, you have to do one more rotation in left side. So as soon as you do one more rotation, it will become 40, 30, 25, 35 and here 60, in left side 50, 70. 
+
+See it is completely balanced. You can call it balanced or even full binary tree because all the levels are full here. 
+
+Then if we talk about 20, so 20 is inserted here in left side of 25 and if we check balance factor here, then 1, 2, 3, 2, this is also fine, here also fine. 
+
+Then 28, 28 is bigger than 25 and 30 is smaller. So here it is added. Then see if we check balance factor of 30, then 2 minus 1 which is 1. 
+
+Let's check 40, 1, 2, 3 and there 2. So again here, the balance factor is coming here perfectly fine. So your answer is left 3, right 2. 3 is left and 2 is right, so your B option is sitting here perfectly fine. 
+
+What you have to do in AVL tree, what is my aim and motive here with these questions, that you should quickly refresh all the concepts because there is not only construction in AVL tree, apart from construction you should also know how much height can go. Like I told you earlier, in starting, the problem of BST, binary search tree, how much maximum it can grow, how much maximum it can grow, till order of n. 
+
+But how much height of AVL tree can be maximum, log n. So if height can be till log n, then obviously, how much time it will take in search, maximum log n. 
+
+This is the main point that you have to know their searching time, their height, if we talk about heap, then heap's searching time, height inside heap, so you have to remember all these points well and then go. So definitely all these points will help you a lot in the exam. 
+
+If you like this video then please like it, share it and please subscribe my channel. Thank You.

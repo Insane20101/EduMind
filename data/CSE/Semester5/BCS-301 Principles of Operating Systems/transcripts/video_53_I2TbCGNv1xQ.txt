@@ -1,0 +1,59 @@
+Hello guys, the topic is non-contiguous memory allocation. In non-contiguous memory allocation, we are allocating the memory to the different, different processes in a non-consecutive manner. In non-contiguous memory allocation, a process cannot span between two different locations, but here a process can be expanded. Meaning, after dividing, one process can be put in different, different locations in RAM. This is the concept.
+
+Now let's say in main memory, there are these three holes of 2KB, 2KB, and 2KB. If the process size is let's say a process came, P1, and the process size is 6KB. Now this 6KB process cannot be put according to the contiguous memory allocation. Because the rule in contiguous memory allocation is that if one process will come, then it will completely fit there; we cannot divide and put it in different locations. 
+
+But in non-contiguous memory allocation, what we are doing: this process can be divided and it can be put on different, different locations. What I mean to say is this 6KB process, by dividing it into three partitions—meaning we make three partitions of 2KB each, and then the first partition I put here, the second partition I put here, and the third one I put here—it can be done in non-contiguous memory allocation. But it can not be done in contiguous memory allocation, where a process cannot be divided and placed in different, different locations. 
+
+Due to that, what was the problem arising? External fragmentation. Then how can we remove external fragmentation? The method is non-contiguous memory allocation. What are we doing? We are dividing one process and putting it in different, different locations in memory. So we are trying to remove external fragmentation, and definitely, external fragmentation is getting removed. 
+
+But the point is: when this process came, when this process started to come in RAM—meaning when it knocked in RAM—at that time, here I am checking how many holes are empty at what time and what is the size of those holes, and I am dividing those processes according to the size of holes. A very important point is there: I'm dividing the processes over here, I'm doing the processes, but this division is a very costly method. 
+
+Why is it costly? When this process has come to memory or is just about to come to the main memory, what I'm doing at the same time, according to the memory and according to these holes, I am dividing the process. What is the problem arising over here? These holes are created dynamically, meaning these keep on changing on runtime. It can also happen that you put this process here—you have put one partition here and one partition here, and one partition here. Further, it can be possible. 
+
+It can be possible like: if this partition is empty now—if partition over here... sorry, if the process was there and this process has gone out. What I meant to say is this space has become a hole now, and this has been occupied by the process. This also has been occupied by the process. And this too is occupied by the process. We have made P1 occupy this; we have put P1 in these three locations, and I have put it by dividing into 2KB, 2KB, 2KB. 
+
+Now, this available empty space and the available size of this space is 1KB and 1KB, 1KB and 1KB. These two holes of 1KB are created now. When these two holes of 1KB are created—1 and 1KB—now if one process comes, let's say one more process came, P2, and the size of the process is 2KB. Can I put this 2KB here? No, I cannot put it according to contiguous. So, according to non-contiguous, I can put it. 
+
+But what will happen? What will happen here when this process is knocking here, that I want to come in the RAM? So at that time, I am checking that how many holes are there. There are two holes, and what is the size of these two holes? 1KB, 1KB. Then I will decide that the size of my process is 2KB. I will decide this in 2 parts, so the size of the first partition is 1KB and the second is also 1KB. So I will put this 1KB here and this 1KB here. 
+
+But the problem is, these holes are creating dynamically, and these are changing every time. Their size is changing, and their number is changing. Whenever the process will try to come in the RAM, at that time, by analyzing those holes, their numbers, and their size, you will be dividing the process. And this is a very time-consuming process. In doing this thing, a lot of your time might be wasted. 
+
+So here, what method are we following in the non-contiguous? The method is the same, that we have a process; whenever the process will come, we will divide it. But what are we changing here? Whatever process we have, we will divide that process beforehand. We will divide that process beforehand, meaning before the arrival of this in main memory. Its division will complete, meaning its partition will complete. 
+
+So this process, when I will divide it into partitions, then what do I call this one partition? Page. This is called the page. And where am I doing this partition? In the secondary memory. When I read this process in the secondary memory, at that time only I divide it into pages. And what about the other side, the RAM we had, the main memory we had? We have divided main memory beforehand. And in technical terms, we call every partition and every slot of main memory... frame. Yes, that is called the frame. 
+
+So what method are we following here? We are following the same method, but when the process will come in the RAM, we are not doing divisions at that time. We are already dividing processes in the secondary memory. And what do we call each of these partitions? Pages. Meaning every process will be divided into pages. And what will we do in RAM also, in main memory also? We will do partitions beforehand itself. And what do we call every partition and every slot? Frame. 
+
+So actually, what are you doing here? The important point is, the size of the page will always be equal to the size of the frame. This is a very, very important point. This point will be used in all of paging, that the size of the page will be equal to the size of the frame. 
+
+The reason being is, obviously, this page—the process which we are dividing into the page—where will this partition go and sit? This will go and sit in this frame. This will go and sit there in that frame. If it goes there, then it should fit properly. So to make it fit properly, so that I can use memory more efficiently, what will I do? Whatever the size will be of this page, that will be the size of this frame also. So that this frame can put one page easily. 
+
+Alternatively, we can also say that this page should fit in one frame. So what will we have to do for that beforehand itself? Whatever the size of the pages is, that should be the size of that frame also. Or I can also say that whatever the size of the frame is, according to that only, we'll divide processes into the pages. So I will already do this work so that when this process will come, when the page of this process will come, I will put this page here. Next page comes, I will put here. If this slot is busy, then I will put the third page here. If this slot is busy, then I will put the 4th page here. And let's say 5th page I'll put here. 
+
+So now, meaning, we can allocate the memory to these pages in a non-contiguous memory. It is not necessary that these pages should be continuous; these can be distributed in different, different locations. 
+
+So what is the advantage I'm getting over here? External fragmentation is totally removed from here. 
+
+Let's try to analyze it with a very simple example. Let's say I'm having a RAM of 8KB. I have a RAM of 8KB, and the page size or frame which I have fixed—frame size is 1KB. So if the size of the RAM is 8KB and the size of one frame is 1KB, then how many numbers of frames will be there? There will be a total of 8 numbers of frames. So we are drawing here 8 numbers of frames. So zero, one, two, three, four, five, six, and seven. So 8 numbers of frames will be there. 
+
+Now say, if the process comes—let's say a process came, P1, and the size of P1 process is 2KB. Size of P1 process is 2KB. Then I will also have to divide this process into pages. And what is the size of the page? Whatever the size of the frame is, is the size of the page. So what will be the size of the page also? 1KB. So page size is equal to frame size is equal to 1KB. 
+
+So now, if the size of the process is 2KB, then I will make 2 partitions of 1KB each. Let's say one more process came, let's say P2, so I will write here P2 also. Let's say if that is also of 2KB, then I can make two partitions of P2 also. So in the same manner, P3 is also coming; we will make 2 partitions of P3 also. And if P4 comes, then we will make 2 partitions of P4 also. If all those four processes are 2KB each. 
+
+If already it is 2KB, 2KB, now simply what we can do: we can allocate the partition of P1 here. Now, if these slots are empty, if initially these slots are empty, then it's not necessary that you have to follow non-contiguous—meaning you put these to different, different locations. If these slots are empty, then you can put them directly also. And yes, if slots are not empty, then you will put them separately only. Normally, non-contiguous doesn't mean it is not contiguous; yes, if the slots are empty, then you put P1 here. Second slot of P1 put here. Similarly, we have put the 1st page of P2 here and the second page of P2 here. First page of P3 process here, and second page of P3 process here. First page of P4 process here, and second page of P4 process here. We have given all these pages; I have put these 2 pages here, these 2 pages here, these 2 pages here, these 2 pages here. 
+
+So simply, we have allocated the memory to the pages. 
+
+Now the point is, if at a point let's say P2 has gone out from here. P2's work is executed here. Whatever the instructions were there in the P2 are executed. Similarly, P4 instructions are also executed here. So P1 and P2 have gone out. 
+
+So in a way, what we can say is, here these 2 holes are created, and here these 2 holes are created. Size of these two holes and the size of all these holes are 1KB, 1KB, 1KB, 1KB—meaning total I have 4KB of space. 
+
+So if at this time a process comes, P5, and the size of P5 is 4KB. So what will I do? First, I will divide the process of 4KB into pages. How many pages are created? 4 pages. 
+
+So if it were a contiguous allocation, how much space do I have? 4KB. And the process is 4KB, so I cannot allocate because it is not continuous. But in non-contiguous, we can easily distribute it. How? I will put 2 pages of P5 here, and the remaining 2 pages of P5 will be put here. 
+
+So means, with the help of paging—this is called the concept of paging. So what do we do in paging? We divide processes into pages beforehand. And what will be the size of every page? It will be equal to the frame size of main memory. 
+
+So what advantage do I have? The page of processes will properly fit in the frame, or the frame will properly carry a page. And then simply, we will allocate memory to the pages. So easily, we have removed the external fragmentation. 
+
+So this is the first advantage, and this is why we need paging. So this is all about why we need the paging concept. Thank you.

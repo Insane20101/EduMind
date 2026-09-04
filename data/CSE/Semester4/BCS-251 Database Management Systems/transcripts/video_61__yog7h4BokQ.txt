@@ -1,0 +1,56 @@
+Hello friends! Welcome to Gate Smashers. Today I am going to discuss practice questions on SQL queries. Actually, this topic will help you a lot for your UGC NET exam, for your GATE exam, and even for university-level exams, because at many places SQL query questions are asked. 
+
+And if I say a simple thing, then in DBMS—in the whole database management system—if a student can get stuck somewhere, meaning where are the chances of a student to get stuck, that topic is queries. In queries also, if we talk, in SQL we have the subqueries topic, we have the correlated nested query topic. Over here, students get stuck many times. So that's why this video will help you with how we can frame queries. If I am given a database, how can we actually write the queries? 
+
+So over here, I am taking the example of an employee table. In the employee table, we have four columns: Eid, Ename, Dept, and Salary. And over here, I have already inserted some data. First of all, again, focus on the dataset, because on this dataset we are not writing two, three, or four queries. We are going to write nearly about seven to eight queries on this topic. And these whole queries, we will start from very simple, from absolute beginning, and we will go till the end. End means we will go till complex queries. What comes in complex queries? Nested queries, correlated queries, query from source. All these queries are a bit complex, so we will start from the beginning, we will take it to the end. You can say this topic as SQL queries from beginning to the end. 
+
+But in this video, we are going to first discuss two questions which are on this table only, on this data only. 
+
+### Question Number 1
+Write a SQL query to display the maximum salary from the employee table. Meaning, from this employee table, I want to print the maximum salary. Now, whenever max salary, minimum salary, average, sum, or count number of rows, what can you use over here? Aggregate function. And I have already made a video—I will share the link of that video in the description box. You please watch that video also first, so that you come to know how we do use aggregate functions. 
+
+So over here, which aggregate function? Maximum, because we have to find the maximum salary. And if you see the output, then what is the salary? 10,000, 20,000, 30,000, 40,000, 50,000. So what should be printed in the output? 50,000. 
+
+How it will be printed? Very simple query:
+`Select max(salary)`
+Because we are going to use the `MAX` aggregate function. Select max, whose max is to be found out? Max of salary. Attribute name from table. 
+`Select max(salary) from tablename`
+So this is simple. 50,000 output will be printed. This is a simple—if we talk in layman language, then it is a very simple question. 
+
+### Question Number 2
+If we extend this question a bit—extend means if we take this one level ahead—then write a SQL query to display the employee name who is taking the maximum salary. Meaning, now we have to print the employee name who is earning the maximum salary. 
+
+So if you see the output first, then who is earning 50,000? Varun. That means what should come in the output? Varun. But how will you write this? How we will write this query? 
+
+For that, we have to:
+`Select max(salary) from employee`
+We know that what output this is giving: 50,000. So now over here, we will take help of a nested query, or we can also call it as a subquery. We will take help of a subquery, that inside a query we have to write one more query. 
+
+Nested query:
+`Select max(salary) from employee`
+And outer query is:
+`Select Ename from Employee where salary = (Select max(salary) from Employee)`
+So this is the example of a nested query or subquery, where an outer query—this is the outer query, and this is called the inner query. 
+
+So how actually does this query work? Whenever we write this type of query, first of all, the inner query will be executed one time. Meaning one time the inner query will be executed. What output will it give? `Select max(salary) from employee`. So select max salary from employee, what is it? 50,000. So you can assume it that the use of this query is over, because what it gave? 50,000 output. 
+
+So over here:
+`Select ename from employee where salary = 50,000`
+Because we cannot directly write 50,000. If we are directly writing `Select employee name from employee where salary = 50,000`, then it is wrong, because that query will be something else—that you find the name of the person whose salary is 50,000. But no, we have to find the employee name whose salary is maximum. 
+
+So first, with the inner query, we printed the maximum salary output, which is 50,000. Now we will compare it with the `=` operator with the outside query. Now what will happen? 
+`Select employee name from employee where salary`
+Now this whole table will be compared with inner, meaning from employee where salary. What is the first salary? 10,000. 
+`10,000 = 50,000` — True or false? False. So this is false. This will not come in the output.
+`20,000 = 50,000` — False.
+`30,000 = 50,000` — False.
+`40,000 = 50,000` — False.
+`50,000 = 50,000` — Yes, this is true. 
+
+This is how the comparison will be done from employee where salary, which means all the salaries that are there, that will be compared with the inner query output. And what output has the inner query given? 50,000. 
+
+So as we compared, this is false, false, false, false, but `50 = 50` is true. When this query will return output true, then corresponding to that true, I have to find the employee name. So what is the corresponding employee name? Varun. So what output will this query give? Varun. 
+
+So this is how the subquery, or what we can say nested query—nested query means query inside a query, one more query inside a query. As we do a nested for-loop, where we write let's say `for(i=1 to n)` then `for(j=1 to m)`. Meaning for one value of $i$, $j$ will go till $n$; for $i=2$, $j$ will go till $n$ times. Same we are doing over here. What we do in a nested query? One more query inside a query. So first of all, the inner query will be executed one time, and it will give output, and we have to compare that output with the outer query. We have to compare with each and every row, and what we got as true, corresponding to that true in output, the employee name will be printed. 
+
+So this is how the simple nested query actually works. But on this table, not only these two queries, on this nearly about seven to eight queries we will discuss, where correlated queries, query from source, and more nested queries we are going to use. Thank you!

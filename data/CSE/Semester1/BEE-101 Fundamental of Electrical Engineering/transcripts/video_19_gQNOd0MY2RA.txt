@@ -1,0 +1,164 @@
+अजय को [संगीत] हुआ है। 
+
+हेलो, हेलो एवरीवन। वेलकम टू गेट अकैडमी क्लास 10 रंजन और बेसिक इलेक्ट्रिकल इंजीनियरिंग के मॉडल नंबर टू के लास्ट वीडियो में मैं आपके साथ आ गया हूं। इस वीडियो में हम लोग बात करने वाले हैं। जैसा कि मैंने अपने पिछले वीडियो में बताया था, इस पार्टिकुलर वीडियो में हम हिमाचल सोंग सीरीज और पैरेलल कंबाइंड एसी सर्किट्स पर चर्चा करेंगे। 
+
+कंबाइंड एसी सर्किट से संबंधित प्रश्नों को कैसे डील करना है, उसके लिए आप सबसे पहले सीरीज और पैरलल के इंडिविजुअल प्रश्नों को पढ़ सकते हैं। मैंने बताया था कि आप उसे पहले रीड कर सकते हैं, इसको स्टडी कर सकते हैं, और फिर आप इस वीडियो पर आ सकते हैं। अगर आपने इसे पहले से पढ़ा हुआ है, तो आप मेरे साथ सीधे इस वीडियो पर बात कर सकते हैं। 
+
+इस वीडियो को आप मेरे साथ रह सकते हैं और वीडियो के कॉन्सेप्ट को समझ सकते हैं। तो डायरेक्टली मैं आपको सीरीज और कंबाइंड एसी सर्किट के प्रश्न पर ले जाऊंगा। एक अच्छा महत्वपूर्ण प्रश्न मैंने आपके लिए सेलेक्ट किया है। आइए देखते हैं। 
+
+सबसे पहले प्रश्न में मैं लिखता हूं। इसे पढ़ लूंगा और फिर उसके बाद हम लोग उस प्रश्न को सॉल्व करने का प्रयास करेंगे। यहां पर जो प्रश्न है, वह है: "डिटरमाइंड द करंट ड्रॉन बाय द गिवर नेटवर्क एंड सप्लाई वोल्टेज।" 
+
+इसमें सप्लाई करंट आई आरएमएस की वैल्यू पूछी गई है। आपको जो वैल्यू दी गई है, वह वीआर एमएस-20 है और फ्रिक्वेंसी ऑफ टियर्स है। तीन अलग-अलग ब्रांच कनेक्टेड हैं, जहां दो ब्रांच पैरलल में जुड़े हुए हैं और उनका कंबिनेशन किसी एक ब्रांच के साथ सीरीज में लगा हुआ है। 
+
+तो ऐसे प्रश्नों को अप्रोच कैसे करना है? फिलहाल बिल्कुल नॉर्मल सीक्वेंस में लिया हुआ है। इसमें बस आपको करंट क्वालिफाइड करने के लिए ओम स्लो का उपयोग करना है। 
+
+सीरीज में जो भी क्वांटिटी या उनके महत्वपूर्ण हैं, उन्हें एक साथ ऐड कर सकते हैं। इसके बाद पैरलल कंबिनेशन को कॉल कीजिए। दोनों के लिए यहां पर जरूरत पड़ने वाली है। 
+
+आइए देखते हैं इस प्रश्न को अप्रोच कैसे करें। सबसे फास्टिंग सॉल्यूशन में हम लोग जीवन व्यर्थ है। आरएमएस टोटल इस गिवेन टू हंड्रेड वर्ड्स एंड फ्रिक्वेंसी ऑफ ईयर्स है। अब मैं काम करने वाला हूं कि मेरे पास तीन इंचेस आईडेंटिफाई हो चुकी हैं। 
+
+इसे मैं इंडिविजुअली नाम दे देता हूं। मैंने क्लिक करूंगा प्रॉपरली। इससे फायदा यह होगा कि पता चलेगा कि मैं कब किस ब्रांच की इंपेडेंस के वॉल्यूम पॉइंट कर रहा हूं। मैंने अपने अकॉर्डिंग यह कर दिया। 
+
+अब तीनों इंचेस की जो इंपॉर्टेंट हैं, उन्हें मैं पॉइंट करने वाला हूं। सबसे पहले लिखूं ब्रांच 1। ब्रांच 1 में 4 ओम है। ब्रांच 2 में टाइम्स का रजिस्टेंस और 12 एएम एक्ससी की वैल्यू है। 
+
+अगर प्रेसिडेंट की वैल्यू होती तो आप उसे डिवाइड कर सकते हैं। इसी तरह ब्रांच 3 में एक साल के व्यक्ति डैड टेंस हैं। 
+
+अब हम लोग सीधे आते हैं सॉल्यूशन के पहले पाठ में। पहले पार्ट ऑफ सॉल्यूशन में हम टोटल इंपेडेंस निकालेंगे। 
+
+टोटल इंपेडेंस ऑफ नेटवर्क का फॉर्मूला है: जेड टोटल = √(जेड1² + जेड2²)। 
+
+अब मैं यहां पर जेड1 और जेड2 की वैल्यू निकाल लेता हूं। 
+
+जेड1 की वैल्यू 4 ओम है। जेड2 की वैल्यू 12 ओम है। 
+
+अब हम इसे सॉल्व करते हैं। 
+
+जेड टोटल = √(4² + 12²) = √(16 + 144) = √160 = 12.65 ओम। 
+
+अब हमें टोटल आई आरएमएस की वैल्यू निकालनी है। 
+
+आई आरएमएस = वी आर एमएस / जेड टोटल। 
+
+यहां पर वी आर एमएस की वैल्यू 20 वोल्ट है। 
+
+आई आर एमएस = 20 / 12.65 = 1.58 एंपियर। 
+
+इस प्रकार, हम इस प्रश्न को सॉल्व कर चुके हैं। 
+
+अब मैं कोशिश करता हूं कि जो सेकंड प्रश्न आपको कराऊं। इस सेकंड प्रश्न में मैं आपको विद फीचर्स और बेसिक क्वालिटीज के साथ बताऊंगा कि कैसे आप इसे सॉल्व करेंगे। 
+
+आइए चलते हैं प्रश्न नंबर 2 के लिए। 
+
+प्रश्न जैसा कि मैंने बताया था, इसमें हम लोग थोड़ी सी और ज्यादा वैरायटी देखने वाले हैं। 
+
+इस प्रश्न में हमें टोटल इंपेडेंस और पावर फैक्टर ऑफ द सर्किट निकालना है। 
+
+नेटवर्क में तीन अलग-अलग ब्रांच हैं। 
+
+पहला ब्रांच 54 हेनरी है, दूसरा 125 माइक्रोफैरड है, और तीसरा 20 माइक्रोफैरड है। 
+
+इस कंडीशन में हमें यह सारी वैल्यूज को कैलकुलेट करना है। 
+
+तो आइए देखते हैं इस प्रश्न को अप्रोच कैसे करना है। 
+
+सबसे पहले हमें टोटल इंपेडेंस की वैल्यू चाहिए। 
+
+अगर आपको टोटल इंपेडेंस निकालना है, तो आपने पहले देखा था कि तीनों ब्रांच करंट की ओर देखा जाता है। 
+
+अब हम ब्रांच इंपेडेंस की वैल्यू निकाल लेते हैं। 
+
+ब्रांच 1 की इंपेडेंस = √(R² + (ωL)²) = √(0 + (2πfL)²) = 54 हेनरी। 
+
+ब्रांच 2 की इंपेडेंस = 125 माइक्रोफैरड। 
+
+अब हम इसे सॉल्व करते हैं। 
+
+जेड टोटल = √(जेड1² + जेड2² + जेड3²)। 
+
+इस प्रकार, हम इस प्रश्न को सॉल्व कर चुके हैं। 
+
+अब हमें टोटल करंट निकालना है। 
+
+टोटल करंट = आई आर एम एस टोटल = वी आर एम एस टोटल / जेड टोटल। 
+
+इस प्रकार, हम इस प्रश्न को सॉल्व कर चुके हैं। 
+
+धन्यवाद!
+
+### Step 3: Circuit Analysis
+
+In this step, we will discuss how to calculate the unknown quantities in a circuit with two branches where one quantity is known. We approached this by merging both branches into a single branch. The current traveling through this single branch became the total supply current. Using this current and the total impedance, we calculated the individual supply points.
+
+After determining the individual branch currents, we can calculate the individual branch supply currents. For individual branch currents, we use the formula:
+
+\[ I_{RMS-2} = \frac{V_{erma2}}{Z_2} \]
+
+Here, we have already established the value. We note that:
+
+\[ I_{RMS} = 11.22 \, \text{V} \]
+
+This corresponds to a value of 15077609. We can fold this value into our calculations. The value we have is:
+
+\[ 11.2214 \, \text{V} \, \text{at} \, 157.079 \]
+
+From this, we obtained a value of 0.07 A. Similarly, we can calculate \( I_{RMS} \) using the details from the Verma model.
+
+### Power Factor Calculation
+
+Next, we address the question regarding the power factor in the given circuit. To find the power factor, we need to consider the total resistance in the circuit. 
+
+First, we calculate the total resistance. If there are no resistances in the two sections, we can write:
+
+\[ R_{total} = 3182 \, \Omega \]
+
+Next, we calculate the power factor using the formula:
+
+\[ \text{Power Factor} = \frac{200}{329} \]
+
+This gives us a value of approximately 0.304. 
+
+### Active Power Calculation
+
+The next part of our analysis involves calculating the active power in the circuit. The formula for active power is:
+
+\[ P = V_{RMS} \times I_{RMS} \times \text{Power Factor} \]
+
+We have established that:
+
+\[ V_{RMS} = 250 \, \text{V} \]
+\[ I_{RMS} = 0.07 \, \text{A} \]
+
+Thus, the total active power in the circuit can be calculated as:
+
+\[ P = 250 \times 0.07 \approx 0.5 \, \text{W} \]
+
+### Nature of Current and Voltage
+
+Now, we will calculate the nature of the current and voltage in the three branches of the circuit. 
+
+1. **Branch One**: 
+   - We need to find \( V_{RMS1} \) and \( I_{RMS1} \).
+   - The voltage is calculated as:
+
+   \[ V_{RMS1} = 1623 \, \text{V} \]
+
+   - The current is:
+
+   \[ I_{RMS1} = 0.07 \, \text{A} \]
+
+2. **Branch Two**: 
+   - For branch two, we have:
+
+   \[ V_{RMS2} = 11.24 \, \text{V} \]
+   \[ I_{RMS2} = 0.07 \, \text{A} \]
+
+3. **Branch Three**: 
+   - For branch three, we find:
+
+   \[ V_{RMS3} = 2873 \, \text{V} \]
+   \[ I_{RMS3} = 0.07 \, \text{A} \]
+
+### Conclusion
+
+In conclusion, we have analyzed the circuit by calculating the individual branch currents, the power factor, and the active power. We also examined the nature of the current and voltage in each branch. This comprehensive approach allows us to understand the behavior of the combined AC circuit effectively.
+
+Thank you for your attention.

@@ -1,0 +1,49 @@
+What's up, guys? You are back to the Sigma web development course. I'm really happy that you have given so much love to this course. This course is filled with high energy because, for a Sigma free course, you need to be like the Sigma chads. 
+
+In today's video, I'll explain the basic structure of a website. Along with that, I'll share a mobile trick that will help you preview your website on your phone. I have a request from you all: please write in the comment section if you know HTML or not. That will help me structure this course better. 
+
+In this video, I will discuss the impact of ChatGPT, as there are a lot of talks going on about it. In the coming videos, I am going to include quizzes, so understand this video very carefully and learn all the concepts. Let's go to the computer screen. Let's roll the intro.
+
+---
+
+Now that I am at my computer screen, we will talk about how to open text, close text, and structure a basic website layout. Here is my folder; I will create a new folder named "video3." In "video3," I will open it with code by right-clicking. Here you can see that my theme is blue. Many people have said that the blue theme is not good. The theme is a personal choice; if you want to change the color theme, you can do so. I prefer the dark theme of GitHub, but it's your choice.
+
+To create a new file, I will name it "index.html." We had already discussed that if I write the title of the page here and the content here, I can use the link tag to link "style.css." I am doing this quickly because we have already covered it in the last video. If I write "script.js" here and include an alert, I will not repeat that if I place a script tag just before the body and link "script.js," then when I open it in the browser, the alert will show up. 
+
+If I change the background to red, it will turn red. I won't go over this again because I've already explained it. Now, let me explain the meaning of this structure. Why did I write so much? This is a common question for beginners: why can't we write the title and content directly? What is the need for all this? 
+
+When I reload the page, you will see the content appears and the background turns red. Many of you may ask why I need to reload. When I change the CSS file, sometimes we need to reload. If you are using an HTML file and making changes, you don't need to reload the changes to the HTML file.
+
+Now, let me explain the basic structure of any HTML website. First, we write `<!DOCTYPE html>`, then we write the `<html>` tag. This is the opening tag of the HTML tag, and this is the closing tag. This is the opening tag of the body, and this is the closing tag. This is the opening tag of the head, and this is the closing tag. Whatever is inside these tags is the content of the head. Similarly, whatever is inside the HTML tag is the content of HTML. Accordingly, whatever is inside the title tag is the content of the title.
+
+Now you may ask, what is the content of the meta tag? The meta tag is a self-closing tag. There are two types of tags in HTML: self-closing tags and pair tags. In a pair tag, you have an opening tag and a closing tag. This is the basic structure of an HTML website. 
+
+Now, you saw that the background turned red. The reason for this red background is CSS. If I remove CSS and tell it to move away, I will reload the page, and you can see it has moved. Similarly, I can also tell JavaScript to move away. If I remove the script, the alert will also stop. Now, when I reload, the alert has stopped. 
+
+The CSS and JavaScript I added to the HTML content provide additional functionalities. I have already told you about the title tag. This page is used to set the title, which you see above. Search engines, like Google, also use this. For example, if you write "Code with Harry HTML," the title of the page appears above. The titles of the page are used by search engines and are parsed.
+
+If I change the page title, you can see that the HTML title has been updated. The titles keep changing as I modify them. The title of HTML pages is not only visible here; it is also very useful for SEO. It describes the page content. For instance, I am learning about HTML execution, which means how HTML is being executed on this page. Changing the title of the page is a good SEO practice, and we will keep changing the title as we develop our website.
+
+In the head section, there is page metadata, such as the title and scripts you want to link. There are also other meta tags, which I will explain later. Meta tags provide information about the HTML document, including keywords and descriptions. The meta description is a very important keyword for SEO, as it describes what the page is about. If you go to my website, you will see the meta description tag in the view page source. 
+
+Now, I want to show you that `<!DOCTYPE html>` is included inside the head section, along with page metadata, title tags, script tags, and link tags. The script tag can be placed just before the body or in the head. We will discuss the differences in the next course. 
+
+The body is the main content of the website, which you can see on this page. Whatever you put inside the body will be displayed here, and any scripts you include will be executed. 
+
+The `lang="en"` attribute is inside any tag. It indicates the language of the document. Attributes are key-value pairs that provide additional information about the tag. For example, in the meta tag, `name="description"` is an attribute. If you hover over it in VS Code, it will provide details about its usage.
+
+Most of the content inside the body will be copied from websites like codewithharry.com. For example, if I want to create forms, I will go to the HTML forms page, copy the source code, and start modifying it. Copying and pasting is very important. As a senior developer, you should know where to copy and paste and when to do it. 
+
+This is not said sarcastically; it is a practical approach. You can type it out or copy and paste it. Obviously, you will prefer to copy and paste because it saves time. Innovation is about applying your mind where it can't be copied. You can consider it a Sigma rule: copy and paste what needs to be copied and think critically where it can't be copied. 
+
+The most important part of being a senior software developer is knowing where to copy from and which Stack Overflow questions to reference. 
+
+Now, I want to share a technique that allows you to see the website we will develop on your mobile device. Listen to the steps carefully. Right-click, open the terminal, and write `ipconfig`. If you are using an older version, you can open Command Prompt or PowerShell. After writing `ipconfig`, you will see the IPv4 address, for example, `192.168.1.199`. 
+
+Copy this IPv4 address. In your settings, write "live preview" and replace the local IP host address with your copied IP address. After doing this, restart your VS Code. Ensure that your network is set to private and not public. 
+
+Now, right-click and click on "show preview." You will see your IP address. You can use this on your phone as well. Enter `192.168.1.199:5000` or whatever your port is, and you will see your website previewed on your mobile. This trick is very useful for mobile previews, as most websites are viewed on phones nowadays.
+
+If you haven't left your review in the first video, I request you to go back and provide your initial review of the course. Let people know what your initial thoughts are. You can give me five stars, and please access the playlist description. Click here to bookmark it. Very few people have accessed the playlist, so I want everyone to do so. 
+
+Thank you so much for watching this video, and I will see you next time!

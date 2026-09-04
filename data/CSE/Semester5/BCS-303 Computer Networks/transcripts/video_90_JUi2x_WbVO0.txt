@@ -1,0 +1,34 @@
+Hello friends, welcome to Gate Smashers. Today's question is about cryptography. Let us read the statement first: 
+
+"Suppose in a group of $N$ people, everyone wants to communicate secretly with $N-1$ others using symmetric-key cryptography and asymmetric-key cryptography. The communication between any two people should not be decodable by others in the group. The number of keys required in both cases are..."
+
+This type of question has appeared before in the GATE exam, where the question asked about symmetric-key cryptography but also included asymmetric-key cryptography. Cryptography was introduced to the syllabus after 2013; although it appeared before that, it used to be a separate topic in GATE IT. Cryptography is a very simple topic, and similar kinds of questions appear repeatedly. I have brought this topic to your attention so that you do not miss out on these easy marks. You can easily solve these questions without performing complex calculations.
+
+First, let us discuss how we use cryptography in two ways: symmetric and asymmetric key cryptography. This is a part of network security where we aim to achieve confidentiality. If $A$ is sending data to $B$ and both are sitting at a distance, we want to ensure that no middleman can read the message. They might be able to intercept the message, but they should not be able to read or decode it. To achieve this, we use cryptography.
+
+Symmetric cryptography means we use the same key for both encryption and decryption. For example, if $A$ and $B$ are interconnected, and $A$ encrypts a message using Key 1 ($K_1$) and sends it to $B$, then $B$ will decrypt it using the exact same key, $K_1$. Examples of symmetric key algorithms include DES, Triple-DES, and AES. In contrast, asymmetric cryptography uses two different keys: a public key and a private key. An example of an asymmetric algorithm is RSA. I have already made a detailed video on this topic and provided the link in the description box, which you can check to understand symmetric and asymmetric key cryptography in complete detail.
+
+Now, let us look at the question. It states that $N$ people are connected with each other, and everyone wants to communicate with $N-1$ others. Let us analyze this with an example of 4 people ($A, B, C,$ and $D$). If everyone wants to communicate secretly with everyone else, then $A$ wants to communicate with $B, C,$ and $D$; $D$ wants to communicate with $A, B,$ and $C$; $C$ wants to communicate with $A, B,$ and $D$; and $B$ wants to communicate with $A, C,$ and $D$. This means $N$ people want to communicate with $N-1$ others.
+
+In symmetric-key cryptography, we use the same key to encrypt and decrypt. If $A$ sends a message to $B$ and encrypts it with key $K_1$, then $B$ decrypts it with $K_1$. Can $A$ use the same key $K_1$ to communicate with $D$? No. If $A$ uses the same key $K_1$ to encrypt messages sent to $D$, then $B$ would also be able to decrypt and read those messages. In real-world wireless or multipoint communication, multiple devices share the communication medium. If $A$ sends a message to $D$ using $K_1$, and $B$ intercepts it on the way, $B$ can decode it because $B$ also knows $K_1$. To prevent anyone else in the group from decoding the message, $A$ must use a different key for each person: $K_1$ for $B$, $K_2$ for $D$, and $K_3$ for $C$. Every pair of users requires a unique, dedicated key.
+
+To find the total number of keys required for $N$ people, we can sum the keys needed: $1 + 2 + 3 + \dots + (N-1)$. This simplifies to the formula:
+$$\frac{N(N-1)}{2}$$
+
+This is the same formula used to find the number of edges in a complete graph. For our example where $N = 4$:
+$$\frac{4 \times 3}{2} = 6 \text{ keys}$$
+
+Let us map these 6 keys:
+1. $A$ and $B$ communicate using $K_1$ (both $A \to B$ and $B \to A$).
+2. $A$ and $D$ communicate using $K_2$ (both $A \to D$ and $D \to A$).
+3. $A$ and $C$ communicate using $K_3$ (both $A \to C$ and $C \to A$).
+4. $B$ and $C$ communicate using $K_4$ (both $B \to C$ and $C \to B$).
+5. $C$ and $D$ communicate using $K_5$ (both $C \to D$ and $D \to C$).
+6. $B$ and $D$ communicate using $K_6$ (both $B \to D$ and $D \to B$).
+
+This results in a total of 6 keys.
+
+Now let us look at asymmetric-key cryptography, where we generally use algorithms like RSA. In asymmetric cryptography, every person (or node) in the group has two keys: a public key and a private key. For example, if $A$ and $B$ are connected, $A$ has its own public and private keys, and $B$ has its own public and private keys. If $A$ wants to send a message to $B$, $A$ encrypts the message using $B$'s public key and sends it. Only $B$ can decrypt it using $B$'s private key. Since every person in the group of $N$ people requires their own pair of public and private keys, the total number of keys required is:
+$$2 \times N \text{ (or } 2N\text{)}$$
+
+This is how you solve this kind of question. Thank you.

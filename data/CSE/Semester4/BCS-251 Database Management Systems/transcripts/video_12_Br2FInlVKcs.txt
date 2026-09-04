@@ -1,0 +1,27 @@
+Dear students, welcome to SQL interview classes. Today's question is very important. What is the question? What is the purpose of `ON DELETE CASCADE` in the foreign key concept? 
+
+This question is quite popular and has been asked a lot: when we use the foreign key concept, we use a keyword with it called `ON DELETE CASCADE`. So, what does this `ON DELETE CASCADE` actually do? 
+
+Always remember, what was the purpose of a foreign key? To achieve referential integrity. Let me explain this with an example. Suppose I have an employee table containing data for many employees. This is a parent table, a base table. Now, there are many smaller tables that are taking references from it. Let's say there is a salary table taking a reference from the parent employee table, meaning the IDs inserted here are coming directly from there. Let's say I inserted IDs in this way. There is another table, let's say "dependent," and in the dependent table too, the employee IDs being inserted are coming from this same employee table. So, this is my base table, and these are the referencing tables that are taking references from here.
+
+Now, what happens when we delete something from these tables? If we delete something from the salary table, no problem occurs. If I delete something from the dependent table, no problem occurs. But what if I delete from the employee table—the parent table, the base table? Let's say I delete ID `1`. Deleting ID `1` means that employee 1 has left the company. So, what is employee 1's data doing in the salary table? What is employee 1's data doing in the dependent table? 
+
+Therefore, what does `ON DELETE CASCADE` do? If you delete `1` from here, then automatically—not manually, but automatically—this `1` will also be deleted from the salary table, and this `1` will also be deleted from the dependent table. This job belongs to referential integrity, ensuring that your integrity is maintained, and this is achieved by using `ON DELETE CASCADE`.
+
+Now, let me demonstrate the execution of this. Next, we create a salary detail table. So, what is my salary detail table? It is a kind of referencing table that takes a reference from the employee table, where the primary key is `ID`, and here I have used the keyword `ON DELETE CASCADE`. As soon as I execute this, what do we get? "Table created." 
+
+After creating the table, let's insert some data into it. Look closely at the data I am inserting: `INSERT INTO table_name VALUES (1)`. Why did I take `1`? Because this `1` also exists in your employee table. If you put something like `10` here, and try to execute it, what do you get? "Integrity constraint violated." Why will the integrity constraint be violated? Because `10` is in the parent table, but wait—is it in the parent table? No, `10` is not there. So, we can put either `1` or `2` here. Let's execute this. As soon as it is executed, "1 row inserted."
+
+Let's create another table. Let's say I also create a dependent table here. In the dependent table, we again took an `ID`, and it also takes a reference from the parent employee table where the primary key is `ID`, and we used `ON DELETE CASCADE` here as well. Let's execute this too, and the table is created. 
+
+Now, let's insert the same kind of value into this. Let's say I inserted the `ID` value as `1`. Why `1`? Because `1` exists in your employee table. If you try to put `10` in this as well, you will get an error because `10` does not exist in your parent table. Therefore, you can put either `1` or `2`. Let's put `1`, and 1 row is inserted. 
+
+So, my entire setup is now ready. Let's take a look at it once. To view it, I will run: `SELECT * FROM employee, salary, and dependent`. 
+
+Here is my employee table, which had `1` and `2`. Here is my salary table, which took the data with `1`. And here is my dependent table, in which we took `1`. So, these are my three tables—look closely, the dependent table was created, the salary table was created, and one was my parent table.
+
+Now, what do we do? Delete. Here, I am deleting from the parent table. We are deleting from the parent table: `DELETE FROM emp`. If you do this in the salary detail or dependent table, it doesn't matter; it will work. But if I delete from the employee table, watch closely what happens: "1 row deleted" from the employee table where the `ID` is `1`. 
+
+Now, you will see the magic right in front of you. I am checking all three tables again. Look at the salary table first—well, first look at the employee table: `1` is deleted, `2` remains. And in the other two tables, "No data found," because the other two only had the row with `ID` 1, and that got deleted right here. 
+
+So, automatically, when we deleted a row from the employee table, the salary and dependent records with that same `ID` were also deleted. This is the power of `ON DELETE CASCADE`. This is referential integrity, which we achieve by using foreign keys with `ON DELETE CASCADE`. Thank you.

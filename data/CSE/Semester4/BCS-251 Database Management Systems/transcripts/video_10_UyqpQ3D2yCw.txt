@@ -1,0 +1,66 @@
+Hello friends, welcome to Gate Smashers. The topic is foreign key in database. In this video, we are going to discuss what a foreign key is and why it is actually used in the database. 
+
+Before starting this video, I want to request my viewers to please subscribe to my channel and please press the bell button so that you get the latest notifications. 
+
+I have divided the video into two parts. In part one, we are going to discuss what a foreign key is. In part two, we will discuss why it is actually used in the database. 
+
+### What is a Foreign Key?
+
+What is a foreign key? It is an attribute or set of attributes that references the primary key of the same table or another table (table means the relation). 
+
+First of all, you should focus on this point: "it's an attribute or set of attributes." This means that a primary key can be simple or it can be composite. If there is a primary key in a table, that primary key might be made up of only one attribute, or a primary key might consist of two or three attributes. This actually means that the primary key can be either simple or composite. 
+
+The main point is that the primary key always takes references from the primary key of the same table or another table. Whenever a foreign key takes a reference and takes its data, where does it take the reference from? From the primary key. And in which table will the primary key be? Either in the same table or existing in another table. 
+
+Here, the important point is this: many times in interviews and often in exams, the question is asked, "What is referential integrity, and which key is used to maintain referential integrity?" It is the foreign key. What is the concept of this referential integrity, and how does a foreign key maintain it? We will see this in part two. Here, we are going to see first what a foreign key actually is.
+
+### Example: Student and Course Tables
+
+I have taken two tables. There is a table here called `student`, and the second table I took here is called `course`. 
+
+In the student table, let's say it is a base table. Suppose it is a base table of any university or college where the data of all students is present, where the student's roll number, student's name, and student's address are present. There are a lot of entries and rows. 
+
+Here I have made `roll number` the primary key. Why do we make it the primary key? It is unique as well as not null. This means neither can I leave it empty nor can I repeat any value. I have already explained its benefit. Its benefit is that in any university, if the values of any number of rows are the same, and if I have to uniquely identify them, whose help do we always take? The primary key. 
+
+The value of all other columns can be the same, but there will be a column in which there is a difference between every two rows. Why? Because it contains a unique value, and "not null" means you can't even leave it empty. I already explained the concept of the primary key.
+
+Now we talk about the second table, which is the `course` table. In the course table, we took `course ID`, `course name`, and we took an attribute here: `roll number`. 
+
+Now, why have I taken the roll number here? Because the student and course tables are related to each other. Whenever you feel that these two tables are related to each other, how do we denote them? There must be at least one attribute common between them so that in the future, I can join these two tables. What do I have in common in these two tables? The roll number. You can also keep the course ID here, that's not a problem, but I've kept the roll number here, and this roll number is working here as a foreign key. 
+
+And where is this foreign key taking its reference from? It's taking a reference from this primary key. What does it mean to take a reference? What is the meaning of the reference? Here in this table, new students are coming, new students are taking admission here, and I'm putting their data. New courses are coming, and their course names, like course 1, course 2, course 3, course 4, are being entered. There is a lot of data that I'm entering. But whenever I have to put data in this column (`roll number` in the course table), I have to put it very carefully, because where is the value of this column being referenced from? From the student table. 
+
+If I ask a simple question: can I write the roll number 10 in the course table? No, because roll number 10 should be in the student table first. If it exists in this table, then obviously roll number 10 can be in the course table as well, because where is this foreign table taking its reference from? From the primary key of the student table. 
+
+We call the table containing the primary key the **referenced table** or the **base table**. And the table in which the foreign key exists, we call the **referencing table**, because it is taking the reference.
+
+### SQL Queries for Foreign Keys
+
+I have denoted here how we make a foreign key in Oracle. If in Oracle, or normally in SQL, I am writing a command using the Oracle platform, we write:
+
+```sql
+Create Table Course (
+    course ID varchar,
+    course name varchar,
+    roll number integer,
+    References student(roll number)
+);
+```
+
+We are making this table in which we took `course ID` (let's say `varchar`), and we also took `course name` (`varchar`). The main point here is the roll number. I have to make the roll number a foreign key. So, `roll number integer`. This data type should be equal to the data type of the primary key. The data type of the primary key is used there, and the same data type is to be used here. Then write `references`. After `references`, write the name of the primary key table—which table is that? `student`. And in the bracket, put the primary key, which is the `roll number` in that table. So we use this thing here. I represented this case so that if there is coding—let's say a query is written—then you can also note it down like this.
+
+If the table is already made—meaning the table has already been made and now I have to put the foreign key—the query for that is `ALTER TABLE`. Let's take the course table:
+
+```sql
+Alter Table Course
+Add Constraint FK_RollNo Foreign Key (roll number)
+References student(roll number);
+```
+
+So the syntax is: `Alter Table`, `Table Name` (`Course`), `Add Constraint`, give a name to the constraint (let's say `FK`), specify that the constraint is a `Foreign Key`, state which column you are making a foreign key (`roll number`), and where it will take the reference from (`References student`, the table of the primary key, and what the primary key is in that table). So this is how we write a query after the table is created: `Alter Table`, `Table Name`, `Add`, `Constraint`, `constraint name`, `foreign key`, the column you have to make (`roll number`), `references` student (the table of the primary key), and the primary key in that table.
+
+Now let me tell you a small point here: in both these tables, I took the roll number and roll number. It doesn't mean that their names should be same; you can take some other names here, that is not a problem. 
+
+And the second point is: can a table have more than one foreign key? Yes, a table can have more than one foreign key, but a primary key is always only one in a table. 
+
+This is all about part one, where we have discussed what a foreign key is. In part two, we will talk about referential integrity: how a foreign key maintains referential integrity in the referenced table as well as in the referencing table. Thank you.

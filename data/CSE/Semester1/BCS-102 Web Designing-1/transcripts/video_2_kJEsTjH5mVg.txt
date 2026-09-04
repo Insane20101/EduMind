@@ -1,0 +1,161 @@
+In the last video, you all gave a lot of love. It's my pleasure to keep this course free. A like is needed for this free course. When I started web development, there was no comprehensive course of this quality. Forget free or paid; there was no such course. I understand how important it is for some people to have access to this course for free. Trust me, I live up to the expectations. 
+
+With that said, like this video because we are going to make our first website. In this video, I am going to order an iPhone 15 Pro Max. Why? How? What will happen? We will see that in the video. For many of you, this will be the first website of your life, so it's going to be fun. You guys are excited, right? Write in the comments, "I am excited." I will give a heart to all those comments. 
+
+In this video, we will learn to link an HTML website with CSS and JavaScript. Along with that, I will be giving you notes, cheat sheets, and many other resources. I will share some techniques that I have learned over the years that will make your web development speed ten times faster. We will also see how to make your VS Code awesome; your VS Code screen will look killer. Additionally, I will tell you how to earn money from web development. 
+
+Let's start with full energy! Let's roll the intro. 
+
+Alright, guys, we have come to our computer screen. Before moving forward in the video, I would like to tell you all to access this playlist. Secondly, we are very close to 5 billion subscribers, so if you have not hit the subscribe button, please do so. 
+
+In today's video, we are going to customize our VS Code. This is the folder in which we started our web development series. I need to give you the source code of this web development series, so I will configure Git here. It is not necessary for you to know about Git, but I will fire up the desktop and add a new repository. I will click on "Add" and then "Create New Repository." I will name it "Sigma Web Dev Course." I will select this folder and initialize this repository with Git. I will write "Source code for Sigma Web Development Course" and click on "Create Repository." 
+
+By doing this, a repository named "Sigma Web Development Course" will be created. I will put all the relevant files from the first video in this repository. These two files were relevant from the first video, and I will name the folder "Video 1." I will right-click to create a new folder named "Video 1" and move these two files into that folder. I am not pushing this video to Git; these are sample videos, and you can use your sample videos. 
+
+Now, whatever the source code will be, I will keep updating it here and pushing it to Git. Now, how do you push it to Git? You don't need to learn this right now, but this procedure is very simple. Git is used by web developers and general coders when they need to collaborate on their code with other people. You will work with many programmers, and those programmers will collaborate with your source code. To do this kind of collaboration, they will also push some code, and you will push some code. Maybe one person is editing a file while another person is editing another file. This is where GitHub comes into play.
+
+What is GitHub Desktop? GitHub Desktop is a utility to use Git. The difference between Git and GitHub is that Git is open source, while GitHub is a Microsoft-owned company that helps you host repositories on your web interface. I will tell you more about Git in the coming videos, but I am pushing this repository to my Code with Harry GitHub account. You will get the link to the repository in the description. 
+
+I am making this course in such a way that absolute beginners can follow it. As I click on "Publish Repository," this folder will sync with my GitHub account. All the code that I upload here will go to my GitHub account, and it will keep syncing. If someone makes changes there, I can pull them here by clicking "Fetch Origin." I will teach you all this; we will dedicate a whole video to Git. 
+
+Now, I will create a folder named "Video 2" and go inside this folder. I will press Shift + Right Click and open it with VS Code. If you have installed it the way I told you, you will get this option. If you have made some changes and have not checked the checkbox I showed you, then you might have a problem. We will dismiss the notification. 
+
+Now, whatever file I make here, like "index.html," that file will be created here too. I know there are a lot of intermediate people here who are saying that we already know all these things, but I am making this course so that all beginners can follow along. I will create three files: one named "index.html," the second file will be "style.css," and the third file will be "script.js." The names of these files can be anything, but I want to keep them self-explanatory. 
+
+Now, I will go to "index.html" and type an exclamation mark. As soon as I do that, you see this code has appeared. I will click on "View Word Wrap" so that you can see this code without a horizontal scroll bar. I checked the word wrap option. You see that this code is HTML code, which we use to make a website. 
+
+Now, let's come to the tab of VS Code extensions. Extensions are used to enhance the functionality of VS Code. We use extensions to make VS Code better. The first extension I will install is called "VS Code Icons." This extension allows you to see the icons of whatever file it is. 
+
+Thanks for installing VS Code Icons! I will activate it, and you can see that our icons are looking good. In the coming time, if we make a folder, this kind of icon will appear. There are many good themes you can use, such as the Jellyfish theme and the GitHub theme. You can use these themes, but you can only use one theme at a time. 
+
+Now, I will show you the GitHub theme. It comes in options like GitHub Dark, GitHub Light, GitHub Dimmed, and GitHub Colorblind. I prefer GitHub Dark because the colors are different. Another popular theme is Jellyfish. If I install this, you can see how VS Code looks afterward. There is also a Material theme that is popular. 
+
+If you have installed Material Theme Icons, you can change your icons. If I want to remove Material Theme Icons, I will simply uninstall it. Sometimes when we uninstall anything, a reload is required, so I will click on "Reload Required." When I click on "Reload Required," my VS Code will be reloaded. 
+
+You can customize your VS Code as per your liking. I will select my VS Code icons so that my icons look like this. I also like the Jellyfish theme a lot. 
+
+Another important extension is "Prettier." I will not install it now, but I just want to mention it. There is also an extension called "ES7 Plus React Redux, React Native Snippets." This extension gives you React snippets, which we will use when we cover React in this course. 
+
+The most important extension we will install today is "Live Preview." This is a very useful extension. All the extensions I have mentioned mostly help you change the look and feel of VS Code, but the Live Preview extension will be used by you. 
+
+Now, let's come to our HTML, CSS, and JavaScript files. This is the HTML file, and this code tells the website how to look. In the title, I will write "Harry Bhai's First Website." For your first website, you should write your name. Inside the body, I will write, "Hey, this is my first website." 
+
+Everyone should write "Congratulations" in the comments below if this is your first website. Congratulate each other and create a positive atmosphere in the comments section. I will also come to the comments section and give you all my heart. 
+
+Now, to see this, there are two ways. We have installed the extension "Live Preview." After installing Live Preview, you can see this icon. Click on it, and now you can see your website. If you want to see this website in the browser, click on "Open in Browser," and it will open there. 
+
+You can close it and write, "Harry Bhai's course is good." Notice that I have not reloaded this website, but it has still updated the content I wrote in VS Code. Whatever I write here will be updated live without reloading. 
+
+Now, consider HTML, CSS, and JavaScript, which we talked about. I will tell you how to link all three. You have made "index.html," and the title is visible here: "Harry's Course's First Website."
+
+Suppose I change its name to "Sigma Web Development Course." It will change to "Sigma Web Development Course." Here, it is written as "Sigma Web Development Course," and you can see that it is updated. It will keep getting updated; it will be live updated. 
+
+Now, I want my background to be red. Such things are done with CSS. I can write here:
+
+```css
+body {
+    background-color: red;
+}
+```
+
+This type of work is done with CSS. This is the syntax of CSS. I will teach you CSS in such a way that you will not be able to forget it. Don't worry; what is written here is CSS, which makes the body color red. 
+
+Now, will the color of the body be red or not? I will tell the beginners that it will not be red. Why will it not be red? Beginners might think it will be red, but it will not be. This HTML file is running now, and it does not know about this CSS file. 
+
+Now, what is going on in my house? What does my neighbor know? Suppose I made lentils here, and I expect that my neighbor has made rice. I expect to eat it together. It doesn't happen; you can eat it sometimes, but you get what I am saying. You have to link it; you have to tell your neighbor that I am making dal, and you are eating rice. There will be a handshake. 
+
+So, how will that handshake happen in HTML? You will tell where your CSS file is. There is a link tag. The reason for not using Notepad will become clear here. As soon as I write "link," I see "link: css." As soon as I select it, it has done half of my work. I write `rel="stylesheet"`; I had to type this manually in Notepad. This is the syntax of HTML. I had to write this, but here it has come automatically. 
+
+Now, "style.css" is my luck; its name is also "style.css." If its name was "harry.css," then I would have written "harry.css" here. Guess what? Now my background has become red. If I want the color of my text to be white, I can write:
+
+```css
+color: white;
+```
+
+Now, nothing will work here. I wrote "color: white," and it became white. The valid CSS syntax will work, and we will talk about it later. 
+
+Now, how will JavaScript work? If I write:
+
+```javascript
+alert("Welcome to Sigma Web Development Course");
+```
+
+What will happen? Will the alert come here? Why not? I will tell you that this syntax is absolutely correct, and I will read JavaScript properly, so don't worry about this. The code is "Welcome to Sigma Web Development Course." Why didn't it flash? Is my computer broken? No, my computer is absolutely fine. 
+
+I want to tell you that I have to include the script. Let's include the script from the body just before the closing tag. Now, here, as soon as I include the script, I will write:
+
+```html
+<script src="script.js"></script>
+```
+
+How did I write this? First of all, I wrote "script" here. Emmet abbreviation—what is Emmet? Emmet is a plugin that is built into VS Code. As you select it, it will auto-complete. If I am writing a script and selecting `src`, it means I want to give a source file. You can type it manually, but the suggestions here make your code writing more powerful, help you become a great developer, and increase your efficiency. 
+
+As soon as I include it, now I will come here, and you see "Welcome to Sigma Web Development Course." Everyone write in the comments that I have become self-sufficient. Write it because I know that your soul has been satisfied by seeing this box that JavaScript also runs. CSS was running, and JavaScript also runs. Now your soul is satisfied. I will reload it, and it will come again. I will do "OK," and it will stop. 
+
+As soon as I visit this website, I will get to see an alert here. This is called an alert in JavaScript. I will tell you what happens next in JavaScript. Don't say I didn't tell you about the alert. I will finish HTML, then CSS, and then JavaScript. 
+
+The best practices I am telling you, you have to remember them because what I am telling you is from my experience. Like I said, you can use the live server if you want. There is nothing wrong with that. Now, use the live preview from Microsoft. Awesome. 
+
+Now, I want you to write "Sigma Batch OP" in the comments. If you are enjoying the course, write "Sigma Batch OP" in the comments. It will be fun to see. Yes, it's a batch. It's a free course, so what? It's a batch. Write "Sigma Course OP" with a hashtag.
+
+Now, a lot of people commented in the last video on how to do the mouse wheel. You have to go to settings and write "mouse wheel." Here, you have to check "Editor: Mouse Wheel Zoom." Then you have to press "Ctrl" and then use the mouse wheel. I have pressed "Ctrl" here, and as soon as I do this, I will be able to zoom in. 
+
+If I right-click and do "Command Palette," then I can toggle screen cast mode. Whatever I write here, you will be able to see. I have not toggled screen cast mode in this video because you already know what I am typing. 
+
+In the last video, we talked about how websites work, and you understood this very well. Now, I will take the example of the iPhone 15 Pro Max and show you how client-server interaction works whenever a user orders an iPhone. You will find it interesting; I will show you. 
+
+How does the website work? I have come to explain on apple.com. Now see, apple.com is a website. Data must have come from their server. Whatever HTML files are there, I will click on "Preorder." When I am recording, it has not even come. It is saying that it will come by September. 
+
+I will select the 15 Pro Max. Let's take any color; let's take black titanium. Let's take 250 GB, no Apple coverage, color black titanium, 2 wefts, no trade-in, no Apple coverage. After this, you can see that the communication is going on with their servers. 
+
+In total, the HTML, CSS, JavaScript—you can see that I have sourced the view page. This is our original website on which we were working. Now I will check out quickly. I will do "Continue as Guest." I will show you a fun thing. 
+
+As soon as I click on "Inspect" and click on "Network," you see 2 and 4 communications are going on with Apple servers. This means that as I am doing actions here, JavaScript is communicating with the server. The appropriate action is being taken by the server, and it is sending me data. 
+
+I will say here, "I would like to be delivered," continue shipping address, I will put the name, etc. I will deliver on October 19th. If it comes, I will keep you updated, okay? Yes, everything is fine; terms and conditions, I read it, I agree, place your order. 
+
+I agreed, placed your order. Like the video because I also order iPhones to explain web development to you. Here we have OTP. I will confirm the OTP, and my purchase has been done here. In total, I requested something from the Apple.com server. I said, "Give me an iPhone 15 Pro Max." Apple.com said, "Take it." 
+
+This kind of communication between the server and the client is done through JavaScript without loading the page. Like you saw, I selected the iPhone here. After that, I clicked different things. All those things are done through JavaScript. How is the styling done? With the help of CSS. And all that is written is HTML. 
+
+I hope you remember this example. I will show you when I get the phone, or else many people will say that it's fake. This is how your websites work. I hope you understood from this example. Tell me in the comment section if I want to give away this iPhone, what will be the best thing? 
+
+You can also know that I have done a genuine giveaway, and I can also give away. You tell me in the comment section; I don't know about all this. 
+
+Now, I want to tell you where you will get notes and cheat sheets. If you go to codewithali.com, you will see notes, and you can download notes. You will also see cheat sheets. For example, if I want to access the HTML cheat sheet, I can access it here. There are all the elements here, but I will tell you about all the elements in this course. 
+
+If you want to download notes from HTML, you can download PDF notes from here. I have written them by hand; you will enjoy reading them. I will tell you everything in this course, but if you download these notes, you will enjoy it more. I will make your learning experience so good that you will say it was fun. 
+
+Now, I want you all to do one thing: put the initial review of this course in this first video. I want you all to go to this video, and in the comment section, post the initial review. I want you to write in the comment section how you liked this course and give me 5 stars. Tell me by rating it. I know the course is not that good, but what quality and all that—I will be happy if you do this work. I will like it from the heart. Go to the first video and rate this course. 
+
+Now we will talk about how you can earn money after completing this course. The first way to earn money from web development is very simple: you can freelance. As a web developer, you can make websites. There are many websites that you can create, and you will earn a lot of money by making them. 
+
+Many people integrate APIs, and by integrating APIs, many people earn a lot of money. Many people say that ChatGPT has come, and now nothing will happen; everything is done in ChatGPT. But this is not true. Making a website for you is easier for me. When you use ChatGPT, you become a "giga chat developer." Use ChatGPT as much as you can, and you can save your time. 
+
+In fact, I am telling you the truth: since ChatGPT came, I am able to deliver more to my freelancing clients. All the websites I had to make from the start, I do half of the work with ChatGPT. For the work that ChatGPT cannot do, I do it, and I finally package it and deliver it to you. I don't have to answer anyone about what I used ChatGPT for or what I did without it. 
+
+You can easily deliver everything. Use ChatGPT; it can't do everything, but you have to use it. After that, make a website and deliver it to the freelance client. Where will you get freelancing clients? You can go to a website like Fiverr. Yes, I know that it is a little difficult to get work on Fiverr, but you can go here to the buyer request. Fiverr has an option for buyer requests. Just search. 
+
+If you go here, you can match with the buyer. If I show you images, here is a buyer request. You can give your pitch to these people that you have done this thing and you are apt to do this work. You will get work, and it will start from here. As you get good reviews on your gig, you will earn more money. 
+
+Suppose you have a gig with 5 stars, but no one has ever ordered it; then you will never get work easily. But if 5-6 people have ordered on your gig and everyone has given you 5 stars, then things become easy for you. Buyers want the credibility of the people they are getting work from to be good, so they also need work, and they are also giving money. They want to ensure their money is not wasted. 
+
+So, here Fiverr, Upwork, and many other freelancing websites are available where you can try. But before trying, you should know how to make good websites. Nowadays, responsive, cutting-edge technologies are essential. Suppose you want to integrate the ChatGPT API; you will get this kind of work. No one will tell you to make a design or a simple navbar. Most clients do not do this work. Nowadays, everyone uses ChatGPT; you can make complex websites and earn more money. 
+
+The second thing is to get a job as a web developer. If you become a good web developer, you will get a job. The demand for senior developers is increasing, and their salaries are also rising. People are earning more money in coding than they used to. If you are a very basic developer, then yes, you will be replaced by ChatGPT. 
+
+After this, you can sell your services by creating an Instagram account. If you upload any kind of images on your Instagram account and gain a little traction, where you talk about websites, clients will start approaching you. Many clients approach me, telling me that they want to make a website. I am not saying that you should have a lot of followers; you can start with very few. 
+
+After this, you can give people one-on-one help. You can get clients from Instagram or social media. You can say at the end of your reel, "If you want to learn anything, come to my DM, and I will help you." You can get clients very easily, trust me. 
+
+After this, you can sell a course. I was going to sell this course, but I have uploaded it for free. This course was going to be paid. The truth is that whenever you get paid for this course, everyone would definitely pay for it. 
+
+Now, it is not necessary that you have to make a course for web development. There are many things in web development, like how to use the ChatGPT API. Make a course for that. If you want to make a website, it will be easy to sell it. The course economy is very huge. Many people contacted me to buy this course, asking me to launch it on their platform as a paid course. But I didn't do it because I wanted to give this course for free. 
+
+I decided to do this, and I also posted it. Until the last moment, people contacted me, saying, "Please don't put the course for free," but I did. You have to write "Sigma Batch OP" in the comment section and like it. 
+
+In total, by uploading this course for free, many course sellers have been harmed. Because when you get an iPhone 15, 16, 19 Pro Max for free, then who will ask for a paid Blackberry? I am saying this because I have put in a lot of effort, and you will also know in the coming videos. 
+
+Stay tuned; you will get a lot of things in this course in the coming videos. I am aware that we are taking a very slow start, but remember my words: we will raise the bar like never before.
+
+Access the playlist, like the video, and name your village land in my name. Thank you so much for watching this video, and I will see you next time.

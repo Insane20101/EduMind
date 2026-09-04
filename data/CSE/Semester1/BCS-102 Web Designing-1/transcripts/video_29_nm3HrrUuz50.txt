@@ -1,0 +1,29 @@
+As we move forward in this course, I will keep increasing the level. In Exercise 3, we are going to do something that will be used in actual implementation. This means you will encounter this kind of task while building websites for actual clients. If you have decided that you are going to solve this question, then write "Challenge Accepted" in the comment section below. I am very excited, as always. Let's roll the intro.
+
+The topic of today's video is something very interesting: we will start actual development. I will show you a card PNG here, and you have to make this card. This is today's exercise. I am not going to write much here, but let's do it. It is also necessary to do a little formality. 
+
+Now, here you see, I want to open this folder in VS Code. I will shift-right-click and open it with code. Here, you see an index.html file. I will put it here and add a boilerplate. I will also make a comment for you guys: "card.png is a file that contains a card image. Write HTML and CSS code to design this card." 
+
+Did you understand? Everyone write in the comments, "Okay? Understood?" Everyone has to write in the comments whether you understood or not. If the challenge is accepted, then you have to write that as well. You need to create a card like the one in card.png. 
+
+Now, if you have accepted the challenge, will it be done or not? Do you have confidence? Tell me in the comment section below. Instead of this image, you can use any other image, but I want exactly this card without compromise. The card image is an image; you have to write its code, and here you can put some text. You can put your text; there is no need to use any lorem text. Then, here, add a "Read More" button.
+
+I have not specified the color code, length, or height, so make it approximately like this card. The image should not be distorted; I am telling you in advance. If the aspect ratio of the image is bad, it will not be accepted, and I will disqualify you. If you don't want to be disqualified, then make it well. If you do it well, you will get a shoutout.
+
+Now, see here, "Lago de Brise" is written. How will you bring this nature and lake capsule? If you have written "Challenge Accepted," then start doing it and post your solution too. When you post your solution, use the hashtag #html. Today's hashtag is #html, so use it to post your solution so that I can search and know that you have posted the solution to this problem.
+
+Now, let's do a little discussion for those who have lost their courage. Stay with me; listen to me better than not doing this exercise. But if you have accepted the challenge, then start it without listening. If possible, you can listen to me after posting your solution.
+
+Look, here you see that I have made a div. Assume that I will give the border radius to it. How much border radius do you have to give? You can set a height for that div. I will tell you what this means. I made this card, and inside this div, I will put an image. I will apply the same border radius and add padding to create some distance. 
+
+After this, I will give the URL of this image. Use a public URL; use an image that is available on the internet. By putting this image, I will specify only the width or height of the image. If I provide only that much, it will fit inside. After this, the div is complete. I will put an image inside a div and start another div in which I will create the capsules for nature and lake. I will make this with the help of span so that it remains inline. 
+
+Then, I will put an h1 or h2 heading because I will assume that on whichever page this card is going to go, the main heading will be h1 and this will be an h2 heading. Here, I will use a paragraph tag. Then, I will put another div in which I will place a button. In that div, I will center the text line so that it is centered. In the coming videos, I will show you how to center the text line in that div.
+
+You will also get the solution, and I will give a shoutout to those who have solved this problem. If you have not yet accessed the Sigma web development playlist, you can click here to bookmark it or click here to save it. 
+
+I want to tell you one thing: it is decided that the Sigma course is a very good free course for you. Many people are praising it, and you have shown a lot of love. However, there are some people in the industry who are not happy with the free Sigma course. I have told you before, and I will tell you again that I am not against any kind of paid course. But Sigma is a comprehensive course in HTML, CSS, JavaScript, and web development in general. No one can deny this; it is a universal fact. 
+
+Many people feel bad that they bought a paid course and are now getting such a good course for free. Cut your losses and make the most of it. Many people are talking about me and contacting me, indirectly targeting me. I don't want to discuss those things. The world knows what is useful and what is not, and there is no need to justify it. 
+
+Access the playlist and focus on your learning. That's it for now, guys. Thank you so much for watching!

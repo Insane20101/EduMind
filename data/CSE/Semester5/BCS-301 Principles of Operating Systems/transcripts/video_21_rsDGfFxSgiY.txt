@@ -1,0 +1,42 @@
+Hello friends, welcome to Gate Smashers. Let's see numerical on priority scheduling with preemption mode. Here I have 4 processes in the numerical with their arrival time and burst time. 
+
+Now the criteria in priority scheduling is priority. Priority means the process which has more priority, we will allot it first to the CPU. Priority is given in the question already, i.e., 10, 20, 30, 40. With every process, there is a priority. First of all, you have to find out in the question that what is the meaning of priority. Does higher the number mean lower the priority, or lower the number mean higher the priority? Most of the time, it'll be mentioned in the question like this. Otherwise, it's confusing here if 10 is the highest or lowest. So we're given in the question that higher the number, higher the priority. Means this 40 has the most priority. 
+
+Now if we'll solve this question with preemption mode, now see how to solve it. By using the Gantt chart, first of all, we'll start from zero. First, we've to check on zero which process has arrived. No matter what system scheduling algorithm you have with any criteria, first, you have to check that which process has arrived. If only one process has arrived, then there's no criteria in this case. It's the only process, so you can execute it. But if two or more processes arrive, in that case, you have to use criteria. 
+
+Let's check arrival time on zero. Then only P1 has arrived on zero. So here we shifted P1 from ready queue to running queue, meaning we gave it to CPU to execute. Now CPU will execute it for how much time? Here, if my mode is preemptive, then we've to do very carefully in that case. If it would be non-preemptive, there can be priority with non-preemption also. In that case, if you'll give P1, then it'll execute it completely. But in case of preemptive, what you have to do is run it only up to one time unit. Its advantage is if you'll run it on 2 or more time quantum, then you can skip some higher priority process in that case. So it's best to just run it from 0 to 1 up to one time unit. If you run it up to 4, then its burst time is reduced to 4, because 1 got decreased here. 
+
+Now you reached here because time is increasing like this. So you reached here. Now check again at this point which processes are in the ready queue. So we checked on 1. P1 is already in the ready queue. Now P2, P2 also reached here and arrived at 1. Meaning P1 and P2 are two processes, and now if I got two processes, then there's competition to run which one first. In that case, we use criteria. Now we'll use priority here. Meaning if P1 and P2 are both ready on 1, then in this case, we have to check priority. 
+
+Now P2 has more priority because higher the number, higher the priority. So if its priority is more, then we've to preempt P1. And preempting P1 means P1 will come back in ready queue, and P2 will move to running queue. So P2 came here, and P1 will go back in ready queue, meaning we'll save the context that it ran up to one time period, so when it'll come next time, then its time will be 4 only, not 5. 
+
+So now we run P2 here, but up to 1 time quantum. It's again the same point that if you run more than this, then maybe you can miss the higher priority process. So we run it from 1 to 2, so we'll reduce it also because now its burst time is 3. 
+
+Now we are on point 2. Now check which processes are in ready queue at point 2. So we checked on 2, then P3 is also in ready queue, P1 was already in ready queue, and P2 is in running right now. But now we have to check which has most priority in P1, P2, and P3. So 30 is greater than both of them, obviously, so its priority is higher. Meaning now we'll run P3. But until now P2 was running, so P2 will get preempted and shifted to ready queue, and P3 will get executed here. But for how much time? Just one time quantum. Meaning its time will get reduced from 2 to 1. 
+
+Now check on three again that which processes have arrived. But now if you'll see carefully, P4 will arrive at 4. Meaning on 3, the processes arrived are same as before. So you don't have to check again on 3. But still, if you'll check, then you'll find out that only P1, P2, P3 are here, and the one with most priority was 30, i.e., P3. Meaning P3 will run again up to one time quantum, i.e., 3 to 4, and it'll be zero. Meaning P3 got terminated. It got complete, so it got terminated. 
+
+Now you reached to 4. Check on point 4 first if there's some new process ready. Yes, new process P4 is ready now. So now P4 is ready and arrived. So first of all, check its priority, and its priority is 40, meaning greater than priority of P1 and P2. So obviously, we'll execute P4 first. So we executed P4 up to 1 time quantum, and it became zero. By default, its burst time was one, so it became one to zero. Still, you have to run up to one time unit, maybe there's P5, P6 after it. But for now, we have just four, so we'll keep running it one time unit. 
+
+Now we checked on 5 if there's some new process. No, only four processes are there. All processes have arrived once. Now this process got executed, and this one also got terminated already. Just P1 and P2 are left. Now if you'll see, then P2 has more priority than P1. So in this case, you'll execute P2. Now you don't have to run P2 up to 1 unit only to save time. If you'll run it 5 to 8, still its priority will be more. Its priority is obviously greater than P1. So rather than running it one by one, you can run it continuously up to 3 times because it has 3 times left, so 5 + 3 = 8. Meaning when all processes arrive first, then it starts to behave normally as non-preemptive, and that's what we are doing here. You don't have to run it again one by one because P2's priority will be always greater than P1. So in this case, you can run it completely from 5 to 8 and terminate it. 
+
+Now what's left? P1. So obviously, you don't have to run P1 one by one. Meaning you don't have to show here. Its four times here, so you can simply do 8 + 4 = 12. So you can completely execute it here. 
+
+Now simply write the completion time from the Gantt chart. Last time P1 is written here, and on its right-hand side, it's 12. On P2's right-hand side, it's 8. P3 is written last time here, and it's 4 in its case. And in case of P4, it's 5. So here I've got the completion time. 
+
+How to calculate turnaround time? CT - AT (Completion time - arrival time). So it'll be 12, 7, 2, 1. 
+
+Waiting time is Turnaround time - burst time. Keep in mind that you have to use original burst time. Many times students make mistakes here when we cross and cut it, so do it carefully:
+12 - 5 = 7
+7 - 4 = 3
+2 - 2 = 0
+1 - 1 = 0
+So this is the waiting time. 
+
+And if they'll ask what's the average waiting time, what is the average turnaround time? Then you can get average waiting time or average turnaround time. Just total it. It'll be 22. 22 is the total TAT divided by number of processes. And average waiting time will be total is 10, divided by 4, i.e., number of processes. So 22 divided by 4 will come out to be 5.5, and it'll be 2.5. 
+
+This is how we can solve priority scheduling with preemption. Non-preemption is even easier than this. With preemption, just remember that you have to run up to 1 time unit only. 
+
+And let me tell you the second point here also. Many times it comes in question that two processes have same priority. Meaning let's say if we would have their priority 30-30, then in this case if two or more processes arrive at the same time and their priority is also equal, then in that case, who will you run first? First, you can check their arrival time. But in these types of questions, it is always mentioned that if you get conflict, then how to remove it in that case. If nothing is given, then you can simply work as first-come, first-served, meaning select the one which came first. If arrival time is also same, then in the last case, what you can do is sequence-wise, execute the processes according to their IDs. 
+
+This is all about the priority with preemption. Thank you!

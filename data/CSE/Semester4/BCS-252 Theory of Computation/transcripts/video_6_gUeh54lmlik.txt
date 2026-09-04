@@ -1,0 +1,83 @@
+Hello, let's start with the next example. Construct a DFA which accepts the language of all strings not starting with 'a' or not ending with 'b'. 
+
+In the last video, we discussed strings containing 'a', containing 'at least a', starting with 'a', ending with 'b', and starting with 'a' and ending with 'b'. The question here is: what if we are given strings not starting with 'a' or not ending with 'b'? 
+
+Mathematically, the language is: strings not starting with 'a' or not ending with 'b'. 
+
+Let's talk about $\lambda$ (lambda). Lambda means null/empty. Is lambda acceptable? For "not starting with 'a' or not ending with 'b'", let's check. Does it start with 'a'? No. Does it end with 'b'? No. So lambda is acceptable. 
+
+What about just 'a'? Does it start with 'a'? Yes. Does it end with 'b'? No. But we have 'or' in the condition ("not starting with 'a' OR not ending with 'b'"). Since one of the conditions is satisfied (it does not end with 'b'), 'a' is acceptable. What about 'b'? It does not start with 'a' (condition met), and it does not end with 'b' (wait, it ends with 'b', but it does not start with 'a', so the 'or' condition is satisfied). 
+
+When a question asks for "not starting with this" or "not ending with that", how do we solve it? There are two ways. 
+First, we can use De Morgan's Law. What does De Morgan's Law say? 
+$(A \cup B)' = A' \cap B'$
+The complement of a union is the intersection of the complements. So, we will use De Morgan's Law here. 
+
+Let's assume:
+- "not starting with 'a'" is statement $A$.
+- "not ending with 'b'" is statement $B$.
+
+We need to calculate "not starting with 'a' OR not ending with 'b'", which is $A \cup B$. 
+We need the complement of this: $(A \cup B)' = A' \cap B'$.
+
+What does $A'$ mean? 
+$A$ is the statement "not starting with 'a'". So $A'$ (its complement) means "starting with 'a'". 
+And the union ($\cup$) becomes intersection ($\cap$). 
+What does $B'$ mean? 
+$B$ is the statement "not ending with 'b'". So $B'$ (its complement) means "ending with 'b'". 
+
+Therefore, the rest of the statement becomes: "starting with 'a' AND ending with 'b'". 
+
+In the last video, we discussed how to design a DFA that accepts all strings starting with 'a' AND ending with 'b'. 
+
+Let's quickly review how we design "starting with 'a' and ending with 'b'":
+- We start at state $Q_0$. 
+- On input 'a', we go to state $Q_1$. 
+- From $Q_1$, on 'b', we go to state $Q_2$. 
+- $Q_2$ is our final state. 
+
+Check the description box for the link on how to design "starting with 'a' and ending with 'b'". 
+
+To quickly build it here:
+- From $Q_0$, on 'a', go to $Q_1$. On 'b', go to a trap state (let's say $Q_3$). 
+- From $Q_1$, on 'a', stay at $Q_1$. On 'b', go to $Q_2$ (final state). 
+- From $Q_2$, on 'a', go back to $Q_1$. On 'b', stay at $Q_2$. 
+- From the trap state $Q_3$, on 'a' or 'b', stay at $Q_3$. 
+
+So this is the DFA for "starting with 'a' and ending with 'b'". 
+
+But we need a DFA for "not starting with 'a' OR not ending with 'b'". To get this, we take the complement of the previous DFA. 
+
+How do we take the complement of a DFA? It is very simple:
+- Change all final states to non-final states.
+- Change all non-final states to final states.
+
+Let's see:
+- $Q_0$ was non-final; make it a final state.
+- $Q_1$ was non-final; make it a final state.
+- $Q_2$ was a final state; make it a non-final state.
+- $Q_3$ (the trap state) was non-final; make it a final state.
+
+So for "not starting with 'a' or not ending with 'b'", the final states are $Q_0$, $Q_1$, and $Q_3$. 
+
+Please note: when we take the complement, the number of final states changes compared to the normal case, because in the normal case we had fewer final states. Now we have $Q_0$, $Q_1$, and $Q_3$ as final states. This is the DFA for "not starting with 'a' or not ending with 'b'". 
+
+Let's test it:
+- Is $\lambda$ accepted? At $Q_0$ (which is now a final state), yes, $\lambda$ is accepted. 
+- What about 'a'? Does it start with 'a'? Yes. But the condition is "not starting with 'a' OR not ending with 'b'". Since it does not end with 'b', the 'or' condition is true, so 'a' should be accepted. Is it accepted in our DFA? From $Q_0$ on 'a', we go to $Q_1$, which is a final state. So 'a' is accepted. 
+- What about 'b'? Does it start with 'a'? No (true). Does it end with 'b'? Yes. But since it's an 'or' condition and "not starting with 'a'" is true, 'b' should be accepted. From $Q_0$ on 'b', we go to $Q_3$, which is a final state. So 'b' is accepted. 
+- What about 'ab'? 
+  - Does it start with 'a'? Yes. 
+  - Does it end with 'b'? Yes. 
+  - So "not starting with 'a'" is false, and "not ending with 'b'" is false. False OR false is false. Therefore, 'ab' should NOT be accepted. 
+  - Let's check our DFA: From $Q_0$ on 'a', we go to $Q_1$. From $Q_1$ on 'b', we go to $Q_2$. $Q_2$ is a non-final state, so 'ab' is rejected. The DFA is working properly! 
+
+What about 'ba'? 
+- Does it start with 'a'? No (true). 
+- Does it end with 'b'? No (true). 
+- True OR true is true, so 'ba' should be accepted. 
+- Let's check our DFA: From $Q_0$ on 'b', we go to $Q_3$ (final state). From $Q_3$ on 'a', we stay at $Q_3$ (final state). So 'ba' is accepted. 
+
+All strings are correctly accepted or rejected according to the condition "not starting with 'a' or not ending with 'b'". 
+
+Whenever you get such a question: first make the DFA for the positive (normal) case, and then simply take its complement by turning non-final states into final states, and final states into non-final states.

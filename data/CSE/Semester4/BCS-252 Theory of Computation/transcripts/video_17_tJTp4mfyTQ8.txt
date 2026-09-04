@@ -1,0 +1,13 @@
+Hello everyone. Till now, we have seen regular languages are closed under most of the operations, but there are a few operations in which regular languages are not closed, and one of that is infinite union. That's why regular languages are not closed under infinite union.
+
+To grab a competitive example, state the competitive example. Most of the time it is simulated to figure out whether it is closed or not closed. In case a question is asked, you give a proof in three cases to explain. Again, if we have a finite union, then there is no problem. In infinite union, there is a problem.
+
+Let's say we have a language, a language which contains let's say $ab$. A simple language, let's say $L_1$, which contains $a^1 b^1$, number of $a$ one, number of $b$ one. Let's say there is a language $L_2$ which contains $a^2 b^2$. So this is also a regular language, this is also a regular language. I mean, between both of them if you take union, the union is finite, so you can easily say yes, it is still a regular language.
+
+But if you convert this into an infinite union, meaning there is a language in which $a^3 b^3$ is still finite, let's say the language is $a^4 b^4$, and this way if you keep going and take the infinite union, at the last what you will get is $a^n b^n$ where $n$ is greater than or equal to one. Meaning, we don't have a finite language anymore; by taking the union of all these in finite time, we get $a^n b^n$ where $n$ is greater than or equal to one.
+
+So look at this: is it a regular language? No, this is not a regular language. This is actually a DCFL (Deterministic Context-Free Language). This means that here power is varying, and here it requires regularity because you have a comparison, and the comparison says that the number of $a$'s should be equal to the number of $b$'s. So whenever there is a comparison, you can find out and say that yes, it is not a regular language. So you can say that one of the examples is what is explaining that the regular languages are not closed under infinite union.
+
+Now, if we take the positive example, suppose if you take $a^1 \cup a^2 \cup a^3 \cup a^4 \cup \dots$ and take the infinite union, you get $a^n$, where $n$ is greater than or equal to one, which is obviously a regular language. But you have to prove this in a strict way by using a counterexample. That means we have explained this using a counterexample, that if you take an example where it is not closed, then you can prove that yes, the regular language is not closed under that particular operation. 
+
+So this point is important for your competitive exams, and even for your college or university-level exams. Thank you.

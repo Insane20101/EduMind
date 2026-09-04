@@ -1,0 +1,108 @@
+In JavaScript, there are many methods to search the DOM, such as `getElementById`, `getElementsByClassName`, and `document.querySelector`, which you can use to target any element. In this video, I will explain all these methods and when to use them. Please like this video and write "Sigma Batch O" in the comment section. 
+
+Let's go to the computer screen. 
+
+First, I will create a folder and then make a script file named `script.js`. In this file, I will write `console.log("Harry")`. When I run `index.html`, you will see the output. 
+
+Now, I want to explain how to target individual elements. Suppose you want to change their CSS class. For example, I have five boxes, all labeled "Bhupendra Jogi." If I want to style the third box, I can set the height, width, margin, padding, and border. 
+
+```css
+.box {
+    height: 34px;
+    width: 34px;
+    margin: 34px;
+    padding: 34px;
+    border: 2px solid black;
+}
+```
+
+Now, I want my third box to have a red background. To target it, I can use the method I mentioned in the previous video, where I can access the third child by targeting the parent. 
+
+Alternatively, I can use `document.getElementsByClassName` to get all elements with the class name "box." I will write:
+
+```javascript
+let bhupendraJogi = document.getElementsByClassName("box");
+console.log(bhupendraJogi);
+```
+
+This will print all the boxes in the console. Now, I can target the third box (index 2) and change its background color to red:
+
+```javascript
+bhupendraJogi[2].style.backgroundColor = "red";
+```
+
+If I insert another box, the third box may not be the one I want to turn red anymore. To ensure I target the correct box, I will give it an ID. IDs are used to target specific elements. 
+
+For example, I can assign an ID of "red" to the box I want to change. Instead of using the index, I can use:
+
+```javascript
+document.getElementById("red").style.backgroundColor = "red";
+```
+
+This way, no matter how many boxes I add, the one with the ID "red" will always be red.
+
+Now, let's discuss DOM navigation properties. These are helpful when elements are close to each other. If they are not, we have other methods, such as `parent`, `sibling`, `nextSibling`, and `previousSibling`. 
+
+When elements are close together, you can use the parent-child method, but sometimes you want to target a specific element by ID or class name. Remember, `getElementsByClassName` returns multiple elements because a class can be applied to many elements, while `getElementById` returns a single element since an ID should be unique.
+
+Now, let's talk about `querySelector`. You can use it to select elements in a similar way:
+
+```javascript
+document.querySelector(".box").style.backgroundColor = "green";
+```
+
+This will select the first box with the class "box." If you want to select all boxes, you can use `document.querySelectorAll`, but this returns an HTML collection.
+
+When you use `document.querySelectorAll`, you need to iterate through the collection to apply styles. For example:
+
+```javascript
+let boxes = document.querySelectorAll(".box");
+boxes.forEach(function(box) {
+    box.style.backgroundColor = "green";
+});
+```
+
+Alternatively, you can use a traditional for loop:
+
+```javascript
+for (let i = 0; i < boxes.length; i++) {
+    boxes[i].style.backgroundColor = "green";
+}
+```
+
+Next, let's discuss `getElementsByTagName`. If you use:
+
+```javascript
+document.getElementsByTagName("div");
+```
+
+It will return all the `div` elements in the document.
+
+You can also use `getElementsByName`, which searches by the name attribute. 
+
+Now, let’s briefly cover `matches`, `closest`, and `contains`. 
+
+- `element.matches(selector)` checks if the element matches the given CSS selector. 
+- `element.closest(selector)` looks for the nearest ancestor that matches the given CSS selector.
+- `element.contains(otherElement)` returns true if `otherElement` is inside `element`.
+
+For example:
+
+```javascript
+let e = document.querySelector(".someElement");
+console.log(e.matches("#redBox")); // true if it matches
+console.log(e.closest(".container")); // finds the closest ancestor
+console.log(e.contains(document.querySelector(".childElement"))); // checks if it contains the child
+```
+
+These methods are essential for navigating and manipulating the DOM effectively. As we continue with this course, we will use these methods frequently in our projects.
+
+In this section, we will discuss the `querySelector` method. If I write `body` here, you will see that it returns false because the body is not in this container. In fact, there is a container within the body. If I switch the elements and write `this.container`, it will return true because there is a container div inside the body tag. 
+
+To clarify, in the body, there is a container, but there is no body within the container. These three methods are very useful, which is why I encourage you to download the notes; they will be beneficial for your understanding.
+
+I hope you have understood all these concepts. Now, I want to address something important. If you are feeling bored with the material, I encourage you to be patient. Trust me, I will create engaging projects for you, and you will enjoy them. However, I understand that many people may not be clear on some basics. 
+
+Ask yourself if you were familiar with these three methods. Did you know about child nodes and parent nodes? If you didn't know about them and are in a hurry to start making projects, that mindset can be counterproductive. I have seen many people eager to jump into projects quickly. Rest assured, we will work on projects, so there is no need to worry.
+
+If you have not accessed the playlist yet, I recommend doing so now. Thank you so much for watching this video, and I will see you next time. Thanks for watching!

@@ -1,0 +1,19 @@
+Hello friends, welcome to Gate Smashers. The topic is relational algebra, which came in 1970 and was given by E.F. Codd, the father of DBMS. Relational algebra is also called a procedural language or a formal query language. 
+
+What is the reason? In a procedural or formal query language, whichever programmer or user is writing the query, they have to mention two things: one is what to do, and the other one is how to do. What is the meaning of this—what to do and how to do? Why are we using relational algebra? To access the database. My database is lying in the back end, and the users are trying to access data from different areas. Now, to access that data, what is the first point? What to do—actually, what to do to access that data? But how to access that data? For that, what is the method? What is the procedure? That you have to mention in the query. 
+
+This means relational algebra is like C programming; we have to mention what we actually want to do, and how to do that work—that is what we have to mention, both things. Therefore, actually, the meaning of a procedural language is this. 
+
+As we know, relational algebra came in 1970, then why is it so much important? What is its value in today's time? Actually, what we use in today's time is SQL, that is Structured Query Language. What is the base of Structured Query Language? Relational algebra. Relational algebra is not implemented actually anywhere; it is a collection of mathematical expressions. By using various mathematical expressions, a theoretical model is being made of how to access data. But that mathematical expression model is used to make what? To make SQL. 
+
+We use SQL, or we use Oracle, or we are using different versions from Microsoft or IBM DB2—whatever platform we are using, what is used there? SQL. But who has helped in making this SQL? Relational algebra. That's why it is very important. 
+
+Second point, obviously, if you are preparing for the GATE exam or UGC NET, many times questions come there on relational algebra. Now, if I talk about 2018, even if we are not using SQL in today's time—we are moving our technology to NoSQL now, using NoSQL, and before you were using SQL—what was being used before SQL? That is relational algebra. Therefore, this point is very important because in most of the competitive exams, they ask the question from where? They ask from the base technology present today that is important, but who has helped in making the technology? So there are chances for questions to come from there. This much is the concept of relational algebra. 
+
+As I have said, in relational algebra, there are mathematical operations. Which mathematical expressions are there that I have mentioned here? One is basic operations, and the second are derived operations. These six are basic operations: projection, selection, cross product, union, set difference, and along with that, two mathematical expressions I am showing, so that is mentioned there. Along with that comes the derived operations: join, intersect, division. 
+
+For your knowledge, I will tell you here that in derived operations, join is a very important topic. Join is not of a single type; there are multiple types of joins: conditional join, outer join. All these operations we will see one by one; we will see their characteristics and how to use them, that we will see in further videos. 
+
+Here, why join is important? Because it can come in relational algebra, and this can also be asked in normal SQL. The concept is same in both. What is the difference? It is the language of the query, meaning the way of writing is different, but the basic concept is the same. If you understand relational algebra well, then you will not have problems in understanding SQL. 
+
+So we will see in further videos one by one. Thank you.

@@ -1,0 +1,60 @@
+Hello friends! You are welcome to Gate Smashers. In this video, we are going to discuss correlated subqueries, which we also call synchronized queries. 
+
+If we talk from the point of view of placements, from the point of view of competitive exams, or even simply about SQL, one of the most important topics in SQL is joins or subqueries. Over here, subqueries can be basic subqueries—in which we talk about scalar subqueries—and along with that, the second type of queries are correlated subqueries. 
+
+What is a correlated subquery? How do we write it? And actually, what is the logic behind it? So that if any concept or scenario is given, in that scenario, if any correlated query is asked—either you have to write a correlated query, or if a query is already given, you have to find out what answer it will give—this type of concept you will understand only when you know what a correlated nested query or correlated subquery is, and how it basically works. In this video, we are going to see this thing with examples.
+
+First of all, we'll talk about a correlated subquery. Correlated means that there is some relation. Whose relation? There is an outer query and an inner query. As we talk about looping, when we write a nested loop, what is in a nested loop? 
+`for (i=1 to n) { for (j=1 to n) }`
+It means if we write one loop inside one more loop—if we write a loop inside a loop two to three times—it is called a nested loop. Over here, when we write a query inside a query, that is called a nested query. The inner query is called the inner query, and the one which is out is called the outer query. In the inner and outer query, there is some relation with each other, there is some correlation. That's why it is known as a correlated subquery. 
+
+Over here, first of all, what is it? It is a subquery that uses the value from the outer query. It means the outer query's value will be used in the inner query. How? Let's see. 
+
+Over here, an example is given. What is the question? "Find all employee details who work in a department." It means we have to get all the details of all the employees who work in any department. Those who do not work in any department, who are fresh recruits, or for whom no department is allocated—their details should not come in the output. 
+
+Now, if you want to write this type of query, although there are multiple ways you can do this from a join, you can do it without a correlated nested query, or you can do it with a normal subquery also. But how do we have to do it with a correlated nested query? 
+
+First of all, over here I have made an `emp` table and a `dept` table. When you are doing any query in SQL, then you have to do the query after taking a dummy table only. Then your answer will definitely come correct; otherwise, somewhere you will make a mistake. And if we talk from an SQL placement point of view, then whichever company asks about databases, what is the first priority? SQL. So they will ask from SQL only. If we talk from the point of view of competitive exams, then whether it is GATE, NET, IBPS PO—no matter whichever exam it is, even if it is KVS—over here you will definitely get questions on SQL. 
+
+Over here, if we talk about the `emp` table, it has `Eid`, `name`, `address`—you can take any attribute. I have taken some attributes and I have taken data. This is the department table. In that, it has `Did` (department ID), `Dname`, and `Eid` (employee ID), which is taking a reference from here. That is the concept of a foreign key, which I have already discussed, and its link is given in the description box: what is a foreign key, what is the concept? Over here we are not discussing that; we are simply saying, where did this `Eid` value come from? It is coming from this primary table, which is the base table. 
+
+Now, over here, what data do I have? That I have some employees 1 to 7, and over here departments are there: D1, D2, D3, D4. E1 is there in D1, then there are 2, 3, 4. It means 5, 6, 7 are still not working, or you can say that 5, 6, 7 have not got any department yet. 
+
+So what does my question say? That I want the details of all the employees who work in some department or the other (1, 2, 3, 4). I want complete details: what is the name, address? If you are taking other attributes, then I want all the details. So you can do this with a subquery, or with a join, or with a correlated query. 
+
+First, over here we are doing it with a correlated subquery. What do we write in a correlated query? As we have seen, we have to use some query from the outer query in the inner query. And what is the second important point? It is a top-down approach, or you can say this: first the outer query, and then the inner query. In this way, "top" means the outer query, and "bottom" means the inner query. How to execute this, we will see.
+
+We have written the query:
+`select * from employee Emp where exists (select * from dept where dept.Eid = Emp.Eid)`
+
+`Emp`—this is the table. `where exists`—`Exists` is like a connector, meaning it connects the outer and inner queries. You can use equal, greater than, less than conditional operators. If `any` or `all` is used, we use `exists` or `not exists`. So what are they? They are basically connectors which connect the outer and inner queries. 
+
+Over here, what have I written? `exists (select * from dept where dept.Eid = Emp.Eid)`. This is a complete query. This is the outer query from here till `exists`, and the below one—this whole thing in brackets—is the inner query. 
+
+Now see what the first point is. This value—means `Eid` and `Eid`—from here, `Eid` of the department, I have used this in the inner query. But over here, I am taking `Eid` from where? From the `Emp` table. And I have taken the `Emp` table in the outer query. In the outer and inner query, something is common. What is that? The `Emp` table. So your first point is covered over here. 
+
+Now, the second one: top-down. How do we evaluate this query? How is this query evaluated? Top-down means that the outer table's or the outer query table's first row will be compared with all the rows of the inner query. It means for one line of this—for its one row—this query will be executed every time. You can understand it from here. 
+
+Let's say what the first row is: `1 A Delhi`. Which is the outer table? `Emp`. So what is the first row of the outer table? `1 A Delhi`. Now, for `1 A Delhi`, just for this row, it will compare with this whole table, with the inner table. Which is the inner table? `Dept`. So that means that this condition for this line always will be compared with all the rows of the second table. 
+
+So see how you will do it. Over here, what do I have? Department ID, this is `Dept.Eid`. Where is `Dept.Eid`? It is over here. `Dept.Eid`—means table name dot column name is equal to `Emp.Eid`. So what is there in the first row? What is the `Eid` in the first row? `1`. So over here, equal to `1`, equal to `1`, equal to `1`. You have to compare in this way. 
+
+So see the first row: `1 = 1`. Is it true or false? True. So what do you have to do? `exists`. How does `exists` basically work? It returns true or false, and on that basis, you have to write the output. I have already made a video on `Exists` and `Not Exists`. I have given its link also in the description box. You definitely check that also once, so that you will have more clarity on how `Exists` and `Not Exists` basically work. 
+
+So over here, what do you have to do? `1 = 1` is matched. So what did this return? True. It means what did this return? True. True means that yes, for this row, some row exists. See, this first row exists. So that means this is true. As it will be true, `1 A Delhi` will come in the output. Above, I have not written this—suppose this is `Eid`, `name`, `address`. Your answer will come in a table format only, like this. 
+
+Now, take the second row. What is the second row? `2 B Pune`. Now, for `2 B Pune`, means for the second row, again this whole inner query will be executed. Means, what is the `Eid`? `2`. Over here, what do you do? `2, 2, 2, 2`. So see: `1 = 2`? False. `2 = 2`? True. It is true, so what did this return? It has returned true. Even if any one exists—even one—it does not mean that `1 = 2` is false, so it will return false. No, it will check the whole table. While checking the whole table, even if one true is found, then along with that, what will it return? True. `Exists` means that even if one exists, it is not that all of them are to be checked. Even if one also exists—meaning there should be an existence somewhere—so see, somewhere there is existence. Over here it is `2 = 2`. So what is returned? True. So for value `2` also, what did it come? True. As true came, `2 B Pune` is printed. 
+
+Then, the third row. What is the third row? `3 A Chandigarh`. So over here, what will be the value? `3, 3, 3, 3`. So see, is anyone matching this? Yes, there is an existence: `3 = 3`. That means it will return true, and as this will return true, `3 A Chandigarh` will be printed. 
+
+Fourth, `4 B Delhi`. Over here, what happened? `4`, over here I will check `4`, and `4` came over here. I have checked `3` and I have written `4`, `4`. So see, existence is there? No, over here false, false, but over here it is true. So as true comes, what did it return? True. As this returned true, we were checking for which row? For the fourth row. So `4 B Delhi` will come in the output. 
+
+Then, `5 C Pune`. See, now over here we will make it `5`, `5, 5, 5, 5`. So you have to execute it for each row. So for each row: `1 = 5`? False, false, false. Overall, what is it returning? False. It means there is no existence, no existence. So overall, what is returned? False. As false is returned, it will not be printed. 
+
+Then, `6 D Mumbai`. `6 D Mumbai` means over here what will happen? `6`, `6, 6, 6, 6`. See, is it equal anywhere? It is not equal anywhere. So what will it return? False. False means it will not be printed over here. 
+
+Then, `7 E Hyderabad`. So what happened over here? `7, 7, 7, 7`. See, for `7`, is there any existence? No. What will be the total answer? What will it return? False. As it will return false, this will not be printed. 
+
+So what is your final output? `1, 2, 3, 4`. Their names are printed, their addresses are printed. Because we had a query that the employee's complete details are to be printed—those who are working in some department or the other. See, those who are working in some department, their complete details we have found out. Because if only employee ID was to be found, then this table was not required. Just `Eid` if you will do it over here: `select Eid from Dept` or `select distinct Eid from Dept`, you will get the answer. But I have asked for the complete details. So the complete details mean his name, address, mobile number, whatever is there, we have to find each and every attribute. 
+
+So over here, in this way, in a correlated nested query, you have to evaluate. We will see more examples—like "Find the highest salary"—that you can check in the next video, as to how do we find out. Over there also, I have explained correlated nested queries only. Thank you!

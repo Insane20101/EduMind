@@ -1,0 +1,64 @@
+Welcome everyone! This is the 11th video of the Sigma Web Development course. We've completed 10 videos, so a like would be greatly appreciated for our continued consistency. In today's video, we will discuss Semantic Tags. They are crucial for SEO. Search engines prefer to see a well-structured website, and using semantic tags significantly improves your website's overall SEO. We will cover what these tags are, why they are used, how to implement them, and their benefits. Let's go to the computer screen and roll the intro.
+
+To begin, I'll explain what semantic tags are. Here, you can see I've created a folder named 'Video 11.' I've set up an `index.html` boilerplate, added an `h1` title, and included an image, which I'll preview now. This image helps illustrate my explanation of Semantic Tags. Semantic tags are designed for browsers and web crawlers to understand your website's content and the purpose of specific sections and tags.
+
+While your website will still function without semantic tags—and you can achieve good design—they are crucial for communicating your website's structure to search engines like Google and Bing. When search engines properly understand your website, they can effectively rank it on their platforms. We want crawlers to easily comprehend our website, and we want anyone accessing it to understand its layout clearly. This is why HTML includes special tags like `header`, `nav`, `main`, `article`, and `figure`. These tags help structure your website. For example, if content is within a `header` tag, I know it's at the top of the page. Similarly, if content is in a `footer` tag, I understand that it signifies the end of the website content. While a `div` could technically be used, semantic HTML dictates using the `footer` tag for a footer. Previously, I might have created a navigation bar using a `span` tag, but with semantic HTML, I would use the `nav` tag. These distinctions greatly help search engines understand the nature of our website.
+
+Let's consider an analogy with computer files. Many of you might have 90% of your computer's files in your 'Downloads' folder, but this isn't ideal organization. Some people even spread files across their local disk C, Windows folder, or even System32. If your files are scattered, they are not arranged in an organized way. However, if you arrange them into specific folders—like a folder for secret files, perhaps labeled 'Do Not Open This,' or folders for images, videos, and e-books—it becomes much easier to find what you're looking for. You wouldn't want to spread your files haphazardly across your computer. This illustrates why we use semantic tags: it's excellent for our SEO. While I haven't explicitly used the term 'SEO' much, it's a vital part of search engine optimization, and using semantic tags plays a significant role.
+
+So, when creating your website, you can use these special semantic tags. For instance, I'll comment out this image here, and instead, create a navbar. First, I'll designate a `header` tag for the top section of my website. Inside this `header`, I'll create a navigation bar using a `nav` tag. Within the `nav`, I'll make an unordered list (`ul`) with list items (`li`) for navigation links, such as 'Home,' 'About,' and 'Contact.'
+
+```html
+<header>
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
+</header>
+```
+
+Anyone visiting my website will clearly see this as the header and navigation bar because I've used the `header` and `nav` tags. Now, let's say I want a footer. My main content will come after the header, so I'll use a `main` tag for that. After the `main` content, I'll add a `footer` tag.
+
+```html
+<main>
+    <!-- My main content will go here -->
+</main>
+<footer>
+    Copyright CWH &copy; All rights reserved.
+</footer>
+```
+
+Here, you can see 'Copyright CWH, All rights reserved.' I'll move my main content placeholder into the `main` tag. So, the structure is clear: `header`, then `main` content, then `footer`. This arrangement helps organize the content, much like arranging files in different folders. I've arranged my HTML elements here in a structured way.
+
+Let's review some specific semantic tags:
+*   **`header`**: Used to represent the top section of a web page.
+*   **`nav`**: Contains navigation links.
+*   **`article`**: Indicates a self-contained piece of content, such as a blog post or news article. If you have a particular, self-contained section, put it in an `article` tag.
+*   **`section`**: Represents a thematic grouping of content. If one section on your page discusses one topic, and another section discusses something else, you'd use separate `section` tags.
+*   **`aside`**: Typically used for sidebars or content tangentially related to the main content. For example, you might put 'About the Author' notes in an `aside` tag, as seen in many blogs.
+*   **`footer`**: As discussed, used for copyright information, important links, and other content at the bottom of the page.
+*   **`figure` and `figcaption`**: Used when you want to include images, diagrams, or charts. `figure` wraps the content, and `figcaption` provides a caption.
+*   **`main`**: Represents the dominant content area of the `body` of a document.
+*   **`time`**: Used to represent time-related information, such as dates or specific times.
+
+These tags are used to enhance SEO and improve accessibility. They also allow browsers to make informed decisions about our page. For example, if a browser has a feature to read content aloud (like Microsoft Edge), it can decide to only read the main content. You wouldn't want it to read 'code with Harry, home, courses, tutorial' aloud; you'd want it to read the primary content: 'HTML, Semantic Tags.'
+
+Semantic tags were introduced in HTML5. The primary reason for their introduction was to arrange things more effectively, making it easier for browsers, crawlers, Google, Bing, and other search engines, or anyone parsing the content or generating a preview (like when you share a URL on Twitter), to understand your content properly. If you want your content to be understood properly, you will use semantic tags.
+
+This image beautifully illustrates the concept: HTML without semantic tags often looks like a collection of generic `div`s, whereas HTML with semantic tags clearly outlines the `header`, `nav`, and `aside`. It's important not to confuse semantic tags with styling. They are not used for visual design or positioning elements. You use CSS to style things and arrange them visually. Semantic tags are purely for defining the meaning and structure of your content, indicating which part is the header, footer, or main content. Semantic tags do not perform any magic; they are solely made for accessibility and to help understand your page's structure.
+
+Here are some examples. As I showed with the `header` and `footer` tags, your navigation bar ideally goes inside the `header`. You'll then style it with CSS. I'll show you a quick styling example. We'll discuss styling in detail later, but many might be wondering how to make the navigation bar horizontal. If you want to make the navigation bar horizontal, I'll add some CSS here.
+
+```css
+/* Example CSS, will be covered in detail later */
+nav ul {
+    display: flex; /* This will make the list items horizontal */
+}
+```
+
+You see, by setting `display: flex`, the items become horizontal. Many more things will be covered in upcoming videos, so don't worry about what we haven't done yet. I will explain everything. The CSS I wrote here, and why I wrote it by inspecting the elements, will also be covered. If I reload, it disappears because I wrote it in the developer console. We will delve into all of this in the CSS section.
+
+If you haven't accessed this playlist yet, please do so. Bookmark it, click here, and save it. I am uploading all the code, so as you progress through the videos, you will find all the code here. Please star this repository if you haven't already, and also like the video. Thank you so much for watching, and I will see you next time! Thanks for watching!

@@ -1,0 +1,97 @@
+After watching this flexbox video, you will not have any confusion about flexbox. This is not a claim, but a guarantee. In this flexbox video, I am going to tell you everything related to flexbox. I will provide examples and practical scenarios, covering the most used aspects as quickly as possible, so that you can easily create layouts using flexbox on your website. Although this video is part of my Sigma Web Development course, if you watch it independently, you will still be able to create layouts effectively. Flexbox is often a confusing topic, even for advanced developers. My goal is to ensure that if you watch this video from start to finish, you will have a solid understanding of flexbox.
+
+Please like this video, and if you are watching it as part of the Sigma web development course, do write "Sigma batch op" in the comment section below. Now, let's go to the computer screen. Let's roll the intro.
+
+**Intro**
+
+I have created a folder named "video38" here. First, I will introduce flexbox, and you may find yourself asking if it is really that easy to use. Then, I will provide a detailed breakdown of all the properties of flexbox. I will quickly create an `index.html` file, but before that, let me give you a little history of flexbox. 
+
+Previously, web developers used floats and positioning, which created significant challenges, especially when it came to centering a div. Developers advocated for a solution in CSS3 that would simplify content alignment. Flexbox was created to address this need, allowing developers to easily specify that they want content centered, aligned to the side, or positioned at the end without excessive CSS definitions. 
+
+Now, let's discuss what flexbox is. You will soon realize that using flexbox is indeed straightforward. I will quickly use a style tag and create a main container with some items inside it. I wrote `div.item` and included five items. 
+
+Now, listen carefully as I apply some styling to these items. I will set the height to 12 pixels, width to 12 pixels, and choose a background color of violet. I will preview this setup. I will also add a border of 2 pixels solid black and a margin of 4 pixels. When I apply a border of 2 pixels solid red, the items in this container will lay down in a straightforward manner.
+
+Now, suppose I want to arrange these items horizontally from left to right. This was a significant challenge in CSS, but with flexbox, the solution is simple. On the container, I need to apply `display: flex`. This will convert the container into a flexbox, enabling the use of flexbox properties. By default, flexbox arranges items from left to right. 
+
+To demonstrate, I will increase the width and height of the items to 32 pixels, so they appear larger. I can add as many items as I want, and I can replicate them using the Alt + Shift + Down Arrow key. 
+
+Now, if I increase the size to 62 pixels, the boxes will be larger. I could even set the size to 92 pixels to ensure they start wrapping to a new line. By default, they won't wrap, but most properties we use with flexbox involve setting `display: flex` and adjusting the alignment of these items.
+
+For now, I will reduce the number of items to avoid taking up too much space. By default, all items are arranged from left to right. If I want all items to be centered, I will set the height of the container to 80vh. With `display: flex` applied, I can center the items horizontally by using `justify-content: center`. This will center the items, and if I add `align-items: center`, they will be vertically centered as well. 
+
+Let me emphasize that this is the most common use of flexbox. About 70% of the time, you will find yourself using `display: flex`, `justify-content: center`, and `align-items: center`. In my experience, centering is a frequent requirement in projects. However, if you want to position items at the top, you can change the value of `align-items`. 
+
+The properties of flexbox are applied to the container, not to individual items. If you change `justify-content` to `flex-end`, the items will move to the end of the flex container. If you set it to `flex-start`, they will align at the start. Using `space-around` will distribute equal space around the items, while `space-between` will place space between the items without adding space at the ends.
+
+To summarize, using flexbox properties allows you to arrange items horizontally and adjust their alignment. You can use properties like `flex-start`, `flex-end`, and `center`, with `baseline` being less commonly used. 
+
+Now, let’s dive into some concepts of flexbox. The first concept is that items in flexbox are not always laid out from left to right; they follow the `flex-direction`. By default, the direction is left to right, but it can be changed. If I set the property `flex-direction: column`, the items will be arranged from top to bottom. 
+
+To illustrate, I will assign numbers to the items: 1, 2, 3, and 4, leaving the rest empty. With `flex-direction: column`, the items will stack vertically. If I change it to `column-reverse`, the order will be reversed. 
+
+In cases where you have navigation tabs, for example, you might want to reverse the order of items. If I set it to `row`, the items will be laid out horizontally as 1, 2, 3, and 4. If I reverse the row, the items will be arranged in the opposite order.
+
+Now, let’s clarify the concepts of the main axis and cross axis. When `flex-direction` is set to row, the items will be laid out along the main axis, while the cross axis will be perpendicular. If I change `flex-direction` to column, the main axis will shift accordingly, and the cross axis will also change.
+
+The properties `justify-content` and `align-items` work according to the main axis and cross axis. When you use `justify-content: center`, it centers the items along the main axis. Many beginners mistakenly think that it only centers horizontally, but it actually depends on the direction of the main axis.
+
+To clarify further, if the main axis is row, `justify-content: center` will center items horizontally. If the main axis is column, it will center items vertically. Similarly, `justify-content: flex-start` will align items at the start of the main axis, while `flex-end` will align them at the end.
+
+Now, let’s discuss the concepts of main size and cross size. The distance from the main axis to the edge is referred to as the main size, while the distance from the cross axis to the edge is called the cross size.
+
+Next, let’s explore the concept of flex-wrap. If I have many items that cannot fit within the container, I can replicate them to demonstrate overflow. If I set the `flex-direction` to row, I will comment out the `justify-content` and `align-items` properties for clarity. 
+
+In this process, we typically encounter `flex-direction: row`.
+
+I keep align-items center, not justify center. This will make it vertically centered, not horizontally centered. Now you will see that there are many boxes, but they are overflowing here, which makes it difficult to view. I want them to wrap down. The reason I want them to wrap down is that when you think of the content on my phone, all the photos are displayed like this. I want to see them down; I don't want them to overflow and hide. 
+
+To achieve this, I will use the flex-wrap property. This property applies to the container, and I will set flex-wrap to wrap. What does wrap mean? It means that new content will come down. If I replicate it like this, it will keep moving down. 
+
+I previously mentioned justify-content and align-items; there is also align-content. What is align-content? When we have more than one line, it looks like this. If I want these multiple lines to come to the center, I will not use align-items; I will use align-content. I will set align-content to center, and these two lines will come to the center. 
+
+Let me show you here on the container: align-content center. When we have only one line, we use align-items. When we have multiple lines, we use align-content. When will we have multiple lines? When our items wrap, meaning they will come to the second line after overflowing. We also have wrap-reverse, which makes it wrap in reverse. 
+
+For example, if I have items 1, 2, 3, 4, and I apply wrap-reverse, it will be wrapped in such a way that the first layer will be below, and then the top will be wrapped. Wrap-reverse is used very rarely, but in most cases, we use wrap. No-wrap is the default property; it will not wrap if you set it to no-wrap. 
+
+I hope this is clear to you. Now we will talk about the flex-flow property. In the flex-flow property, you first specify where to wrap. For example, if I want to wrap column-reverse or row-reverse, I will first set the direction of flex and then specify where to wrap. 
+
+If I want to wrap row-reverse, I will set these two things: flex-direction and flex-wrap. This property is used to set both flex-direction and flex-wrap at the same time. The properties I mentioned are for the container, while some properties are for items. 
+
+Before discussing item properties, I want to explain the gap property. Suppose I set the gap to 30px and remove the padding. I have given padding in the item and margin, but I will finish the margin. You will see that this gap is due to the gap property; this spacing is coming. 
+
+Now, if I refresh it, I might get an error due to an invalid property value because I made a mistake. I first wrote flex-direction and then flex-wrap, which should be wrap, no-wrap, or wrap-reverse. If I write wrap-reverse here, then the wrap will be reversed, but I want it to be wrap. 
+
+Now, if I set the gap to 30 pixels, the gap between the items will be 30px, both horizontally and vertically. If I remove this, they will stick together. By using the gap property, you define the space between the items. 
+
+You can also define row-gap and column-gap in different ways. If I write row-gap as 40px, the gap between rows will be 40px. If I set column-gap to 10px, the gap between columns will be 10px. This is the difference between row-gap and column-gap. 
+
+I hope you understood the difference between row-gap and column-gap. You can define the gap in this way: if I write it as 10px 40px, it represents the shorthand for row and column gaps. First, write row-gap and then column-gap. If I want to write the same thing, I will write 40 first and then 10 because row-gap comes first and then column-gap. 
+
+Even if I don't specify all these gaps, I can just write 40 10, and it will be understood that the gap of my rows is 40 and the gap of columns is 10. I hope you all have understood this. 
+
+This is how flexbox container properties work. A very common mistake people make is that they apply container properties to items and item properties to containers. Don't do this; you have to remember which property belongs to the item and which belongs to the container. Most properties are for the container, which will be used the most. 
+
+Now I will discuss item properties. The first property of the item I want to discuss is order. If I create three classes and set order to 1, it means order 1. Similarly, if I set order to 2, order 2 will be created. By doing this, the flex items will be arranged in the order they were placed. 
+
+If I reduce the order of any item, it will come first. For example, if I set the order of an item to 1, it will come before others. The item with a higher order will come later. If I give an item an order of 100, it will go to the end. 
+
+In a flexbox, you can change the order of an item using the order property. If I want item 2 to come after another box, I will set their order accordingly. The item with the least order will come first, and the one with the most order will come later. 
+
+This property is straightforward: the higher the order, the later it will appear. By setting order 1, wherever I have applied the order 1 class, it will come first. The default order is 0. 
+
+Now, I want to discuss the flex-grow property. Let's say I set all items to flex-grow 1. By default, flex-grow is 0. Changing it to 1 means all items will take equal space across the entire width. 
+
+For a specific item, I will change its flex-grow to 2. This item will now take the space of two items. As you can see, the space it occupies is double compared to other items. The more I increase the value, the more space it will take relative to other items. 
+
+Now, I will explain the flex-shrink property. If I set flex-shrink to 2 and remove flex-grow, you will see that flex-shrink is the ability of a flex item to shrink if necessary. When will it be necessary? If I make the layout smaller and remove the wrap from the container, you can see as I make it smaller, the item is getting smaller. 
+
+Flex-shrink 2 means it will shrink at double speed. These properties are rarely used, but you should know about them. 
+
+Lastly, let's discuss align-self. The align-self property will align this particular element. If I set it to flex-start or flex-end, I will need to remove the align-content property I previously set. Since I have only a single line, I will keep align-items. 
+
+You will see that align-items was center, but because I set align-self to flex-end, it moved to the end. Similarly, if I want to align this particular element to flex-start, I will set align-self to flex-start, and it will move up. 
+
+If you want to override a particular item's configuration to change its position, you can use the align-self property. This was flexbox in a nutshell. I have covered 99% of the properties, and to be honest, they are not used much. 
+
+I hope you understood this. I will export this diagram as a PDF and as an image. You can see it like this; it will help you understand better. I hope you liked this video. Please let me know in the comment section, and keep writing "sigma batch op," bookmark, and save this playlist. Thank you so much for watching this video, and I will see you next time. Bye!

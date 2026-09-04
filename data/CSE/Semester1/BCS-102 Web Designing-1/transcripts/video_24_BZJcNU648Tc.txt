@@ -1,0 +1,67 @@
+Guys, we saw about margin and padding. In today's video, I will tell you about outlines and how you can add shadows in CSS. We understood everything from the CSS box model: what is border, margin, padding, and actual content. In this video, we will explore shadows and outlines. It's fun throughout the course! You guys keep writing "sigma patch op" in the comment section. 
+
+Let's go to the computer screen. Let's roll the intro.
+
+I have come to my computer screen. As you can see, I will do the same thing that I have been doing for the last 23 videos. I will make a folder named "video 24" to organize things, and I will open it in VS Code. Today's topic is shadows. You can give shadows to any element. I will quickly make an `index.html` file here. Along with that, you can also give outlines. To give outlines, you have to use the outline property. 
+
+Now, how is this outline different from a border? Why would we use an outline? Let's start with box shadow. First of all, we will talk about shadows in CSS. Shadows are used to give a visual shadow to any element. 
+
+Here, if I show you an example, it will look like this. I will make a `div` here, `div.box`, and I will write "I am a box." I will simply put a style tag and write `.box` with a border of `2px solid black`. Let’s say I will give a little padding of `34px`. Here, you can see that it will look like this. Where is my preview button? I will open it in the browser and see. It will look like this—no surprises whatsoever; we have done this much, and you all know about it.
+
+Now, if I want to give a shadow to this box, then I will use `box-shadow`. The syntax of `box-shadow` is like this: here you put horizontal offset, here you put vertical offset, here you put blur, here you put spread, then you put color, and finally, you put inset. 
+
+What do horizontal and vertical offsets mean? They indicate how far the shadow will be. After this, there is blur. What does blur do? The more value you give here, the more blur there will be. Then, after this, you see expands and shrinks the shadow size. If you increase the spread, then your shadow size will be big or small. You can define the color of the shadow here, and after that, how much you want to keep the shadow inside is defined by your inset.
+
+If I copy this and paste it here, I will show you the shadow. You can see here `box-shadow: 5px 15px 5px` and I have given the color here. If I make this color red or green, then it will be green. If I show you here, this is how the box shadow looks.
+
+Now, I will request you, too. Whenever you want to preview changes in CSS, what you have to do is inspect. I will move my face so that you can see this and focus here. Now, you want to see inside this particular element how to handle the box shadow. You can see here you can change the values, and you can see the shadow is outset, inset, and all. By changing these, your shadow is changing. 
+
+Now, when does the shadow appear? The shadow appears when our light is coming from one direction. If the light source is here and this is my object, then the shadow will be here. If you want something like that, then to see the shadow here, you have to adjust these values. Don't confuse the shadow with the border. Keep it like this so that it looks like a shadow. Shadow means shadow, okay? Hope you are getting it.
+
+Now, if you come here on the inset value, you can change it. If you want a shadow inside, you can do it like this. The syntax will change. You wrote `inset`, `10px`, `8px`, `5px`, and this color. Usually, you can increase or decrease blur from here, and this syntax will change. By increasing spread, it will spread more. Ideally, you will keep spread less because a shadow is not natural if you make the spread unnatural. 
+
+This syntax was horizontal offset, vertical offset, blur, spread, color, and inset. This was about box shadow. You can write this syntax like this; this is the way to write the syntax. 
+
+Now, along with box shadow, you can also give text shadow. The way you have given box shadow, you can also give text shadow. If I do `text-shadow` in any text element, I will copy this whole CSS and here I will show you that if I have a paragraph and I say `text-shadow`, and I will write "lorem ipsum," and I will write this CSS here, then text shadow will come. 
+
+I have made a class named `text-shadow`. No problem, I will fix it. Here, see, the text has a shadow. I will make this color red so that you can understand what happens with text shadow. See, our shadow has come in text. Sometimes we want visually that our shadow comes in text. If you want to change it, then you can change it from here and then put it in your syntax again. 
+
+For example, if I want my text shadow to be purple and along with that, my text shadow should be a little bit down, like this, you can see it looks like a shadow. Let's say I want to increase the blur or keep it so that it is visible. I can set the value from here, and whatever syntax Google Chrome generates, I will take it back by copying here. 
+
+I never focus on writing; neither have I ever done it. I want to tell you that Google Chrome is a tool. In the future, whoever learns to use tools will become a good web developer. Whether it is ChatGPT, GitHub Copilot, or any AI tool, you should know when and which tool to use and how to do it in the least time. That will define your value. AI will never replace anyone. Many people ask if AI will replace you; it won't. AI will replace those who don't know the tools, use them, and indirectly, AI will replace them. 
+
+I want to end this debate: AI will not replace directly; it will indirectly replace those who are not smart. AI will help smart people so much that those who are not smart will find their work finished. I am just telling you the reality. AI is not going to replace anyone; AI is not a human. AI will roam here and there. This has not happened yet, but it will happen sometime; we will see.
+
+Now, here you see "lorem ipsum," this has a text shadow. If I want the text shadow that I did with purple color, I can do it like this. That's it. Here, I can use the syntax that is being generated. If I want to increase this a little and I want to increase the blur, I can do all this. 
+
+To be very honest, text shadow is not used that much. Yes, I have seen that people use it visually; it looks good, it looks a little modern on this website, but I have not seen much usage in simple websites. To be very honest, you should know about this property.
+
+Now, after this, last but not least, outline. What does outline mean? You put width, you put style, you put color, just like we say to make a border `2 pixels solid red`, you give an outline. 
+
+What is the difference between an outline and a border? Assume this is my element. I will give an outline here. I will say `outline: 2 pixels solid black`. It looks like a border. What is going on? I will also put a border, `2 pixels solid green`. 
+
+See, the border will be inside, and the outline will be outside. There is a basic difference between border and outline. What is it? Outline doesn't take up your space; it doesn't become a part of the box model, but the border does. 
+
+After this, you can use the outline offset property. You can increase the outline offset in this way so that the distance of the outline will increase. But you can't increase the distance of the border directly. Yes, there is margin and padding that will affect the box model of the element, but with the outline, you can play in ways you can't with the border. 
+
+Sometimes you have to use outline to cover an element. These are the basic differences. Outline is given extra; if you have a border, everything is set, and after that, you want an outline, you can use outline. 
+
+Borders can have varying widths on different sizes; outlines have uniform width. You can't change the width of the outline. With this, you can put border radius in the border. If I use the border radius property, let's say I do `34 pixels`, you can see as soon as I put border radius, it got curvy. You can see the borders got curvy. You can't directly curve outlines; the outline will follow the border. As soon as you put border radius, the outline will take the same curve.
+
+I hope you understood this very basic concept of box shadow, text shadow, and outline. If you have not yet accessed the Sigma web development playlist, do access it. If you are not accessing the source code, I recommend you write together. If you are coding together, nothing can be better than that. But if you need code or if nothing is working, then definitely you can visit this repository. It will help you a lot.
+
+Since I started this course, a lot of people from the industry have approached me, asking why I should make it paid from the middle. But I am never going to do that. This Sigma course will be free, so don't worry about that. 
+
+I want to tell you one thing: we are going to raise the bar like anything. Once we start making projects, you will enjoy it a lot. I can proudly say, based on your feedback and the people from the industry who contacted me, that what I have made has stopped their sales. 
+
+See, I am not against paid courses. If I am able to get this course for free, then it is my good luck. If anyone in the industry is giving you 99% paid and 1% free, then respect them. I want to give a shoutout to everyone who is providing a little quality education for free or at an affordable price. You should actually support them instead of saying, "If he is giving for free, then you should also do it for free." Everything can't be free; we all should understand this. 
+
+But the Sigma web development course is free, and we are going to raise the bar like anything. We are going to make amazing projects, and it will be free till the end. This is my promise; I will not break my promise. Because I had promised from the first video that this course is free. 
+
+If I break that, it is wrong. But I am telling you again that if anyone is giving a paid course, then there is nothing wrong with that, in my opinion. I hope you guys think the same. 
+
+That's it for this video, guys. In the coming videos, we are going to see a lot more things, and the best is yet to come. We have not raised our bar yet. We will do it; we will make good projects. I will tell you new things that I have learned from years of experience. I wish someone would have told me this earlier. 
+
+I will tell you in this course how much time and effort will be saved. You can guess this yourself. 
+
+Thank you so much for watching this video, and I will see you next time!

@@ -1,0 +1,65 @@
+Hello friends! Welcome to Gate Smashers. 
+
+The topic is transactions. A transaction is actually what? It is a set of operations used to perform a logical unit of work. This is the definition of a transaction. But as we hear the word "transaction," what is the first thing that comes to our mind? Give and take money. This means we are transferring money from here and there, withdrawing, debiting, or crediting. Yes, that is the basic meaning of a transaction. But it is not the only meaning of a transaction. Any transaction where we are changing anything in a database or reading a database—that is also a part of a transaction. 
+
+However, the main motive of what a transaction is—yes, it is a monetary transaction. This means we want to transfer money from one account to another account, or I want to withdraw money, or I want to credit an amount. That is the basic meaning of a transaction. But whenever we perform any transaction, why do we perform it? Basically, what we have to do is get some work done. That is what I have written over here: it is a set of operations used to perform a logical unit of work. Work means a task. We have to perform a task. 
+
+We will do a simple example of a transaction which almost all of you have faced: a transaction from an ATM. When we withdraw money from an ATM, it is a transaction. What is written at last? "Your transaction is completed successfully." This means what have we done? Whenever we withdraw money from an ATM, we have to perform a set of operations. And what is my task? What is my work over there? Withdraw. Withdraw money. This is my task. 
+
+But to perform this task, I will have to perform a certain set of operations. What are that set of operations? First of all, I inserted the card. So, I inserted the card. Then what is happening at the backend? The information that is being read—my details corresponding to my card—that machine is reading so that from my account, it can fetch the information: how much balance is there in the account? Is this person authentic or not? 
+
+So, after that, what do we do? I choose a language. After choosing the language, we generally select the account: whether it is a savings account, a current account, or what? Generally, a savings account. After the savings account, next it comes: how much money do you want to withdraw? That money I entered. After that, it asks me for a PIN, so I entered a 4-digit PIN, and then I wait for the money. After that, money comes from the machine, your transaction is completed, and you will get a message on your registered mobile number. 
+
+So, these 7–8 operations that we have performed, what is this collection of 7–8 operations called? A transaction. 
+
+But it is not necessary that whatever you are doing from an ATM is the only transaction. Even online, if you are transferring money online from one account to another, that is also a type of transaction. For that also, there are some set of operations. What? First of all, authentication. You are on the browser, you opened SBI online, you filled in your username and password. What is the first operation? You have to authenticate that you are valid or not. So, as it comes to know that the username and password have matched, the server says that yes, now you can do the transaction. 
+
+Then you selected the beneficiary. If the beneficiary is already added, then it is good; otherwise, you will add them. And after that, you will fill in the amount to be transferred. After that, an OTP will come, and you will fill in the transaction password. Your money transaction will be successfully completed. 
+
+So, what is the actual meaning of a transaction? When we are performing a set of operations, and what will happen with that? Work—some work will be done. 
+
+If we talk about databases, in databases, how are we defining a transaction? A transaction generally represents a change in a database. To make some change in a database, what do we perform? A transaction. 
+
+All the banking systems are there. If we are taking monetary examples, then what have these banks done? They have made a database. They have a database of all the account holders where our information, details, how much money is there, the whole amount—everything is there. Whenever we will do a transaction, what will happen at first? That information will be fetched from there, and then we will perform some change in that. 
+
+So, if we talk about operations in a transaction—which are the operations? In a database, the transactions that are there involve two main operations: Read and Write. These are the two major operations which come in a transaction: Read and Write. 
+
+Read means we have to read the database. Where is the data? Where are data and tables? In hard disks, on servers. At the backend, the servers that we have—if I talk about a database server, then in a database server, all the data, where is it kept in the backend? On drives, on hard drives. 
+
+So, a user is requesting from different places. A user is requesting the server that "I want to read the data." Over here, all the data is kept. All the account holders' data is over here. So as a user uses an API, an application will access the server. It will request the server that "I want to perform a particular transaction. Let's say I want to transfer an amount." 
+
+If I want to transfer an amount from account A to account B, then first of all, I should know the information of account A: how much money is there in account A, who is actually the owner of account A? So for that, first of all, we send a request to the server. That is when we fill in our username and password—that is a kind of request to the server. When the username and password are authenticated, an interface will open in front of me. What do we do in that interface? We transfer. 
+
+As we transfer, our information is read. What is read? We are reading the information from the database only—read access, which we call accessing the database. When we access the database, after that only we can perform some write. 
+
+What is the meaning of write? Change. What is the meaning of write? Change. What is the meaning of read? Just accessing the data. We just have to see the data. But the meaning of write is to make some change in the data. 
+
+So if we write a normal transaction in a database, how will we write the transaction? What is the way of writing that? 
+
+First of all, read. We are transferring an amount from account A to account B. So first of all, we will perform a read of A. What is A? An account. So we read account A. From where will this read happen? From the hard disk. The hard disk that is there on the backend—from there, the data is read first of all. And after reading, where will the data come? Into faster memory. Let's say it will come into the RAM. 
+
+As the data comes into the RAM—what data came? Let's say in A there are 1,000 rupees, and in B there are 2,000 rupees. So as we have done a read of A, what value came into A? 1,000. 
+
+Now, an operation. What operation is to be performed? Let's say from A, I want to transfer 500 into B. So I am performing an arithmetic operation over here: `A = A - 500`. Simple. This means from account A, deduct 500. This is an arithmetic operation. 
+
+But when this operation will be performed, where is this operation being performed? In RAM. So we also have to change that value. To change that, we have to write. This means we have changed the value in RAM. We did a write of A. What is the value of A over here? 500. Because we have deducted 500 from 1,000. So now, what is the value of A? 500. But remember, not in the database. Still, we have not done anything in the database. Still, in the database, there is the same old value. 
+
+Where is this work going on? In RAM. We did a read of A and got the value 1,000. `A = A - 500` is an ALU arithmetic operation we performed. We did a write of A. Write of A means now that value has changed to 500. The value of A has changed to 500. But where? Still in RAM only. 
+
+Now we will read the value of B. We read the value of account B. From where will this value be read? From the database. From the backend, from the database, we read the value. What did it come to? 2,000. 
+
+Now what do we have to perform on this 2,000? Plus: `B = B + 500`. What is the meaning of `B = B + 500`? That the value of B that had come was 2,000, so it becomes 2,500. But to do that, I will have to do a write of B. As we did a write of B, what happened over here? As we did a write of B, the value of B is updated to 2,500. But still remember, it has not happened in the database. This work is just going on in RAM. 
+
+Because where does the CPU always perform? In RAM. We discuss this thing very carefully in Operating Systems also: that when a program is in a hard disk, whenever we want to execute that program, when we want to execute the instructions written in that program, then first bring that program into RAM or bring it into cache memory. When it comes into cache, the program is converted into a process. Now the CPU will work on it. The CPU never directly works on the hard disk due to the speed factor, because the CPU works very fast and the hard disk is very slow. So in between, we have put RAM memory, which is compatible in speed. 
+
+So over here, in RAM, what work is going on? First, the value of A is read, changed; then the value of B is read and changed. Now what is the value of A? 500. What is the value of B? 2,500 (because write of B means `B = B + 500`. What is the value of B? 2,000. So `2000 + 500 = 2500`). 
+
+And at last, what are we using? Commit. This is the third operation. Other than read and write, we use an operation called Commit. 
+
+What is the meaning of commit? Whatever changes we have performed on RAM, all those changes are saved permanently in the hard disk. Now what will be the value in the hard disk? 500 for A and 2,500 for B. 
+
+So this is what? A way of writing a transaction. Whatever transactions we will write in a database, in that we are performing majorly two operations only: one is read, and one is write. But other than read and write, there are also other operations, like commit. Rollback is also there; when they will come, we will see them slowly. But you should know these two operations: what do read and write do? 
+
+Read means just to access the database, to fetch the database. And write means to change something in it—any change, or if we want to perform an arithmetic change in it. 
+
+So this is how we define a transaction. And after that, in transactions, there are many transaction states, which are the states of transactions, and properties are there, which we will discuss one by one. This is all about the basics of transactions. Thank you!

@@ -1,0 +1,35 @@
+Hello friends, welcome to Gate Smashers. In today's video, we'll be discussing questions on the `fork()` system call. In the last video, I gave basic details about the `fork()` system call and two very important points also, on the basis of which you can solve any question based on `fork`. If you haven't watched that video, then please check it out once. I've already mentioned the link to that video in the description box below. So if you check out that video once, then you'll understand the basics about the `fork()` system call. 
+
+And in the last part of that video, I gave this question, and I've got requests from many students asking to explain this question so that they can get a basic idea that if this type of question will appear, then how to solve it. And other than that, I want to tell you, many times questions have appeared on the `fork()` system call in many competitive exams like GATE, UGC NET, etc. If these two points are clear to you, then you can easily solve any question. So let's start this question.
+
+First of all, here, we have this program written in C language. There are header files, a main function, and in the main function here, an `if` condition is being used. Obviously, we know that when compilation will start here, what is this whole part? We've saved this whole program as `.c`. So what can you call this whole thing? It's like a single program which you can call as a parent process in its own right. It means this main program is a parent process in its own right. I'm calling it parent because the `fork()` system call has been used here. 
+
+And what `fork` always does is, it always generates a child process. Means we use it for parallel processing. The parent is already there, but along with the parent, a child is also there, so the parent will be executed separately and the child will be executed separately also. Both will get concurrent execution. 
+
+The moment we start its compilation, how will it get executed? First up to `int main()` and then the bracket starts... `if`. In `if`, what's written first of all, guys? It's `fork` written here. When it'll read `fork`, reading `fork` means that a child of this whole parent process will be created, and that returns what? Zero (0). The child returns 0 and the parent... the value of the parent is always a positive number. Generally, we call it positive one, i.e., +1, but you can assume it to be any positive number. 
+
+Next, after `if` and `fork`, what's important here is this operator here: the `&&` (AND) operator. And as we are explaining here that this is a child process and this is parent process, and both of these are running parallel, means running concurrently with each other, so we have to consider both the cases. 
+
+Let's see. First, we execute the child process. If we execute the child process, then what the child is returning is zero (0). So the moment `fork` returns this zero (0), then whatever you'll do with zero (0), what will your answer be? It's zero (0). Means if you'll do `0 && expression`, then what will be your answer? It'll surely be zero. Means it'll evaluate `if (false)`. The moment it evaluates to false, then here this `fork` will not get executed because it'll exit the `if` and will directly reach `printf("Hello")`. Means what will this C1 process print? It'll print "Hello" once and will end. 
+
+Now, if we'll talk about the parent process, this was 0. It returned zero (0)... but if we'll talk about the parent process, about the other process, i.e., the parent process, what it returned here is a positive number. So can we take it directly through the `fork`? 
+
+NO! If this would be OR, if there would be an OR operator at the place of `&&`, then you could have gone down, but this is the `&&` operator, and if the first value is positive in `&&`, then it definitely checks the second one. If the first value is positive in an OR operator, then there's no need to check the second one; you can directly go in. But this is `&&`. In `&&`, if one of them is 1, then who knows if the second value will be 0? And `1 && 0` is equal to `0`, while `1 && 1` is equal to `1`. So, until we don't reach this second value, we can't go in the output—I mean, we can't go internally. 
+
+So we found out that the first one is 1, meaning a positive number. So the moment we entered the second part, what is the next statement written after `&&`? `fork`. 
+
+Means again, a child process will be created after this parent, and it is already a parent itself. So this child... what does this child always return? Zero (0). And what the parent returns is positive. So have a look here very carefully. We have already got this first value as positive. This value is positive. So `positive && ...` 
+
+Now, if we'll talk about this first case, about this one, then what will it return? Zero (0). Meaning `positive && 0`, so `positive && 0` means `0`. So `if`... what will it return? False. So false means this will not execute this `fork`. It'll reach `printf` directly, and `printf` means what will this C2 process print? It'll print "Hello". That's it. 
+
+And talking about the next case, i.e., P (parent), what it returned is positive, and what this P also returned is positive. So `positive && positive` is equal to a positive number, meaning what is returning here in `if`? True. 
+
+And the moment it returns True, it means this `fork` statement will execute. And when this `fork` one will execute, then what will this P also form ahead? It'll form a child, and it is already a parent in itself. So the moment the next statement came after `fork`, i.e., `printf("Hello")`, then this C3 (which was a child) will also print "Hello", and this P here will also print "Hello". 
+
+It means total how many times will "Hello" be printed here? It'll print 4 times. 
+
+So guys, this is how you have to solve this. And the main point that you've to remember is that what this child always returns is zero (0), and the parent always returns a positive number. And the second point—it's a very important point—is how many times you are executing `fork`. 
+
+So guys, you can solve this same question with other operators also. And if you want to share its answer with me, then you can share it with me in the comment box. The rest of the question is as it is; you can just use the OR (`||`) operator at the place of the `&&` operator. 
+
+So this is, guys, how to solve these kinds of questions. Overall, if you liked the video, then please hit the like button, share it as much as possible, and please subscribe to my channel. Thank you!

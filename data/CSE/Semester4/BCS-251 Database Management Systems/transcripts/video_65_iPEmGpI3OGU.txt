@@ -1,0 +1,108 @@
+Hello friends! Welcome to Gate Smashers. 
+
+The next query is: write a query to display all the department names where the number of employees are less than 2. 
+
+Meaning, I want to print the names of those departments where the number of employees working are less than 2. This type of query many times, we can take in real-time examples also. If I talk of any organization, there is any ABC organization. In each organization, there are many departments. As we have written, IT department. Other than that, there is a testing department. There are different departments for raw material. 
+
+So if I ask a simple query, that tell the name of the department where there are less than 50, less than 100, or less than 200 employees, or there are more than 100 employees, or there are more than 500 employees, how will you find the names of such departments? 
+
+For that, we will write a query over here. But, before writing this query, I request you all that please you go and check my videos before this. Because, in that video, we have discussed how many numbers of employees are there in each department that we have displayed. Meaning, suppose that I talk about this table, then in this table, as in HR, 1, 2, there are 2 employees. In marketing, again 2. And in IT, 1. 
+
+How did this output come? How did this output come? I have discussed this in the last video. So now what we have to do? We are just extending this a bit. What? That in this, I want to find those values where the number of employees in the department is less than 2. 
+
+So you see, less than 2. In HR, there are 2, 2, less than 1. So this is what less than 2 means: 1. So IT should be the output. 
+
+For that, this video, it is totally linked. Even all the subqueries series that I am making, these videos, all are linked with each other. And in video 1, we had started with scratch. I had told you earlier also that now we are going in deep in the queries. 
+
+So over here, we are talking about this query: 
+
+`select department name` 
+
+What we have to do? Select department name. But I have already told you that what we want to select, that we will see afterwards. Because each SQL query, from where does it get executed? From where does it start? With `from`. 
+
+`from` means first of all we'll talk about the table. From which table I want to take output? From which table I want to take output? From `employee` table. So `from employee`. 
+
+This is the first important point, that always a SQL query will start to execute with `from`. First, `from employee`. 
+
+Now whenever department-wise or subject-wise this type of questions come, I have to make groups. Because the data is random. HR is there, then again HR is there. It is possible that HR again will be at the 30th position. It can be at the 40th position. It can be at the 100th position. Different, different. I don't know where randomly HR is. Because I can sort employee ID easily. If I talk about department, then even if I want to sort department, then what is the advantage? There is no advantage. HR ones, what is the meaning of sorting? That we can just display in the output like 1, 2, 3, 4, 5, 9, 10. Then if I `order by`, then what is the advantage of `order by`? That I can display either in ascending order or in descending order. But with that, no output will come. 
+
+So, over here the department is there. HR, HR, or marketing. I don't know randomly where are they. So why don't we make their group? Meaning, group of HR, marketing, and IT. So that I had already told in the last video, that for that we use `group by`. 
+
+So `from employee group by` — this is the `group by` clause. Group, then space, there is a space. `group by department`. Because we have to make groups according to department. So HR, marketing, and IT, one group will be made. Meaning HR will be together, marketing together, and IT will be together. 
+
+`group by department`. And finally, what are we using over here? Department. Because with `group by`, whatever attribute is [used], only that attribute we can use over here. If you want to use any other attribute other than this, so for that we are using any aggregate function. Any aggregate function: `count`, `max`, `min`, we can use. 
+
+`select department from employee group by department` 
+
+So the last query that we have done, this query we had done. So this is its output. 
+
+Now, now what we have to print in output? Only IT. Meaning, this query is giving, it is giving full output, this whole. But from this whole output, we only want IT one. 
+
+So whenever we select rows, we use `where`. 
+
+Like `where department name = IT`, or anything. If you think that `department name = IT`, I can write this way. But `where` clause will not work here. 
+
+Why? Because `where` clause directly works on the whole table. Meaning, if you will use a `where` clause, then it will work on the whole table. But we have converted this table into groups because we have done `group by department`. You can think that thing virtually and logically. Because `group by` puts HR together, marketing together, and IT together. 
+
+So over here, `where` clause will work on the whole table. `where` and `group by` are not related with each other. Meaning they will not help each other. 
+
+So if I want to use `where` clause in `group by`, inside `group by`, I want to use `where`. Because this normal `where` will be on the whole table outside. It is working independently then `group by`. So if `where` clause is working independently then `group by`, then there is no benefit of using `group by`. 
+
+So if I want to use `where` inside `group by`, then I don't use `where`. For that we use `having`. Over here we will use `having` instead of `where`. 
+
+So what is the query? 
+
+`group by department having count(*)` — we want to count, because corresponding to each department there is some value. That there are 2 people in HR. In marketing, there are 2 people. In IT, there is 1 person. 
+
+So over here, `having count(*) < 2`. 
+
+This is the full query: 
+
+`select department from employee group by department having count(*) < 2` 
+
+So what output will this give? IT. This is how this query actually works. 
+
+Now, it is possible that in this query they may ask a further extension: that tell the name of that employee who is working in such a department where the number of employees are less than 2. Meaning, less than 2 employees. The department with less than 2 employees, who all are working in that? Tell the name of them. 
+
+Like we have done till here. We came to know that IT is such a department. It is such a department where the count of the number of employees is less than 2. Meaning it is 1. It is 1, or 0 also can be there. So it is 1. But in that department, whoever employee is there, we have to print his name. Meaning as who is in IT? Varun. So what you have to print? Varun. 
+
+So for that what we will use? We know that nested query we will have to use. Because this complete query, this whole query, is giving an output IT. So now I will use this output to write another query. 
+
+Meaning over here, now first you definitely note the query. What is the query? That we have to find the name of the employee who is working in such a department where the number of employees is less than 2. 
+
+So we have found the department. Department is IT. 
+
+Now, now what we have to do? That person's detail, from where we will get the details? 
+
+`select` — let's say we have to print `ename`. 
+`select ename` that is employee name. 
+`from employee` 
+`where` 
+`department` — meaning, department value what it should be? 
+`where department in` 
+
+This is the inner query: 
+
+`(select department from employee group by department having count(*) < 2)` 
+
+So now this is the complete query to find out the name of the person, to find out the name of the person who is working in a department where the number of employees is less than 2. 
+
+So how will we do less than 2? We came to know from this query: 
+
+`select department from employee group by department having count(*) < 2` 
+
+So what did this print? IT. 
+
+Now we will use this IT. Department `in` IT. Meaning, now see what is the value of department. HR. `in` — `in` means equal to or include, you can say. Is HR and IT equal? No. So not. 
+
+Then marketing. Is marketing and IT equal? No. 
+
+Then HR, no. Marketing, no. 
+
+Then IT will come. Is IT `in` — meaning equal — is IT `in` IT? True. 
+
+So corresponding to IT, what is the `ename`? Varun. So this will be the output. 
+
+So this is how we use the nested queries to print the output. So in case you have not understood this, then you please play the video again. You will easily understand. Because I have told already the concept of nested queries. It is a bit complex to frame queries. But, if you take a good table and you will try to do queries, then definitely you will be able to write these queries. 
+
+So this is how we write the query. Like this. Thank you.

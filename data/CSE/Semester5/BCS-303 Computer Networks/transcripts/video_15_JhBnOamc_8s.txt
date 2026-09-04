@@ -1,0 +1,35 @@
+Hello friends! Welcome to Gate Smashers! The topic is "Routers". We use routers to connect two different networks. The first important point is that when we talk about a router, by default you should get "Internet" in your mind. We are talking about the internet. What is the internet? A collection of different networks. So here, whenever we talk about a router, we are talking about the internet. 
+
+Whenever we talk about devices of the data link layer, as we discussed hubs, repeaters—a repeater is on the physical layer. Or if we talk about bridges... bridges or switches. If we talk about bridges and switches, then we are talking about LANs. But if we talk about routers, then it is specially about the internet, meaning about WAN, "Wide Area Network." 
+
+The second most important point here is that routers work on three layers. Bridges work on two layers: physical layer and data link layer. And a switch, in general, works on two layers: physical layer and data link layer. But switches are on layer 3 also, where the network layer works too. However, if you ask which device is used in the network layer, then a router is one of the most usable devices, where there are three layers: physical, data link, and network layer. 
+
+So what does this mean? Data link means the router can check the MAC address. Along with that, it can check the IP address also—yes, "IP address." So whenever we talk about an IP address, we are obviously talking about the internet. 
+
+The second important point here is "Forwarding." As we discussed in hubs, repeaters, bridges... it's the same forward. Forward means, let's say this is Network A and this is Network B, two different networks. If a packet is going from Network A to Network B—let's say in Network A there is a host HA, and in Network B there is a host HB. If HB... if it's writing the address, source address is HA and destination address is HB. Which address? IP address. 
+
+Now we are not talking about the MAC address. We use the MAC address in a local area network, within a college, within the organization. Now let's say I want to access Google, I want to access Facebook, I want to access YouTube, Amazon. Whenever we talk about a wide area network, whenever we talk about WWW, there we use IP addresses. 
+
+In Network A, the host puts its IP address and destination IP address. So when the packet reaches the router, will the router forward this packet? Or can it do so? Yes. Because the router uses a routing table. What does it use? A routing table. 
+
+A routing table means it maintains with itself which networks it is connected to. And by using the routing table, it checks in which direction the packet should be sent ahead. It doesn't mean that there are only two ports. By looking at the diagram, you might assume that there are only two ports, but no. With routers, multiple networks can also be connected. Multiple networks can be connected. By seeing the routing table, it decides in which direction the packet should be moved. So, here forwarding is also done. 
+
+And what is the second point here? If the router is unable to decide about the direction in which the packet should be sent, then what can it do? "Flooding." Flooding means in all directions, a kind of broadcasting. It can send the packet in all directions. That is an important point. 
+
+Next is "Filtering." Filtering means... can a router filter out the packets? Filter out means... let's say in Network A, host HA wants to know the... MAC address. Wants to know the MAC address of what? This router. Wants to know the MAC address of this router. Because whenever we connect through the internet... if we are accessing the internet through any network, whichever is our default gateway, whichever ISP is providing us the network... so we have the IP address of the default gateway, but we do not have the MAC address of the default gateway. 
+
+So here we use an "ARP Request," Address Resolution Protocol. So that is just a small example. When an ARP request goes from this network... what do we ask in the ARP request? We ask that I have an IP address, I want to know the MAC address. Whose MAC address corresponds to this IP address? So immediately after the request goes, this router doesn't forward this request. It stops there itself because an ARP request works only within the network. It means a router can decide whether to send this packet forward or not. If it is sending it forward, that is called "Forwarding." If it is stopping the packet, that is called "Filtering." 
+
+So yes, routers can filter the packets. They can stop any packet using its routing table. With that, it can find out in which direction the packet should be sent or stop it. 
+
+Then we have routing. Otherwise, it is very difficult to decide. So we use routing tables in this. There are various protocols in this. We use the "RIP Protocol." Apart from the RIP Protocol, we use Distance Vector Routing Protocol. When we talk about the network layer in detail, then we can discuss this. But for now, if we talk from the point of view of UGC NET, or in GATE if you get a small level question, then these points are more than enough. 
+
+Along with this is "Collision Domain." Collision means... inside the router, can packets collide inside the router? No. Because the router uses the "Store and Forward method." Store and Forward method means it stores the packet, keeps it in memory, and processes it. It processes it using the routing table and decides in which direction the packet should be sent. 
+
+So in the meanwhile, if another packet comes, then they will not collide with each other. Where will they go? Inside memory. So, most of the packets are saved inside the memory, and the router processes those and decides. It means that there will not be any collision of packets in between them because this also uses the "Store and Forward method." So these are very basic points about routers. 
+
+I will tell you one last point. Let's say there is a Network A, and let's say this is the router with Network A. And this one is connected with Network B. If this is the router's interface, what IP address do we give to it? What IP address do we give to this interface? One of the IP addresses of this network. It means that there will be so many IP addresses inside this network. From those, we give one IP address to whom? To this interface. The router doesn't bring an IP address from anywhere else. 
+
+And if I talk about this interface, what will be its IP address? Of this interface. Network B has multiple IP addresses, and we use one of the IP addresses and provide it to this so that these two can make a connection. 
+
+So this is all about the basics of a router, which is important specially for UGC NET. Thank you!

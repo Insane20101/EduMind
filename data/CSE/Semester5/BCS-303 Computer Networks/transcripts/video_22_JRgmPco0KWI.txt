@@ -1,0 +1,104 @@
+Hello friends, welcome to Gate Smashers. The topic is the data link layer. The data link layer in the OSI model is the second layer from the bottom. You can also call it a layer in between the network layer and the physical layer. It takes data from the network layer and provides data to the physical layer, and then the physical layer sends that data further in the network so that it can be received by the receiver. 
+
+The main important part here is: what is the responsibility of the data link layer? Or what are the functionalities of the data link layer? If in my system all these seven layers are working properly, then what is the responsibility of the data link layer? How actually does it provide help in the network? How does the message or the data move from one place to another? What is the role of the data link layer there? That is what we are going to discuss one by one.
+
+### Hop-to-Hop Delivery
+
+The first responsibility or the first role is hop-to-hop delivery. This is a very important point: hop-to-hop or node-to-node delivery. What is the meaning of hop-to-hop or node-to-node delivery? We will understand this from a diagram. 
+
+Let's say there is a network A and a network B. Now, in network A, what I have denoted here is that some hosts are there, some nodes are there, and those nodes are connected through a topology. Various topologies are there—mesh topology, hub topology, bus topology, and ring topology. Different topologies are there. Let's say through a topology, nodes are connected, devices are connected. And there is another network B where we have used a bus topology, and they are connected with a bus topology. 
+
+Now, what is the responsibility of the data link layer here? The first and very important point is that whenever the data link layer works, it works within the network. Inside a LAN, within a network, two or more persons want to talk or communicate, so for that, the data link layer is enough. Means there, the data link layer is enough for the work. This is a very important point: within a network, within one network only, can I provide communication with the data link layer? Yes, I can provide communication with the data link layer by using the MAC address or physical address. 
+
+Because what is an internetwork? It is a collection of different networks. Means one network is in India, another may be in Australia, one in New Zealand. Here we are talking about two different networks. If I am sending data from network A to network B, it will not be transferred directly. It will not go directly from here to here; there is some media, there is some channel, through that channel data will flow one by one. 
+
+Here in the middle, I have represented routers, meaning two networks or multiple networks are connected through routers. These routers we can also call hops or nodes. Let's say here A4 wants to send data to B1. A4 wants to send some message. A4 here is a sender, and B1 is a receiver. Now this data will not be sent directly; it will have to follow a proper channel and follow proper nodes. 
+
+So here, what is the responsibility of the data link layer? The responsibility of the data link layer is hop-to-hop delivery. This means from here, when the message will start, to which node it will go first? I know after the message comes from here, it will finally reach B1, but the responsibility of the data link layer is not of the final node. That is the responsibility of the network layer—how to move data from source to destination. The responsibility of the data link layer is: when a message starts at A4, to which router or node does that message go first? That is the responsibility of the data link layer, meaning from here to here, the responsibility is of the data link layer. 
+
+After that, it reaches this hop. Now this router may be further connected to many routers or many networks, but I have to send it to this router, R2. So to send from here to here is the responsibility of the data link layer. Then sending further from here to here is the responsibility of the data link layer. 
+
+This means what work is the data link layer doing in the backend? Hop-to-hop delivery. It is not saying that I will go from A4 to B1 or I will move from this network to that network. Its primary function is node-to-node: which node will my message reach first as soon as it leaves the network? Then which node will it reach from that node? From that node, on which node? So in this way, finally it will go to the node of the other network. That is called hop-to-hop delivery or node-to-node delivery. So this is an important point of hop-to-hop delivery.
+
+### Flow Control
+
+Other than this, what are the other functionalities of the data link layer? What are its other responsibilities? The second responsibility is flow control. 
+
+Flow control—what is flow control? It is clear from the name itself that when the source is sending a message, the source is sending messages to a destination or hop, so some flow has to be controlled. What is the meaning of flow control? At what speed should the message be sent? 
+
+If here A4 is generating messages at a very fast speed and sending them to R1, it is possible that R1 gets filled with messages. And when a router or a node gets filled with messages—let's say many messages start coming to your mobile immediately, then you will have to delete some messages. That means you may be reading some messages, but when the buffer is filled, old messages will get deleted automatically. That means when we increase the flow very much, R1 will be filled totally with messages, and in that case, it is very necessary to control the flow. 
+
+So here, in order to control the flow, various methods are used in the data link layer, and various protocols are used:
+1. Stop-and-wait protocol
+2. Go-Back-N
+3. Selective Repeat
+
+We will discuss these one by one—stop-and-wait, Go-Back-N, and selective repeat. These are the three algorithms which work on flow control. 
+
+Now, if you look carefully at the important point here, flow control we will also learn in the transport layer. But what is the functionality of flow control there in the transport layer? That is source to destination. My guy at destination B1—what is the capacity of B1? The transport layer will take care of that. From here, when I send a message, what is the size of the window at B1? How many messages can B1 accept? What is the size of that message? The transport layer will take care of it. 
+
+But how will this message reach B1? It will reach from hop to hop. So what is the data link layer doing? When a message from A4 reaches R1, what is the capacity of R1? How many messages and what size of message can R1 accept? So here, the flow control of the data link layer helps from node to node, and not directly from source to destination. 
+
+This is the most important point which most students miss: that flow has to be controlled, but the data link layer controls flow at every node, and the transport layer controls flow from direct source to destination, concerning what the capacity of my destination machine is. We will reach the destination later; first, I have to cover every node. So whose responsibility is it to control the flow on the nodes? It is the data link layer's. And how? Through these three methods, which are very important methods. We will discuss these methods one by one, and through these methods, it controls the flow.
+
+### Error Control
+
+Another responsibility besides hop-to-hop delivery and flow control—the third responsibility of the data link layer—is error control. 
+
+What is meant by error control? Error control is important. Why? A4 sent a message to B1. When A4 sent a message to B1, that message reached B1, and B1 finds that there is an error inside the message. Error means it is possible that a bit might have changed—it was a zero, but became a one (a single-bit error), or multiple bits changed (which is also called a burst error). 
+
+So here, we have to detect the error first! How will you find the error? First, you need to have a method that can detect the error and then handle that error. So when did error detection happen? When A4 sent the message and it reached B1, after that B1 realized that there is an error. 
+
+What are the important points here? Yes, the data link layer does error control, but not from source to destination; it does it from hop to hop. Error control will also come in the transport layer. There are two methods used in error control. Let me tell you the methods:
+1. CRC (Cyclic Redundancy Check)
+2. Checksum
+
+Other than this, we also use parity and parity bits. Different methods are there to detect errors and to correct them; Hamming code is also there. But the major methods are CRC and checksum. Out of these, CRC is used in the data link layer, and checksum is used in the transport layer. 
+
+So the point is: when we are checking errors in the transport layer as well, why is error checking done two times here? Why is there redundancy? Why are we checking errors twice? 
+
+One important point I want to tell you again is that this checksum is from source to destination, meaning when the message reaches B1, then we will know that there is an error. Why don't we find it out beforehand? Meaning when this message reaches R1 or R2, then only should we know that there is an error. Wouldn't that be much better? How high will the performance be? 
+
+If an error occurs, obviously the message will have to be sent again. It will have to be resent. So if the message first reaches B1, it means it traveled the maximum distance. Then we found out there is an error in it. It will send an acknowledgment that there is an error, and we will send it again. But this will be very time-consuming. 
+
+What will be best? R1 or R2 should detect that there is an error and tell A4 to send the message again. This will take less time. Meaning if we do error detection in the data link layer, then this would be more efficient. This is an important point. 
+
+So hop-to-hop delivery, flow control, and the third method is error control. What else functionalities are there? I am writing over there. I will write here—is it visible?
+
+### Access Control
+
+After error control, the next method or the next functionality is access control. In access control, first I will write the methods. 
+
+In access control, we use the most important method: CSMA/CD (Carrier Sense Multiple Access with Collision Detection). We call it Ethernet, or we use different methods here. We also use ALOHA, pure ALOHA, slotted ALOHA, and we also use token ring or token bus methods. These are used for access control. 
+
+What is the funda of access control here? We have discussed where the data link layer majorly works: within a network. Meaning, in a network, if A1 wants to communicate with A2, or A1 wants to communicate with A3, this is only possible through the data link layer. The network layer is not required for this. If you want to use it, you can; otherwise, you can fulfill responsibilities with the data link layer. 
+
+So in a network, when there is one access—access means a channel, we are talking about a channel. This is a channel, which we call a thick wire. A thick wire means whose bandwidth is very high. So through this thick wire, multiple devices are connected. 
+
+So when multiple devices are connected through this thick wire, what problem comes there? Who will send the message? Meaning, let's say B1 starts sending a message, and at the same time, B4 also starts sending a message. So what will happen to the messages of both? They will collide. And when the messages collide, they will not be useful to anyone; the message has lost its value. 
+
+That means it's a major problem. That means we are using access here. Access control means when B1 accesses first—B1 takes up this channel first—and then it starts transferring the message. And when it is sending the message, doing multicasting or broadcasting here, at that time B3, B4, and B2 will not send messages. 
+
+So how do we achieve that? By using these different, different methods. So whose job is this? The data link layer's. How do we access that channel, that path, so that only one guy sends messages and others only receive? So that if multiple people try to send messages simultaneously, then what will happen? There will be a kind of collision, and the message will be destroyed.
+
+### Physical Addressing and Framing
+
+The next responsibility/functionality we can also talk about in the data link layer is the physical address or MAC address. It is also called the MAC physical address. 
+
+A physical address is a 48-bit address. This address is fixed; this address is constant. Meaning if within a network A1 wants to talk to A3, they can talk through the MAC address also. But if two people inside multiple networks want to talk, within different networks, then their MAC address can't be used. Why can't it be used? When we learn about MAC addresses, we will go into detail there. We will compare it with the logical address. The logical address we use in the network layer, which is called the IP address. 
+
+Because a MAC address is a fixed address, meaning if you change the network, others will feel that you are in the same network. The network is fixed. You can have two NIC cards, but that is illegal; no vendor will issue two NIC cards to you. You can have two NIC cards from different vendors, but that is again an illegal kind of work. So that is the physical address and MAC address. 
+
+Other than this, what we use in the data link layer is the frame. The terminology we use here is "frame." This is also called framing. When data comes from the network layer—in the network layer, the terminology we use is "packet"—when packets come to the data link layer, we divide them into fixed sizes, or when data comes, we make them into packets or make them into frames, and then send them to the physical layer. 
+
+What advantage do we have? Reliability. Data will be sent properly. It will add its header, and a tail will also be added. A header and tail are added by the data link layer. It helps in sending the message further. 
+
+So that is called framing, meaning data will be put in a frame, along with which a header will be added and a tail also will be added. In this way, the message will be sent properly, like coaches of a train. Meaning, you must have seen a coal train, so the coaches there are frames, the engine is added in front of those coaches (that is called the header), and in the last, a man is there with a green flag (that is like the tail). 
+
+So what advantage do we have? These frames should reach the destination properly, reach the next hop properly. That is the responsibility of frames. So all these responsibilities are fulfilled by the data link layer.
+
+Not from source to destination, but from hop to hop. If I take the example of a train, the train is going from Delhi to Mumbai. It is not the responsibility of the data link layer that the train starts from Delhi and reaches Mumbai. No. After starting from Delhi, where did it reach first? It reached Agra. So, how it will reach Agra from Delhi—that is the responsibility of the data link layer. From Agra, how it will reach MP or Gwalior—that is the responsibility of the data link layer. How it will reach from Gwalior to Mumbai—that is the responsibility of the data link layer. 
+
+This means station to station, which means hop to hop. That is a very important point which students miss many times. So, always remember this point: this is the whole responsibility, but it is from hop to hop. 
+
+This is all about the data link layer functionalities. We will discuss all these functionalities in detail one by one. Thank you.

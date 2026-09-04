@@ -1,0 +1,74 @@
+Hello friends, and welcome to Gate Smashers. I have brought a new video in our last-minute preparation series for you, which is also a highly requested video. 
+
+In this video, we are going to discuss the various protocols of computer networks. I have listed all seven layers of the OSI model here. As I have mentioned earlier in my computer networks series, if you are preparing for UGC NET, GATE, or any other exam, the core syllabus of computer networks revolves around these seven layers. Many theoretical questions are asked about these seven layers, and we will discuss those specific theoretical points in this video so that you can easily review them at the last minute.
+
+### Nomenclature of Data Units
+First, let us talk about nomenclature, which refers to what we call the data unit at each layer.
+
+In the **Application Layer**, the **Presentation Layer**, and the **Session Layer**, the nomenclature is simply **data** or **message**. The user always interacts with the application layer using a device like a mobile phone, desktop, PC, or laptop. The user does not see the application layer directly; instead, they use the operating system, where the application layer's coding is built-in. At these three layers, the user is creating data, so we call it a data unit or a message.
+
+In the **Transport Layer**, the nomenclature changes to **segment**. This is where the main process begins. The data coming from the layers above is contiguous, meaning it flows continuously without a defined size limit. The transport layer divides this limitless data into segments, a process known as segmentation.
+
+Next, the data is sent to the **Network Layer**, which converts the segments into **packets** or **datagrams**. We use the term datagram because we use the IP protocol at this layer.
+
+In the **Data Link Layer**, we use the word **frame**, as the data is divided and converted into frames.
+
+Finally, in the **Physical Layer**, we use **bits**. Although we often refer to bits or bytes at the data link layer, the primary term for the data link layer is "frame," and for the physical layer, it is "bits." After this stage, the data is transmitted by converting these bits into digital or analog signals.
+
+An important theoretical point to remember for one-mark questions is encapsulation: Is the packet encapsulated in the segment, or is the segment encapsulated in the packet? The segment is the higher-level term. As it moves down, the segment goes inside the packet, and a header is added to it. Therefore, the segment is encapsulated inside the packet, meaning the packet encapsulates the segment.
+
+### Network Devices by Layer
+Next, let us discuss the devices used at each layer.
+
+For the **Application**, **Presentation**, and **Session Layers**, we use **firewalls** (including **proxy firewalls**), **gateways**, PCs, and phones. In the TCP/IP model, these three layers are combined into a single application layer. Gateways and firewalls are also used at the **Transport Layer**. A gateway, as the name suggests, acts as the "gate" where your local network ends and the outer world (like the World Wide Web) begins, much like the main gate of a university or college. At this gateway, we place firewalls. At the transport layer, these are called Level 4 or Level 5 proxy firewalls. They have different capabilities: some only check IP addresses, some can check port numbers, and proxy firewalls can even inspect the data inside to verify passwords for security purposes.
+
+At the **Network Layer**, the devices are very important. The **router** is the most critical device here because the entire internet is built on routers. All communication, routing algorithms, and IPv4 or IPv6 protocols generally run on routers. A router is a highly powerful device. We also use a **B-router** (bridge-router), which combines the capabilities of both a bridge and a router. While a bridge works at the data link layer using MAC addresses, a router works at the network layer using IP addresses; a B-router can perform both functions. Additionally, we use **three-layer switches**, which operate across the physical, data link, and network layers.
+
+At the **Data Link Layer**, the primary device is the **bridge**, which connects different networks. We also use **two-layer switches**, which operate only on the physical and data link layers and work using MAC addresses. **NIC (Network Interface Card) cards**, which are present in our laptops and devices for connectivity, also operate here and hold our 48-bit physical MAC address.
+
+At the **Physical Layer**, the basic purpose is transmitting data. The data comes from the upper layers with headers added, and the physical layer transmits it as analog or digital signals. The devices used here include **cables** (such as coaxial cables and fiber channels), **hubs**, **repeaters**, and **fibers**.
+
+### Protocols by Layer
+Now, let us discuss the major protocols used at each layer.
+
+In the **Application Layer**, the key protocols are:
+*   **DNS (Domain Name System):** This is a major protocol. We remember domain names like Google, Facebook, and YouTube, but we do not know their IP addresses. DNS resolves these user-friendly names into their corresponding IP addresses.
+*   **HTTP (Hypertext Transfer Protocol):** This protocol is used to access web pages on the internet.
+*   **FTP (File Transfer Protocol):** Used for transmitting files to a remote server or area.
+*   **DHCP (Dynamic Host Configuration Protocol):** Used to automatically assign IP addresses to devices when they connect to a network.
+*   **Telnet:** Used to access remote servers.
+*   **SMTP (Simple Mail Transfer Protocol) and POP (Post Office Protocol):** Used for email. SMTP is used to push/send mail, while POP is used to retrieve/pop-out mail.
+
+In the **Presentation Layer**, we use:
+*   **MIME (Multipurpose Internet Mail Extension):** While SMTP handles the transmission of mail, MIME allows us to send multimedia content like audio, video, and text messages within those emails.
+*   **SSL (Secure Sockets Layer) / TLS (Transport Layer Security):** These protocols provide security and cryptography for communication between machines.
+
+In the **Session Layer**, we use:
+*   **PAP (Password Authentication Protocol):** Used to check passwords and authenticate whether a user is valid.
+*   **RPC (Remote Procedure Call):** Used in client-server architecture when a client needs to access a server.
+
+In the **Transport Layer**, the two most important protocols are:
+*   **TCP (Transmission Control Protocol):** A connection-oriented protocol.
+*   **UDP (User Datagram Protocol):** A connectionless protocol.
+*   **SCTP (Stream Control Transmission Protocol):** Another protocol at this layer, though TCP and UDP are the primary ones to focus on.
+
+In the **Network Layer**, the primary protocols are:
+*   **IP (Internet Protocol):** This is the most important protocol. Most questions focus on **IPv4**, which uses a 32-bit address. **IPv6**, which uses a 128-bit address, is also used. You should understand the basics of the IP header, its size, classful and classless addressing, routing, and subnetting.
+*   **ICMP (Internet Control Message Protocol):** Used to send error messages. For example, if a router's buffer is full or if a destination is unreachable, ICMP sends an error message back to the source.
+*   **IGMP (Internet Group Management Protocol):** Used for multicasting, which is sending a message to an entire group.
+*   **ARP (Address Resolution Protocol) and RARP (Reverse ARP):** ARP is used to find the MAC address when the IP address is known. RARP is the reverse, used to find the IP address when the MAC address is known. ARP operates between the network and data link layers.
+
+In the **Data Link Layer**, the key protocols are:
+*   **IEEE 802.3 (Ethernet):** This includes the **CSMA/CD (Carrier Sense Multiple Access with Collision Detection)** protocol. It is highly important to understand how Ethernet works and its frame format.
+*   **IEEE 802.5 (Token Ring):** Along with Ethernet, Token Ring is a major protocol at this layer.
+*   **HDLC (High-Level Data Link Control):** A protocol that manages data transmission bit by bit (unlike TCP, which counts byte by byte).
+
+In the **Physical Layer**, there are no specific protocols of its own, but protocols like **IEEE 802.3** also operate here. Additionally, we use **IEEE 802.11 (Wi-Fi)** and **WiMAX** for wireless connectivity in homes and offices instead of wired Ethernet.
+
+### Types of Connectivity
+To summarize the types of connectivity provided by these layers:
+*   The **Transport Layer** provides **end-to-end** (or process-to-process) connectivity.
+*   The **Network Layer** provides **source-to-destination** (or machine-to-machine) connectivity.
+*   The **Data Link Layer** provides **node-to-node** (hop-by-hop) connectivity, managing transmission to the immediate next machine.
+
+These are the major protocols, devices, and nomenclatures across the OSI layers. I have compiled this so that you can quickly refresh these concepts at the last minute. Make sure to study the highlighted areas in detail. Thank you.

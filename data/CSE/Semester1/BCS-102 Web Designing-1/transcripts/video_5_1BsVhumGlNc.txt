@@ -1,0 +1,113 @@
+In this video, we will see how images, lists, and tables are made in HTML. I know very few people like videos on YouTube, but if you do, thanks to your support, I get the motivation to bring such free courses. Let's go to the computer screen and start the 5th video of the Sigma Web Development course. 
+
+**Intro**
+
+I have come to my computer screen. First, bookmark github.com. In fact, bookmark this repository so that you get all the code. The second thing is to click on the playlist, click here, and bookmark it. Click on star and save it. 
+
+Now, the first thing I will tell you about is images in HTML. We will quickly make a folder named "video5." Create a new folder and name it "video5." You already know this. Click on Shift + Right and open it with code. This time, I will make it fast because I have already told you this. If you want to see this welcome page again and again, uncheck the "Show welcome page on startup," and you will not see this again.
+
+What we need to do is create an `index.html` file. We will zoom in using the mouse wheel and toggle the screencast port so that you will know which button I am pressing and when and why. Now, I will put an exclamation mark to bring the Emmet abbreviation. Here, I will do "view" and put an exclamation mark to bring the Emmet abbreviation. I will also enable word wrap. 
+
+You have to work very hard; you can see here that your word wrap is closed. What will happen here is that the horizontal scroll bar will not come. Now, I will write "images." First of all, I will write "images" here, and what I will do is bring an image. You can bring the image from the internet. Let's say we want to bring the image of a train because we have driven a lot of trains in this course. 
+
+I will save the image in the Sigma Web Development course folder, specifically in the video number 5 folder. This is a CMS file. In fact, I will cancel it and take a snip because it is a CMS extension. I will go to PNG and take it. I pressed Windows + Shift + S; this is a shortcut for the snipping tool. If you don't know this shortcut, now you will know it through this course. 
+
+If you click on Windows + Shift + S, your snipping tool will open. If you didn't know this, tell me honestly in the comment section. Now, I have already done Windows + Shift + S, and then I got into the conversation. Here, click and save it. There is an option to save on the floppy disk; click on it, go to downloads, go to Sigma Web Development codes, and save it in video 5 as "image." 
+
+Now, there is an `img` tag in HTML. As soon as you put `img`, `src` and `alt` are both required attributes. In fact, if you don't write `alt`, it's okay, but it's recommended. I'll tell you what happens with these two attributes. First of all, if you write `src="image.png"`, you can see this image is here. 
+
+So, `image.png` will be the source, and I will put "train image" in `alt`. Now, if I show you this in the browser by previewing, you will see how it looks. This is our page, and this is the train image. Where is the `alt`? I will tell you. The `alt` is not visible. Suppose, for some reason, the server is not able to show you the image. 
+
+Suppose I wrote `image2.png` here. What will happen? I'll show you what will happen. The `alt` will be displayed, and this kind of error image will be displayed, which will tell you that the image you have put is not correct. The URL of the server you have given does not contain this image. These things are shown like this, and there is an `alt` there so the user knows the purpose of this image. 
+
+If I come back here, you can see that if I don't put the `alt` text, then the `alt` text will not come. You don't want the user to see this image when you have an error; you want the user to see this image. I hope you understood this. 
+
+The image is very straightforward. It has two more attributes that are very important: one is `width`, which is the width in pixels. If I set `width="23"`, you can see it is very small. I will make it `width="230"`. You don't need to write `px` in this. When we write width in CSS, we will see that we need to write `px`. Here, we just write the width as a number in double quotes. 
+
+If I bring it here, you see that we have a small image. If I give its height too, meaning I set its height to `230`, then its aspect ratio will also get worse. It will get a little stretched because it has made its width and height both `230`. If you want the height to be `230` and the width to be automatically adjusted, then you just use the height attribute. 
+
+Now remove the width here, so the height will be `230` pixels, and the width will automatically adjust. Now see that it is automatically adjusted in width, and in height, it took this. Width and height can be adjusted through CSS, and we will see in the CSS section why we should always set this width and height. 
+
+We should always set one of the two attributes so that when our page is loading, the image inside the page does not come suddenly. I will tell you in the coming videos, but for now, understand that these attributes of width and height are important. I have heard many people saying that they are deprecated and should not be used, but I say they should be used for SEO purposes. 
+
+Why should they be used? I will tell you in the coming videos where I will discuss Core Web Vitals and SEO. For now, understand that width gives width to the image and height gives height to the image. If one of the two is applied, then the other one automatically gets set. These values are in pixels, and you don't have to write `px` or "pixel"; you just have to write this number, and that's it. 
+
+This is an attribute: height, `src`, and `alt`. You can also use the `style` attribute in this. In fact, you can use the `style` attribute with almost all tags. 
+
+**Tables in HTML**
+
+Now we will talk about tables in HTML. The table tag is very useful in HTML. Let me tell you what happens with the table tag. You can see the table from the table tag. I will copy this table from here, and when I copy this table, you will see my page will look like this. 
+
+So this HTML table, where is my preview page? Here it is. See the name "Harry," age "100." Now, if I put a lot of things here, I will use Alt + Shift + Down Arrow to add more rows. Let us say Harry's designation is "programmer," and I want to put more things. 
+
+I will use Alt + Shift + Down Arrow again, and here I want to write "favorite language," which I will set to "JavaScript." Now you see that this table will be made like this: name, designation, favorite language. 
+
+How does it work? I will tell you. Here you see that we have used the table tag. The table tag has the `tr` tag, which is the table row. You will see what will come in this row. If you want to use this as a table heading, you say that this is my table row, meaning this is the row in which name, designation, and your favorite language are written. 
+
+What will come in this row? Here you can see that it will be a heading. So that's why I will use `th`. `th` means table heading, and we will write that only once. In the first `tr`, we will write `th` once. We have put the heading above, then we will put the data, so we will put `td` in the table row, which stands for table data. 
+
+In all the `tr`, you will put rows like this. Let's say I write "Sam," and this is also a programmer. Let's say this is "Java," its favorite language. These rows will keep getting added. You can see here that these rows are adding. 
+
+We will see from CSS how it can be given a border and styled, but this default looks like this, and yes, I know it is ugly, but you guys just understand that the table works like this. 
+
+Now, `rowspan` and `colspan` are attributes. Now you see here that `rowspan` means how many rows your `td` will span. For example, let us say I write here, I want "Sam" and "programmer." Earlier they were taking one cell; "Sam" was taking one cell, and "programmer" was taking one cell. I want to write "Sam" in two cells; I don't want to write "programmer." 
+
+I want to write here that `colspan="2"` means that "Sam" will take the place of two columns. What does it mean? "Sam" will be seen like this. I will show you like this, so it took the place of this whole column. 
+
+`colspan` means how many columns will be surrounded. By default, only one cell will be surrounded, but sometimes one cell will be surrounded by two columns. To demonstrate this, I will explain to you through Excel. In Excel, you can understand that this is a table of our HTML. Sometimes I would like it to span two columns, one data, so here we use "merge cell." 
+
+Let's say I write "Sam" in HTML; this thing is done by using `colspan`. Sometimes we also want to merge it vertically; that is, let's say I want to merge these two cells. There we use `rowspan`, and we will use `rowspan` with `td`, obviously. 
+
+So with `td`, we were using `colspan` and `rowspan`. If we use `rowspan`, then it will span like this, two rows. I hope you understood this. When we make tables and projects with HTML, you will understand better. 
+
+To explain it better, I will put a CSS style here. I will add a stylesheet and name it `style.css`. In `style.css`, you don't need to understand CSS; I will tell you already. I will write `border: 2px solid black;` in `td`. I will explain all this to you, but for now, understand that I have put this to explain to you. 
+
+I said that I have put this to explain to you. I said that this row will have "Harry," "programmer," and "JavaScript." Then I said that the `rowspan` of this "Sam" will be how much? Where did I give `rowspan="2"`? One, I said that "Java" will have `rowspan="2"`, so how many rows will "Java" take? Obviously, it will take two. 
+
+So here "Java" will take two rows. You can see that "Java" has taken two rows. When "Java" has taken two rows, it means I don't have to write "Java" in the next one because its row has already been filled. You can see here that I won't write "Java." 
+
+I have made its `colspan="2"` and its `rowspan="2"`. What happened by doing this? You can see it was "Harry," "programmer," and "JavaScript." Then I said that "Sam," its `colspan` is `2`, meaning it will cover two columns. This "Sam" will also cover two columns, and "Java" will cover two rows. 
+
+You can see here exactly the same thing happened. It covered two rows and two columns. In this way, `rowspan` and `colspan` can be used in HTML. In an HTML table, we can also add captions, and to add captions, we can use the `caption` tag. 
+
+I will show you. If we use the caption "Student details" or "Employee details," your page will look like this. You can see here that the "Employee details" caption will be added. Now you can change the font size. By default, it looks like this; the caption comes up. 
+
+You will see the "Employee details" like this. Along with that, you can also give header and footer. You can give `thead` and `tfoot` here. If I put some content in `thead` and `tfoot`, something like this, if I put here that "header" and here I put "footer," then you will get to see `thead` and `tfoot` like this. 
+
+You see, here is the header and here is the footer. Now I will tell you about another tag, which is called the `br` tag, which adds a line break.
+
+After the image, a line break will come here. You can see everything: the header and footer. Now, I will tell you about another tag, the `<br>` tag, which adds a line break after the image. There will be a line break, and you can see everything is down. This is the header, and I will add the footer. I will not add it here; I will add it after my table at the end. This is my table footer. 
+
+Now, I can change it with CSS. Here, I can group the header and footer content with `<thead>` and `<tfoot>`. The header of my table can be grouped with `<thead>`, and the content inside the table will come inside the `<tbody>`. The table content will come like this. After this, if I write `<tfoot>` here, I want to put some data at the end, so I will add one more `<tr>`. 
+
+As you can see, I will do it by right-clicking and documenting it, so it will be a little better formatted. Suppose I want to put this kind of `<tr>`, and I want to group it in `<tfoot>`. This is just the way to group; I have put it in `<tfoot>`. Some `<tr>`s I have put in `<tbody>`, which is my main body, and I have put it in `<thead>`, which is my table head. Obviously, nothing will change; I have just grouped it here. 
+
+You can see I will write "footer" so that you know it is a footer. I will write "foot" here, and you can see that the last row is "foot." Now, what is the benefit of doing this? We have just grouped it so that we can target it later with CSS. You will use this very little, but you can do grouping like this. Your whole table head content will come here, foot content will come here, and body content comes in between head and foot. But ideally, head, body, and then foot comes. I hope you understood this. 
+
+That's all about HTML tables; you don't need to know more than this. Now we will talk about lists. Lists are very important in HTML because we will use lists a lot. There are three types of lists in HTML: ordered lists, unordered lists, and definition lists. The most used are unordered and ordered lists. 
+
+First of all, let's see the unordered list. Whenever we want to have unordered data, we use `<ul>`. In this, I can write `<li>` for list items. For example, I can write "Harry," "Rohan," and "Shubham." When I write "Harry," "Rohan," and "Shubham," the `<ul>` will come like this: 
+
+- Harry
+- Rohan
+- Shubham
+
+This is an unordered list; see, there is no order of 1, 2, 3, 4. But if I want it to be ordered, then I can write this with the help of `<ol>`. If I make its opening and closing tag `<ol>` and keep the rest the same, this will be an ordered list. Here, 1, 2, 3 will come. You can do this in numbers, letters (A, B, C), or even in Roman numerals. You can also customize it with CSS. 
+
+You can see here in this image that if you align it in `<ul>`, it will look like this. If you align it in `<ol>`, it will be 1, 2, 3. This is an example of an ordered list, and this is an example of a definition list. Definition lists are used very rarely; it has a preview like this. Here, I have put a heading, and then I have written `<dl>`, which means definition list. Then, I use `<dt>` for the definition term and `<dd>` for the definition itself. It comes like this, and you can also change it with CSS. 
+
+It is used very little, but you should know about it for interviews. Interviewers often ask, "What is a definition list?" This kind of code is previewed like this. I am not showing you by writing it for the sake of time, but try it out. 
+
+First of all, we will see the unordered list. I have told you about the unordered list; it is very simple and straightforward. You can customize its bullet points by using the type attribute. For example, if I type `type="square"` in `<ul>`, it appears like a square. Similarly, I can use `type="circle"` or `type="disc"` (disc is the default, which means a circle). 
+
+Now, let's see the ordered list in detail. In an ordered list, if you type `<li>`, it will come like this: 1, 2, 3. But you can use `type="i"`; when you use `type="i"`, you will get uppercase Roman numbers. If you use `type="small i"`, you will get lowercase Roman numbers. `type="1"` is default; you don't need to do this. If you use `type="small a"`, you will get alphabetical, and if you use `type="capital A"`, you will get uppercase alphabetical. 
+
+Let's do this once. I will set `type="capital A"`. You see, VS Code is giving us examples and suggestions, making it easy for us to see what the possible values are. VS Code is very useful, and many people are using old editors that were used a long time ago. If you know their correct plugins, you can set a lot in them. 
+
+Switch to VS Code; everyone uses it. You can see all the big developers using VS Code. If you want to do coding on mobile, I recommend an app called Replit. I would like to give a shoutout to replit.com here because I use it a lot, and I think it's pretty good. You can use replit.com on your mobile too. If your computer power is not that much, you can use it. You get templates in it; we will cover it more in the coming videos. 
+
+But now, I will stick to VS Code. I hope you understood the ordered list, unordered list, and definition list. Now, see, we have completed five videos in the Sigma web development series. I want you to go to the first video and put your comment on how you like this course. I got five stars from the five stars, and I want to know your initial review of this course. 
+
+You have seen five videos, and according to that, I know that if your order is late for a minute, like with Swiggy, this public does not comment much on YouTube these days. I will give the source code in the description; you can access it. The playlist is here; you can access it. Like the video, share it with your friends, and subscribe to the channel. 
+
+I will see you next time. Keep commenting; I feel good. It's a two-way interaction. I will give the source code in the description. Access it, like the video, write "Sigma Batch OP" in the comments, and give your village land to me. Thank you so much, guys, for watching this video, and I will see you next time. Thanks for watching!

@@ -1,0 +1,204 @@
+Hello everyone, good morning! All India live now. Hello Preeti, hello Sakra. The people joining quickly please confirm if the audio is clear. Is the audio-video clear to everyone? Editing yes, fine. 
+
+All right, great to see you all. As you know, we are currently discussing RDBMS, and the discussion we were having was about keys. Within this class, we are talking about functional dependencies. So quickly tell me, do you remember in the last class we discussed that functional dependency is basically how we handle relational database schemas and how functional dependencies work? So let's quickly review.
+
+Thank you so much! Thank you so much! The functional dependency is from $\alpha$ to $\beta$. If you get an $\alpha$ value, and if that value repeats again, then for that same $\alpha$ you will get the exact same $\beta$. You cannot have any other value for $\beta$. First of all, let's understand trivial functional dependencies. I will write it down: A trivial functional dependency is when $\beta$ is a subset of $\alpha$. Then the functional dependency $\alpha \to \beta$ always holds. What does that mean? Let's say if a relation has three attributes, $A$, $B$, $C$, and $D$. Does the functional dependency from $AB$ to $B$ hold? Tell me, is this statement correct or incorrect? This is a very interesting question. Tell me, is this statement correct or incorrect? Can you tell me if you have $AB$, can you tell the value of $B$? This is a strange thing. The statement is correct, but it's not very useful. If you have $AB$, then $B$ is already with you. So look at what is happening here. If I generalize this to $\alpha \to \beta$, what do we see? If $\beta$ is a subset of $\alpha$, yes, here $\beta$ ($B$) is a subset of $\alpha$ ($AB$). Yes, it's a subset. If it is so, then the condition holds, and we can clearly say that yes, this is a trivial functional dependency. So after today, what will you understand? What do we call a trivial functional dependency? If there is a functional dependency $\alpha \to \beta$ and $\beta$ becomes a subset of $\alpha$, it is a trivial functional dependency. Yes! Let's take a small point and move to the question.
+
+Let's look at the next question, follow it, and tell me the answer. Look at this question, follow it once, and tell me what the answer is. I will focus more on problem-solving. We will also learn new ideas, so don't worry, let me clear up what we are trying to do here. We are trying to understand functional dependencies more and more, deeply. We all know that we will use this for normalization. So, you should understand it well. Without functional dependencies, you cannot do normalization. Come on, everyone, quickly tell me what the answer is.
+
+Okay, very good. Preeti is saying C. Okay, good morning! Let's quickly check what the answer is. Consider a relation where $P$, $Q$, $R$, $S$, $T$, and $U$ are attributes. Which of the following functional dependencies holds? From $PQ$ you can get $R$, from $PS$ you can get $Q$, from $Q$ you can get $T$, from $U$ can you get $S$? It's asking which of the following functional dependencies is satisfied. You can identify this very easily. A minute ago, I talked about the property that if $\alpha \to \beta$ is a functional dependency, then $\beta$ must be a subset of $\alpha$ (for trivial) or we check. Here, let's check $PS \to P$. Is $P$ a subset of $PS$? Yes! I can check if $P$ is a subset of $PS$. Give me a second, let me check. Tell me, can you follow this? $S$ will be a subset of $DS$? So this option could be the correct answer. Can everyone follow this? 
+
+I hope you can see the idea of a trivial functional dependency that we are applying here directly. I will ask another question, I will ask another question on simple dependencies which you can follow once, so that you get the idea of how dependencies hold. Just look at the question: Which of the following functional dependencies are satisfied by the instance? Which of the following functional dependencies are satisfied by this instance? Quickly look at it and tell me the answer. We have already done this kind of question.
+
+Okay, okay, then most people are saying B. Okay, great! If you check it once, how should you start solving it? This is $B$, let's check it this way. How should you observe this? Which of the following functional dependencies are satisfied? $A \to B$. Can $A$ determine $B$? $A$ has $1, 2, 3, 4$, all distinct values. So yes, $A \to B$ could be valid. No problem. Let's check $B \to C$. $B$ has combinations like $14, 15, 16, 17$. If you look at $B$, you will see $B$ has $14, 15, 16, 17$. Wait, $B$ has values like $2$ and $2$. For the first $2$, you get $1$, and for the second $2$, you get $2$. So this will not work properly. This is a violation, and it will eliminate option B. 
+
+Everyone, check once if you can follow this. When we use these dependencies to form normalization, $B \to C$ will definitely not hold. So option B will be eliminated. I don't think so. Let me check it once. $XYZ \to W$. When we check combinations, all instances are distinct, so there is no chance of failure. Let's take the first one. If any dependency is a total contradiction, then it's gone. If there is any question, quickly tell me. If there is any question, should we apply a shortcut? Let's check quickly: What do we need to do? Find whether all values of $\alpha$ are different or not. If they are different, the functional dependency is valid. What does this mean? What is it doing? If any functional dependency is there, what do you need to check? Find whether all values of $\alpha$ are different or not. If all the values of $\alpha$ are different, it means you do not need to check $\beta$. You can directly say that the functional dependency is valid. How does this happen? If we had to check $\alpha \to \beta_1$, how can we tell without checking $\beta$? Think backwards! Do not think about when a functional dependency is invalid, but think about when a functional dependency $\alpha \to \beta$ is invalid. It is invalid when you get at least two same values of $\alpha$, but you get different values of $\beta$. For example, for $1$ you get $X$ once, and for $1$ you get $Y$ another time. 
+
+Now let's think backwards: When will this condition NOT be false? Look at this: Find whether all values of $\alpha$ are different. If all values are different, then getting different values of $\beta$ for the same $\alpha$ is impossible! Therefore, for the dependency to fail, having duplicate $\alpha$ values is necessary. Since $\alpha$ values are distinct, yes, you can follow this. Second point: Find whether all values of $\alpha$ are same or not. Again, think backwards! If we are saying that you need at least two $\alpha$ values to be the same—for example, if all values of $\alpha$ are the same, then you have to assume that $\alpha \to \beta$ must hold, provided $\beta$ values are also the same. If $\beta$ is different, it fails. Both points are derived from this: If $\alpha$ values are distinct, you don't need to check $\beta$. If $\alpha$ values are the same, you have to check $\beta$. Always try to check if the same $\alpha$ values have different $\beta$ values. 
+
+Is there another question? Look at this question. Data is in front of you. Quickly solve this and tell me the answer. Who will tell me? Okay, okay, Manu, Ishant, Prem, are you using it here? The answer will be C. Very good! Can everyone follow this? 
+
+Let me check quickly. Can we check directly? Let's look at the other options. Does it have null values? No. It says: "Check if the functional dependency from $A$ to $B$ holds." How do you check? Are all values of $A$ different? No. Are all values of $A$ the same? No. Since neither of these shortcuts worked—neither are all values of $A$ different, nor are all values of $A$ the same—what do I have to do now? Now I have to look at the condition: Do the same values of $A$ have different values of $B$? Yes, it is visible here. Look at this: for $3$ we get something, and for $3$ we get something else. So it will not hold, and we don't need to work on it. 
+
+Option B says $C \to B$. Look at $C$. For the same $C$, do we get different $B$ values? Yes, we see it here, so we can eliminate this as well. Option C says $D \to E$. Look at $D$. Are all values of $D$ different? Yes, $1, 2, 3, 4, 5$ are all distinct! If all values of $D$ are different, we don't need to check $E$. Since the values of $D$ are distinct, the dependency is valid, and I don't need to check $E$. If values are distinct, it holds. You guys are saying C is correct. Quickly check this and tell me, everyone. Can everyone follow this? Does anyone have any doubt or confusion about this idea? 
+
+Alright, then I'll do one thing. After understanding the basic functional dependencies, let's directly try some questions to calculate: Identify candidate keys. Here, the most important discussion in basic understanding is: how do we calculate candidate keys using functional dependencies? From this, it becomes clear that if we have a set of functional dependencies, how do we find the keys? 
+
+Let's discuss another point. Give me a second. Why is this not working? 
+
+No problem, it seems the computer is upset. Let's look at this. Tell me, can you see this now? Check out this question. We need to practice a little bit to improve our understanding of closure sets. How do closures work? Quickly check this and tell me. 
+
+Why is this not working? 
+
+Let's see if you can follow this: Who will be the candidate key? We are not talking about candidate keys right now, we are talking about closures. If we want the closure of $A$, how can we find it? From $A$ you will get $B$, and from $B$ you will get $C$, and since you have both $C$ and $B$, you will get $D$. So will you get all four attributes $A$, $B$, $C$, $D$? What am I saying? From $A$ you get $B$, and from $B$ you get $C$ and $D$. Logically you will get all four values. If someone asks you what the closure of $A$ is, what will you reply? The closure of $A$ is $ABCD$. Very good! 
+
+Let's see another one. Look at this one: $ABCDEFG$, attributes are $1, 2, 3, 4, 5$. Consider we have these attributes. Quickly tell me, what will be the closure of $AC$ in this case? Very good! Here, what is the closure of $AC$? It will be $ABCDE$. Very good! 
+
+Wait a minute, there might be a network connection issue, let me check if the video is not working properly. Something is wrong, I am restarting it. I will be back in one minute. Let me check why it is not opening. Give me a second. 
+
+Okay! So we are on this question. Here we need to write the closure of $AC$. Whichever attribute's closure I am calculating, what point are we discussing? $AC$ is with us, and for the closure, we need to see how many attributes we can get. First, $AC$ will remain with us. After that, we can see the first dependency: $A \to B$. This dependency will work, and we will get $ABC$. Next, see $BC \to D$. Since both $B$ and $C$ are with us, if we apply this, $D$ will also be with us. Next, $E \to G$. We don't have $E$ yet, so we cannot apply this. Next, $D \to E$. Since $D$ is with us, we can get $E$. And since we have $E$, we can also get $G$ using $E \to G$. So the closure of $AC$ will be $ABCDEFG$. That means the closure of $AC$ is $ABCDEFG$. How do we find the closure? Is this clear to everyone quickly? 
+
+Let's practice this so that the idea is completely clear to you. Quickly evaluate and tell me the answer in this case. Very good! This time, whose closure are we finding? You have to tell what the closure of $D$ will be. 
+
+Rajput Singh says $BD$. Jasmine is also saying $BD$, again. But simply, very good, you are able to answer. How do we find it? We have $D$. Using the dependency, we can use $D \to B$, so we get $B$ along with $D$. Is there any other dependency we can use? $B \to C$, but we don't have $C$, so we cannot use it. $AB \to C$, we don't have $A$, so we cannot use it until both things are with us. I will come to that. Tell me, do you have any doubt or confusion in finding the closure? 
+
+There are many things like prime attributes and non-prime attributes, but I don't want to go into that right now. Let me discuss directly. Okay, I'll do one thing: I'll clear this and move on. Let's practice some questions on it and also understand some theory, but first, let's try some questions. Look at this one. 
+
+This question is in front of you. We will discuss the ideas one by one. Quickly follow it and tell me what the closure will be. In this question, I will also explain the process of how to use it so that both things are clear to us. 
+
+Given a relation schema $R(A, B, C, D)$, which of the following functional dependencies holds? You have to tell the correct answer. I will explain the concepts to you one by one. You will see that if you know the right ideas, how easily such questions can be solved. We will observe both things: if we know the correct ideas, how easy it will be to solve questions based on this pattern? 
+
+Okay, let's see. Someone is saying D, and others, let's observe. What will be the correct answer? Let's check using ideas. 
+
+Let's observe. First, let's note down the dependencies written here: The first dependency is from $A$ to $B$. Let's write it down: $A \to B$. Another dependency is from $BC$ to $D$: $BC \to D$. Another dependency is from $A$ to $C$: $A \to C$. And another dependency is from $D$ to $A$: $D \to A$. These are the dependencies we have, with the help of which we want to find the answer. 
+
+Now, learning number one: Which are the attributes that do not appear on the right-hand side of any dependency? Let's check. $A$ appears on the right-hand side? No, $A$ does not appear on the right-hand side in any dependency. Let's check $D$: $D$ appears on the right-hand side? Yes, $BC \to D$. What about $B$? Yes, $A \to B$. What about $C$? Yes, $A \to C$. So $A$ is the only attribute that has no incoming arrow on the right-hand side. 
+
+If $A$ has no incoming arrow, what does it mean? An attribute that never appears on the right-hand side of any functional dependency must be a part of the candidate key! This is a very simple observation. If $A$ is such an attribute that has no incoming arrow, then $A$ is an essential attribute. An essential attribute must be present inside the candidate key. Now, think about this: Which options can be eliminated because they don't contain $A$? Look at options like $BC$ or $BD$. Can this be the correct answer? No, because a candidate key must contain $A$. 
+
+Look at option C: $AD$. $A$ is present here. Look at option B: $A$. Let's check if $A$ alone is a key. If we find the closure of $A$, what do we get? From $A$ we get $B$ ($A \to B$), from $A$ we get $C$ ($A \to C$). Now we have $BC$, and from $BC$ we can get $D$ ($BC \to D$). So the closure of $A$ gives us $ABCD$. That means $A$ alone determines all the attributes! Therefore, $A$ itself is a candidate key. 
+
+So we didn't even need to check other options. $A$ is going to be the correct answer. Quickly observe this, everyone: Can you follow that $A$ is the correct answer? Does anyone have any doubt or confusion? 
+
+Very good, very good, very good! 
+
+Now let's discuss another question. First, I will make you practice more numerical parts so that the part about identifying candidate keys becomes clear to you. The idea of identifying keys should be crystal clear, and then we will do some more observations. 
+
+Very good. Here is another question for you. Tell me what the correct answer is in this case. 
+
+What is the correct answer? 
+
+Others, tell me, can you follow this? Very good, the key generation idea is correct! Let's write down the dependencies: From $A$ we get $B$ and $E$ ($A \to BE$). From $B$ we get $C$ ($B \to C$). From $D$ we get $E$ ($D \to E$). From $A$ we get $F$ ($A \to F$). From $A$ to $D$ and $G$: $A \to DG$. These are the dependencies we have. 
+
+Now, learning number one: Which attributes never appear on the right-hand side? Let's check. $A$ appears on the right-hand side? No. $B$ appears on the right-hand side? Yes ($A \to BE$). $C$ appears on the right-hand side? Yes ($B \to C$). $D$ appears on the right-hand side? No. $E$ appears on the right-hand side? Yes. $F$ appears on the right-hand side? Yes. $G$ appears on the right-hand side? Yes. 
+
+So $A$ and $D$ are the attributes that do not appear on the right-hand side of any functional dependency. That means $AD$ must be a part of the candidate key. Looking at the options, $AD$ will be part of the key. Later on, we will talk about prime attributes and candidate keys, but right now we are working on functional dependencies.
+
+अलांग विद थे स्टैंडर्ड चीज़ें देख रहे हैं जैसे यह पॉइंट आपको क्लियर होगा और आपके इंटरसेक्शन इंप्रूव हो जाएगी तो अगले वीडियो में यही डिस्कस करने की नॉर्मल फॉर्म की डेफिनेशन क्या है और किस तरह से डिकंपोज़ करते हैं नॉर्मल फॉर्म के अंदर। 
+
+अब जल्दी से आंसर क्या होगा? 
+
+आंसर होगा वेरी गुड! 
+
+अमजद बोल रहे हैं C, इसका दोबारा करेक्ट आंसर। आप लोग बताओ, C होगा कि B होगा? ज्यादा लोग B बोल रहे हैं। तो चलिए, एक-एक करके आंसर करते हैं। 
+
+मैं कैंडिडेट की फाइंड कर लेता हूँ। फंक्शनल डिपेंडेंसी, तो कैसे-कैसे मैं बनाऊँगा? नई वैकेंसी, मैं चाहता हूँ कि हर क्वेश्चन को आपको सफिशिएंट टाइम मिले, ना? 
+
+From U and V, you can approach to W. 
+Now, from X and W, you can approach Y. 
+From U, you can approach X and Z. 
+And by U, you can approach V. 
+
+यूज़र्स, फॉलो कर पा रहे हैं क्या? 
+
+अब सबसे पहले, अगेन, सेम प्रैक्टिस हमारी है, कौन-कौन से एट्रीब्यूट एसेंशियल हैं, जो-जो जिनके पास इनकमिंग डीजी नहीं है। अब यहां पर देखिए, आपको ऐसा एट्रीब्यूट मिलेगा के V अकेला। बाकी सभी के पास कहीं न कहीं इनकमिंग डीजी है। 
+
+अब यहां पर एक पूरा प्रोसेस आपको समझने का मौका मिलेगा। क्या V अकेला अपने आप में की है? आपको पॉसिबल कॉम्बिनेशन ट्राई करके तो यह देखना पड़ेगा। 
+
+V से हमें क्या-क्या मिल रहा है? V से हमें V मिल रहा है, W मिल रहा है। इसके अलावा और कुछ मिल रहा है क्या? V से हम W को अप्रोच कर पा रहे हैं और V से कुछ और मिल रहा है क्या? नहीं मिल रहा है। तो V अकेला की नहीं है। 
+
+अब अगर मैं V और X को ट्राई करता हूँ, तो क्या V और X से मेरा काम हो रहा है? V से V, W, X से क्या मिलेगा? X से Y मिलेगा। तो V, W, X, Y... अभी भी Z मिसिंग है। तो V और X भी अकेला की नहीं बना पा रहे। 
+
+सिमिलरली, V और W को ट्राई करते हैं। V और W के फादर, मैं आगे नहीं बढ़ पाऊँगा। जैसे नॉर्मल, V, X, W... सेम प्रॉब्लम। 
+
+यहाँ पर U के साथ ले लिया, तो आगे नहीं बढ़ सकता। दिस इज़ व्हाट वी आर डूइंग। 
+
+व्हाट इस इंटरेस्टिंग? बिकॉज़ Y आपको दोबारा मिलेगा। इसे आप जानते हैं, तो क्या होगा? कुछ नहीं होगा। 
+
+कितने लोग बोल रहे हैं कि U और V का कॉम्बिनेशन हो सकता है? U और V को कंबाइन कर सकता हूँ, नीचे वाले दोनों से। 
+
+U और V को अगर मैं कंबाइन कर लूँ, तो U और V से मुझे क्या-क्या मिल जाएगा? 
+
+U और V से हमें U मिलेगा, V मिलेगा, W मिलेगा, X मिलेगा, Z मिलेगा, और X और W से Y भी मिल जाएगा। तो, क्या U और V मिलकर कैंडिडेट की बना रहे हैं? 
+
+Yes. अब देखिए, जब मैं V, W और X को ट्राई करता हूँ, तो क्या यहाँ से मेरा काम हो रहा है? I think, V, W, X से क्या मिलेगा? V, W से W मिल रहा है। 
+
+हाँ, यह बात नहीं होगा, तो यह इस तरह से आपको चेक करना पड़ेगा। क्या U अकेला की बन रहा है? U से U, V, X, Z... Y अभी भी मिसिंग है। तो U भी अकेला की नहीं बन रहा है। 
+
+Ultimately, यूज़र्स, आपको क्लियर हो रहा है? और देखिए, नॉर्मलाइजेशन सोचने में आसान लगता है, उसकी बात डायरेक्टली कर लें, लेकिन जब तक फंक्शनल डिपेंडेंसी और नॉर्मल फॉर्म की अंडरस्टैंडिंग आपको नहीं है, डीकंपोज़िशन में कैंसेंज जो भी फायदा होगा नहीं, तो आपको खुद चेक करके देखना ही पड़ेगा। यानी कि, निकालना आपको आना चाहिए। 
+
+लुक ऐट दिस वन। जल्दी से ज़रा अगला क्वेश्चन देखो, दिसंबर 2014, और मुझे बताओ करेक्ट आंसर क्या होगा? 
+
+December 2014. 
+
+कैंडिडेट की निकाल के भी बिल्कुल चेक कर सकते हैं, बट मैं आपको समझा रहा हूँ कि यहाँ पर एक ऑप्शन, और अगर ना हो, तो कैसे करोगे? 
+
+और अगेन, अभी जाकर देखोगे, आप बहुत सारे क्वेश्चंस में न्यूमैरिक टाइप आ जाता है, तो वहाँ पर आपसे पूछेगा ही नहीं कि कौन-कौन सा की है, आपसे पूछेंगे नंबर ऑफ कीज़ दे दो। तो वहाँ पर भी आपको डायरेक्टली चेक ही करना पड़ेगा। 
+
+तो यहाँ से रिलेटेड सिंपल क्वेश्चन होना चाहिए। 
+
+ऑप्शन डी? ओके। तो अगेन, लक्ष्मी, पास मार डिपेंडेंसी इज़ कॉल्ड गोज़ डिपेंडेंसी। तो, देयर इज़ ए डिपेंडेंसी फ्रॉम C to A, एंड देन देयर इज़ ए डिपेंडेंसी फ्रॉम D to A, एंड देयर इज़ ए डिपेंडेंसी फ्रॉम C to D, एंड देन देयर इज़ ए डिपेंडेंसी फ्रॉम A to B. 
+
+आप कवर कर पा रहे हैं सब लोग? 
+
+सेम दिसंबर से कोई टेस्ट सीरीज़ में बता देता हूँ, मैं सारी डिटेल्स बताता हूँ, कुछ न्यूज़, कुछ इंफॉर्मेशंस आपके लिए है बहुत इंपॉर्टेंट। 
+
+डाल देंगे, यहाँ पर ध्यान से देखेंगे, तो क्या-क्या होने वाला है? 
+
+A and C are essential and together making key, option हो सकता है इसमें। अगर कोई और आंसर दे रहा है, तो मेरी समझ से परे है। A और C दोनों मिलकर बना रहे हैं? जी हाँ। 
+
+तो, अनडाउटेडली, द करेक्ट आंसर इज़ गोइंग टू बी C. 
+
+A and C, एक बार फॉलो कर पा रहे हैं? 
+
+इस पर एक से एक आसान और मुश्किल सारे क्वेश्चंस आते हैं। आने वाले टाइम के अंदर मैं बहुत सारे क्वेश्चंस और सॉल्व करवाऊँगा। 
+
+मैं जल्दी से पहले आपको कुछ इंफॉर्मेशन दे देता हूँ। ना? अनअकैडमी, यहाँ पर कुछ एडिशनल इंफॉर्मेशन आज आप लोगों के लिए है, क्या इंफॉर्मेशन? 1 मिनट रुकिए, मैं आपको बता दूँ, एक-एक करके। 
+
+सबसे पहले तो आज शाम का शेड्यूल मैं क्लियर कर दूं आपको, क्या? शाम में भी क्लास होने वाली है, स्पेशल क्लास हमारी। तो, स्पेशल क्लास किस टाइम होगी? द थिंग यू कैन सी, आधे घंटे में बैक-टू-बैक क्लास लगाते हैं, तो शाम को भी 9:00 से 10:00 रात को फिर क्लास होगी, लेकिन 2070, यानी कल को भी सेम रूटीन फॉलो करेंगे, तो इसको ज़रूर आप चेक करिएगा। 
+
+तो, यह शाम से रिलेटेड वेरी इंपॉर्टेंट, यह क्लासिफिकेशन। 
+
+डोंट वरी, डोंट वरी, अभी जितना भी पॉसिबल हो पाएगा, ना? और नेक्स्ट मंथ के लिए शेड्यूल मैं बहुत जल्दी आपसे शेयर करूँगा, तो जितनी भी मैक्सिमम क्लास पॉसिबल हो पाएँगी, वह मैं सब लगाने वाला हूँ। 
+
+उसके बाद, अगेन, जो हमारा अनअकैडमी प्लस वाला पार्ट है, you can see, मैं ऑलरेडी डीबीएमएस पढ़ा रहा हूँ, ना? एंड वेरी सून, आई एम स्टार्टिंग नेटवर्क्स एंड डिजिटल इलेक्ट्रॉनिक्स। मैक्सिमम कर रहे हैं, करना चाहते हैं, बहुत अच्छे से पढ़ना चाहते हैं। 
+
+वैष्णवी, यहाँ पर देखिए, जो भी मैं क्लास आपको पढ़ा रहा हूँ, दैट इज़ सम स्पेशल क्लास, व्हिच इज़ फॉर सम मार्केटिंग पर्पस। तो, यहाँ पर सारा कंटेंट फॉलो नहीं होता। देन, आई विल बी स्टार्टिंग सम लिमिटेड कंटेंट पढ़ा रहा हूँ। अब यह जो मैं आपसे प्रोडक्ट डिस्कस कर रहा हूँ, दैट इज़ ए प्रोडक्ट, जहाँ पर मैं सारा कंटेंट आपको पढ़ा रहा हूँ, A टू Z सारा सिलेबस यू कैन सी, फीवर नंबर ऑफ़ टीचिंग मैं करने वाला हूँ, डीबीएमएस में, ना? फॉर 31st टू 28th फेब, देखिए बैक-टू-बैक, और उसके बाद आप देख सकते हो, सब्स्क्रिप्शन हो चुके हैं, उनके रिकॉर्डिंग लेक्चर्स देख सकते हैं, कोई भी क्लास मिस होने वाले नहीं हैं। यू विल गेट रिकॉर्डेड प्लस लाइव, बोथ। 
+
+यस। एंड अगेन, मेरे अलावा जो फैकल्टीज़ और भी हैं, उनकी आप क्लासेस देख सकते हैं। तो, ए पूल ऑफ़ फैकल्टीज़, जो सब्जेक्ट पढ़ा रहा था, जितने भी कोर्सेस प्लेटफॉर्म पर हो चुके हैं, ना, नोट्स भी, सविता जैन, अगर आप सब्स्क्रिप्शन लेते हैं, तो ऑटोमेटिकली आपको सारे मटेरियल पर एक्सेस मिल जाता है, ना? तो, दैट इज़ ऑल, ओनली सब्स्क्रिप्शन, एंड यू कैन सी, वेदर इंजीनियरिंग मैथमेटिक्स इज़, नहीं है, टू जेन क्लब, एलिट है, अवेलेबिलिटी है, वह सारे के सारे टॉपिक्स यहाँ पर आपको मिलेंगे। 
+
+यस। आप सब्स्क्रिप्शन में जाकर चेक कर सकते हैं, फ्रॉम 1 टू 24 मंथ, आप कितने भी ड्यूरेशन का सब्स्क्रिप्शन ले सकते हैं। तो चलिए, थैंक यू सो मच। 
+
+आप कितने भी ड्यूरेशन का सब्स्क्रिप्शन ले सकते हैं, फ्रॉम 1 टू 24 मंथ, ना? यह रेफरल कोड अगर आप यूज़ करते हैं, KG10, यूज़ करते हैं, एडिशनल आपको डिस्काउंट मिल जाता है। 
+
+पेमेंट आप किसी भी ऑनलाइन ऑप्शन के थ्रू कर सकते हैं, एंड यू कैन सी, अभी नंबर ऑलरेडी ऊपर जा चुका है, मोर दैन 4000 स्टूडेंट्स ऑलरेडी हमारा पिन कोड यूज़ करके सब्स्क्रिप्शन ले चुके हैं। वो प्राइम टाइम। 
+
+अगर इसके बाद आप लेट करेंगे, तो यह बहुत लेट हो जाएगा। उसका सूटेबल क्या है, उसके लिए पे करना है, तो बस फिर सोच सकते हैं। बस इतना सारा कंटेंट, इतनी जल्दी सब कैसे पढ़ेगा? डिस्कस करेंगे, तो वह पॉसिबल हो नहीं पाता। 
+
+अब देखिए, कुछ इंपॉर्टेंट अनाउंसमेंट आप लोगों के लिए है, जो पूछ रहे थे, ना? एंड वेरी, वेरी इंपॉर्टेंट। सबसे पहले कमेंट क्या है? आगे, बहुत जल्दी अनअकैडमी के ऊपर हम स्पेशल डाउट क्लियरिंग बैचेस भी चलाने वाले हैं, ना? 
+
+तो, जैसे कि मैं आपको दिखा देता हूँ, इसके अलावा कुछ डाउट क्लियरिंग बैचेस होंगे, तो जब गेट का टाइम पास आता है, एग्ज़ाम टाइम पास आता है, तो इसको आप जानते हैं, कि डाउट बढ़ जाता है, क्योंकि कुछ सब्जेक्ट्स काफी टाइम पहले हमने पढ़े होते हैं, कुछ कंफ्यूजन हो जाता है, कुछ क्वेश्चन नहीं सॉल्व हो पा रहे होते। 
+
+बेटा, दिस इज़ गेट प्लस सब्सक्राइबर्स, ना? तो, अगर आप सब्स्क्रिप्शन में जाते हैं, तब स्पेशल डाउट क्लियरिंग एक्सेस कर सकते हैं, जहाँ पर फैकल्टी जो है, वह आपके डाउट पर काम कर रहे होंगे। 
+
+लेकिन, रिवीज़न बैचेस, तो एग्ज़ाम से पहले, लेकिन जैसा होता है ना, टॉपिक पढ़ लिया था, सर, समझ लीजिए, और बहुत टाइम हो गया था, तो उनके लिए एक स्पेशल टीम ने देखा। 
+
+आपने मेरे को जल्दी से बता देता हूँ, फिर मिशंस पास्ट। इसके अंदर अपना 10th सितंबर, मैं आपको बताऊंगा, कैसे एक्सेस कर सकते हैं, कर सकते हैं। 
+
+क्या फ़्री स्पेशल क्लास में होंगे? नहीं, फ़्री वाला पार्ट नहीं है। दिस इज़ प्लस पॉइंट्स, आप सब्सक्राइब करेंगे, तब स्पोर्ट्स मिक्स कर पाएंगे, ना? जो फ़्री में कर सकते हैं, मैं बता देता हूँ। यह शिवांगी जोशी और साइड्स, उनके लिए अपने-केबल नहीं है। 
+
+देखिए, यह वह टेस्ट है, जिसकी आप बात कर रहे थे, 30th सितंबर को 11 AM टू 2 PM एक टेस्ट होने वाला है। यहाँ पर अनअकैडमी गेट चैलेंज, जहाँ पर आप एक टेस्ट सॉल्व करेंगे, ना? 
+
+And, again, it is from 1 to 25. All India rank 1 to 25, in the stream, then, you will get a prize of Rs. 80,000 Amazon Vouchers, जिससे आप कोई भी ऑनलाइन शॉपिंग कर सकते हैं। 
+
+तो, दिस इज़ अ चैलेंज, व्हिच इज़ ओपन फॉर ऑल, व्हिच इज़ ओपन फॉर ऑल, तब वेबसाइट पर जाकर चेक कर सकते हैं, कैसे रजिस्टर करना है। इसके लिए प्लस सब्स्क्रिप्शन होना ज़रूरी नहीं है। 
+
+और उसके बाद, अगर बात करूँ, तो अनअकैडमी आइकॉनिक सब्स्क्रिप्शन भी है, अगर आप चाहें, तो भी नया आईपैड लॉन्च है, जिसमें और आपको पर्सनल कोच भी एलोकेट हो जाता है, जो आपको हर तरीके से गाइड करता है। यह वह लोग होंगे, जो ऑलरेडी अपने-अपने फील्ड के एक्सपर्ट्स हैं, और कॉलेजेस, कंपनीज़ का ट्रिम कर रहे थे, वहाँ पर लोग ऑलरेडी काम कर रहे होते हैं। 
+
+तो, दोज़ हु वांट टू एनरोल, करना ही है, एनरोल करना है, साथ में करना है, सहमत है, ना? 
+
+एक और आईडिया है, अनअकैडमी चैंपियंस लीग। जैसे ही टेस्ट है, सीनेट में चैंपियंस लीग चलने वाली है, तो अभी यह भी ओपन होगा, इसको कोई भी एक्सेस कर सकता है। बट, अभी अगेन, इसके बारे में कौन सी डेट को एग्ज़ाम होने वाला है, कौन-कौन से टेस्ट होंगे, क्या टाइमिंग होंगे, इसका क्या प्राइस होंगे, वह सब डिटेल बहुत जल्दी आपको बताई जाएगी। बट, यस्टरडे, दिस इज़ ऑल्सो वेरी-वेरी इंपॉर्टेंट न्यूज़। 
+
+और जो यह चैंपियंस लीग होने वाला है, दैट इज़ आल्सो ओपन, है ना? 
+
+और अगर, एक बहुत इंपॉर्टेंट न्यूज़ आप लोगों के लिए, अगर आप सोच रहे हैं सब्सक्राइब करने का, लेकिन यार, वेटिंग फॉर करेक्ट टाइम, तो अगेन, अभी पब्लिक इंफॉर्मेशन है, लेकिन डॉक्टर ने अपनी वेबसाइट पर भी लगा दिया है, क्लास स्टार्ट होने से पहले। तो, हमने, देखिए, दोस्तों भी लिखा हुआ था, बहुत जल्दी प्राइस हाइक होने वाले हैं, 1st अक्टूबर से, 1st अक्टूबर ऑनवर्ड्स। 
+
+देयर इज़ ए कंसीडरेबल प्राइस हाइक। तो, अगर आप सोच रहे हैं अटेम्प्ट करने का, और गेट के लिए सीरियस हैं, और सब्सक्राइब करना चाहते हैं, तो जल्दी सब्सक्राइब कर लीजिएगा। 
+
+थोड़ा सा भी लेट करेंगे, तो अभी जो है, वही है। सब्स्क्रिप्शन आपको मिल रहा है, आपके डिस्काउंट एंड टू फिफ्टी में, 130 है, उससे भी ऊपर चला जाए, और फिर आपको बाद में नुकसान। अगर आप सब्सक्राइब कर रहे हैं, तो यस, तो सीरियस अबाउट इट, अ सब्स्क्रिप्शन चाहते हैं, तो किन्ना फीलगुड यूज़ करना मत भूलिएगा, KG10। 
+
+इससे सिंपल नहीं हो सकता, 50% नॉलेज स्टार्ट, YouTube, KG10। 
+
+अभी देखते रहिएगा, स्मिता, अगेन, अगर आपने लेट से ज्वाइन किया है, तो कुछ पार्ट रिकॉर्डिंग आपको देखना पड़ेगा, बाकी फिर जो लाइव है, वह क्लासेस आपको मिलेंगी-मिलेंगी, वह वीज़ीलैक लोग वेट कर रहे हैं, जिससे सब्सक्राइब, फिर लेट करोगे, तो फिर बाद में बहुत नुकसान होगा, ना? तो, KG10 यूज़ करना है, जल्दी से जल्दी सब्सक्राइब करना है, उसी में, Subscribe and Share। 
+
+चले, तो आज शाम को भी जो क्लास है, उसमें डाउट जो कैंसर होने बताइएगा, और इस डिस्कशन को मैं कंटिन्यू करूँगा, सैटरडे-संडे बैक-टू-बैक क्लासेस होंगी। मीटिंग में एक सब्स्क्रिप्शन, तो 28, 30 आपका डिवाइस का जो मेन क्लास है, वह होगा, जिसका आप देखेंगे, उसका फायदा उठाएँगे।

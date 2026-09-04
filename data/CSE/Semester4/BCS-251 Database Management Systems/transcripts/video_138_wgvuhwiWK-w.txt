@@ -1,0 +1,838 @@
+Here is the cleaned and structured transcript, with filler words removed and content organized by topic while strictly preserving all original explanations, examples, and technical details.
+
+***
+
+### Introduction to Query Languages and Relational Databases
+
+Hello, is everyone able to hear me? Can someone confirm if the audio is clear? 
+
+Great! Friends, as you know, today is our marathon class. In this session, we are going to discuss many ideas and have a very important discussion on query languages. Within database management systems, many topics are important, but query languages are a topic where questions are consistently and regularly asked. To master this, practicing various queries is very necessary. No one can claim that they have read a programming language once and can solve any upcoming exam question without practice. You have to practice regularly, understand and observe which types of questions are asked more frequently, and focus your attention on those types of approaches. Are you able to follow this idea?
+
+Yes, this is going to be a three-hour class, running from 7 to 10. If you stay in this class and grasp the concepts well, quite a lot of your ideas will be cleared. Let's start our discussion by looking at the fundamental ideas of query languages, and then move step-by-step into both relational algebra and relational calculus.
+
+When we design a database, we store data logically in the form of tables—divided into columns and rows—because we are talking about relational databases. Quickly tell me, are you able to follow this? Since we are talking about relational databases, we have tables with many columns and rows, and we need to traverse and retrieve data from them. If you cannot access or retrieve queries efficiently and in a timely manner from any database, then building and handling that database is useless. Isn't retrieval very important? 
+
+And how should retrieval be? Retrieval must be fast, retrieval must be consistent, and everyone should be able to retrieve data. Let's summarize the design steps: first, we create an ER diagram, convert it to a relational model, perform normalization, and do indexing. Today, our focus is: how to practically store, retrieve, and modify records in a database? That is the special thing we need to see.
+
+---
+
+### Procedural vs. Non-Procedural Query Languages
+
+To perform retrieval tasks, query languages come into play. What is the logic or idea behind query languages? As the name suggests, a query language is a language we use to make queries. We can divide query languages into two types, which is very important. You might have heard these terms: 
+1. **Procedural Query Language**
+2. **Non-Procedural Query Language**
+
+Let's pay attention and discuss what these mean and how we observe them. 
+
+A query language is a language using which we retrieve information from a database. Now, what does "procedural" mean? Let's take an example. Suppose I ask someone to bring a glass of water. For a machine (like a robot), you have to tell it step-by-step: how much distance to cover, which direction to rotate, how much further to move, etc. You have to train it on every situation for it to achieve that task. Giving commands in this step-by-step manner is called a **Procedural Command**. 
+
+On the other hand, if you ask a human to do that same task, do you have to explain every single step? No, you just tell them to bring a glass of water, and they can apply their own understanding. 
+
+In procedural query languages, the user instructs the system to perform a sequence of operations on the database in order to compute the desired information. That means the user provides both *what* data to retrieve and *how* the data is to be retrieved. Both the objective and the exact procedure are specified. **Relational Algebra** (which is a mathematical model) is an example of a procedural query language.
+
+Now, what about **Non-Procedural Query Languages**? Here, the user describes *what* information is desired without giving a specific procedure for obtaining that information. It tells you what information you need, but not the exact procedure to derive it. For example, **Relational Calculus** (Tuple Relational Calculus or Domain Relational Calculus) is an example of a non-procedural language.
+
+Whatever I teach in this class will be strictly according to the GATE exam and competitive exams. There is no doubt about it—you can go as deep or to as many points as needed, so your foundational points must be crystal clear.
+
+After this discussion, let me ask you: from a user's point of view, which would be better—procedural commands or non-procedural commands? Think about it and tell me. 
+
+Of course, non-procedural is better! Writing procedural commands means writing loops, explaining how to compare items, how to split them, and writing the whole logic. How wonderful it would be if you simply say "sort the array," and the machine figures out how to sort it itself! Long-term, we want the commands we write to be non-procedural rather than procedural. 
+
+However, writing non-procedural queries is difficult, and designing such systems is also difficult. Therefore, currently, we do a lot of work using procedural systems, while in the future, we strive to have non-procedural systems. 
+
+---
+
+### Relational Algebra, Relational Calculus, and SQL
+
+Let's clarify this relationship further. I named two things: **Relational Algebra** and **Relational Calculus**. 
+
+Is Relational Algebra some software that runs on a computer, or is it a kind of mathematical model? It is a mathematical model. Just like in data structures, we have algorithms and mathematical operations, but Relational Algebra itself is a mathematical model. Similarly, Relational Calculus is also a mathematical model. Neither of these runs directly anywhere as software. Instead, we use and combine both of them to create practical query ideas, which we call **SQL (Structured Query Language)**. This is a very important distinction that many people get confused about. Are you able to follow this? 
+
+One is Relational Algebra, and the other is Relational Calculus. When we combine, merge, and compute them, we get SQL. 
+
+Another important point: does the end-user (the typical client using a system) know how to use a database directly with SQL? No, an ordinary person doesn't know SQL. For example, if you take a railway database and want to retrieve train information, an ordinary user cannot write:
+`SELECT * FROM table WHERE train_number = 10...`
+Since they don't know how to write this, we provide them with a form-based interface. The user fills in a form containing important details like travel date, source station, and destination, and clicks a submit button. But in the background, on behalf of that user, we are generating the exact SQL query and executing it to perform the task. Are you able to follow this?
+
+Relational calculus is there by name, but practically it doesn't have as much direct importance; you can consider SQL as the practical implementation of relational algebra. Thus, these two areas—Relational Algebra and SQL—are very important. You can expect one to two questions from algebra and one to two from SQL in exams. 
+
+First, we will build an understanding of Relational Algebra. Once we understand basic operations and can solve questions based on them, we will move to SQL and see how these algebraic operations are represented and executed in practical software.
+
+---
+
+### Operators in Relational Algebra
+
+If we have a mathematical model, it must have some operators, just like numbers have plus, minus, divide, multiply, and we use them to perform operations. Similarly, in Relational Algebra, we have operands and operators. 
+
+Let's look at the operators available to us. We divide operators into two types:
+1. **Fundamental or Basic Operators**
+2. **Derived Operators**
+
+Let's understand their purpose and study each operator one by one. 
+* **Fundamental Operators include:** Select, Project, Union, Set Difference, Cartesian Product, and Rename.
+* **Derived Operators include:** Join, Intersection, Division, and Assignment.
+
+What is the significance of "fundamental"? If we use fundamental operators in combination, can we write any query? Yes! We will explore this further as we go. 
+
+Now, on what data do these operators operate? Unlike numbers, here the operands are **tables (relations)**. The input is a table, and the output is also a table. Let's discuss this with an example.
+
+---
+
+### The Projection Operation
+
+Let's talk about the **Projection Operation**. What does projection do? Look at a two-dimensional table. To reach any specific cell in a two-dimensional table, you need two things: first, you must specify the column, and second, you must specify the row. 
+
+Here, I am talking about **vertical selection** (projection). When working with a table, is it necessary that we need all columns in the result? No! If we only need specific desired columns out of the entire table, how do we perform that? For that, we use the **Project Operation**. 
+
+The main idea behind the project operator is to select desired columns. Whatever attributes we specify will remain, and the other attributes will be dropped. 
+
+**How do we write a projection?** 
+We use the symbol **$\pi$ (Pi)**. 
+**Syntax:** 
+$$\pi_{\text{column\_name}}(\text{Table\_Name})$$
+Whatever columns or attributes you need, you simply write them inside, and that is how you retrieve them.
+
+Let's look at a general schema structure for a banking system (Branches, Accounts, Depositors, Customers, Loans, Borrowers) that we will use as a common reference across examples so that we maintain a consistent understanding and avoid confusion.
+
+To find customer names who have a saving bank account without duplication, we need the customer names where the customer has a bank account. Now, ultimately in the exam, questions will be asked where you have to write queries. Once you learn how to write them, you will be able to solve these easily. Let's decide how to proceed. 
+
+The customer's saving bank account information and their names can be found in the deposit table. This makes it clear that we need the deposit table. 
+
+Now, inside the deposit table, we need the customer name. How many columns are there? Two columns: customer name and account number. Since we only need the customer name, we will have to use projection here. Let me write $\pi$ and in the subscript, I can write customer name (in short, let's write customer name) and again the deposit table. 
+
+Can you tell me if this is a valid query? Yes or no? First of all, we started by looking at our available tables to see which table contains the required information. We checked that the information we need is in the deposit table. 
+
+After that, both columns were there: customer and account number. What did we need? We needed the customer information. Are you able to follow this? Yes. 
+
+Now, let's think about the next query we are going to solve: write relational algebra query to find details of bank branch. How do you write this? Think about it. 
+
+In every question, first, you have to observe which table to use. Should we use `$\pi_{\text{branch name, branch city}}(\text{branch})$`? Very good. 
+
+Let the rest of the people think. There is a very important observation to be made here. Let me do one thing. Everyone understands that we need to use the branch table, right? So let me use the table `branch`. As you know, any table name is written inside parentheses. 
+
+The question is, and I am asking you, inside the branch table, there are three columns: branch name, branch city, etc. The question asks: you need the details of all bank branches, no specific branch is mentioned. You need details, which means you need some branch name, branch city, and all other information, right? 
+
+Very well. Now, think about this: if I need all the information, do I need to use projection or not? Think about it again. 
+
+We use projection when there are many columns and we need some specific columns, yes or no? 
+
+This is a bit confusing, which is why I gave it to you to understand. But the point is, if you need all the information, there is actually no use of projection. So what will be the answer? It is written right in front of you; this is the answer. This means you need the entire table. Why? 
+
+Here, do we need to do union, intersection, selection, or projection? It was a common-sense trick question. Carefully read the question: "Write the relational algebra query to find all the details of bank branch." Does it mean it is asking for the entire branch table? Think about this. Should we think, "No, it's asking for some branch, so we should manipulate something"? Think about whether it is asking for the entire branch table. Yes or no? Tell me first. Yes, it is asking for the entire table. 
+
+If it is asking for the entire details, should I apply selection or projection on this query, input and output will be the same? Yes or no? 
+
+Are you able to understand this concept? Now, let me make one thing clear to you. If the same query were written in SQL, how would we write it? We would write `SELECT * FROM BRANCH`. We didn't use SQL here, but if you have basic understanding, you can understand that if we wanted to write this in SQL, we would write `SELECT * FROM BRANCH`. There, since we needed all columns, we used `SELECT *`. 
+
+Here, the relation name itself should be sufficient. Otherwise, if I just write `branch`, sometimes the reader might get confused about what it is talking about. But this same idea is applicable to relational algebra. Relational algebra is a mathematical system, with or without a star. 
+
+Now, I am explaining that in SQL, is it mandatory to use the `SELECT` clause? Yes, any query you write, in every query, you have to write `SELECT`. That is a must. But in relational algebra, am I explaining to you that we only write and use those clauses that are actually necessary? Yes. 
+
+Here, neither selection is needed nor projection is needed. So when we have written `branch`, can you tell me if you are able to follow? 
+
+Very good, very good. So in SQL, we talk about it, but this is the final answer. 
+
+Now, one more confusion to look at: when we need specific columns, we use projection. But if we need all columns, do we use projection or not? Do we use $\pi$ or not? We do not use $\pi$. 
+
+Along with this, you have to keep writing and following the queries. The understanding you get from this class will be useful to you. Are you able to understand what I discussed? 
+
+Very good. Let's try one more question. 
+
+Sorry, I want to ask you a question. Both are similar ideas. I want to ask you this question: here, if you look at the query we had above, there was a point: "without duplication". We didn't pay attention to this. This is an important question I want to ask you. Tell me, the table we are going to use, will there be duplication in it or not? 
+
+So, one thing we need to understand: does duplication happen in SQL? Let me ask this so everyone gets clarity. Does duplication happen in SQL? Yes, absolutely, duplication happens in SQL. And to avoid it, we use a keyword called `DISTINCT`. If you don't use the `DISTINCT` keyword, duplication happens. 
+
+For example, if a customer has multiple accounts, and four customers have the same name, then four entries will come if you don't use the `DISTINCT` keyword. So you have to use `DISTINCT`; only then will duplication be removed. By default, duplication is there in SQL. Are you able to understand this? 
+
+Yes. But now, an important point: in relational algebra, do you need to use any specific thing? By default, duplication does not happen there. This is an important point to note. When we talk about relations in relational algebra, what is a relation? It is a set. And in a set, is there duplication? No, a set does not have duplicate values. 
+
+So what I wrote has no duplication problem. If the question said "with duplication", then we would have had to do some work. If it says "with duplication", then it becomes our problem. Are you able to understand the concept? 
+
+Yes. Great, the logic is clear in my mind. With this much understanding, again, the more questions we solve, the more clarity you will get. Let's try to solve a question. 
+
+Look at this question. This was asked in GATE 2012, a 2-mark question. No need to hurry. Analyze time carefully. If you take 2 to 3 minutes, it's fine. Tell me what the answer will be. 
+
+GATE 2012, 2-mark question. 
+
+Do not rush. People have already started answering, but most people have answered incorrectly so far. Don't do that. Read and understand carefully what is being asked, and then answer. 
+
+Whatever answer you think is correct or incorrect, you can reply in the comments. Take your time, think about it. I will definitely help you to solve it. 
+
+Answer in the poll, not in the comments. Answer in the poll, not in the comments. And then once we will investigate what is right, what is wrong. 
+
+To solve this question, you need a little bit of understanding of foreign keys. What is a foreign key, how does it relate, and what kind of data property a foreign key satisfies? If we observe that, solving this question will become very easy for you. 
+
+Okay, let me read the question, and you tell me what your observation is. Those who solved it, very well. Those who are a bit confused, how did it happen? 
+
+It says, "Suppose there are two relations $R_1$ and $R_2$ with relation schemas and let $r_1, r_2$ be the instances corresponding to $R_1, R_2$ respectively." 
+
+So don't get confused by this. If I say $R_1$ is a structure with $A, B$ and $R_2$ is a structure with $C, D$, and the current data inside them is represented by $r_1$ and $r_2$. This much is understandable. 
+
+It further writes, "B is a foreign key that refers to C in $R_2$." 
+
+What does this mean? If I quickly design two tables, we will get clarity quickly, so that the theoretical understanding behind this question is fully clear to us. 
+
+Let me draw a table $R_1$ and table $R_2$, and let the attributes be $A, B$ and $C, D$. What is it saying? "$B$ is a foreign key that refers to $C$." This means $C$ is the primary key, and $B$ is referring to $C$ when we are using a foreign key here. Does this make sense? 
+
+What is the rule for a foreign key? Let me put some values randomly to check if the condition is satisfied. Let's say $R_1$ has values for $A, B$: `(1, 1), (2, 2), (3, 3)`. Can I put `(4, 3), (5, 6), (6, 7)` in $R_2$ for $C, D$? Can I keep those values or not? Tell me. 
+
+Wait, $C$ is the primary key, so the values in $C$ must be unique. Let's say $R_2$ has $C, D$ values: `(1, X), (2, Y), (3, Z), (4, W)`. 
+
+Now, can $B$ take values like $1, 2, 3$? Yes. Can $B$ take a value like $4$? Yes. Can $B$ take a value like $7$? No, because $7$ is not present in $C$. 
+
+The rule is that whatever values are present in $B$ must already be present in $C$ (the primary key). It is not necessary that every value of $C$ must be present in $B$, but whatever is in $B$ must be present in $C$. 
+
+Now let's check the options. Option A says: $\pi_B(r_1) - \pi_C(r_2) = \phi$ (empty set). Option B says: $\pi_C(r_2) - \pi_B(r_1) = \phi$. Option C says: $\pi_B(r_1) - \pi_C(r_2) \neq \phi$. Option D says: $\pi_A(r_1) - \pi_C(r_2) = \phi$. 
+
+Let's check option A. We project $B$ from $r_1$ and $C$ from $r_2$, and then we subtract them: $\pi_B(r_1) - \pi_C(r_2)$. From our example, $\pi_B(r_1)$ gives `{1, 2, 3}` and $\pi_C(r_2)$ gives `{1, 2, 3, 4}`. If we do $\pi_B(r_1) - \pi_C(r_2)$, what do we get? `{1, 2, 3} - {1, 2, 3, 4} = \phi`. 
+
+You are absolutely right, because all values of $B$ are contained in $C$. Since you are subtracting a superset from a subset, what will you get? You will get $\phi$. Are you able to follow this? 
+
+If you subtract a superset from a subset, you get $\phi$. But what if we do option B: $\pi_C(r_2) - \pi_B(r_1)$? Will the result always be $\phi$? Tell me by thinking. If we do $C - B$ in our case, we get `{1, 2, 3, 4} - {1, 2, 3} = {4}`. Here, it is not $\phi$; there might be some extra values left over. It is not necessary that these two values are always the same. 
+
+What about option D: $\pi_A(r_1) - \pi_C(r_2) = \phi$? That is 100% wrong, because $A$ and $C$ have nothing to do with each other directly in terms of foreign key constraints. 
+
+So, by analyzing this, tell me: was this question easy or difficult? 
+
+It was a GATE 2012 2-mark question. It was very easy, but the examiner was checking whether you know the basic understanding of relational algebra, what projection means, and what difference means. 
+
+So keep solving such questions. As we solve more, your performance will improve. 
+
+Now, let's talk about selection. The selection operator, $\sigma$, how does it work? Does it work vertically or horizontally? Projection ($\pi$) works vertically. 
+
+Now, when we talk about horizontal selection, again, when we want to write a query, we know that in a table, all rows are present, but we want some specific rows. Is it possible that we don't want all data, but we want some specific rows? 
+
+Now, look at this, very important point to understand: our tables, inside tables, every column has a name. Every column has a unique name. And using that name, can you retrieve that column or reach that column? Yes, absolutely. 
+
+But does every row have a name? When we talk about rows, does a row have a name? That's something to think about. How will we reach a row then? 
+
+The thing to understand is that not only this, but people think, "Can I tell you that I want a unique row, not by name, but by some property?" For example, suppose it's a student database, and I say, "Get me all students whose age is less than 19, or whose attendance is greater than starting." Can I do that? Absolutely. It's not that to select a row, you have to use a name; it could be any attribute value using which we can retrieve. 
+
+Sometimes, what do we follow? You have to specify a condition, basically. The conclusion is that every row does not have a name; you have to specify the condition based on which you want to perform selection, and then all those results will come that satisfy this condition. Are you able to follow? 
+
+All those results will come that satisfy this condition. For example, here you will see the notation: $\sigma_{\text{condition}}(\text{table name})$. Just like projection, but with a condition. So whatever condition you write, all those tuples will be selected that satisfy this condition. 
+
+Let's do one thing. There are many things to do. Let's take them one by one. First time, we are reading input queries and also learning to write queries so that automatically reading also becomes easy. 
+
+Go through query 1.4, and I want everyone to write it on a copy. Write it on a copy so that you understand the conditions. 
+
+Write the relational algebra query to find the account number where balance is less than 1000. 
+
+The query is written below it, so don't get confused. Quickly follow this and write it. Tell me what the answer will be. 
+
+Very good, very good.
+
+नंबर तो चाहिए अपने को सिर्फ अकाउंट नंबर के, पर इस बात पर विवाद नोटिस कर पा रहे हो क्या? हमको सब कुछ नहीं चाहिए, हमको सिर्फ अकाउंट नंबर चाहिए। कंडीशन क्या है कि बैलेंस होना चाहिए 1,000 से कम। तो मैं काम करता हूँ, पहले बैलेंस वाली कंडीशन लिख लेता हूँ, तो बैलेंस शॉर्ट में लिख लेता हूँ $\text{balance} < 1000$। 
+
+अब मैं चाहता हूँ क्या मैं इसको प्रोजेक्ट करूँ? जो इतना काम करोगे तो क्या होगा? सिर्फ वो सिलेक्ट हो जाएंगे इन द टेबल अकाउंट, जिनका बैलेंस 1000 से कम है। केवल समझदारी है क्या? इतना करने के बाद, जब वो सिलेक्ट हो जाएंगे जिनका बैलेंस 1000 से कम है, यस। अब उसके बाद यहाँ पर सिलेक्शन के साथ जगह ट्रिक था क्या? सिलेक्शन के साथ-साथ क्या प्रोजेक्शन भी लगाना पड़ेगा? हाँ! क्योंकि सर मेरे को सब कुछ नहीं चाहिए, मेरे को सिर्फ अकाउंट नंबर चाहिए। तो नाउ व्हाट? आई कैन अप्लाई मोर ब्रैकेट एंड व्हाَيْ कैन आई से पाई और यहाँ पर हम लिख देते हैं अकाउंट नंबर। ढूंढ कर पा रहे हैं क्या? 
+
+हाँ, यस, आप बहुत अच्छे। 
+
+तो ये जो इंपॉर्टेंट ऑब्जर्वेशंस अपने को चाहिए, जहाँ पर पहले हमने सिलेक्शन किया और ये ध्यान रखना हमेशा ही मैं पूछ लेता हूँ। अगर किसी क्वेरी में, जैसे कि आपके सामने हैं, जहाँ पर सिलेक्शन और प्रोजेक्शन दोनों करना होता है, तो ये रैंडम चॉइस अपन कुछ भी कर सकते हैं क्या या नहीं? हमेशा पहले अपने को सिलेक्शन, उसके बाद प्रोजेक्शन करना है? बताएं, सोच कर। 
+
+सर, रैंडम चॉइस नहीं है, हमेशा पहले सिलेक्शन करना है। वैरी गुड! वेरी फर्स्ट, पहले सेलेक्ट करना है, उसके बाद प्रोजेक्शन करना है। हेलो! गुड इवनिंग! वेरी गुड! 
+
+राइट रिलेशनशिप विद अकाउंट, कौन होगा? जहाँ पर ब्रांच, ब्रांच का टाइपिंग, ये सारी इन्फॉर्मेशन आपको मिल जाएगी। अब इस केस में ऑल इंफॉर्मेशन शुड बी देयर। तो क्वेश्चन क्या है? टू फाइंड द ब्रांच नेम ऑफ ऑल ब्रांचेस सिचुएटेड इन डेली। एज़ वेल एज़ गिविंग डिपॉजिट्स लेस देन वन लाख। 
+
+मल्टीपल कंडीशंस हैं। कंडीशन के बीच में 'एंड' है या 'और' है? 'एंड' है, सर। तो, जी मल्टीपल कंडीशंस तो हैं, बीच में दोनों कंडीशंस अप्लाई होने चाहिए। तो, चलिए, सबसे पहले तो, बैलेंस होना चाहिए, ब्रांच सिटी होना चाहिए। 
+
+यस। कंजक्शन एंड लगा रहा हूँ। देखिए यहाँ पर इंग्लिश में लिखते हैं। पूरी रिलेशनल अलजेब्रा में क्या मैं कोई भी इंग्लिश का वर्ड यूज़ करूंगा? नहीं। तो, मैसेज में जितने भी ऑपरेटर्स मेरे पास होते हैं, उसको मैं यूज़ कर सकता हूँ। तो लेट us यूज़ 'एंड' और दूसरा कंडीशन क्या है? एसेट इज़ रिलेटेड। सेकंड कंडीशन, एसिड समथिंग। जो भी वैल्यू लिखा हुआ है, $\text{balance} < 1\text{ lakh}$ चलेगा। तो, दो कंडीशंस की अलग-अलग हमने मेंशन किए। 
+
+बट क्या काम पूरा हो गया मुझे बताओ? जो काम प्लीज अपने को करना था, क्या वो लॉजिकल यहाँ पर भी पूरा हो गया? जी नहीं, अभी पूरा नहीं हुआ। तो फाइनली अपने को क्या करना पड़ेगा? अपने को, वेरी गुड! प्रोजेक्शन करना पड़ेगा, ब्रांच नेम। तो लेटस प्रोजेक्ट और यहाँ पर लिखते हैं ब्रांच नेम। अब मेरे को बताएं, फॉलो कर पा रहे हैं क्या? 
+
+यस। तो, जो यार गोइंग टु राइट बिहाइंड, दिस इज़ टू इन्टरेस्टिंग, बहुत इंपॉर्टेंट लॉजिक है। जैसे-जैसे वजन करोगे, बात आगे बढ़ती जाएगी। ये देखिए इस तरीके से कंडीशन में किसी को। धीरे-धीरे हम फंडामेंटल को लिखना सीख रहे हैं, और जैसे-जैसे लिखना सीख रहे हैं, उनको आसानी से ऑब्जर्व भी कर पा रहे हैं। 
+
+ओके, क्या लिखता है? राइट रिलेशनल अलजेब्रा क्वेरी टू फाइंड द ब्रांच नेम एंड अकाउंट नंबर, विथ अ बैलेंस इज़ ग्रेटर दैन इक्वल टू दिस, बट लेस दैन इक्वल टू दिस। लिख सकते हैं क्या आप लोग, मुझे बताओ जल्दी से सोचो। 
+
+इधर कॉपी पर लिखो, शायद बाद में लिखो तो आप मैच कर पाओ। इसी तरह की और बहुत सारी फंडामेंटल अंडरस्टैंडिंग आपको करनी है। 
+
+क्या मल्टीप्ल टेबल्स होंगे यहाँ पर? ऐसा भी सोच सकते हो। या मल्टीप्ल कॉलम्स अपने को प्रोजेक्ट करने हैं? 
+
+आगे लेट मी गो वन बाय वन। इसे बोला राइट रिलेशनल अलजेब्रा क्वेरी टू फाइंड द ब्रांच नेम एंड अकाउंट नंबर, विच हैज़ बैलेंस ग्रेटर दैन दिस, बट यू नो बैलेंस इज़ लेस दैन इक्वल टू दिस। 
+
+ओके। तो, बैलेंस कहाँ है और अकाउंट नंबर कहाँ पर है? क्या आपको दो टेबल यूज़ करना है? वो यूज़ करना है अकाउंट। क्वेश्चन नंबर वन, जो आपको पहले समझना था, तो लेट अस यूज़ द टेबल अकाउंट। अब अकाउंटेबल के अंदर क्या-क्या करना होगा? तो पहले कंडीशन लगा लेते हैं, जो कंडीशन हमारे पास है। तो मल्टीपल कंडीशंस, कोई टेंशन नहीं है। बैलेंस ग्रेटर दैन इक्वल टू दिस, बट लेस दैन इक्वल टू दिस। प्रोवाइड लाइक दिस, अलग-अलग कंडीशन लिखो, प्रॉब्लम नहीं है। तो लेट मी राइट द सेम, बैलेंस जो है, जिस ऑर्डर में लिखता हूँ, उसी ऑर्डर में लिख देता हूँ, वो ग्रेटर होना चाहिए। ग्रेटर दैन इक्वल टू होना चाहिए। तो एक कंडीशन 'एंड' लगाकर दूसरा कंडीशन लिख देता हूँ, और बैलेंस जो है वो लेसन होना चाहिए किससे? इससे, दसेड। 
+
+लिख सकते हैं? एंड फाइनली, जो भी आपको प्रोजेक्ट करना था, मल्टीप्ल कॉलम्स चाहिए? हम मल्टीपल चेक किया क्या चाहिए? तो शामिल, आई नीड, 2 मिनट, 1 मिनट। आई नीड ब्रांच नेम एंड आई नीड अकाउंट नंबर। मुझे बताना जरा, कर पा रहे हैं क्या? आई नीड ब्रांच नेम, आई नीड अकाउंट नंबर। यस! वेरी गुड! 
+
+दिस इज़ द फाइनल क्वेरी। कुछ पूछनी है अभी वो? क्या मैं किस कॉलम को पहले प्रोजेक्ट करूँ, किसको बाद में? कोई फर्क पड़ता है क्या? सीक्वेंस से। 
+
+अभी सेलेक्ट बाद में कर सकते हैं, ठीक है, तो कर ही रहे हैं। आप समय पूछना चाहते हो कि आप सेलेक्ट बाद में कर सकते हैं, सब पूछ रहे हैं या प्रोजेक्ट पहले? 
+
+नहीं, प्रोजेक्शन में यूज़ नहीं होता। आरती, वेरी गुड क्वेश्चन। अगर मल्टीप्ल कॉलम्स आपको चाहिए, तो कॉमा, कॉमा लगाकर लिखते जाओ। है ना? लेकिन मल्टीपल कंडीशंस हैं, तो? 
+
+ओके, जी। आपके सवाल का जवाब दे दूँ? अभी आप ऑटोमेटिकली समझ जाओगे। देखो, मैं पहले वाले पर इस बात को समझाता हूँ। क्वेश्चन समझना आसान होगा अगर इस क्वेरी को मैं उल्टा लिखता ना, और मैं कैसे लिखता? मैं लिखता अकाउंट और अकाउंट से पहले मैं क्या निकाल लेता हूँ? प्रोजेक्ट कर लेता हूँ अकाउंट नंबर। है ना? जब आप लोग समझोगे, आपको आइडिया समझ आ जाएगा और फिर मैं आपसे बोलता हूँ कंडीशन लगाओ। और कंडीशन के अलावा कहता है, "यह बैलेंस इज़ लेस देन 1000 समथिंग लाइक दिस।" अगर ऐसा कुछ करता हूँ, अलजेब्रा मैंने इस पॉइंट को। 
+
+अगर मैं ऐसा कुछ करता हूँ, तो आप मुझे बताओ, लीगल, इलीगल की बात छोड़ दो। लीगल और इलीगल की बात छोड़ दिया, मुझे बताओ क्वेरी अंदर से बाहर की तरफ जाती है, यस और नो? पहले आप इंटरनल क्वेरी सॉल्व करोगे, उसके बाद एक्सटर्नल क्वेरी सॉल्व करोगे। यह बात समझ आ रही है? 
+
+यस। तब मुझे बताओ, अगर मैं इंटरनल क्वेरी सॉल्व करूँगा, तो मेरे पास तो सिर्फ अकाउंट नंबर ही बचेगा ना? मेरे पास सिर्फ एक कॉलम बचेगा, जिसमें अकाउंट नंबर लिखा होगा। अब मुझ पर बैलेंस का कंडीशन कैसे लगाऊंगा? मुझे बता सकते हो बात ये? कि मेरे पास सिर्फ एक ही कॉलम बचा जिसके अंदर अकाउंट नंबर है, तब उसके अंदर बैलेंस वाला में इनफार्मेशन लगाई नहीं सकता। मुझे बता, ये बात फॉलो कर पा रहे हैं क्या? है ना? कि? 
+
+यस, यस। पैरेंटेसिस का ऑर्डर अपने को ध्यान रखना है। ऑर्डर चेंज करेंगे तो जल गड़बड़ हो जाएगा। ठीक है? 
+
+एक क्वेश्चन ट्राई करते हैं। लुक एट दिस वन। लुक एट दिस वन, आपत्तिजनक टिप्पणियाँ और हर क्वेश्चन का कुछ ना कुछ सीखते चलेंगे और एग्जाम में तो पढ़ी लिखी हुई है कि आपके पास में समझाना चाह रहा हूँ कि रिलेटिवली एग्जाम में जब सॉल्व करें तो कितना आसान हो जाएगा। यहाँ पर लिखा हुआ है। बस एक, इस क्वेरी को आपको ऑब्ज़र्व करना है ना। नॉट जस्ट गो थ्रू, ध्यान से देखो और मुझे बताओ क्या लॉजिक है? 
+
+वेरी गुड। तो, केशवन अच्छा कर रहे हैं, मैक्सिमम क्वेश्चंस का सही आंसर कर रहे हैं। बाकी लोग बताओ भाई? 
+
+वेरी गुड, अंकिता कोसु, म्यूज़िक, राजेश्वरी, बिल्कुल सही आंसर की, अनुप्रिया, सेंट्रल आंसर। दिस इज़ करेक्ट, दिस टाइम वेरिफिकेशन कोड सिंपल था। इसने क्या किया बोला कि इस अकाउंट टेबल बताएं पूरे-पूरे। भाग्य करना पड़ेगा, हमारे पास तो टेबल तो चल नहीं रहा है तो ब्रांच, कस्टमर उसके बाद बोरो और उसके बाद डिपॉजिट। तो हर किसी का क्या स्ट्रक्चर क्या कंटेंट इसने आपको बता दिया। आगे लिखता है, "यूज़िंग रिलेशनल अलजेब्रा द क्वेरी टू फाइंड द कस्टमर हूज बैलेंस इज़ मोर दैन 1000," करें। बताओ, उन सब कस्टमर्स के नाम पता लगे जिनका बैलेंस जो है वो कितना है? 1000 से ज्यादा है। 
+
+तो पहला ऑब्ज़र्वेशन मैं तो कहता हूँ सिलेक्शन में एलिमिनेशन सबसे बेस्ट देखो, बाहर करो। बता सकता है क्यों? व्हाई डी टेबल इज़ गो आउट? क्योंकि ऑब्वियस सी बात है, मैं क्या कर रहा है ये? 
+
+वेरी गुड, वेरी गुड, सेक्ट्रा तो क्या कर रहा है ये? इसने पहले प्रोजेक्ट किया, सेलेक्ट किया जो कि गलत है। हमने सीखा कि हमेशा पहले सेलेक्ट करना है, उसके बाद प्रोजेक्ट करना है। पहले सेलेक्ट, देन प्रोजेक्शन। तो ऑप्शन डी तो बाहर हो गया, फॉलो कर पाएंगे इस बात को? 
+
+अगेन, अगेन गड़बड़ है बिकॉज़ जैसा कोई लिख रहा है ये। आरती, वेरी गुड, इन दोनों सेलेक्ट लिख दिया, जबकि कस्टमर नंबर प्रोजेक्शन करना था। तो, जैसे आंसर्स रॉन्ग है ना? यहाँ पर जो गौर करना था वो ये कि टेबल कौन सा यूज़ किया गया? कोई दूसरी लिखिए, पहले बैलेंस 1000 से ज्यादा सेलेक्ट करना है, उसके बाद से कस्टमर प्रोजेक्ट करना है। बट ये अपने को डिपॉजिट से लेना है कि बॉरोअर से लेना है? तो बॉरोअर के अंदर बैलेंस नाम का है ना कोई कॉलम नहीं है, वो आपको जनरली मिलेगा डिपॉजिट में जहाँ पर ये बैलेंस नाम का मिलेगा। यस, तो इसका मतलब करेक्ट आंसर हो जाता है ए। 
+
+जल्दी से एक बार ऑब्ज़र्व करो, फुल करो, मुझे बताओ बात समझ आ रही है क्या? 
+
+यस। बहुत अच्छे। 
+
+अब किसी को कोई डाउट, कंफ्यूजन है इसके बारे में? क्लियर है? ग्रेट! हर क्वेश्चन से कुछ ना कुछ लर्निंग, कुछ ना कुछ अंडरस्टैंडिंग हमारी होगी। 
+
+एक और क्वेश्चन ट्राई करें? एक और क्वेश्चन ट्राई करो, आठवाँ क्वेश्चन। बट प्रोडक्ट इंपॉर्टेंट लर्निंग आप यहाँ से लोगे। जरा पूरा क्वेश्चन ध्यान से पढ़ो, कोई जल्दबाजी नहीं करनी और एनालिसिस करना है। इसलिए मैं साथ-साथ क्वेश्चन सॉल्व करा रहा हूँ ताकि सही आइडिया फॉलो करते चलें आओ। 
+
+अरे, काफी लोगों का कंफ्यूजन भी हो रहा है, बट कई लोग सही आंसर परिवार हैं। डोंट वरी, मैं कट करके जो भी डाउट्स जो कंडीशंस उसको भी सॉल्व करूँगा। 
+
+अब लिखने को बंद, बाहुबली बार। क्वेश्चन पूरा ध्यान से पढ़ता हूँ, फिर उसको सॉल्व इन टू करते हैं। जहाँ जो डाउट जो कंडीशन मुझे बताइएगा कि क्या लगता है? "व्हिच ऑफ़ द फॉलोइंग क्वेरीज ट्रांसफॉर्मेशन इज़ अपडेट्स? रिप्लेसिंग द लेफ्ट हैंड साइड एक्सप्रेशन बाई राइट हैंड साइड एक्सप्रेशन इनकरेक्ट?" 
+
+ये कह रहा है क्वेश्चन, इस पर जैसे लिखा है कि लेफ्ट हैंड साइड को रिप्लेस करना चाहता है राइट हैंड साइड से। लेफ्ट हैंड साइड पर रिप्लेस करना चाहता है। अब पूछ रहा है, "व्हिच ऑफ़ द फॉलोइंग इज़ इनकरेक्ट?" इसमें से कौन सा गलत होगा? 
+
+आइडेंटिटी दे रहा है R1, R2 एक्सप्रेशन है, C1, C2 सेलेक्ट कंडीशन है। यानी कि इस बेस पर कोई कंडीशन आपने लगाया होगा। K1, A2 एट्रीब्यूट्स के नाम है और डेफिनेशन R1, R2 रिलेशन है। तो ये देखो, ये बोल रहा है कि पहले कंडीशन C1 लगाओ, फिर C2। और ये 100 फिर से लगाओ। मुझे जल्दी से ऑब्ज़र्व करके बताओ जो कंडीशन हमने लास्ट क्वेश्चन यूज़ की है, क्या ये क्या मेरे को ये कंडीशंस में होती है? अगर दो कंडीशंस हैं, ना, तो मैं इसको पहले किसको बाद में इस बात से कोई फर्क पड़ता है कि नहीं? सोच कर बताओ, मैं कंडीशन की बात, कोई फर्क नहीं पड़ता फंडामेंटल है वो क्या कि? 
+
+मैक्सिमम हो सकती वो यूज़ कर रहा हूँ। शैलेंद्र भाई लोगों को वॉइस क्लियर आ रही है क्या? 
+
+ओके, ओके। तब तक आपका, आपकी साइड से कोई इशू होना चाहिए। मैं आपसे बोल रहा हूँ कि जब दो कंडीशंस हमारे पास, दोनों ही अप्लाई होनी है, तो किसको पहले, किसको बाद में लगाएं, इससे कोई फर्क पड़ता है? नहीं। इसने ब्रैकेट यूज़ करके लगाएं, मैं तो ब्रैकेट्स भी नहीं कि अगर मैं चाहता हूँ, मैं यूज़ कैसा लगा देता। और आप मुझे बताओ ये सारे तरीके से हैं क्या? अब चाहे पहले C2 को लिख दो, फिर C1 को लिख दूं, ये बात समझ आ रही है? तो सारे मेथड्स सेम हैं। 
+
+तो फर्स्ट एंड, अगर पहले C1, फिर C2, को फिर आप रिप्लेस कर रहे हो C2 पर C1 से, टाइपिंग, इससे कोई इफ़ेक्ट नहीं आना चाहिए। देयर मस्ट नॉट बी एनी इशू और ये ट्रांसफॉर्मेशन बिल्कुल सही है, करेक्ट है। कई बार फॉलो कर पा रहे हैं? 
+
+यस। बहुत अच्छे। 
+
+सेकंड देखिए। सेकंड केस देखिए, बड़ा इंपॉर्टेंट है। इसने बोला कि पहले प्रोजेक्शन करना है, उसके बाद सिलेक्शन करना है। अब इंट्रस्टिंग है ना? क्योंकि मैंने आपको बताया क्या पहले सिलेक्शन लिखते हैं कि पहले प्रोजेक्शन लिखते हैं? ये बताओ, पहले तो मैं आपको बताऊँ कि पहले सेलेक्ट करते हैं और जब सिलेक्शन अपना काम कंप्लीट कर लेता है, उसके बाद जो कॉलम चाहिए उसको अपन प्रोजेक्ट करते हैं। यही समझा है। 
+
+लेकिन ये तो यहाँ पर आप जान-साफ-साफ करो। उल्टी गंगा बाहर है, ये सोंड चलती है। ये पहले प्रोजेक्ट कर रहा है, उसके बाद सेलेक्ट कर रहा है। वो समझ आ रही है? तो हम नहीं कर रहे ऑलरेडी। ये कर रहा है ये, पहले प्रोजेक्ट कर रहा है ये वाली, उसके बाद सेलेक्ट कर रहा है। 
+
+बट नाउ, ये कॉमन सेंस, जनरली मत सोचो। अगर पहले प्रोजेक्ट करने के बाद भी इसकी कंडीशन काम कर रही है, तो मुझे एक बात समझ आती है कि हंड्रेड परसेंट जो कंडीशन C1 है ना, वो एट्रीब्यूट A1 के बारे में ही होगी, यस ऑर नो बात? 
+
+रटने, ये बात का मतलब समझना। ये बात कितने ऑब्ज़र्व कर पा रहे हैं? बट ये तो ये लिख रहा है, और अगर इसका लिखा हुआ काम कर रहा है, इसका मतलब कंडीशन C1 अगर एट्रीब्यूट A1 पर ही एप्लीकेबल है, तो क्या ऑर्डर उल्टा भी लिखा जा सकता है मुझे बताओ? हाँ, तब लिखा जा सकता है ना? तो इसने पहले A1 को प्रोजेक्ट कर लिया, सर कंडीशन भी A1 पर ही लगाई। ये पॉइंट क्लियर हो रहा है सभी को? 
+
+ओके। अब अगर ये काम कर रहा है, तो ये तो बिल्कुल जो करेक्ट है, तो काम करेगा ही करेगा, तो कौन सा ऑप्शन? 
+
+मजबूत करेंगे? यस। 
+
+बट मेरा क्वेश्चन आपसे क्या है? अगर ये प्रोपोर्शनल ऐसा लगा होता कि पहले ये लिखा हुआ है, फिर ये लिखा है, तब तक ये नोवेर। कंडीशन है वो ये है कि पहले जहाँ पर, पहले नफरत नहीं करता, इसके सही काम करेगा, नो प्रॉब्लम। ऑप्शन में कोई क्वेश्चन है कि बिकॉज़ के सबसे ज़्यादा ऑप्शन किया था, तो ये ज़रूर है कि इस केस में ये काम करेगा। 
+
+बहुत अच्छे, आगे बढ़ता हूँ, ऑप्शन सी देखता हूँ। ऑप्शन सी में उसने बोला दो टेबल है R1, R2, पहले उनका यूनियन करो, उसके बाद कंडीशन अप्लाई करो या फिर पहले कंडीशन अप्लाई करो, उसके बाद यूनियन करो। क्या इससे कोई फर्क पड़ेगा? क्योंकि इस तरह के केस में देखिए, इशू ये होता है, वो इशू ये होता है, दिल्ली केस का। 
+
+कि अगर ये चीज़ फुल में लिखा होता, तो इतनी आसानी से मैं आन्सर तक नहीं पहुँचता। आपको कुछ ऑब्ज़र्वेशंस ज़रूर चेक करने पड़ते और यहाँ पर एक चीज़ आपको क्या चेक करनी है कि यहाँ पर डुप्लीकेसी का कभी कोई इशू आ सकता है मुझे बताओ? नहीं। 
+
+यह बात हमने पहले ही समझ लिया है। 
+
+ओके, जुही, थैंक यू सो मच। 
+
+लोग, ये पॉइंट हम पहले समझ चुके हैं कि आप ऑर्डर कोई भी रखो, किसी भी तरह से करो, डुप्लीकेशन तुम कभी सपोर्ट करेंगे नहीं। तो अगर डुप्लीकेट नहीं होगा, तो शायद इन दोनों का रिजल्ट भी सेम होगा ना? तो ये भी सही काम करेगा। सी भी कई लोगों ने आंसर किया था। 
+
+बट अब देखो, डी और ई में से निकालना सबसे सिंपल था। सही आंसर ढूंढें, गलत फेमी एलिमिनेट करें। व्हाई? वैरी सिंपल। यू, यू कैन सी ये पहले सिलेक्शन, फिर प्रोजेक्शन। क्या यही काम करने का सही तरीका है? हाँ। 
+
+अब अचानक से ये उसको चेंज करके कह रहा है कि पहले प्रोजेक्ट करूँगा, फिर सेलेक्ट करूँगा। मेरी क्वेरी आपको बात समझनी चाहिए कि नहीं? दिस इज़ नॉट द करेक्ट वे टू डू इट, यस। एंड दिस इज़ फॉल्स। 
+
+बिल्कुल बोल सकते हैं। बिल्कुल बोल सकते हैं। बहुत सारे ऑब्ज़र्वेशंस हैं, वैसे तो पहले ऑप्शन भी फॉलो करते हैं, बिल्कुल नहीं। इन सेम कंडीशन में बोल सकते हैं कि इसमें कौन काम करेगा, कौन काम नहीं करेगा। बड़े ये देखो, क्वेश्चन सॉल्व करने का फायदा यही है। 
+
+मैं यहाँ पर सिर्फ इलीगल डिस्क्रिप्शन नहीं करना चाहता। जैसे-जैसे क्वेश्चन सॉल्व करेंगे, आपकी अंडरस्टैंडिंग इम्प्रूव होगी, आपको कॉन्फिडेंस आएगा कि अरे, गेट के ही क्वेश्चन सॉल्व कर रहे हैं। नेट के क्वेश्चन सॉल्व कर रहे हैं, ये क्वेश्चन एग्जाम में अगर आता है तो मैं इसको बना लेता। यस। बहुत अच्छे। 
+
+बस एक शिक्षक मुझे कि कई लोग बहुत जल्दी आंसर कर रहे हैं। ऐसा मत करो, ये सब मज़दार क्वेश्चन है, उसे एनालाइज करो, ध्यान से समझो। मैं तो हर क्वेश्चन में दो-तीन मिनट का टाइमर लगाता हूँ कंपनी। मुझे बताओ, मॉल बढ़ाऊँगा, बट जल्दबाजी नहीं करना। दो नंबर के क्वेश्चन को तो ख़ास तौर पर रेस्पेक्ट करना है ना? ठीक है? 
+
+एक क्वेश्चन और देखिए। 2008। ये किसको बाद के लिए बचा कर रखा था? वो सरेंडर क्वेश्चन है। तो बड़े ध्यान से पढ़िएगा, आपके साथ सॉल्व करेगा इसको। चलिए टाइम कम लगे, ज्यादा लगे, कम लगा, मुझे बताइए, कम और बढ़ाऊँगा। 
+
+सलेंद्र, क्वेश्चन रिपीट करना तो पॉसिबल नहीं होगा क्योंकि बहुत सारे लोग हैं जो लगातार जेल करते रहते हैं। आप रिकॉर्डिंग में देख लीजिएगा, आई हैव द लॉट ऑफ़ क्वेश्चंस एंड सॉल्व कराने वाला हूँ। यस, यस, वी टारगेट करना है। अगर आप लोग थोड़ा साथ देंगे तो मैं कुछ ना कुछ पार्ट यहाँ पर हंड्रेड परसेंट किसका भी यूज़ करने वाला हूँ? अलजेब्रा का, सर ये खुलेगा है। 
+
+ओके। तो फिर मुझे लग रहा है कि रिलेटेबल अंडरस्टैंडिंग बेटर।
+
+यहाँ इस लेक्चर ट्रांसक्रिप्ट का साफ़, संरचित और व्याकरण की दृष्टि से ठीक किया गया रूप दिया गया है। इसमें सभी तकनीकी शब्दों, उदाहरणों और स्पष्टीकरणों को ज्यों का त्यों सुरक्षित रखा गया है:
+
+---
+
+6% लोगों ने सही आंसर किया है और बाकी कुछ कंफ्यूज हैं B, C और D के अंदर। चलिए, बढ़ते हैं आगे। 
+
+व्हाट इज़ द मींस ऑफ रिलेशनल अलजेब्रा? अगली बात करने की बात कर रहा है। मुझे कमेंट में लिखी हुई है, वही होता है जहाँ पर पहले टू फिर मतलब पहले सिलेक्ट कर लेता है। अब उसने F1, F2 दो कंडीशन लगाई हैं। उसने कौन सी कंडीशन लगाई है? F1, F2। यस। अब आप मुझे बताओ कि क्या इन कंडीशन का अगर मैं ऑर्डर चेंज करूं, तो इसको फर्क पड़ता है क्या? पहली बात नहीं। दूसरी बात, यह समझा दो। यह 'एंड' हो गया और 'आर' होगा। रिजल्ट में जो आपको मिलेगा, दैट विल बी ओनली वन कंडीशन और बोध कंडीशन। दोनों कंडीशनर, दिस एंड यस। तो, पहले सबसे पहले एक ऑप्शनस को देखते ही आप में से कई लोगों ने B और D आंसर किया। B और D को तो ऑटोमेटिकली हटा देना था ना? यह तो बहुत एकदम एक सिंपल ऑब्जर्वेशन था, देखते ही हटा देना था। वह क्यों? क्योंकि यहां पर तो 'एंड' है। दोनों कंडीशन अप्लाई करना है, तभी रिजल्ट पर पहुंचेंगे। जबकि ऑप्शन B और D जब देखोगे, तो वहां पर 'आर' लिखा हुआ है। 
+
+क्या यह बात आपको समझ आ रही है क्या कि D और D में 'आर' लिखा हुआ है, जबकि 'एंड' होना चाहिए था? यस। तो, इसको मैं हटा सकता हूँ। एंड, आउट ऑफ दिस इस टू। बहुत अच्छे! 
+
+आगे देखिए। रीवास्ट कंडीशन क्या थी? अट्रिब्यूट कह रहा है कि R1 जो है, वह प्रॉपर सबसेट है R2 का। यह स्टेटमेंट बड़ा इंपॉर्टेंट है। R1 इज़ प्रॉपर सबसेट ऑफ R2। अब मान लीजिए, आप पहले यहां पर क्वेश्चन में पहले ढूँढेंगे। मान लीजिए R1 कह रहा है A, B, C, D और उसका सबसेट है, मान लीजिए यहाँ पर लिखा है A, C। तो, पहले A, B, C, D अगर टोटल नंबर ऑफ ट्री उठा, उसमें से पहले B, C निकाल लेंगे, उसमें से A, C निकालेंगे, तो क्या बेहतर नहीं होगा कि डायरेक्ट A, C ही निकालें? यस। तो, R1 विल टेक केयर ऑफ एवरीथिंग। सो, टू इज द करेक्ट आंसर। मुझे तो लग रहा है उस से पहले वाले क्वेश्चन से भी आसान था और दो नंबर में क्वेश्चन पूछा गया। वेरी-वेरी सिंपल क्वेश्चन। अगर नहीं किया, तो ध्यान से ऑब्ज़र्व किया जाए, तो बहुत आराम से सॉल्व किया जा सकता था। वैसे आपको क्वेश्चन का थोड़ा सा फंडामेंटल अंडरस्टैंडिंग समझना था और आंसर करना था। यस और नो? आप लोग फॉलो कर पा रहे हैं क्या?
+
+क्या R1 सुपरसेट है R2 का? तो, R1 कवर हो जाएगा? नहीं, दोबारा समझो। आंसर में क्या पहुंचेगा? R1 पहुंचेगा? R2 पहुंचेगा? रोहित, आंसर में तो सिर्फ R1 ही पहुंचेगा। पहले आप पूरे टेबल से सिर्फ A, C, A, C लोगे, सुन लोगे, फिर उसमें से R1 पिक करोगे, तो सबसेट पहुंचेगा। तो, क्यों न डायरेक्ट सबसेट ही लूं? सोच इस बात को। यहाँ कवर करने की बात नहीं हो रही भाई, यहाँ पर प्रोजेक्शन की बात हो रही है। चीज़ डिफरेंट है और बताओ, फॉलो कर पा रहे हैं कि नहीं? यस। 
+
+ओके, अच्छा एक पॉइंट नोट करिएगा। अभी तक जितनी भी क्वेरीज़ हमने यहाँ पर सॉल्व करने की कोशिश की है, उन लगभग-लगभग सभी क्वेरीज़ के अंदर क्या हुआ है? मुझे पूछना है आपसे। चैनल और सभी क्वेरी के अंदर ही डिटेल्स जो यूज़ हुई हैं, उसमें कितने टेबल इस्तेमाल किए हैं? हमने सिर्फ एक टेबल का इस्तेमाल किया है। है ना? बट, क्या यह ओवरऑल सच्चाई है क्या? कि सच में नॉर्मली जो हम यूज़ करते हैं इसके लिए अलजेब्रा डेटाबेसज़, तो क्या क्वेरीज़ इतनी सिंपल होती हैं कि एक टेबल से काम हो जाता है? नहीं, देयर आर क्वेरीज़ जहाँ पर यू नो इट वॉन'ट बी एबल टु स्पैन टु मल्टीपल टेबल्स और यहाँ पर इंटरेस्टिंग बड़ा डिस्कशन हो जाता है। मैं बहुत धीरे-धीरे आपको लेवल ऊपर लेकर चल रहा हूँ ताकि टाइम टू टाइम पर चीज़ें तरह समझते रहें और वह आपको मुश्किल भी ना लगे। तो, विदाउट टेकिंग इंटू अ लॉट ऑफ क्वेरीज़, मैं अगली क्वेश्चन पर लाना चाहता हूँ। 
+
+लेकिन जब तक सोचेंगे नहीं ना चीज़ों को, बचाना है, उसको समझना है, वरना बहुत जल्दी भूल जाएंगे। तो, जरा इस क्वेश्चन को देखिए। इसे सोचिए, समझिए, सोचिए और मुझे बताइए कि कैसे एक क्वेरी लिखेंगे? इसलिए बार-बार मैं आपसे क्वेश्चन पूछ रहा हूँ कि क्वेरी लिखने का, है ना, कि एग्जाम में क्वेरी लिखी नहीं है, सिर्फ लिखी हुई क्वेरी पढ़नी है।
+
+---
+
+[कुछ समय का व्यवधान/छात्रों द्वारा सवाल पढ़ा जाना]
+
+---
+
+क्या यह बात समझ आ रही है? Let me go one-by-one and फिर आप ऑब्ज़र्व करेंगे। फिर जहाँ पर डाउट होगा, कंफ्यूजन होगा, मुझे बताइएगा। 
+
+Let us write Union query, use Cartesian product, right? Relational algebra query to find all the customers who have a loan and an account or both. 
+क्वेश्चन समझे क्या है? यह कह रहा है उन कस्टमर्स के नाम चाहिए जिनके पास या तो लोन है या तो अकाउंट है, तो दोनों हैं। कई बार समझ आ रही है? तो, यह बताओ ID लोन, अकाउंट और बोध? यस। तो, जरा ढूँढो उन कस्टमर्स के नाम जिनके पास अकाउंट है, कहाँ मिलते हैं? तो, वह कस्टमर जिनके पास अकाउंट है, वह मिलते हैं डिपॉजिटर टेबल में। 
+
+यस। सिमिलरली, वह कस्टमर जिनके पास लोन है, देखिए, कस्टमर और लोन का जो रिलेशनशिप है, वह मिलता है लोन टेबल के अंदर। 
+
+चलिए, अब कुछ लोग पहले यूनियन कर रहे हैं, फिर प्रोजेक्शन कर रहे हैं। एक बात मुझे बताओ, डिपॉजिटर टेबल पर मुझे यूनियन करना है, प्रोजेक्शन करना है, सिलेक्शन करना है? मेरे को प्रोजेक्शन करना है। मेरे को सब कुछ नहीं चाहिए, जो सब कस्टमर करनी चाहिए। दूसरी पॉइंट, क्या लोन टेबल के ऊपर भी मेरे को प्रोजेक्शन ही करना है? जी हाँ, यहाँ पर भी सिलेक्शन नहीं जाऊँगा ना? अकाउंट से सिलेक्शन, प्रोजेक्शन, कंडीशन तो कोई है नहीं। इस टेबल में जितने लोग हैं, वह सब के सब अकाउंट होल्डर हैं। सिमिलरली, लोन में जितने नेम हैं, वह सब के सब लोन वाले हैं। दरअसल, कस्टमर नेम चाहिए, इससे भी कस्टमर नेम चाहिए। बात समझ आ रही है? 
+
+अब अगेन, एक बात गौर करने वाली है क्या? इन टेबल्स का आपस में डायरेक्टली कुछ लेना-देना है? बताओ, सोच के। क्या जो आदमी कस्टमर है, वह डिपाजिटर भी होगा? जो डिपाजिटर है, वह बरोवर होगा? ऐसा कुछ नहीं है। हो सकता है आपके पास सेविंग अकाउंट ना हो, अकाउंट ना हो, लोन ना हो। यस। तो, अब इस बात को ध्यान से अगर आप समझेंगे, एक बात आपको समझ आएगी कि हम आगे समझेंगे जब कार्टेशियन प्रोडक्ट की बात आती है ना। लेकिन, कार्टेशियन प्रोडक्ट तब अप्लाई किया जा सकता है जब दो टेबल डायरेक्टली रिलेटेड हों। ध्यान रखा जाएगा। तो, यहाँ पर मैं क्या कर सकता हूँ? मैं सेपरेटली सॉल्व करूँगा। तो, मैं सबसे पहले डिपॉजिटर टेबल लेता हूँ। 
+
+यस। और डिपॉजिटर टेबल से अपन क्या निकाल सकते हैं? कस्टमर नेम। 
+
+तो, लेट मी पिक कस्टमर नेम फ्रॉम डिपॉजिटर। सिमिलरली, जो दूसरा टेबल हमारे पास है, वह है बरोवर। 
+
+तो, बरोवर टेबल से अपन क्या निकाल सकते हैं? अगेन, कस्टमर नेम। 
+
+अब हमको कौन से कस्टमर के नाम चाहिए? जो सिर्फ अकाउंट वाले हैं, लोन वाले हैं, दोनों? अकाउंट और बरोवर दोनों। तो, उठाकर यूनियन कर दें। अब तो बात समझ आ रही है क्या? 
+
+That is the correct method. 
+
+कस्टमर टेबल से क्यों नहीं लिया बार क्वेश्चन? लेकिन, देखिए, हमने बताया कि कस्टमर टेबल के अंदर कौन-कौन से लोग हो सकते हैं, नहीं? क्या बैंक का कस्टमर होने के लिए आपके पास लोन और अकाउंट दोनों में तो यह नोज़र? हमें डेफिनेशन नहीं पता, बट स्ट्रक्चर देखिए, यह ज़रूर समझ आ रहा है कि वह कस्टमर्स, जिन कस्टमर और अकाउंट का रिलेशनशिप बना, डिपाजिटर, देखिए। तो, वह कस्टमर जिनके पास अकाउंट है, वह डिपाजिटर में मिलेंगे। वह कस्टमर्स जिनके पास लोन है, वह हमें मिलेंगे बरोवर में। इस वजह से हमने ऐसा किया। मुझे बताएं, एक बार फॉलो कर पा रहे हैं क्या? Definition of choosing table: customer name I use, deposit and bower को बेहतर तरीके से इस्तेमाल किया है ना? 
+
+एक बात गौर करने वाली, दोबारा पूछ रहा हूँ, क्या यहाँ पर पहले यूनियन करके बाद में प्रोजेक्शन कर सकते थे? कुछ लोगों ने यह लिखा था, मेरे को याद है। 
+
+नहीं, आप पहले प्रोजेक्शन करेंगे, उसके बाद यूनियन करेंगे। यस। प्रोजेक्शन करने के बाद आप गौर करेंगे, तो ऊपर से क्या बचेगा? कस्टमर नेम। नीचे से क्या बचेगा? कस्टमर नेम। और कस्टमर नेम का कस्टमर नेम में यूनियन किया जा सकता है, उसमें लोग उसे कोई एतराज नहीं होना चाहिए, यस ऑर नो? यस। 
+
+मुझे बताएं। This is entry and you are similar to Rohit. कोई खास क्वेश्चन पूछ नहीं जानते। जो पूछे जाते हैं वह रिलेटिवली सिंपल होते हैं। मैं इसके ऊपर भी जाऊंगा। अब मुझे बताएं, यह आइडिया आपको समझ आया जहाँ पर मल्टीप्ल टेबल्स से और किस तरह अपने क्वेश्चन सॉल्व किया? 
+
+अच्छा, अगर मैं इसी के दो दिन बाद क्वेश्चन आपसे पूछूँ, अगर मैं आपसे यह पूछ लूँ कि मेरे को उन कस्टमर्स के नाम बताओ जिनके पास अकाउंट तो है, बट लोन नहीं है। Find the name of those customers who have account, but do not have a loan, नहीं है? कैसे तरीका यह बताएंगे? 
+
+Find the name of those customers who have account, but do not have a loan. 
+
+जरा सोचिए क्या पूछ रहा हूँ? अकाउंट है, बट लोन नहीं है। 
+
+वैरी गुड। अब यहाँ पर आप बजाय यूनियन के क्या लगा दो? सेट डिफरेंस लगा दो। और कौन सा मैथमेटिक्स सप्लाई होना है, मुझे पता है सब लोग कर रहे हैं या कोई बहुत बड़ी बात नहीं है। 
+
+अच्छा, अगेन सोचिए। अगर यहाँ पर मैं सेट डिफरेंस ना लगाऊँ और इंटरसेक्शन लगा दूँ, तो क्या होगा? 
+
+यहाँ पर बोथ आ जाएगा। 
+
+वैरी गुड। बोथ वाला आ जाएगा जिसके पास दोनों हैं, लोन भी है, अकाउंट भी है। केवल फॉलो कर पा रहे हैं क्या? 
+
+ओके, वैरी गुड। तो, यह बेसिक आइडिया आप समझ गए। धीरे-धीरे लेवल अप करूँगा। एक और क्वेश्चन ट्राई करो। लुक एट दिस वन। से, बताओ ऊपर वाला क्वेश्चन कैसे सॉल्व करेंगे? बहुत अच्छे!
+
+---
+
+[कुछ समय का व्यवधान/छात्रों द्वारा सवाल पढ़ा जाना]
+
+---
+
+Write the relational algebra query to find the name of all the customers along with loan balance who have an account in the bank. 
+उन सब कस्टमर के नाम चाहिए, जिनका अकाउंट बैलेंस है, जिनका बैंक अकाउंट है। और बताओ जरा कैसे करोगे? 
+
+ओके। 
+
+बहुत ध्यान से ऑब्ज़र्व करना पड़ेगा इस क्वेश्चन में। 
+
+क्या सही अप्रोच नज़र आ रही है क्वेरी को लिखने का? 
+
+आगे, Let me go one-by-one। एक-एक करके बात करता हूँ। 
+
+तो, सबसे पहले आपको चाहिए कस्टमर अलांग विद लोन अकाउंट। ओके। कौन सा टेबल यूज़ होगा? ट्री बोल रहा है अकाउंट और डिपॉजिटर। अकाउंट क्या यूज़ होगा? यस। अकाउंट के अंदर लिखा है बैलेंस और डिपॉजिटर की यूज़ होगा, विकास डिपॉजिटरी के अंदर लिखा है कस्टमर नेम की बात समझ आ रही है। 
+
+वैसे, क्या इन दोनों टेबल पर ही अपने को प्रोजेक्शन करना है? जी हाँ। यदि हमें तो कस्टमर नेम भी चाहिए, बैलेंस भी चाहिए ना? पड़े। अब आप मुझे बताओ कि क्या यह दोनों टेबल डायरेक्टली एक दूसरे से रिलेटेड है? जी हाँ। डिपॉजिटर और अकाउंट का डायरेक्ट रिलेशनशिप है। दूसरा, वहाँ पर लास्ट क्वेश्चन के अंदर में सिंगल पीस ऑफ इंफॉर्मेशन चाहिए था, व्हि इज़ कस्टमर नेम, बट यहाँ पर इस बात को समझेगा जो लोग भूल जाते हैं यूनियन करो मैं। यूनियन नहीं कर सकता। क्या मैं कस्टमर नेम और बैलेंस का यूनियन कर सकता हूँ? नहीं। तो, यूनियन से कैसे सॉल्व होगा? यूनियन से सॉल्व नहीं होगा। तो, कैसे क्वेश्चन सॉल्व करना पड़ेगा? क्या, अब जनरेशन? मैं समझाता हूँ एक-एक करके। बट, लेट मी गो अहेड विथ सेट डिफ़रेंस? नहीं, पहले आपको समझाना पड़ेगा कि कार्टेशियन प्रोडक्ट कैसे करते हैं? 
+
+वैरी इज़ क्वेरी। इस क्वेश्चन के अंदर पहले इन दोनों टेबल को मर्ज करना होगा और यह दोनों टेबल मर्ज कैसे होंगे? अपने अकाउंट का कार्टेशियन प्रोडक्ट करना होगा, डिपॉजिटर के साथ। 
+
+यहाँ पर इंटरसेक्शन से काम नहीं चलेगा भाई, यहाँ पर हमें कार्टेशियन प्रोडक्ट करना पड़ेगा। मैं एक-एक करके आपको समझाऊँगा। फेस बहुत आसान है, डोंट वरी है ना? कार्टेशियन प्रोडक्ट करना पड़ेगा। कार्टेशियन प्रोडक्ट करते कैसे हैं? मैं एक एग्जांपल देता हूँ, उससे आगे बढ़ता हूँ। रिमाइंड करिएगा। यहाँ पर देखिए, टेबल बनाने की कोशिश की है और हियर, लेट मी से कि मैं यहाँ पर कार्टेशियन प्रोडक्ट प्रोजेक्शन करूँ। तो, दिस इज़ कार्टेशियन प्रोडक्ट ऑफ R1 एंड R2। R1 और R2 क्या हो रहा है? कार्टेशियन प्रोडक्ट। 
+
+अब सबसे बड़ी चीज़ देखने की, यहाँ पर टेबल लिखा है, यहाँ पर लिखा है R1, R2। R1 और R2 के अंदर क्या कोई कॉमन अट्रिब्यूट है? जल्दी से बताओ। हाँ, दोनों के अंदर कॉमन अट्रिब्यूट है, B। एक बार पहले क्लियरली समझ लो। अगर दो टेबल के बीच में कोई कॉमन अट्रिब्यूट ना हो, तो क्या वहाँ पर कार्टेशियन प्रोडक्ट किया जा सकता है कि नहीं? 
+
+उसके बाद, उसके बाद बहुत सारे वर्जन्स हमें पढ़ना है, नेचुरल ज्वॉइन पढ़ना है, बहुत सारा ऑपरेशन, बट नहीं किया जा सकता, उससे कोई मीनिंगफुल इनफॉरमेशन नहीं निकलेगी है ना? तो, अपने को एक तभी करना है जब वहाँ पर कोई कॉमन अट्रिब्यूट हो ना? 
+
+अब किस तरह से यूज़ करना है? चलिए, एक बार करके देखते हैं। 
+
+तो, अब जो कॉलम्स मिलेंगे, वह मिलेंगे चार कॉलम। एक मिलेगा A, B। एक B और मिलेगा? दो बार मिलेगा? दो बार मिलेगा। एक बार R1 वाला, एक बार R2 वाला। पर एक बार मिलेगा से अपने को कंफ्यूजन ना हो, तो यहाँ पर मैं A को पूरा लिख देता हूँ। R1.A, R1.B, R2.B, R2.C। बात समझ लीजिए। 
+
+अब कार्टेशियन प्रोडक्ट का हमारा साथ तो बहुत पुराना है, थ्योरी से चलता आ रहा है। आप मुझे बताओगे कि कार्टेशियन प्रोडक्ट के अंदर हम क्या करते हैं? पहले सेट के हर एलिमेंट को दूसरे सेट के हर एलिमेंट से रिलेट कर देते हैं, है ना? यही किया ना? पहले सेट के हर एलिमेंट को दूसरे सेट के हर एलिमेंट से रिलेट कर देता है। तो, यहाँ पर भी करेंगे। पहले टेबल के हर रो को दूसरे टेबल के हर रो से रिलेट करेंगे। 
+
+ताकि मुझे बताओगे क्या-क्या आने वाला है? तो, यहाँ पर आएगा (1, p, p, x)। उसके बाद उसके साथ आएगा (1, p, q, y)। उसके बाद आएगा (1, p, p, z)। उसके बाद R, y लें और फिर अगर आएगा (1, p), तो उसके साथ में आएगा (s, z)। और सेट की। यह बात समझ आ रही है सभी को? 
+
+पहले टेबल के... यहाँ पहले टेबल के हर रो को दूसरे टेबल के हर रो के साथ लॉजिकली कार्टेशियन प्रोडक्ट कर रहा हूँ। तो, सिमिलरली, अगले जो तीन रो हैं, वह (2, q), (2, q) के आने वाले हैं और यहाँ पर फिर वही (2, x), (r, z) डेटा आ जाएगा। लास्ट वाला (3, r), (3, r) और जल्दी यहाँ तक कि है? 
+
+यह। 
+
+अब एक बात कॉमन सेंस है, वह क्या? अगर मैं आपसे पूछूँ जरा इन दोनों टेबल को देख कर मुझे बताओ, अगर A की वैल्यू अगर A की वैल्यू 2 है, तो आप मुझे बता सकते हो C की वैल्यू क्या होगी? यह दोनों टेबल देख कर बताओ। 
+
+डिस्कस, यह बहुत सिंपल सवाल पूछ रहा हूँ। अगर A की वैल्यू 2 है, तो C की वैल्यू क्या होगी? तब तक को एक ही वैल्यू टू है, तो बी मिल चुका है क्यू और बी की वैल्यू क्यू, पेसिफिकेशन। एक ही वैल्यू हो सकती है? X। 
+
+अब हम नहीं कर पा रहे हैं? वैल्यू मैच करो ना भाई। जब दोनों के अंदर कॉमन अट्रिब्यूट है, तो अपन वैल्यू मैच कर सकते हैं, यस। 
+
+ठीक उसी तरह से देखो, अगर मैं आपसे पूछूँ A की वैल्यू थ्री है, तब बता दो C की वैल्यू क्या होगी? 
+
+वैरी गुड। तब C की वैल्यू होगी, यस। 
+
+रही बात (1, p), (3, r) एक्सट्रा है, सब कॉमन सेंस बात है। जब हम इन टेबल के कार्टेशियन में बहुत सारे वैल्यूज़ मिलते हैं, जिन-जिन के साथ इंफॉर्मेशन वहाँ पर हमको नहीं मिल रही, कौन-कौन से? सब रिमूव कर सकते हो। 
+
+तो, (1, p), (q, y) एक्सट्रा है। यस। उसके बाद जहाँ पर वैल्यू मैच नहीं हो रही है, वह सब एक्सट्रा है। तो, जो एडिशनल इंफॉर्मेशन है, वह सब मैं यहाँ पर हटा दे रहा हूँ और मेरे को तो सिर्फ दो ही मीनिंगफुल रोज़ नज़र आ रही है, देखिए और एक ही है। 
+
+तो, अब कार्टेशियन प्रोडक्ट का एडवांटेज क्या है? क्या कार्टेशियन प्रोडक्ट का यूज़ करके हम दो टेबल को कंबाइन कर सकते हैं? यस ऑर नो? कोई जल्दी नहीं है। इसका पूरा मैथमेटिक्स आपको समझा देना चाहता हूँ। मैं हमेशा 90% एग्ज़ाम में क्वेश्चन मिलेगा जिसमें कार्टेशियन प्रोडक्ट होगा, यस। 
+
+उसके बाद, क्यों नहीं दोबारा गलत शब्द इस्तेमाल करो? डुप्लीकेसी मत बोलो, मैं तो इनकंसिस्टेंसी हटा रहा हूँ। मैं डुप्लीकेसी नहीं हटा रहा। आप दोनों रो को मर्ज कर ही नहीं सकते जब वहाँ पर वैल्यू डिफरेंट दे रही है, यस ऑर नो? 
+
+तो, बगैर यह दो रो मर्ज का मीनिंग क्या होना चाहिए था? अगर कॉमन अट्रिब्यूट में वैल्यू सेम नहीं है, तो फिर आप बात कैसे कर दिए? मैं तो कंसिस्टेंसी प्रिजर्व कर रहा हूँ कि यह समझ आ रही है? 
+
+तो, अब दो टेबल का कार्टेशियन प्रोडक्ट करते हो, तो आपको एडिशनल कंडीशन लिखनी पड़ती है। रिडंडेंट टपल हटाने के लिए। यह पॉइंट क्लियर है सभी को? 
+
+हाँ। 
+
+यह कार्टेशियन प्रोडक्ट हमारे किसी काम का नहीं है, मैं क्लियर कर दी इस बात को। अगर आप सिर्फ कार्टेशियन प्रोडक्ट यूज़ करोगे, तो जो रिजल्ट है, वह करेक्ट होगा या इनकरेक्ट होगा? मैं क्लियर कर दी इस बात को कि अगर सिर्फ कार्टेशियन यूज़ करेंगे, तो रिजल्ट इनकरेक्ट होगा। इसमें कोई डाउट नहीं है। यह कंसिस्टेंसी का सवाल है, यहाँ डुप्लीकेशन का सवाल नहीं है। 
+
+तो, अब दोबारा देखिए। यह कहानी क्यों समझाई आपको? जब मैं यहाँ पर अकाउंट का डिपाजिटर से कार्टेशियन करता हूँ, तो क्या यह अकाउंट टेबल के हर रो को डिपाजिटर के हर रो से मल्टीप्लाई कर देगा? कार्टेशियन कर देगा? हाँ। जबकि हमें सिर्फ कब करना है? जब इनके बीच में जब कॉमन एंट्रीज़, अकाउंट नंबर, जब वह मैच करें। यस ऑर नो? यस। 
+
+तो, अब ध्यान से देखिएगा। यह एडिशनल कंडीशन लिख रहा हूँ। गलत करूँ, तो मुझे बताइएगा। तो, मैं यहाँ पर एक एडिशनल कंडीशन लिख देता हूँ। चलिए, दूसरे चक्र से लिए ताकि आप जल्दी से फॉलो कर पाए। तो, मैं लिख देता हूँ कंडीशन है: `account.account_number` must be equal to `deposit.account_number`. 
+
+मिल गई बात समझ आ रही है क्या कंडीशन से? `account.account_number` must be equal to `deposit.account_number`. ऐसा क्यों कर रहा हूँ? ऐसा करने से जितने भी एडिशनल रिडंडेंट, सरप्लस टपल जनरेट हुए हैं, वह सब के सब एलिमिनेट हो जाएंगे। कितने लोग यह बात समझ रहे हैं? अगर आपको समझ आ गई, तो कार्टेशियन प्रोडक्ट मान लीजिए आपको समझ आ गया, यस। 
+
+तो, दो अलग-अलग टेबल को कंबाइन करना कार्टेशियन प्रोडक्ट की मदद से, कार्टेशियन प्रोडक्ट का एडवांटेज है कि कंबाइन टू आवर डिसएडवांटेज है कि वह रिडंडेंसी आ गई। उस रिडंडेंट टपल से कैसे बचेंगे? जो दोनों के बीच में कॉमन होगा, उसको यूज़ करेंगे एलिमिनेट करने के लिए।
+
+व्याख्या काम क्या करना होगा मुझे बताओ, अभी काम पूरा नहीं हुआ। हमको सब कुछ नहीं चाहिए, हमको क्या चाहिए? हमको चाहिए कस्टमर नेम अलांग विद अकाउंट बैलेंस। तो लेट मी टू द प्रोजेक्शन। वैरी गुड, और यू हैव कस्टमर नेम कंप्लीट कर दो। तो सबसिस्ट जरूर लगेगा। अगर आप एक-एक करके फॉलो करते जाएंगे, तो आई डोंट थिंक कि कंफ्यूजन का कहीं से कहीं तक भी कोई स्कोप रहने वाला है। मुझे बताएं क्या पॉइंट भी फॉलो कर पा रहे हैं आप?
+
+हाँ, यस। 
+
+क्या किसी को भी कोई डाउट, कोई कंफ्यूजन है? ओके। ना, यू कैन चेक आउट द सेकंड क्वेश्चन। नाउ, यू कैन हियर दिस सेकंड क्वेश्चन। ध्यान से पढ़कर और फिर मुझे बताओ कि आंसर क्या होगा? 
+
+कोशिश करो कॉपी में पूरा कोई लिखो जल्दी से। उसके बाद मैं लिखूंगा, मैच करेगा। जब तक दोनों केसेस मैच नहीं करेंगे, तब तक मजा नहीं आएगा।
+
+जब कोई डाउट हो गए, मुझे बताइएगा। डन?
+
+अच्छा, सो, दोनों एकदम सेम है। ठीक है। इसमें चेंज करते हैं। आप एक काम करो, सेकंड वाला सॉल्व करो। दिस वन इज सेकंड वाला सॉल्व करो। इसको बताओ कैसे लिखेंगे? 
+
+बाकी लोग लिख पा रहे हैं?
+
+ओके। इसमें बोला, "राइट द रिलेशनल अलजेब्रा क्वेरी टू फाइंड द लोन नंबर, अमाउंट, एंड द ब्रांच नेम व्हिच इज सिचुएटेड इन डेली।" 
+
+काफी चीज़ें आपको ऑब्ज़र्व करनी पड़ेंगी। राइट द रिलेशनल अलजेब्रा क्वेरी टू फाइंड द लोन नंबर। लोन नंबर का लिखा है? लोन नंबर, लोन नंबर। लोन नंबर इज़ हियर। आगे, "अलांग विद अमाउंट।" लोन नंबर और अमाउंट, ये दोनों तो चाहिए ही चाहिए, होगा या नहीं है? लोन नंबर चाहिए, अमाउंट चाहिए एंड "ब्रांच नेम व्हिच इज़ सिचुएटेड इन डेली।" तो ब्रांच नेम जो है, वह आपको ब्रांच टेबल के अंदर मिलेगा। 
+
+और सिर्फ बोल रहा है, "एंड इक्वल कंडीशन व्हिच इज़ सिचुएटेड इन डेली।" तो ब्रांच का जो सिटी है, वह भी ब्रांच टेबल के अंदर ही लिखा हुआ है। तो अगेन, क्या आप ऑब्ज़र्व कर पा रहे हैं कि यहां पर हमें अकाउंट टेबल की जरूरत नहीं पड़ेगी? क्या अकाउंट टेबल की ज़रूरत पड़ेगी? नहीं है। जितना भी काम है, वह लोन टेबल और ब्रांच टेबल से पूरा हो रहा है। पर क्या दोनों का ऑडिशन करना पड़ेगा? हाँ। क्या दोनों के बीच में कुछ कॉमन है? ब्रांच नेम कॉमन है। कोई प्रॉब्लम नहीं है। 
+
+तो मैं काम करता हूँ, लेट मी टेक ब्रांच, लेट मी टेक ब्रांच का कार्टेशियन प्रोडक्ट विथ लोन नंबर। और एक इंपॉर्टेंट बात, यहां पर आपको पता ही है, आप पहले क्या लिखते हो, बाद में क्या लिखते हो, फर्क पड़ता है? मतलब, एज़ इट इज़ पहले ब्रांच नेम लिखूंगा, लोन वो सब, कोई फर्क नहीं पड़ता है ना? तो लेट मी टेक ब्रांच का कार्टेशियन प्रोडक्ट विथ लोन नंबर। अब, अगेन, आप जानते हैं कि क्या प्रॉब्लम होता है? तो रिडंडेंट टपल्स आपको एलिमिनेट करने पड़ेंगे। तो आपको क्या लिखना पड़ेगा? ब्रांच डॉट, मैं लिख देता हूँ, ब्रांच नेम मस्ट बी इक्वल टू लोन डॉट ब्रांच नेम। आप ऑब्ज़र्व कर पा रहे हैं क्या? ब्रांच डॉट ब्रांच नेम इज़ इक्वल टू लोन डॉट ब्रांच नेम। ये एलिमिनेट करना पड़ेगा। 
+
+अब जानते हैं एक और कंडीशन के बारे में, क्योंकि इसने और कंडीशन लिखा है कि सिचुएटेड इन डेली। अब मैं जो मेरी एक्चुअल कंडीशन है, वह लिख देता हूँ शॉर्ट में। लेट मी से ब्रांच सिटी इज़ इक्वल टू डेली। क्या बात समझ आ रही है आपको? यह हमारी कंडीशन है जो क्वेश्चन में लिखा हुआ है, तो वह भी लिखना जरूरी है। और उसके बाद, जो आपको प्रोजेक्शन करना है, प्रोजेक्शन कर सकते हैं। क्या? लोन नंबर चाहिए, अमाउंट एंड ब्रांच नेम। लिख लेते हैं सबका सब। 
+
+अब मैं बोलता हूँ, मुझे क्या-क्या चाहिए भाई? शॉर्ट में ही लिख देता हूँ, आई नीड लोन नंबर, अलांग विद आई नीड अमाउंट, अलांग विद आई नीड ब्रांच नेम। मुझे बताएं, आप पूरी तरह फॉलो कर पा रहे हैं क्या? 
+
+हाँ, यस। 
+
+ओके। एक बार लास्ट वाला क्वेरी देखेंगे। लास्ट वाला क्या आप लिख सकते हैं? मेरे को यह जानना है कि कैन यू गेट, कितने टेबल यूज़ होंगे? किस तरीके से यूज़ होंगे? लास्ट क्वेरी जो लिखा हुआ है, इज़ वेरी इंपॉर्टेंट। कंफ्यूजन जो सीखोगे, लास्ट क्वेरी से।
+
+कितना टेबल यूज़ होगा, बताओ? 
+
+तीन होगा। 
+
+लक्ष्मी को बंद रहेगा। सीरियसली देखने में बड़ा इंटरेस्टिंग क्वेश्चन है यह। यह होगा, देखो। इसमें बोला, "राइट द रिलेशनल अलजेब्रा क्वेरी टू फाइंड द नेम ऑफ द कस्टमर हू हैव अकाउंट इन द ब्रांच सिचुएटेड इन डेली एंड द बैलेंस इज़ ग्रेटर दैन 1000." 
+
+मुझे बताओ, डिपॉजिट का नाम कहां है? कस्टमर का नाम तो डिपॉजिट टेबल के अंदर है। यहाँ से करना है प्रोजेक्शन, केवल समझ आ रही है? अब उसने लिख दिया, तीन बातें आपसे बोल दिया। उसने बोला कि बैलेंस ग्रेटर दैन 1000 होना चाहिए। बैलेंस आप इधर से अप्लाई करेंगे? देयर इज़ अप्लाई सिलेक्शन। लेकिन तब इसका मन नहीं भरा, बोल रहा है "ब्रांच मस्ट बी सिचुएटेड इन डेली।" तो अब आपको ब्रांच सिटी के पास जाना पड़ेगा, जो कि ब्रांच के अंदर है। तो बहुत क्लीयर-कटा प्रोजेक्शन है कि जो डेटा चाहिए, यानी कि कंडीशंस सब प्रोजेक्शंस के साथ, उस पर आपको तीनों टेबल रिक्वायर्ड होंगे। ब्रांच भी होगा, अकाउंट भी होगा, और डिपॉजिटर भी होगा। है कि नहीं? 
+
+यह पॉइंट ऑब्ज़र्व कर पा रहे हैं क्या? ब्रांच, अकाउंट और डिपाजिट तीनों चाहिए। 
+
+हाँ, यस। 
+
+सर, कस्टमर से कस्टमर नेम क्यों नहीं लिया? अगेन, इस ने इस लिए नहीं लिया। अगर हमको सारे कस्टमर नहीं चाहिए, हमको कौन से कस्टमर चाहिए? मुझे बताओ? थैंक यू सो मच, सुमित। हमें वह कस्टमर चाहिए जिनके पास अकाउंट है। वैरी गुड, वैरी गुड, प्रतीक। और वह कस्टमर जिनके पास अकाउंट है, वह हमें कहां मिलता है? वह मिलता है डिपॉजिटर टेबल के अंदर। 
+
+नाउ यू कैन अंडरस्टैंड कि यहाँ पर क्या मल्टीपल टाइम्स रिडंडेंट टपल्स एलिमिनेट करने पड़ेंगे? यस और नो? 
+
+अब मैं देखता हूँ कैसे लिखूंगा। तो लेट मी वन बाय वन। जहां कुछ गड़बड़ आएगा, तो सबसे पहले सब्सक्राइब करो। अकाउंट के साथ, ट्यूशन, डिपॉजिट के साथ, ब्रांच का ट्यूशन। अकाउंट का डिपॉजिटर, फॉलो कर पा रहे हैं? वैरी गुड, प्रतीक। और इस बार मैं सारी कंडीशन यही लगा देता हूँ। एक कंडीशन अप्लाई करनी पड़ेगी, तो एक-एक करके लेते हैं। 
+
+पहले बताओ, ब्रांच, अकाउंट में क्या कॉमन है? ब्रांच टेबल में, अकाउंट टेबल में क्या कॉमन है? सिटिंग? ब्रांच और अकाउंट में कॉमन है ब्रांच नेम। आप ऑब्ज़र्व कर पा रहे हैं, यह? तो लेट मी और मैं लिखता हूँ। अगर आप ब्रांच डॉट ब्रांच नेम इज़ इक्वल है अकाउंट डॉट ब्रांच नेम, चलेगा? अब, यहीं नीचे ऐड करके लिख देता हूँ मैं और किससे आगे जगह नहीं है, बहुत लंबी क्वेरी हो जाएगी। सेकंड कंडीशन, जल्दी बताओ, अकाउंट और डिपाजिट में क्या कॉमन है? प्लीज़ टेल मी। अकाउंट और डिपाजिट में क्या कॉमन है? अकाउंट नंबर। तो लेट मी से, अकाउंट डॉट अकाउंट नंबर मस्ट बी इक्वल टू डिपाजिटर डॉट अकाउंट नंबर, लिख सकता हूँ? 
+
+आगे बढ़कर, अभी काम कंप्लीट हो गया? नहीं। अब आप एक्चुअली, इतना करने के बाद आपको समझना है कि तीनों टेबल कंबाइन हो चुके हैं, और जो रिडंडेंट एंड एक्स्ट्रा टपल्स हैं, वह भी एलिमिनेट हो चुके हैं। ये सब लोग। एडिशनल टपल्स एलिमिनेट हो चुके हैं? 
+
+नाउ, तो प्रोजेक्शन आइडिया है, वह अपने को परफॉर्म करना है। हमारी कंडीशन भी लिख दूं यहीं पर। अगर लोन नंबर तो छोड़ो, नेशन लोन नहीं, लिख देता हूँ एक बार। यह हमने समझा, कंडीशन को इससे कोई फर्क नहीं पड़ता। तो सिटी क्या होना चाहिए? तो लास्ट में राइट, ब्रांच सिटी मस्ट बी इक्वल टू डेली। यहीं लिख देता हूँ। और कंडीशन भी है? जी हाँ, एक और कंडीशन है, ओके। यही ब्रैकेट के साथ एंड लगाकर और कंडीशन क्या है? यह देखो, कंडीशन है ना कि जो बैलेंस है, दैट मस्ट बी ग्रेटर दैन 1000। 
+
+जब दो कंडीशन इसने लगाई, भई, मैंने ऊपर मेंशन कर दी थी। तो ब्रांच कंडीशन हो गया डेली, और बैलेंस हो गया 1000 ग्रेटर। क्या सारी कंडीशन अप्लाई कर चुके हैं? यस। फाइनली, वी कैन गो फॉर प्रोजेक्शन। 
+
+प्रोजेक्शन क्या करना है? प्रोजेक्शन टू फाइंड द नेम ऑफ द कस्टमर। कस्टमर का नेम चाहिए। तो फाइनली, कस्टमर जिसके पास कस्टमर नेम हो, उसे कहते हैं कस्टमर। तो कस्टमर का नाम भी हमको मिल गया। तो यह है कस्टमर नेम। 
+
+तब मुझे बताएं कि यार यह पूरा का पूरा जो क्वेरी है, आपको समझ आया? और यह बहुत सिंपल से अपन स्टार्ट किया था, बट यहां पर पूरा हमने लिख दिया है ना। तो यह मल्टीपल टेबल्स आर इनवॉल्वड, मल्टीपल कंडीशंस आर इनवॉल्वड। पहले हमने रिडंडेंट टपल्स एलिमिनेट किए, और उसके बाद जब कस्टमर नेम था, वह हमने प्रोजेक्ट कर लिया। 
+
+मुझे बताएं कि यार, यह पूरा फॉलो कर पा रहे हैं क्या? 
+
+हाँ, यस। 
+
+अच्छा, यह बता देता हूँ कि नेचुरल जॉइन ऑपरेटर हमारे पास होता है। इनबिल्ट, उसमें यह जो कंडीशन लिखनी पड़ती है, एडिशनल टपल्स को एलिमिनेट करने के लिए, क्या लिखना जरूरी होता है? यह क्वेश्चन पूछा होता तो मैं क्या करता? नेचुरल जॉइन लाइक दिस। डबल की तरह, तो दोनों जगह लेफ़्ट कंडीशन लिखने की ज़रूरत नहीं, हम चलते हैं नेचुरल जॉइन पर। तो वह एडिशनल टपल्स को एलिमिनेट करेगा, और उन्हीं कंडीशंस पर काम करेगा, जो कोरेस्पोंडेंस कंडीशंस हैं। 
+
+आईडिया फॉलो कर पा रहे हैं सब लोग? 
+
+हाँ, यस। 
+
+ग्रेट। तो यह होगा कि नेचुरल जॉइन ऑपरेटर का इस्तेमाल करते हैं। पर ये प्रॉब्लम अगर ज्यादा हो जाएगी, तो ऑटोमेटिकली कि हमने बहुत सारी एडिशनल कंडीशन लिखनी पड़ेंगी, रिडंडेंट टपल्स को एलिमिनेट करने के लिए, यस और नो? और उस एलिमिनेशन से बचने का तरीका है कि हम क्या करते हैं? अगर मैं दोबारा हिसाब से पूछा कि भई, दो टेबल थे, नेचुरल जॉइन करेंगे, तो क्या होगा? 
+
+मुझे एडिशनल टपल्स, टेंपल्स, एक ऑटोमेटिकली रिमूव हो जाएंगे, सॉल्व हो जाएंगे। ये सब जीरो आने वाली है। तो मैं एंटर नेचुरल जॉइन इन डॉट B.S डॉट लिख लेता हूँ, और फिर जो भी रिजल्ट हमारे पास टू यू, थैंक यू, एंड टू यू आर यूज़ करेंगे, जो मैच हो रहा है, ऑटोमेटिकली, जो मैच हो रहा है। 
+
+और लेट अस वांड, लेट अस वांड थिंक, क्वेश्चन ट्राई करें इसके ऊपर? एक गेट क्वेश्चन ट्राई करते हैं, ताकि कुछ ना कुछ सीखो। अंडरस्टैंडिंग हमारी हो। लुक एट दिस क्वेश्चन, देयर इज़ वन मार्क क्वेश्चन, इसको ऑब्ज़र्व करो और मुझे बताओ, क्या कंक्लूजन आप लोग निकालोगे ना? 
+
+वैरी गुड। जल्दबाजी नहीं करनी है, ध्यान से ऑब्ज़र्व करिएगा, उसके बाद सॉल्व करना है। 
+
+कुछ बात समझ आ रही है क्या? 
+
+चलिए, कट मी टू, वन बाइ वन, सारा। 53% लोग बोल रहे हैं C, और बाकी A, B, D लगा रहे हैं आंसर। ऐसा क्यों? एक-एक करके पढ़ता हूँ, जहां डाउट होगा, पूछिएगा। 
+
+"A relation instance R has A, B, C, D, which is decomposed into R1 A, B, C and R2 C, D, which are the projections of R." जिसके अंदर चार एट्रिब्यूट्स हैं, A, B, C, D और वहां से दो अलग-अलग प्रोजेक्शन निकाले, जिसके अंदर आया है R1 A, B, C, और दूसरा जो प्रोजेक्शन आपने निकाला R2, उसके अंदर आया है सिर्फ़ C, D। मुझे उनकी बात समझ आ रही है क्या? 
+
+उसके बाद यह बोल रहा है, "लेट आर एस नेचुरल जॉइन।" तो क्या इन दोनों के बीच में कोई कॉमन एट्रिब्यूट्स है? जी हाँ, C कॉमन था। इन दोनों के बीच में कॉमन एट्रिब्यूट्स है C। तो अब हम इन दोनों का नेचुरल जॉइन करेंगे, तो गाइज़, आप अपने को जो रिजल्ट टेबल मिलेगा, उसके अंदर A, B, C, D चार वैल्यू होंगे। 
+
+हाँ। दिस गिव द कंपोजीशन ऑफ लॉस। द फॉलोइंग इज़ नॉट फेयर ऑफ लॉस की बात बहुत अच्छे से समझ लीजिए। मतलब क्या होता है कि इन दोनों को दोबारा कम करेंगे, तो सेम टपल्स, टपल्स जनरेट होंगे। ओरिजिनल टेबल से जनरेट होंगे। 
+
+लक्ष्मी गो एन एग्जांपल विथ एग्ज़ांपल। मान लीजिए, एक टेबल है R1, जिसके अंदर मैं दो सिंपल से कॉलम लेता हूँ, A और B। क्या कॉमन एट्रिब्यूट है इसका मतलब यह कि कोई प्रॉब्लम नहीं होगी। एक कॉमन टेबल है, जिसके अंदर मैं डबल लेता हूँ, C, D। और यह एक पेरेंट टेबल है R। कंपोजीशन है जिसके अंदर तीन कॉलम्स हैं, C, D। और यहां पर वैल्यू है A, B। और यहां पर वैल्यू है P, Q। और यहां पर वैल्यू है R। 
+
+अब, हम इसको डिकंपोज करेंगे, तो बताओ क्या होगा? R1 के अंदर आएगा A1 और B1। और R2 के अंदर आएगा, A1, B1। और R2 के अंदर आएगा, C1, D1 और C1, D2। टेबल सबको समझ आ रही है? जो कॉमन एट्रिब्यूट है, उसके अंदर के लिए? रीडनंस वैल्यू नहीं लिया। 
+
+ऐसा हो सकता है, लेकिन प्रॉब्लम क्या है? अब जब आप दोनों को कंबाइन करेंगे, नेचुरल जॉइन से, चाहे कार्टेशियन कर लें, चाहे नेचुरल जॉइन कर लें, आपकी इच्छा है। क्या-क्या मिलेगा? जब A को जाकर मैच करेगा, तो A1 पर P, B और Q, B है। तो A1, B1, P और B1, Q, चारों मिल जाएंगे रिजल्ट के अंदर। यस और नो? जी हाँ। 
+
+है। तो अब यह जो डिकंपोजीशन है, गैंबल मैं आपको समझ, नेचुरल जॉइन का मतलब क्या है? यह जो डिकंपोजीशन है, यह लॉसी कहलाएगा। लॉसी। मतलब क्या हुआ? लॉसी है कि आपने पेरेंट टेबल को डिकंपोज किया, और कंबाइंड करने के बाद, क्या आप सेम पेरेंट टेबल पर पहुंच पाए कि नहीं? यह बताओ। 
+
+कि मैं समझाता हूँ, मैं डोंट वरी, मैं समझाता हूँ। लॉस कैसे हुआ? कि कुछ लोगों को शायद ऐसा लग सकता है कि पेरेंट टेबल में कितने रो हैं? ऑब्ज़र्व करो। पेरेंट टेबल में दो रोते हैं। और रिसेंटली में कितने हैं? चार। फिर भी आप सोचोगे कि मैं बोल रहा हूँ लॉस है। आपको लगेगा कि हाँ, यहाँ तो डेटा गेन हुआ, यस और नो? 
+
+जी हाँ। तो यह डेटा लॉस नहीं है, यह तो डेटा गेन हो गया है ना? डेटा, आप ज़रूर करिए। डेटा, आप ज़रूर करिए, बात समझेंगे कि यह सच में डेटा लॉस है। 
+
+डेटा को लॉस क्यों है? फॉर एग्ज़ांपल, चलिए, मैं आपसे पूछता हूँ, आप मुझे बताएं, अगर पेरेंट टेबल में कैपिटल A का वैल्यू A है, तो C का वैल्यू क्या होगा? बताओ? 
+
+क्या, पेरेंट टेबल में अगर A का वैल्यू B है, तो C का वैल्यू क्या है? बता सकते हैं? पेरेंट टेबल में अगर कैपिटल A का वैल्यू B है, तो C का वैल्यू Q है, हंड्रेड परसेंट। इसमें कोई डाउट ही नहीं है। लेकिन, चाइल्ड टेबल्स को जो कंबाइन करने के बाद आया, यहाँ पर अगर A का वैल्यू A है, तो बताओ C का वैल्यू क्या है? आप नहीं बता सकते। एक बार वैल्यू P आ रहा है, एक बार Q आ रहा है। तो क्या यह लॉस ऑफ इंफॉर्मेशन नहीं है क्या, मुझे बताओ? 
+
+तब, एक बार समझिएगा। हम डेटा, ये डिकंपोजीशन की आइडिया को लाइक कब मानते हैं? सब लोगों को डाउट होता है। पेरेंट टेबल में कितने रो थे? दो रो थे। मेरे को ओरिजिनल टेबल में दो ही चाहिए। दो से ज़्यादा चाहिए कि कम चाहिए? यह बता दीजिए ज़रा। 
+
+वैरी गुड। 
+
+अगर डिकंपोजीशन लॉसी नहीं है, लॉसलैस है, तो जो दिया था, वापस करो ना। तो मेरे को एक्ज़ैक्टली दो ही चाहिए। यस? अगर दो से कम है, तो भी लॉस है। और दो से ज़्यादा है, तो भी लॉसी है। यह बात समझ पा रहे हैं आप लोग? तो जल्दी से बताएं, अगर दो से कम है भाई, तो भी लॉस है। दो से ज़्यादा है, तो भी लॉसी है। 
+
+तो अब, इसने पूछा है कि अगर डिकंपोजीशन लॉसी है, तो कौन सा कंडीशन ट्रू है? तो आप मुझे बताएं, हमारे देश में बहुत अच्छा एग्ज़ांपल है, चाइल्ड टेबल जो था, यहाँ पर पेरेंट टेबल था R। और नेचुरल जॉइन करने के बाद जो रिजल्ट बन रहा है S, क्या R, S का सबसेट हो जाएगा? लॉसी के केस में जो हमारे साथ भी हुआ, हमारे साथ भी यही हुआ। तो क्या C सही आंसर है? देखिए ज़रा, ऑब्ज़र्व कर पा रहे हैं क्या? 
+
+यह बात छोटा है, बट इसका जो मैथमेटिक्स है, वह बड़ा ज़बरदस्त है। समझने में थोड़ा समय तो लगता है, बट एक बार अगर आप समझें, तो फिर यह क्वेश्चन सॉल्व किए जा सकते हैं, है ना? तो आपको यह समझना है कि अगर रिजल्टेंट टेबल इतना बड़ा मिल रहा है कि पेरेंट टेबल सबसेट हो गया इसका, इसका मतलब कुछ बहुत इंपॉर्टेंट इंफॉर्मेशन आपकी लॉस्ट हो गई है। 
+
+कुछ बहुत इंपॉर्टेंट इंफॉर्मेशन लॉस्ट हो गई है। 
+
+है। तो मुझे बताएं, यह क्लियर है या किसी को कंफ्यूजन है इसमें? 
+
+क्लियर है सभी को? 
+
+ओके, ओके। वैरी इंटरेस्टिंग क्वेश्चन। थोड़ा सा सब्जेक्ट पढ़ना था, उतरना था। एक और क्वेश्चन देखिए। 02, 01, 00, ये क्वेश्चन। 
+
+बी क्यों नहीं होगा? महावीर पूछ रहे हैं। यह, 20,000 कुछ भी नहीं। C, ना। अगर, मतलब लॉसलैस का लेना-देना कुछ भी से नहीं है। मेरी समझ से परे है, अगर पेरेंट टेबल था R, जिसको आपने डिकंपोज किया दो टेबल के अंदर R1, R2। और कंबाइन करने के बाद आपको मिला S, तो मैं आपको क्या बोल रहा हूँ? लॉसलैस कब होगा? जब R = S हो। 
+
+मगर मैं सिंपल बोल रहा हूँ भई, जो डेटा पहले दिया था, डिकंपोजीशन करने के बाद, जब नेचुरल जॉइन से कंबाइन करो, तो मुझे मेरा डेटा वापस करो, बात खत्म। लोग कंफ्यूज होने में, दोबारा लिख देता हूँ, क्या है? वह सबसेट हुआ R का, चाहे R सबसेट हो S का। यह दोनों ही लॉसी हैं। आप ऑब्ज़र्व कर लो दोबारा, मुझे कोई प्रॉब्लम नहीं है। कि चाहे सब सबसेट हो R का, चाहे R सबसेट हो S का, यह दोनों लॉसी हों। 
+
+अगर S सबसेट है R का, तो S अगेन अखिलेश ऑफ लॉसी डिकंपोजीशन। आप सब चाहिए, तो मेरे को तो सेम डेटा चाहिए ना? लॉसी बोलोगे तो?
+
+शुभ इच्छा लुट ठीक है, कॉसमॉस क्वेश्चन सॉल्व करेंगे दिल अंडरस्टैंड। इस क्वेश्चन का आंसर बताइए। इस क्वेश्चन का आंसर एक बार क्या होगा? बरगढ़? यह एक गेटवे क्वेश्चन है। यह गेट 2012 का क्वेश्चन है।
+आंसर्स करो, बताओ सही आंसर क्या होगा? 
+
+33.33 परसेंट? ओके, 40 परसेंट? 40 परसेंट ठीक है, थोड़ा मुश्किल है। बहुत सारे कुछ इंपॉर्टेंट ऑब्जर्वेशंस अपने को देखने हैं। 
+
+ओके, क्वेश्चन में शामिल करें, डोंट वरी। पहले तो कभी हम फंडामेंटल क्वेश्चंस से कंडीशन और है ना। ओके, तो यह आंसर 46 परसेंट ने टिक किया, 56 परसेंट और डी? चलिए, देखते हैं क्वेश्चन क्या है? R एंड S विद रिलेशंस, टू रिलेशंस R and S, विद द रिलेशन एक्सप्रेशन S. 
+
+तो 2 टेबलस्पून बोले, एक है R1 है, इस पर इतनी समझदारी की मुझे बताएं और बाकी के बारे में कुछ खास क्लेरिटी अपने को नहीं है। बट ये जरूर बोलता है लेट ए बी ट्रिब्यूट, ए, R के अंदर कोई एट्रिब्यूट है और बी हो सकता है, अपने को नहीं पता। करना? 
+
+अब यह कंडीशन देख के क्या बोल रहा है? यह कंडीशन कह रहा है a = b द्वारा नैचुरल जॉइंट कर रहा है R और S का। क्या इनके बीच में कुछ ना कुछ कॉमन रहा होगा, मे बी जिस बेस के ऊपर इसने यह कंडीशन अप्लाई किया? यस और नो, पहले तो यह बता दो। 
+
+यस, और उसके बाद यह कंडीशन लगा रहा है ऊपर। बढ़िया, ओबवियस बात है, मुझे बताओ, यह जो कंडीशन है, उसका तो सिर्फ R से लेना-देना है ना? तो पहले मैं कार्टून प्रॉडक्ट, नेचुरल जॉइन करूं, उसके बाद कंडीशन लगाऊं, या मैं डायरेक्टली कंडीशन पहले R के ऊपर लगा के फिर नेचुरल जॉइन कर सकता हूं? डजंट मेक मोर सेंस? सोचिए एक बार। 
+
+यस। अच्छा, जो लोग बोल रहे हैं, सिर्फ यहां पर R10 with answer है, तो गलत है। S के साथ नेचुरल जॉइन भी तो करना है ना भाई? तो उसको भला कैसे इग्नोर कर सकते हैं? नेचुरल जॉइन तो करना पड़ेगा। तो A और B तो ऐसे एलिमिनेट हो जाते हैं, जहां पर S की बात ही नहीं कर रहा। यह मैंने चेंज को हटा दूंगा नहीं, उसको थोड़ी हटा सकता हूं। तो इसके अंदर जो भी ट्रिब्यूट्स होंगे, जो भी कॉमन होंगे, नहीं होगा, उसके बेस पर जो होना है, वह तो होगा ही होगा, लेकिन कंडीशन का लेना-देना सिर्फ R से है। तब, अगर इसको ऐसे चाहे तो ऐसे जरूर लिख सकते हैं। क्या ये बात फॉलो कर पा रहे हैं अभी सब लोग? 
+
+कि अभी अगेन, बिल्कुल, ओबवियसली, इस क्वेश्चन के अंदर तो अब हम डिटरमिनेट कर सकते हैं। यस, जबकि इस क्वेश्चन के अंदर मेरा कंसर्न, सबसे ज्यादा लोगों ने ऑप्शन A आंसर किया था, जो कि गलत है। करेक्ट आंसर है ऑप्शन C। 
+
+अब मुझे बताएं, फॉलो कर पा रहे हैं क्या? बहुत सारी लर्निंग्स हैं, जब फंडामेंटल लर्निंग्स लेंगे, तब कुछ कॉम्प्लेक्स आइडिया सीख सकते हैं। एक और क्वेश्चन देखिए, बहुत इंपॉर्टेंट पैटर्न है। अगर देखो, एक बात और, अभी तक जितने भी केसेस देखे हैं, मैं सारे केस बैक-टू-बैक गेट पर लटके सॉल्व करा रहा हूं। क्या कोई बहुत कॉम्प्लेक्स ऑपरेटर पर क्वेश्चन पूछा गया है? नहीं। क्या कोई बहुत कॉम्प्लेक्स मैथमेटिक्स पूछा गया है? नहीं। तो यार, ये चैप्टर नोट में वो सिंपल आइडिया ही पूछे जाते हैं, बट पॉइंट है कि वो सिंपल आइडियाज को हमने कितने अच्छे तरीके से अंडरस्टैंड किया, फॉलो किया है। जरा यह क्वेश्चन देखिए। यह अगेन, वेरी इंपॉर्टेंट क्वेश्चन, और नंबर ऑफ टपल्स पर कई बार क्वेश्चन फ्रेम किए जाते हैं। जल्दबाजी मत करिएगा आंसर करने में, वध आंसर जरूर करें और फिर बताएं, इस क्वेश्चन का सही आंसर क्या होना चाहिए। 
+
+थैंक यू। समय-समय अभी देखो जरा इस क्वेश्चन को ध्यान से सॉल्व करो और बताओ, इस क्वेश्चन का सही आंसर क्या होना चाहिए। 
+
+एक बार ऑब्जर्व कर पा रहे हैं क्या? 
+
+ओके, लेट मी को वन बाइ वन। इसने बोला, कंसीडर है वन जॉइन ऑन रिलेशन R एंड S। लेट R हैज़ M टपल्स एंड S हैज़ N टपल्स, विद द मैक्सिमम एंड मिनिमम साइज ऑफ द जॉइन रिस्पेक्टिवली आर मैक्सिमम, मिनिमम क्या होगा? ऐसा। अगेन, एक क्वेश्चन और मैं पूछूंगा कि इस क्वेश्चन के अंदर इसने हमें कोई भी चीज़ नहीं दी कि दोनों के अंदर कौन-कौन से एट्रिब्यूट्स हैं और वो किस तरह से रिलेटेड हैं? यस और नो? नहीं, ऐसा तो कुछ भी उसने नहीं बताया। तो हमारे पास पूरी इंडिपेंडेंस है कि हम अपने हिसाब से वो केस लें जहां पर मैक्सिमम वैल्यू आए और वो केस लें जहां पर मिनिमम वैल्यू आए। तो लेट मी से, मान लीजिए कि यहां पर एट्रिब्यूट है A, यहां पर है B, यहां पर है A, यहां पर है C। तो दोनों के अंदर मैं कॉमन एट्रिब्यूट रख सकता हूं। अब मेरा काम मैक्सिमम सेट करना है। तो आप मुझे बताओ, अगर मैं सब जगह दोनों केस में वन वैल्यू रखना चाहूं, तो क्या मैं रख सकता हूं? ऐसा पॉसिबल है, कोई प्रॉब्लम नहीं है। जहां पर दोनों टेबल के अंदर जो कॉमन एट्रिब्यूट है, अब अगर ये दोनों टेबल के अंदर जो कॉमन एट्रिब्यूट है, वो रिपीटेड है, तब मुझे ये, जब मैं मैसेज करूंगा ना, सॉल्व करूंगा, मुझे टपल्स हैं, तो मैच करना पड़ेगा। नो, दिस टाइम, ऑप्शन प्रॉडक्ट का मतलब पहले को हर से, दूसरे को हर से, जैसा कि मैंने इसे, is going to multiply M * N और इस तरह से आप A और B को एलिमिनेट डायरेक्टली इन द केसेस ऑफ वैल्यूज इन द आंसर इज गोइंग टू बी M * N। 
+
+सबको समझ आया? मुझे बताएं। 
+
+मैं मैक्सिमम वैल्यू जॉइन किया, कार्टिशियन प्रॉडक्ट और नेचुरल जॉइन सेम नहीं है, बट इस कंडीशन में सेम तरीके से बिहेव कर रहे हैं। वेज स्ट्रैंथ इज़ रॉन्ग कि जिस वे से काम कर रहा था, वो भी ऐसे काम नहीं कर पा रहा है। देखिए, पॉइंट आंसर करने वाला है। यस। अच्छा, रही बात वाले की, अभी आपको समझ आ जाएगा कि कार्टिशियन प्रॉडक्ट और नेचुरल जॉइन डिफरेंट क्यों है? अगर मैं चाहूं तो कॉमन एट्रिब्यूट रखूं, ना रखूं, लेकिन मैं डिस्टिंक्ट वैल्यूज रख ही सकता हूं। मान लीजिए, वन से यार 10 तक और 11 से 12 यार, 14 से आ गया 30 तक। क्या मैं रख सकता हूं? हां, तब मुझे बताओ, कॉमन एट्रिब्यूट मैं ले लेता हूं, लेकिन इनके बीच में लेट मी से, कोई भी कॉमन वैल्यू नहीं है। अब क्या होगा बताओ? 
+
+कि इनके बीच में कोई भी कॉमन वैल्यू नहीं है, अभी क्या होगा? भी जीरो मिलेगा। अमेरिका छोड़िए, जीरो मिलेगा। तो देयर फॉर, फंडामेंटली, द करेक्ट आंसर इज गोइंग टू बी B। मुझे बताएं, बात जरूर कर पा रहे हैं क्या? 
+
+इस तरह के क्वेश्चन देखिए, बड़े इंटरेस्टिंग हो जाते हैं। बड़ा, अगर आपको पूरा आइडिया क्लियर है, तो नो डाउट, आप इसे सॉल्व कर पाएंगे। 
+
+अभी कोई कंफ्यूजन है क्या किसी को? फॉलो कर पा रहे हैं? बहुत अच्छे। मैं कोशिश कर रहा हूं कि ज्यादा से ज्यादा क्वेश्चन आपको सॉल्व कराऊं, सो दैट थोड़ी अंडरस्टैंडिंग आपकी इम्प्रूवमेंट। जैसा कि सवाल, 2002 में क्वेश्चन, गेट 2002 में क्वेश्चन, गो थ्रू एंड दिस ऑप्शन। करो, अमरू, तो सही आंसर क्या होना चाहिए? आप पहले पूरा क्वेश्चन ध्यान से पढ़िएगा, जल्दबाजी मत करिएगा, वरना गड़बड़ कर देंगे। 
+
+एक बार ऑब्जर्व करने की जरूरत है। 
+
+सिर्फ 5 परसेंट, 6 परसेंट। C हो जाए? कोई आंसर नहीं कर रहा है। ओके, थोड़ा सा अलग है। 
+
+AND इज़ 50 परसेंट। 
+
+चलिए, लेट टेक वन बाइ वन। 
+
+ओके, इसने बोला, द फंक्शनल डिपेंडेंसी होल्ड्स ऑल रिलेशनशिप S, T, C, D एंड B, D S। हमें जल्दी से हम कर सकते हैं, दोनों टेबल बना लो। 
+
+ओके, तो लेट मी से, और 1 टेबल हमारे पास है A, B, C, D और दूसरा रिलेशन, चलिए। 
+
+अब देखिए, डिपेंडेंसीज क्या-क्या है? पहले डिपेंडेंसी से बोल रहा है, B टू A। एंड सेकंड बोला, C टू D। ऑब्जर्व कर पा रहे हैं, दूसरे रिलेशन में? अच्छा, सॉरी, इस रिलेशन का नाम है यहां पर देखिए, यहां पर ये रिलेशन हमारा है। कंसीडर द फॉलोइंग। रिलेशन R है, कंटेन 2000 टपल्स, R, S, कंटेन 100 टपल्स। द मैक्सिमम पॉसिबल नंबर ऑफ़ टपल्स इन द नेचुरल जॉइन? दोनों में कॉमन एट्रिब्यूट है? यस और नो? इनफॉरमेशन, कॉमन एट्रिब्यूट? 
+
+यस। क्या B दोनों में से किसी भी टेबल के अंदर प्राइमरी की है? मुझे बताओ। 
+
+क्या? हां। 
+
+तो अब, अगर प्राइमरी की है, तो जैसा कि मैंने पहले केस जनरेट किया था ना? फर्स्ट केस के अंदर क्योंकि A से आप गए B, और B से गए C, A से गए C, तो क्या यहां मैं 1 1 1 1 1 1, इस तरह से ऑब्जर्वेशन ले सकता हूं? मुझे बताओ, जो मैं पहले ले पा रहा था? नहीं ले सकता वो। बिकॉज़ घर की है भाई। तो रिपीटेशन कैसे होगा? यूनिक डिस्टेंट वैल्यू होना चाहिए, है ना? 
+
+इस तरह से मैं 1 से लेकर 10 तक आ सकता हूं कि अलग-अलग वैल्यू ले सकता हूं? सेम वैल्यू ले सकता हूं? यस। अब इसने हमसे पूछा, मैक्सिमम की मिनिमम? इसने बोला, मैक्सिमम। आप मुझे बताओ, R कंटेन 2000, S कंटेन 100, तो मैं यहां पर अगर मान लीजिए, मैं अलग वैल्यू लेता हूं, सर, ये 1 से लेकर 100 तक। लेट मी, ये 2001 से लेकर 3000 तक। तो 1 से लेकर 100 तक अगर मैं लिखता हूं, 2001 से लेकर 3000 तक, तो क्या मिलेगा बताओ? कितने टपल्स मिलेंगे एक-एक करके, ताकि हर कोई जो क्लास देख रहा है, उसे वक्त समझदारी होगी, कैसे आया? मैं मिनिमम पूछ रहा हूं, कितने टपल्स मिलेंगे? फर्स्ट R में 1 से लेकर जा रहा हूं 2000 तक, और सेकंड S के अंदर 2001 से लेकर 3000 तक। 
+
+ज़ीरो मिलेगा? जब कुछ कॉमन नहीं भाई, नेचुरल जॉइन नहीं हुआ है। इन दिस केस, आपके सामने फर्स्ट वैल्यू में 1 से लेकर 2000 तक जा रहा हूं, सेकंड 2001 से लेकर 3000 तक जा रहा हूं। नेचुरल जॉइन मेरे पास है, वो तो कॉमन देखता है दोनों के अंदर कॉमन भी है। अगर एक कॉमन ही नहीं है, तो भाई ज़ीरो मिलेगा। 
+
+एक बार भी मैच नहीं होगा, अब सवाल है कि मैच कराना है कि हमसे मैक्सिमम पूछा गया कि मैं हमसे मैक्सिमम पूछा है, लेकिन क्वेश्चन समझना तो जरूरी है ना? ठीक है, तो मैं दो अलग-अलग केस बनाता हूं देखने के लिए कि आपके ऑब्जर्वेशन कैसी है। क्या सेकंड टेबल के अंदर भी की है? बट इंपॉर्टेंट बात पूछ रहा हूं मैं, कि क्या सेकंड टेबल के अंदर भी की है? नहीं है। तो मैं क्या कर सकता हूं? देखिए, या तो मैं 1 को ही रिपीट कर दूं, 100 टाइम्स, है ना? यस? या फिर, मान लीजिए, मैं 1, 2, 3, 4 अलग-अलग लिखना शुरू करूं, मैक्सिमम तक जा सकता हूं। अगर मैं पहला केस लूं, 1 लिख देता हूं, तो क्या होगा? ये इधर 100 टपल्स, 100 टाइम मैच होगा। तो अगर मैं अलग-अलग लिखूंगा, 1, 2, 3, 4, 5, ये है ना? यस। चलिए, यहां पर क्या होगा? द रिजल्ट इज़ गोइंग टू बी वैरी गुड। क्वेश्चन करेंगे, तो सही आंसर तक पहुंचेंगे। 
+
+किसकी तरह करेगी, नाम से है, ऐसा तो नहीं होगा। एक सिस्टम के अंदर दो एट्रिब्यूट के दो अलग-अलग नाम हो सकते हैं, नहीं, नाम से आपको पता है कि उसी का आंसर है। मेरी कोशिश ये है कि ऐसा ना हो कि मैं चाहूं कि सारे क्वेश्चन आप सॉल्व कर लो, बट हर क्वेश्चन का ऑब्जर्वेशन एकदम क्लियर हो। उस कई बार होता है, आंसर जरूर होता है, बट अपन पूरी तरह ऑब्ज़र्व नहीं कर पा रहे होते हैं। 
+
+मिनिमम, देखिए। मैंने पहले एक्सप्लेन किया, ये मिनिमम बिल्कुल जीरो होगा, लेकिन मैक्सिमम 100 होगा। मजे हो रहे हैं। अलग-अलग वेरिएशन, अलग-अलग ऑप्शन ट्राई कर रहे हैं, तो कुछ ना कुछ आपको मैंने सिखाया हूं। 
+
+एक और क्वेश्चन देखिए, डेली गेट 2004, वन मार्क क्वेश्चन, इसको देखेंगे। इन रिलेशन, जाकर इस फॉर्म में लिखा हुआ है और फॉरेन की, जैसे भी हम ऑब्जर्वेशन देख रहे थे, वो भी चीज़ें यहां पर काम आएंगी, इस क्वेश्चन के अंदर। लुक एट दिस। 
+
+नवीन, शोर एंड प्राइमरी की A के लिए कोई प्रूफ नहीं है हमारे पास। अब बताओ मुन्ना, आपको क्यों लग रहा है कि A प्राइमरी की है? 
+
+और फिर विकास, डब्ल्यू सी एल डिपेंडेंट ऑन इन। ऐसी का वैल्यू जब B पर डिपेंड है मोना, तो क्या इस B सब लोग एक प्राइमरी की है? ये डेफिनेशन होती है प्राइमरी की की? आप मुझे बताओ। 
+
+ऐसे अगर आप C के लिए सर्च कर पा रहे हैं, तो इस B से मैं बोल सकता हूं कि प्राइमरी की होगा? एक टेबल کے अंदर जितने एट्रिब्यूट्स, सारे एट्रिब्यूट्स सर्चबल होने चाहिए, है ना? 
+
+आगे तक ज्यादातर लोगों का कहना है B। चलिए, एक-एक करके ऑब्जर्वेशन देखते हैं, फिर जो डाउट जो कंसर्न मुझे बताइएगा। 
+
+अब देखो, ये R1, R2 और आप मुझे बताओ, इसने लिखते हुए यहां पर लाइन क्यों किया है? कटिंग साइड है? 
+
+इसने अंडरलाइन क्यों किया है? A को और D को। 
+
+की प्राइमरी की है भाई। एक टेबल है R1, एक टेबल है R2। एंड हियर यू कैन राइट A, B, C, D, वेयर A इज द प्राइमरी की। एंड हियर A, B, E, वेयर A इज द प्राइमरी की, वेयर द प्राइमरी क्लास इज फॉरेन की इन 1, रेफरिंग टू R2। 
+
+इसमें कोई डाउट नहीं, क्लियर कट मेंशन कर दिया। नाम अलग-अलग, लेकिन सिर्फ फॉरेन की जो कि प्राइमरी की को रेफर करती है, ये होना चाहिए। पॉसिबल डेविएशन ऑफ द इंडिपेंडेंस को क्या बोलते हैं? इस बात का ध्यान रखें, क्योंकि हम एक टेबल से दूसरे टेबल, दूसरे सेट में रेफर कर रहे हैं। 
+
+चच ऑफ द फॉलोइंग इज़ नेचुरल जॉइन? सब्सैट होगा? तो यहां पर मुझे बता दीजिए, कौन किसका सबसेट होगा? C का वैल्यू A का सबसेट हो गया, D का वैल्यू C का वैल्यू का सबसेट होगा, D का वैल्यू C का वैल्यू का सबसेट होगा? वो पुरानी लर्निंग है जो लाइन और यहां पर यहां यूज़ होगी, मुझे बताएं। 
+
+वैरी गुड। वैल्यूज ऑफ C विल बी सबसेट वैल्यूज ऑफ D। क्योंकि फॉरेन की है और वो रेफर करता है D को। तो पूछना इसमें से कौन सा नेचुरली एंटी होगा? थिंक स्ट्रेट फॉरवर्ड, B इज द करेक्ट आंसर। 
+
+इसमें कोई डाउट होना ही नहीं चाहिए। अगर आप प्रोजेक्शन करेंगे C के वैल्यू को और उससे अगर आप सब्सक्राइब कर रहे हैं D के वैल्यू, तब मुझे बताएं, सब लोग फॉलो कर पा रहे हैं अभी। 
+
+नेक्स्ट इज़ करेक्ट आंसर्स, बट सिंपल ऑब्जर्वेशन। 
+
+बट डायरेक्टली फॉलो करके आंसर निकालना है। 
+
+यस? 
+
+अभी क्लियर हो रहा है कि सभी को? अब एक इंटरेस्टिंग क्वेश्चन है, जहां पर एक नई प्रॉपर्टी मैं डिस्कस करूंगा जो अभी तक हमेशा किसी केस में कवर नहीं की। और यह क्वेश्चन पूछा गया है गेट 2017 में। सबसे इंटरेस्टिंग क्वेश्चन, जरा पूरा क्वेश्चन लाइन-बाय-लाइन ध्यान से पढ़िएगा और फिर बताइएगा, क्या आंसर होगा? 
+
+तीन अलग-अलग टेबल्स हैं, कुछ क्वेरी लिखी हुई है। 
+
+क्यों होता है फॉरेन की सबसेट? क्यों होता है प्राइमरी की का? ये प्राइमरी की को थोड़ा सा ज्यादा कांसेप्चुअल आइडिया है। इसके लिए आपको ER डायग्राम समझ आना चाहिए, बट बेसिकली, बिकॉज़ हम रेफर कर रहे हैं, तो ऐसे समझो, अगर एक टेबल है, इसमें ब्रांच का इंफॉर्मेशन लिखा है, एक टेबल है, जिसमें स्टूडेंट का इंफॉर्मेशन लिखा है, क्या स्टूडेंट के पास ऐसी ब्रांच हो सकती है जो कॉलेज में ना हो? एडमिन एग्जांपल, नहीं हो सकता। 
+
+तो स्टूडेंट के पास ब्रांच वही होगी जो कॉलेज में होगी। इस वजह से मैं बोल सकता हूं सबसेट है यार, बहुत सारे एग्जांपल हो सकते हैं। क्या कॉलेज के अंदर या किसी शॉप के अंदर से आइटम के अंदर कोई सामान सेल कर सकते हैं क्या जो दुकान में ही ना हो? पहले इन्वेंटरी में होना जरूरी है ना? 
+
+आज तो बनी बहुत अच्छी वाली गैंगवार हो रही है बार-बार। 
+
+क्वेश्चन समझ आ रहा है कि स्ट्रक्चर गया, क्या लिखा हुआ है? 
+
+ओके, तो कंडीशन बस यही है। 71 परसेंट।
+
+11 आंसर किया है बी, पॉजिटिव वर्सेस आंसर किया है, और सीओडी कमज़ोरियां परसेंट। ओके, तो कुछ लोग जो सही फॉलो कर पा रहे हैं, मैं इसमें एग्जांपल एक-एक करके क्वेश्चन पढ़ता हूँ। पहले तीन टेबल मेरे पास है। कौन-कौन? A, B और C। A के अंदर तीन एंट्री हैं, 3 जो है B के अंदर 4 हैं, और C के अंदर 2 हैं। 
+
+एवं द्वारा याद दिला दूंगा आपको, अगर कोई भी क्वेरी लिखी हुई है, रिलेशनल अलजेब्रा में उसमें रिप्लिकेशन का कोई इसको होता है या नहीं होता? यह बताओ कि अगर कोई क्वेरी लिखी है, देश है, उसमें रिप्लिकेशन का कोई इसको नहीं है, ठीक है। फिर आगे बढ़ता हूँ। 
+
+यह कहता है "How many tuples will be in the result of the following relational algebra expression?" (कंडीशन जो दी है, उसको बाद में एक मान लेना)। तो, यहाँ पर इसने राजधानियाँ, बट यहाँ पर बल्कि डॉग इन बताओ। पहले यूनियन करूँ या पहले नेचुरल जॉइन करना है? पहले क्या करूँ? पहले यूनियन करूँ। ब्रैकेट के अंदर लिखा हुआ है। इतनी अंडरस्टैंडिंग हमारी है। 
+
+अब जब मैं A और B को यूनियन करूँगा, पहले मुझे बताओ कि A और B का यूनियन किया जा सकता है? क्या दोनों का जो नंबर ऑफ कॉलम और उनका डोमेन एकदम सेम है? हाँ, ID, Name है। S_Name है। दोनों के अंदर बिल्कुल सेम है, मैं यूनियन कर सकता हूँ। पर डुप्लीकेट नहीं, तो मान लीजिए, दूसरी लिख लेता हूँ। बट $S = A \cup B$। तो, जो इधर है, वह रहने देता हूँ। 2, अरुण, 65, यहाँ पर 2, अरुण, 65 है। तो, लेट मी राइट वैल्यू, लेट मी राइट अरुण, 65, उसका 15, उसके बाद 20, और डीयर, नोहित, 11, 99। जो इधर है, वह दोबारा से लिखूँगा नहीं, तो इसको अभी मैं हटा देता हूँ। और यह यूनियन B करके मेरे को यह ट्यूपल मिल जाएगा। क्या इतनी बात समझ आ रही है? जिसके अंदर 5 ट्यूपल्स होंगे। 
+
+यहाँ तक समझ आना चाहिए, यस और नो बोल रहा हूँ। उसका स्कीमा जो है, उससे में सही हो जाएगा। तो, इसको भी मैं A बिना मांगे दोबारा A मान लेता हूँ, कर सकता हूँ ऐसा? हाँ, यस। 
+
+अब देखिए अपना ऑब्ज़र्वेशन आगे कैसे बढ़ेगा। अगला काम यह करना है कि दोनों का नेचुरल जॉइन, बट सबजेक्ट के अंदर ही कुछ कंडीशन लिखी है। अब देखिए, अभी तक आपने कार्टेशियन प्रोडक्ट पढ़ा, आपने नेचुरल जॉइन पढ़ा, इसको हम बोलते हैं थीटा जॉइन। क्या बोलते हैं? थीटा जॉइन। 
+
+थीटा जॉइन का मतलब क्या होता है कि मैं इस साइड से इस साइड का कार्टेशियन प्रोडक्ट फॉलोअड बाय ए कंडीशन थीटा। यह समझो कि अगर नेचुरल जॉइन के साथ में कोई कंडीशन लिखा है, तो इसका मतलब यह कार्टेशियन प्रोडक्ट के जैसा ही होगा, पर इसमें आपको बाद में क्या लगाना पड़ेगा? कंडीशन चेक करना पड़ेगा, है ना? 
+
+दैट मी टू वन थिंग, यह मेरे पास A है, यह C है। इनका अगर मैं कार्टेशियन प्रोडक्ट करूँगा, तो कितना बोलेगा? बताओ ज़रा। इधर 5 है, 2 है। 5 * 2 = 10 आएगा। लेकिन कंडीशन देखना पड़ेगा। कंडीशन दो ही चीज़ पर लगा है - A की ID पर और C की ID पर। मैं एक काम करता हूँ, सारे कॉम्बिनेशन नहीं लिखता। अगर मैं कार्टेशियन करूँ और मैं सिर्फ A की ID और C की ID लिखूँ, सो दैट हम सारे पॉसिबल केसेस समझ पाएँ। तो, A की ID 15, 60, डिटेल, तो 15 के साथ 10 आएगा, 15 के साथ 99 आएगा। उसके बाद 20 के साथ 10 आएगा, 20 के साथ 99 आएगा। उसके बाद विद 98? एक बार 10, एक बार 99। उसके बाद विद 99? 10, 99। और 12 के साथ भी एक बार 10 और एक बार 99। तो, ओवरऑल 10 ट्यूपल्स आएँगे। कई बार समझ आ रही है? 
+
+मैं सारा इंफॉर्मेशन नहीं लिख रहा। प्लस डेली भी यूज़लेस है। हमें जो कंडीशन लगानी है, वह A की ID और C की ID पर लगानी है। वही कंडीशन यहाँ मेंशन कर रहा हूँ। क्या आप फॉलो कर पा रहे हैं? 
+
+अगला पॉइंट आप ऑब्ज़र्व करिए। कंडीशन है, बीच में एंड है कि और? गौर करो, बीच में और है। तो, दोनों में से अगर एक भी कंडीशन सेटिस्फाई किया, तो रिजल्ट तक पहुँच जाएंगे। 
+
+पहला कंडीशन कहाँ-कहाँ पर है? A की ID 15 से बड़ी है। A की ID > 15। मैं उसको अलग से इन-सर्किल कर लेता हूँ। A की ID > 15, A की ID > 15, A की ID > 15। ये सिलेक्ट हो जाएंगे, यस? 
+
+ओके। अब देखिए, C की ID पर क्या चेक करना है? 15 से कम होना चाहिए। बताओ, कौन-कौन सी C की ID 15 से कम है? तो, यह दोनों जगह कवर हो जाएगा, यह भी दोनों जगह कवर होगा, यह भी कवर हो जाएगा। तो, यह वाले C की ID < 15। 
+
+तब मुझे बताओगे ऑल बचा कौन? टाइपिंग चीनी लोग बच्चे। यह बच गया, यह बच गया, यह बच गया। तो, दैट मींस अगर 3 बचे, तो हमारे पास कितने बचेंगे? 7। तो, करेक्ट आंसर होगा 8। 
+
+कटिंग सिर्फ़ दो लोगों ने सही आंसर किया था। ओके। कटिंग सिर्फ़ दो लोगों ने सही आंसर किया था, बट अगेन मैं जान-बूझकर ऐसे केसेज़ ही आप लोगों को ट्राई करा रहा हूँ, जिसमें कुछ ना कुछ लर्निंग आपकी हो, कुछ ना कुछ नया सीख लो। तो, एक यह हमने सॉल्व कर लिया थीटा जॉइन वाला। अगर कभी भी सबजेक्ट में कोई कंडीशन लिखा हो, तो उसमें कोई कन्फ़्यूज़न नहीं होना चाहिए। यह बात समझ आई? 
+
+अभी आप इसको फॉलो कर सकते हैं। साइड आपको लूक। कुछ नहीं। अभी एक बार मैंने समझाया तो टाइम लगा, बट अगर आपको आइडिया क्लियर हो तो रजिस्टर के फॉर्मेट में अगली बार दूँ, तो आप दो नंबर के क्वेश्चन में तीन-चार मिनट ले भी लिया तो कोई ज़्यादा टाइम आपने नहीं लिया, दैट इज़ टोटली ओके, यस-यस। 
+
+पॉइंट यह है, इसको सही तरीके से अपने को सॉल्व करना है। और के आगे, नाउ लेट मी डू वन थिंग, अभी कोई बोल भी रहा था क्या? नेचुरल जॉइन के मैं अलग-अलग वर्ज़न आपको समझा चुका हूँ। कार्टेशियन प्रोडक्ट समझा दिया, नेचुरल जॉइन, थीटा जॉइन। क्या इसमें कुछ इनर जॉइन, आउटर जॉइन का भी कंसेप्ट होता है? इसलिए, इस तरह का गुड भी लेफ्ट जॉइन, राइट जॉइन। उन सबकी अंडरस्टैंडिंग आपको समझाने की कोशिश करता हूँ। 
+
+अ बट पहले और उसमें मुझे लगता है कि जब तक क्लेरिटी नहीं होगी, तब तक आप उस बात को नहीं समझ पाएंगे। इन लाइट दिस वन, यह। 
+
+नाउ, सबसे समझाते हैं। लेफ्ट आउटर जॉइन का मतलब क्या होता है? देखिए, दो टेबल हमारे पास हैं - R1, R2, है ना? इसके अंदर अगर आप से मिलूँगा नेचुरल जॉइन निकालो, तो क्या है? मुझे बताओ, अधिक उधर ऑल रिफ्लेक्शन कर चुके हैं। सेम डेटा मैं लिख रहा हूँ। एग्ज़ांपल में, 2, Q, X और 3, R, Y, Z। यही आएगा? प्लस डेटा दोनों के अंदर कॉमन है - 2, Q, X और 3, R, Y। यह डेटा इसके अंदर है, देना। 
+
+तो, अब काफी लोग इस आइडिया के बेस पर क्रिटिसिजम करते हैं। नेचुरल जॉइन का क्रिटिसिजम क्या करते हैं? क्या नेचुरल जॉइन सिर्फ़ वही डेटा कंसीडर करता है जो दोनों टेबल्स के अंदर हो? यस और नो? सोचकर क्या नेचुरल जॉइन सिर्फ़ वही डेटा कंसीडर करता है जो दोनों टेबल्स के अंदर हो? यह तो हर कोई डेटा ऐसा है मुझे बताओ ज़रा सोचिए, अगर कोई डेटा ऐसा है जो दोनों टेबल के अंदर नहीं है, तो क्या वह डेटा यहाँ पर लॉस हो जाएगा? है ना? 
+
+तो, इस वजह से हमने नेचुरल जॉइन के अलग-अलग वर्ज़न देखे, सो दैट वह डेटा विल बी कंसीडर कर सकें, जो किसी के अंदर है, दोनों के अंदर नहीं होता है। जहाँ पर आप सही से नहीं आ रही है और लेफ्ट साइड पर लगा सकते हैं। राइट आउटर जॉइन, फुल आउटर जॉइन। 
+
+कौन सा डेटा नेसेसरी है? कौन सा डेटा अननेसेसरी नहीं है? यह डिसाइड करना हमारा काम है या यूज़र का काम है? हमारा काम डेटा मेंटेन करना है, यस। तो, हमारे पास कोई अधिकार नहीं है जज करने का कि कौन सा डेटा अननेसेसरी है, उसको लॉस कर सकते हैं। हम कोई भी डेटा लॉस नहीं कर सकते हैं। हमारा काम सिर्फ़ मेंटेनेंस का है, है ना? तो, मैं अपने बेस पर डिसीजन नहीं ले सकता। चलो, लॉस होने दो। 
+
+अगेन, जब मैं लेफ्ट आउटर जॉइन की बात करता हूँ, करते क्या है कि लेफ्ट वाला टेबल पूरा का पूरा लिख लेता हूँ। तो, लेट मी राइट वन, P। लेट मी राइट टू, Q। लेट मी राइट थ्री, R। क्या इसमें मैंने देखा कि मैच हुआ कि नहीं हुआ? मिनिमम उसमें नहीं देख रहा। मैं बोल रहा हूँ, कुछ भी हो जाए, लेफ्ट वाले टेबल के अंदर तो कोई भी मैं लॉस नहीं होने दूंगा। वह पूरा का पूरा लिख लेता हूँ। 
+
+यस। अब बात आई राइट वाले की। यहाँ पुत्र ऑप्शन देखते हैं। तो, कहाँ-कहाँ पर मैच हो रहा है? Q के ऊपर Q मैच हो जाएगा। R पर भी क्या मैच होगा? R पर, सॉरी, R पर R वाली मैच हो जाएगा। लेकिन P के ऊपर आपको कोई डेटा मिलेगा कि नहीं मिलेगा? P के ऊपर कोई डेटा नहीं मिलेगा, वैरी गुड। तो, यहाँ पर आप नल ले सकते हैं, कोई प्रॉब्लम नहीं है। 
+
+और यहाँ से एक और इंपॉर्टेंट बात समझ आती है, क्या प्राइमरी की के अलावा नल हो सकता है? मुझे बताएं क्या प्राइमरी की के अलावा नल हो सकता है? जी हाँ, बिल्कुल हो सकता है, तो कोई प्रॉब्लम नहीं है। और यश, जल्दी से बताएं क्या वह मैनेज कर पा रहे हैं क्या? हुआ था। 
+
+अब इससे होगा क्या कि जो लेफ्ट साइड वाला डेटा हमारा लॉस हो रहा था, क्या वह प्रॉब्लम सॉल्व हो जाएगी? हाँ, यस। 
+
+अब अच्छे अब हम इसका टोटल चेंज कर दें, यही तो समझा देता हूँ। कैन यू ऑटोमैटिकली गैस कि राइट आउटर जॉइन कैसे काम करेगा? सोचिए। राइट आउटर जॉइन कैसे काम करेगा? उल्टा कर दो ना, R1, R2, एक नेचुरल जॉइन एंड नाउ यू कैन टेक राइट हैंड साइड। मैं गैस कर पा रहे होंगे। R1.B, R1.A, R1.C, डॉट, राइट हैंड साइड। राइट हैंड साइड पूरा लिख सकता हूँ। तो, वैरी, वैरी इज़ी। 
+
+और अब लास्ट वाला जो मैच हो रहा है बहुत अच्छा, लिख सकता हूँ 2, Q, X। जो मैच नहीं हो रहा, वहाँ पर नल। प्रॉब्लम लेकिन क्विंटल। 
+
+अब यह जो दोनों वर्ज़न हैं, लेफ्ट और राइट, यह दोनों इज़ी हैं, लॉसलैस मुझे बताओ? या इनके अंदर भी लॉस होने के चांस है? लॉस होने का चांस तो है कि लेफ्ट वाले के अंदर राइट वाले का डेटा लॉस हो सकता है और राइट वाले के अंदर लेफ्ट वाले का। तो, अगर अपने को लॉस बचाना है, तो क्या करना पड़ेगा? वी मस्ट नीड कंप्लीट और फुल आउटर जॉइन क्या हो सकता है? फुल आउटर जॉइन। तो, यहाँ पर मैं लिख सकता हूँ, पैक कर सकते हैं। यह मैं दोनों में से किसी भी साइड का डेटा लॉस होने नहीं दूंगा। 
+
+ऐसा क्यों नहीं होने दूंगा? तो, कैसे करेंगे? 1, P, 2, Q, 3, R। अब जो मैच हो रहा है, उसको लीजिए। Q के ऊपर आपको मिलेगा X, R के ऊपर आपको मिलेगा Y। गैस, उसके बाद यहाँ पर मैं S लिख लेता हूँ, जो सेकंड टेबल है और जहाँ मैच नहीं हो रहा, 910 एवरीथिंग मस्ट बी फिल्ड विद् नल। वहाँ पर अपन नल रख सकते हैं। 
+
+मुझे बताएं ज़रा यह आइडिया क्लियर हो रही है सभी को? व्हाय डोंट वी नेसेसरी स्टडी फुल आउटर जॉइन? बिकॉज़ इट इज़ लेस, लेकिन इंजन पर हम आपको समझाना चाहते हैं कि सब जनरेट कैसे हो रहा है। अगर आप और कन्फ़्यूज़न पाना चाहते हैं, तो यूज़ स्टॉप को यह भी नहीं करना। रिलेशनल अलजेब्रा हम कहीं यूज़ ही कर रहे हैं। है ना? फिर डायरेक्ट एसक्यूएल पढ़िए। बल्कि एसक्यूएल भी क्यों पढ़ रहे हैं? फिर तो फ्रॉम थे सेंटर एस पढ़िए। 
+
+तो, हम आपके समझाना चाहते हैं यह सब काम कैसे हो रहा है, क्या हो रहा है। दैट्स व्हाई वी... कीप इट हियर अभी सभी को? 
+
+यश, वैरी गुड। नाउ, अगेन सब इस तरह के इंटरनल पर क्या क्वेश्चन क्वेश्चन पूछा जा सकता है? यू कैन ट्रैवल नंबर ऑफ क्वेश्चन ऑल दो, क्वेश्चन पूछना जो सबसे रीसेंट है। यह क्वेश्चन देखिए पूछा गया था गेट 2015 वन मार्क क्वेश्चन। टेक योर टाइम, आन्सर ज़रूर करें। मेरे होता है सही आंसर क्या होगा? 
+
+जल्दीबाज़ी करेंगे, तो ग़लत कर देंगे। बहुत सारा डेटा लिखा हुआ है, उसे ध्यान से प्रोसेस करिए, समझ लीजिए क्योंकि आपसे पूछना चाहता है, फिर बताएं सही आंसर क्या होगा? 
+
+ओके, एक बार इसमें जान-बूझकर कन्फ़्यूज़न क्रिएट करने की कोशिश की है। 
+
+कंसीडर टू रिलेशनल स्कीमाज़, जिसके अंदर दो टेबल हैं। R1 के अंदर दो कॉलम हैं A और B। अगर मैं R2 को अलग से बना लूँ, तो उसके अंदर भी दो कॉलम हैं A और C। तब यार B के हिसाब से वहाँ पर आएगा 1, 5, वहाँ पर आएगा 3, 7 और 4, 9। R2 के अंदर C के हिसाब से यहाँ पर आएगा 1, 7, तो यहाँ पर आएगा 4, 9। 
+
+इतना कर सकता हूँ, इसमें कोई डाउट नहीं है। अब उसके बाद देखिए, यहाँ पर उसने बोला A, B, C और फुल नेचुरल आउटर जॉइन करना है। तो, मैं हम खुद करने अपने हिसाब से, जो मैं इनका फुल नेचुरल जॉइन और आउटर वर्ज़न करेंगे। 
+
+तो, ज़रा मुझे बताओ क्या-क्या डेटा मिलेगा भाई? इसमें उसने चालाकी की है कि जो कॉमन रिलेटिव्स को थोड़ा सा चेंज करते हुए टाइपिंग, डोंट बी प्रॉब्लम। आप चाहो समझने के लिए, मैं इसका ऑर्डर चेंज करके ऐसे भी बना सकता हूँ। R1 के अंदर मैं लिख सकता हूँ A लिख लेता हूँ, क्योंकि ऑर्डर और कॉलम से तो फ़र्क नहीं पड़ता। एंड यू कैन राइट 5, 1 एंड यू कैन राइट 7, 3। 
+
+अब जल्दी से मैच कर सकता हूँ, यस। तो, अगेन अगर यहीं से देखें, एक-एक करके, जैसे चार देखें, का सबसे पहले पहला रो मैं लेता हूँ 1, 5। 1, 5 यहाँ पर आया है? जी हाँ, आया है। 1, 5 आपको मिल जाएगा सेवन। 
+
+आप ऑब्ज़र्व कर पाते हैं, जो मैच हो रहा है, तो कोई प्रॉब्लम नहीं है। 
+
+दूसरा मेरे को मिला 3, 7। 3, 7 क्या यहाँ पर A की वैल्यू है? जी नहीं। तो, क्या यहाँ नल ही आएगा? बिल्कुल। 
+
+उसके बाद यहाँ पर देखिए कोई वैल्यू बचा? जी हाँ, एक वैल्यू है 4, 9। क्या यहाँ पर A की वैल्यू 4 आई है? जी नहीं। तो, जहाँ पर भी है, वहाँ पर मैं नल लिख सकता हूँ। क्या इन तीन के अलावा कोई और वैल्यू आएगी? मुझे बताएं, इन तीन के अलावा और कोई वैल्यू नहीं आएगी, है ना? 
+
+अब आप देख लीजिए यहाँ पर कौन-कौन से मेरे पास हैं? 1, 5, 7 हमारे पास आया है। उसके बाद 3, 7, 1 हमारे पास है और उसके बाद 4, 9 हमारे पास है यानी कि F और G है, ना? तो, करेक्ट आंसर क्या होगा? C। 
+
+अब मुझे बताएं ऑब्ज़र्वेशन सिंपल है, डिफ़िकल्ट है? किया जा सकता है? बात समझ आ रही है? 
+
+तो, अगेन मेरे को टारगेट था, यहाँ पर मैं टूल भी डिस्कस करूँगा, बट हमने क्वेश्चन्स काफ़ी सारे सॉल्व किए हैं और लर्निंग बहुत सारी है। तो, टाइम अब हमारे पास आगे भी। डोंट वरी। एक बार अगर शिड्यूल मैं आपसे डिस्कस करूँ, तो आज हमने क्लास की है। कल और परसों, कल सुबह-शाम दोनों हमारी क्लास होंगी, यूज़ुअल टाइमिंग पर। तो, मॉर्निंग टाइम 2:11 और इवनिंग 9:10। याद है आपको, सैटरडे-संडे स्पेशल क्लासेज लगा रहे हैं। तो, यहाँ पर अगेन हमारा जो यार डायग्राम वाला डिस्कशन है, उसको भी कंटिन्यू करूँगा। इंटरनल क्वेरी लैंग्वेज को भी आगे लेकर चलूँगा। यह विक्रम, डोंट थिंक, इवनिंग वाली क्लास क्वेरी लैंग्वेज कर सकते हैं। मॉर्निंग वाली क्लास में यार डायग्राम लेकर चल सकते हैं। 
+
+कि आगे, अब मैं दोबारा याद दिला दूँ कि यह सिर्फ़ स्पेशल क्लासेज हैं। अगर आप ओवरऑल क्लास अटेंड करना चाहते हैं, तो यू कैन कम टू कनेक्ट मी प्लस। जहाँ पर यह क्वेश्चन है कि आइडिया बिल्कुल डाउट और क्लेरिटी के साथ मैं डिस्कस कर रहा हूँ। जहाँ पर मॉर्निंग क्लास के अंदर अभी मैं पढ़ा रहा हूँ एल्गोरिथम और इवनिंग में पढ़ा रहा हूँ डीबीएमएस, इवनिंग 10:2:9, 2:19 आप चेक कर सकते हैं। तो, मेरी प्रोफ़ाइल में जाकर आपको सारी आने वाली जितनी भी क्लास हैं, उन सबको आप एनरोल कर सकते हैं, सो दैट जब क्लासिफिकेशन आ जाएगा, है ना? 
+
+दैट यू कैन चेक आउट जो भी शिड्यूल वे गेट से पहले यहाँ पर ले रहा हूँ। ब्लू कलर वाले जो सब्जेक्ट ऑलरेडी कंप्लीट किए जा चुके हैं, ताकि उनका रिकॉर्डेड सेक्शन में लिख सकते हैं। ज़्यादातर सब्जेक्ट अभी बचे हुए हैं। तो, स्टील अभी सुबह पूछ रहा था सर कंफर्टेबल टाइम है कि नहीं है? अब सोचते रहोगे, तो पक्का निकल जाएगा। बट अभी भी देखिए डिजिटल इलेक्ट्रॉनिक्स रॉयल, गढ़वाल रेडियो चल रहा है। डिपो में सोडियम मेटल है, या आपको मिल जाएगा। क्वेश्चन हो चुका है, उसका रिकॉर्डिंग देख सकते हैं। उसके बाद सी एम, टी एस, सी, कंपाइलर वह सब आपका हो रहा है। 
+
+मुझे बताएं मैंने ऑलरेडी नहीं करवाएँगे जितने क्वेश्चंस मिल को मिलते हैं, रिलेटेबल वहाँ पर लेट के भी कवर कर रहा हूँ। तो, और गेट के लेवल का जो क्वेश्चंस होता है ना, अगर वह आप ध्यान से ओपन करेंगे, तो नेट की तैयारी ऑटोमैटिकली आपकी चल रही होगी। तो, मैं हमेशा बोल रहा हूँ कि मैं गेट के साथ-साथ आपको नेट के लिए प्रिपेयर करा रहा हूँ। नेट के लिए स्कूल फास्ट करने की ज़रूरत नहीं है, ना? 
+
+तो, शिड्यूल की आप देख सकते हो कि इसके इलावा जो और एजुकेटर्स हैं, उनकी आप क्लासेज अटेंड कर सकते हैं। जो क्लास ऑलरेडी हो चुकी है, उनके रिकॉर्डेड सेशंस का भी एक्सेस कर सकते हैं, जॉइन करेंगे तो। मुझे लगता है महावीर का नेट नहीं चल रहा है, कोई बात नहीं। 
+
+उसके अलावा देखिए, यह भी बहुत इंपॉर्टेंट ऑब्ज़र्वेशन है - इंजीनियरिंग मैथमेटिक्स, रीज़निंग, एप्टीट्यूड, न्यूमेरिकल एबिलिटी, वर्बल एबिलिटी, वह सारे टॉपिक्स है ना, जो प्लेसमेंट वग़ैरह के लिए आगे जगह इंपॉर्टेंट होते हैं, उन सब केस के अंदर आपका यहाँ पर इंप्रूवमेंट मिलेगा। बिकॉज़ हर किसी के डेडीकेटेड फैकल्टीज़ हो सकते हैं जो टेक्निकल सब्जेक्ट के अलावा। 
+
+प्लस, अगेन एक नया पॉइंट हमेशा भी आजकल बता रहा हूँ सभी को, कि काफ़ी लोगों ट्रस्ट यू रहते हैं ऑनलाइन कंपनी बताने सिलेबस पूरा होगा कि नहीं होगा, क्लास चलेंगे कि नहीं चलेंगे? तभी नीडन लेटेस्ट वेब ने एकेडमी वैल्यूएशन राम 1.
+
+5 यूएस बिलियन डॉलर्स। इसका मतलब सब इसे इंडियन रुपीस में रुपीस बिलियन। इंडियंस को हम यह समझ नहीं आता जाता है, तो लेट मी राइट इन टर्म्स से 1000 करोड़, 10 हज़ार करोड़। और 1000, 1000 के अंदर इन द राइट नाउ ए डेज़। इट इज़ अ 1000 करोड़ कंपनी, डेविड द फ़ास्टेस्ट ग्रोइंग कंपनी राइट नाउ। तो यू कैन ऑटोमेटिकली अस्यूम कि जो लेवल ऑफ़ क्वालिटी होगी, टीचिंग के अंदर, फैकल्टीज़ के अंदर, जो प्रोडक्ट टूल आपको मिलेगा, जो टेस्ट सीरीज़ मिलेंगी, वह सब कितना अच्छा होने वाला है। 
+
+नाउ अगेन, जिस कॉस्ट के अंदर जो क्वालिटी प्रोडक्ट आपको यहां पर मिलेगा, सेफ्टी के साथ घर बैठकर। यहां पर एक इंपॉर्टेंट पॉइंट और लोग नोट करते हैं, इज़ नॉट रिकॉर्डिंग। यहां पर एजुकेटर लाइव अपना टाइम निकालकर आपके सामने बैठे होते हैं, जो भी क्वेश्चन है, उसका सॉल्व कर रहे होते हैं। तो वेस्टिंग वाटर अवेलेबल प्रोडक्ट है, अगर आप सच में सीरियस हैं, तो है ना। तो सब्सक्राइब अभी करिएगा, अनअकैडमी प्लस में सब्सक्राइब जाएगा। जब आप सीरियसली प्रैंक कर रहे हैं, दिन में तीन घंटा दे सकते हैं, तो यू कैन गो टू गेट एस ए सब्सक्रिप्शन। और आप मंथली बेसिस पर भी यहां पर सब्सक्राइब कर सकते हैं। शॉर्ट सब्सक्रिप्शन इज़ फॉर वन मंथ, एंड लॉन्गेस्ट सब्सक्रिप्शन इज़ फॉर टू इयर्स। टू इयर्स कॉस्ट इज़ ₹30,000, वन मंथ इज़ ₹5,000, सिक्स मंथ इज़ ₹22,500। 
+
+अब मैथमेटिक्स की, 2 साल इंडिया के टॉपमोस्ट एजुकेटेड टीचर्स आपको सबसे जबरदस्त टॉपिक, सबसे शानदार तरीके से लाइव पढ़ा रहे होंगे। एंड कॉस्ट इज़ ओनली ₹30,000। तो मुझे लगता है कि इससे ज्यादा वैल्यू फॉर मनी कोर्सेज आपको कहीं भी मिलेगा। 
+
+अगेन, दिस कॉस्ट, यूज़ ऑलवेज़ माय फील गुड के, "जीवाईटी।" इसको यूज़ करेंगे, ट्रेडिशनल 10% डिस्काउंट आपको और मिल जाएगा। है ना, तो जो कॉस्ट आपकी थी 30,000, इट बिकम्स ₹27,000। 22,500 विल बिकम ₹20,250। पेमेंट आप किसी भी ऑनलाइन ऑप्शन के थ्रू कर सकते हैं, डेबिट कार्ड, नेट बैंकिंग एंड यू कैन सी द नंबर ऑफ़ ऑलवेज ड्रोस। इस एकेडमिक सेशन के अंदर 70,000 लर्नर्स हमारा कोड यूज़ कर चुके हैं। तो इस महीने के अंदर 47,210 लर्नर्स ने हमारा कोड यूज़ किया है। 
+
+10 ऑफ़ बेस्ट डॉक्टर अंडरस्टैंडिंग अकैडमी। स्पेशली, आप डायरेक्ट कर रहे हैं गेट 2021। सुबह, अगर आप सेकंड ईयर में हैं, फर्स्ट ईयर, थर्ड ईयर, तो गो फॉर टू ईयर सब्सक्रिप्शन। ताकि सारा का सारा कंटेंट मैं रिपीट करता रहता हूं, कम से कम एक सब्जेक्ट दो-तीन बार आप पढ़ लें। सो दैट, लेवल ऑफ़ अंडरस्टैंडिंग इस टू बी बिल्ट अप ऑन सैटर्न, फिर उसमें कोई चांस ही नहीं है। तो यहां पर आप देख सकते हैं कि लगभग हर साल के अंदर में दो बार सिलेबस कंप्लीट करा रहा होता हूं। तो मैंने वह फॉर टू ईयर सब्सक्रिप्शन, तो आपको सारा कंटेंट चार बार पढ़ने के लिए मिलेगा। तब, फिर आप बोल सकते हैं यहां से तैयार जिस लेवल पर है, यह भी कोई क्वेश्चन कैसे है, विवाद दो साल। 
+
+चलिए, ऑल दी वैरी बेस्ट, कल सुबह दोबारा मुलाकात करेंगे। एंड थैंक यू सो मच फॉर गिविंग मी टाइम। 3 घंटे कैसे पता चले गए, पता नहीं लगा। चलिए, कल दोबारा कंटिन्यू, ओके?

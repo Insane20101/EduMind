@@ -12,7 +12,7 @@ from rag.embedder import generate_embeddings
 from rag.vector_store import upsert_chunks
 
 BASE_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "CSE")
-HASH_TRACKER_FILE = os.path.join(os.path.dirname(__file__), "scripts", "ingestion_hashes.txt")
+HASH_TRACKER_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ingestion_hashes.txt")
 
 def load_hashes():
     hashes = {}
@@ -42,11 +42,12 @@ def get_file_hash(filepath):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Print chunks without embedding/storing")
+    parser.add_argument("--force", action="store_true", help="Force re-ingestion ignoring saved hashes")
     parser.add_argument("--semester", type=str, help="Filter by semester (e.g., Semester1)")
     parser.add_argument("--subject", type=str, help="Filter by subject id (e.g., BSM-104)")
     args = parser.parse_args()
 
-    file_hashes = load_hashes()
+    file_hashes = {} if args.force else load_hashes()
     
     if args.semester:
         search_path = os.path.join(BASE_DATA_DIR, args.semester, "*")

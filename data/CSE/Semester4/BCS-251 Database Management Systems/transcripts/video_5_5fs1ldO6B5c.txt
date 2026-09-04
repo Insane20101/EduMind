@@ -1,0 +1,83 @@
+Hello friends, welcome to Gate Smashers. The topic is three levels of abstraction in DBMS, or what we call its three schema architecture. Before starting this topic, I just want to request you all, especially those who are watching my videos for the first time, to please subscribe to my channel, please share with your friends, and please press the bell button to get the latest notifications. 
+
+From this video, firstly we are going to discuss what three schema architecture is and why it is used. What is the meaning of three schemas? I will draw a diagram here for the three schemas. 
+
+Firstly, to understand the word: what is a schema? Schema means structure. Structure means the data we are storing—whether that data is student data, faculty data, railway data, or data that Flipkart and Amazon are saving. Whatever data we are storing, what is the structure to store that data? Structure means any data. Like, if I have data: `1, A, 20`. Now, this data means roll number is one, name is A, age is 20. I am taking this just for an example. 
+
+Now, what did I do to save this data? I put it in a table. Table means I put it in a two-dimensional table where I have columns on this side, like I have written here: roll number, name, and age; and here are my rows. This means we are talking about a relational database, which I have already told you earlier, where we store data in table form. So here, what is a schema? What is the structure? A table. And what comes in that structure? Columns and rows. What is in the columns? Roll number. So what is roll number actually? Roll number is an integer. What is the size of the integer? Two bytes, four bytes. Whatever we are describing about the structure, that structure is actually known as a schema. 
+
+Now, here are three levels:
+1. External schema or external level
+2. Conceptual level or conceptual schema
+3. Physical level or physical schema, which we also call the internal level
+
+Why have these three levels been made here? Actually, in 1970, this concept of three schema architecture came about. The main motive of this architecture is data independence. Data independence means the user and the data should not directly interact with each other. This means the user should not know where the data is stored, although the user and data are related to each other. Because it is the user's data, the user will call that data whenever they want. But where is that data stored? How is it stored? We are keeping all this information abstract from the user. We are calling it data abstraction. 
+
+This means the user knows that my data is stored somewhere, but where is it stored? How is it stored? We are hiding this thing from the user. A main example of this is Gmail. We all use Gmail. We have our mails in Gmail, we also keep our photos in it, we also keep important data in it. But where is the mail actually stored? Physically, do you know where it is stored? In Delhi, in Kolkata, in Mumbai, in Bangalore, in the USA, in the UK? Where is it stored? We do not know its exact location. Is it stored in files? What is the format? We keep all these things hidden from the user. 
+
+To keep these things hidden, we have created three levels in the middle. The user and the data—this is the database where all the data is stored physically, and this is the user (meaning us). Now, three levels are made between the user and the data. Its main motive is to make data independent, meaning data independence, so that we can provide abstraction to the user.
+
+---
+
+### External Schema
+First is my external schema. What is the advantage and use of an external schema? We also call it the view level. I have already mentioned here: view level. View level means how to show the data to the user, how to represent the data to the user—that is the work of this level. 
+
+Although it is a theoretical model, somewhere, practical applications are based on these theoretical models only. This means that all the web applications or mobile applications being made in today's time—I am not saying they are directly based on this, but yes, this concept came in 1970, and after that, a lot of refinements took place. But majorly, all the web applications we are using today have these schemas and concepts used somewhere in their backend. 
+
+To explain this with a simple example: a university has a management system. If I take admission in the university, then my login ID and password are created there. Now, when I enter that login ID and password, what information is shown to me? My marks, my attendance, my fee structure, how much I have paid—all of this is a view. That view will be given to the user. But will this view be common to all? No. If all the users had the same view, then I would not need to create separate views here; only one view would have worked. 
+
+If I talk about the faculty in the same university: is the faculty also looking at their attendance? Is the faculty checking their marks? No. The students have their own view, and the faculty has a different view. What can the faculty do? Enter marks, register student attendance, apply for leave, check their own salary and their own details. But can the student check the same details? No. 
+
+So, to prevent that thing, from a security point of view, we have made a view. Whose view is this? The student's view, in which some authorization is there. If I speak in technical terms, authorization means that we have authorized something, such that you can see it, you can read something, but it cannot be updated (like the marks I put can only be seen, not updated). So this is the student's view. One such view will be for the faculty; the faculty has its own authorization. Similarly, if there is a dean, they will have their own view because they have more authorization. So, what have we actually done? We provide their own view to everyone. 
+
+Whatever applications you are using today, they also have a view. One is a normal view for us normal users, and another is a view for admins. The database can also have administration, the network can have separate administration, and there may be different views for different job profiles. In this example, students have their own view, faculty have their own view, and the dean has their own view. 
+
+This view is only helping me see the data. As I turned on my laptop and entered the login and password of my university URL, what came up on the first front page? That front page is actually a view. Or, if I tell you that you are using any application like Flipkart or Amazon, or if you are logging into Paytm, what is the first view you get when you log in? That view is actually an external schema.
+
+---
+
+### Conceptual Schema
+After that comes my conceptual schema. What is the meaning of a conceptual schema? It is the way we are representing the data there, meaning how the data is actually structured. My data is here, but what is its structure? 
+
+To give a simple example: there is student data. What are the columns in the student data? Roll number, name, age, address—there can be many columns. So we have to define this thing in advance. When we create a database, first we have to create its conceptual view. 
+
+You can understand schema and conceptual views with a simple example: the E-R model. If you have already read about this E-R diagram or E-R model, then you will easily understand this; otherwise, I will explain the E-R model in another video. Here, you just understand that the E-R model is a conceptual model. Data is actually stored here, but how is that data structured? We have it in the form of a table. What does the E-R model do? It makes different entities. That is how the relational model comes to be. What do we do in the relational model? We use it primarily for structured data. In the relational model, we create tables. 
+
+So which tables have we used? The information of those tables: the student table, faculty table, library table, book table. There are many tables that can be used; all that information is here. 
+
+The relationship between those tables—relationship means how the table is connected. If I talk about students and courses, are students and courses interconnected? Obviously. There is a table of students which contains the information of the students, and there is a table of courses which contains the information of all the courses of the university. Is there any relation between the student and the course? Obviously. Students are studying the course, so yes, there is some relationship between the tables. What is that relationship? We have to mention it here at this level. This means we are already making a conceptual view of that data. 
+
+You can think of it like a blueprint. Before building a house, we make a blueprint from the architect—that is actually the conceptual schema. To whom do we give that view or print? We give it to the contractor or builder. That builder then starts building by taking their material. That is what we are working on here. What is this conceptual schema? It is a blueprint in which what tables we have to keep, which relationships, what should be the size of those tables—everything will be mentioned in this.
+
+---
+
+### Physical Schema (Internal Level)
+After that, the main story comes here: where is the data actually stored? We have stored data here. In which files have we stored that data? What is their size? This means the data is actually stored on which hard disks? What is the storage location? Where is all this information? In the physical schema. 
+
+From the name "physical" itself, it is known where the data is physically present. Who is actually here? The database administrator. The database administrator decides at this level which data is to be kept in which particular location, in which particular drive, how to fragment it, how to store it. Where do we decide all this information? In the physical schema. 
+
+This means: where are normal database designers working? At the conceptual level. The interface designer who works on the frontend—someone working in PHP, or creating an interface using Java, or creating an interface using HTML—where are they sitting? At the external level. 
+
+So if, in a company, work is going on across three levels:
+* The people from the frontend creating an interface using PHP or Java are working at the **external level**.
+* The database designers working on the second level only have to design the data, not store it physically; they only have to design it and give a blueprint—they are working at the **conceptual level**.
+* At the third level, we have the database administrator. The administrator who is administering the entire data, those who have complete control—they are actually sitting here and deciding in which location to store the data, because data can be stored in two ways: centralized or distributed.
+
+Centralized means all the data is in one place; we are picking up the data from there only and storing the data at the same place. Distributed—which we are using a lot in today's time—means that instead of keeping the data in one place, we use it all over the world in multiple locations. We keep that data all over the world. So that concept is a little different. Here, you understand that we have kept it centralized, and these people are deciding where to store the data actually, what their files are, and what the names of those files are.
+
+Now, actually, the most important point is: you must be thinking that here I am talking about files, and here I am talking about tables. This is the biggest trick, and most students get very confused at this point. 
+
+When we see that data—when I am viewing that data as a user—in which format am I seeing it? In table form. But actually, in the database or on the hard disk, it is not getting stored in the form of tables. On the hard disk, it is actually getting stored in the form of files. But we put a layer of a Database Management System (DBMS) on top of that. 
+
+So, if we look at the data of Indian Railways in today's time, how do I get the information of the trains? In the form of a table: train number, train name, departure time, arrival time, etc. A whole table comes up. But what do you think? Is it stored in the hard disks in the same way? No. In the hard disk, actually, it is being stored in the form of files. But how is it shown to us? According to whatever view they have decided, which they have decided at the admin level. So the same point is here: the physical schema here tells what data is actually stored. That data—the actual data, the real data, whose job it is to store that data—belongs to the physical schema.
+
+---
+
+### Conclusion
+So, the concept of data independence here is that all these users are not connected directly to the database. In the middle, we have put three layers, so these layers help in data abstraction. This means the user knows that there is data stored, data is coming, and it is coming from somewhere. But where is it coming from? Where is it stored? How is it coming? We don't even want to know these things. 
+
+Have you ever asked anyone at Google or Facebook? No. Because we know that cloud computing might be used. I don't know the underlying technologies in today's time; I just want to find my data available whenever I want. At whichever time I call the database, my mail should be shown to me, and it is shown to me. 
+
+So that is the main concept of three schema architecture. After that, we will see the concept of mapping, but in this video, I am only explaining what three schema architecture actually is. 
+
+Thank you.

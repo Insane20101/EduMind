@@ -1,0 +1,66 @@
+Hello friends! Welcome to Gate Smashers. Today, in this video, I am going to discuss 3 questions, and all 3 questions we are going to discuss on SQL. SQL, you know, if we talk from the competitive exam point of view or if we talk from the placement point of view, then it is very important. That is SQL. 
+
+So guys, quickly like the video and subscribe to the channel if still you have not done, and please press the bell button so that you can get all the latest notifications. 
+
+We will start with question number 1: You need to display the last name of employees who have 'a' as a second character in their name. Which SQL statement displays the required result? And over here I have 4 options. 
+
+What is told in the question? That we have to find those employees' details in whose name the second letter should be 'a'. I will tell you that this type of question, where sometimes questions related to salary also come—that in salary, this should be the 2nd character, salary should be of 5 numbers, of 6 numbers—all questions of this type are based on the LIKE command. 
+
+Over here, in the options, if you have any option in which the LIKE command is not written, you directly neglect it. Like in option b, over here `=` is there. `=` does not work here; the LIKE command works here. So see, in other options, I have the LIKE command. 
+
+Now, I will tell you the concept of how we work with the LIKE command. Over here, we use `_` and `%`. `%` means anything, meaning any value can come. Like if I talk over here about option c, what is said in option c? `SELECT lastname FROM employee WHERE lastname LIKE '%a%'`. 
+
+What is the meaning of '%a%'? If it is given in this way, this means that before 'a', anything can come, and after 'a' also, anything can come. But this is not asked in my question. What is asked in my question? That okay, after 'a', anything can come, but before 'a', only 1 letter should be there, and in that letter, any value can come. 
+
+Meaning, if I put `%` before 'a', then you can also write it like this: `'aaba'`, anything like this. Meaning if this is 'a', and before this 'a', `'aabcd'`, anything you can put, you can put any number of characters, then it will select them also. But what is asked in my question? That before 'a', only 1 letter should come, because the 2nd letter should be 'a'. 
+
+Meaning, if we talk in this way, what should be the second letter? 'a'. And how many letters should be there before that? Only 1 letter should be there before that. But yes, that letter's value can be anything. And after this 'a', any number of letters can come, meaning any number of letters and their values can be anything. 
+
+So if we want to solve this type of question, then before 'a', if I want to fix the position—that there should be 1 letter or 2 letters—then you will have to use `_`. Meaning, `_a`. `_a` means you fill anything in this `_`; from 'a' to 'z', anything. What is the second letter? 'a'. And what is there after 'a'? Anything may come after 'a', any number of letters can come, we don't have any problem. 
+
+So what will I have? `'_a%'`. This is actually the answer. 
+
+If I give one more example, let's say if they ask that the 4th character is 'a'. So 4th character 'a' means what is the meaning of 4th? That the first 3 characters should be there. If you want to fix 3 positions, then the meaning of fixing 3 positions is you will have to put `_` 3 times. After that, what should be the 4th character? It should be 'a'. And after 'a', anything can come. Anything means `%`. 
+
+And if it is asked that the second-last letter should be 'a', what will you have to do to have the second-last character as 'a'? Anything is the last letter, but it should have the value of 'a'. Put the last letter as `_`. Before that, you have to put 'a', because your second-last character will be 'a'. Before that, what? Anything, meaning `%`. 
+
+In this way, we use `_` and `%` to find out the exact thing that is asked in the question. So according to this question, if we see, then this 'a' option, `'_a%'`, will give you the exact answer. So over here, the 'a' option is the correct answer.
+
+---
+
+Then, a command to remove the relation from an SQL statement. Meaning, I have to find out that command which removes a relation from an SQL database. Relation means table, which will remove a table. 
+
+First of all, I will tell you that DDL commands, i.e., Data Definition Language commands, deal with this: creating a table, dropping a table, altering something in the table. This all comes under DDL commands. DDL and DML commands, in the description—how many commands come under them, how do we use them—their link I have given in the description box, so you definitely check that video also once, so that you will get some knowledge about all the commands. 
+
+So over here, if we see according to this question, removing a table means we have to drop the table. So to drop a table, we use `DROP TABLE tablename`. So this is the option. 
+
+There is no command `DELETE TABLE`. There is no `ERASE` command. `ALTER TABLE` is there, but we don't drop a table from `ALTER TABLE`. If we want to change something in the table, if we want to change the column length, if we want to change the column name, or we want to add a new column, we want to remove the column—all this type of option we do through `ALTER TABLE`. But to drop the table: `DROP TABLE tablename`.
+
+---
+
+Then, the 3rd question. The 3rd question we have: in the following schema `r`—we have an `r` schema—in that, we are asked:
+* Query 1: `SELECT * FROM r`
+* Query 2: `SELECT * FROM r INTERSECT (SELECT * FROM r)`
+* Query 3: `SELECT DISTINCT * FROM r`
+
+Which of the following is true? Query 1, 2, 3 produce the same result. In this way, we have 4 options. 
+
+Many times, this type of question also comes. To do this type of question, you should know the property, that what is the meaning of `DISTINCT`, `INTERSECT`, `UNION`—all those small points should be clear to you. 
+
+`SELECT * FROM r`—what does it do? It will show all the data. Let's say I will show you with a simple example. Let's say we have a table. In that table, we have—we will take 1 column only. Column name is `a`. And in that, let's say `1, 2, 3, 3`. We have these 4 values, I have added these 4 tuples: `1, 2, 3, 3`. 
+
+Now what will `SELECT * FROM r` do? What will `SELECT * FROM r` show? `1, 2, 3, 3`. Meaning it also shows repetition. 
+
+But `SELECT DISTINCT * FROM r` means, distinct means what will it show in the answer? `1, 2, 3`. If any tuple is being repeated in the database, then it does not show that particular attribute's repetition. It will always show distinct results only. Now, whichever attribute you are selecting, if in that attribute any tuples are written multiple times, then distinct will always show it one time only. So in distinct, the answer will come `1, 2, 3`. 
+
+And if you will do normal `SELECT * FROM`, then the answer will come `1, 2, 3, 3`. Meaning query 1 and 3 cannot be the same. It can also be if data is unique, but somewhere we will find the counterexample. So what you do in a counterexample, instead of taking unique data, you take different data, or you can say, take duplicate data over here. So in duplicate data, you can say that Q1 and Q3 will give different results. 
+
+Now, if we talk about Q2, so `SELECT * FROM r`. If you will do `SELECT * FROM r`, then what will be the answer? `1, 2, 3, 3`. And what is written over here? `SELECT * FROM r`. What will come? `1, 2, 3, 3`. But what is there between both? `INTERSECT`. 
+
+And what is the meaning of `INTERSECT`? Intersect means that whatever is unique, whatever is common between both, we will represent it one time. So see, in these both, what is common? `1, 2, 3` is common. So what will be its answer? `1, 2, 3`. This will also not show repetition; it will show simple `1, 2, 3`. 
+
+So that means `1, 2, 3` this is showing. And your distinct was also showing what? `1, 2, 3`. So what will be your right answer? Query 2 and query 3 are producing the same result. Meaning your answer 'c'—only Q2 and Q3 produce the same result. So this is your right answer. 
+
+Many times you get such types of questions where you have to take a counterexample. Because if you take the example `1, 2, 3`—if you have taken data as `1, 2, 3`—then `SELECT *` will also show the same, `SELECT DISTINCT` will also show the same, and this also will show the same. Then you will ask that, sir, this option is also correct because if `1, 2, 3` data is there... but we have to cover all the cases. So in all cases, this is also a case: what if the data is duplicate then? Then what will yours be? 
+
+So in this way, we solve the questions quickly related to SQL. So guys, the links that are given in the description box, definitely check them once, because SQL is very important, and all these points should be clear to you. Thank you!

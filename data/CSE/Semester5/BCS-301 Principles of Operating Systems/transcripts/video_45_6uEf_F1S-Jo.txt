@@ -1,0 +1,84 @@
+This question was asked in GATE 2018 for one mark. The question is on deadlock. Let me read the question: "Consider a system with 3 processes that shares 4 instances of the same resource type. Each process can request a maximum of K instances. The largest value of K that will always avoid the deadlock is..."
+
+This means we are given 3 processes: P1, P2, and P3. Three processes are given, and they are saying that if they share 4 instances of the same resource type, it means there is some resource R, and we have 4 instances, meaning we have 4 units of R. 
+
+Now, they are saying these 3 processes can request resources up to K units. That means a process can request K instances, and you have to find the value of K, and the value of K should be the maximum possible.
+
+If I start with a normal scenario—let's say P1 needs only 1 unit of R to get executed, P2 also needs only 1 R, and P3 also needs only 1—then I have provided 3 resources. I have 4 in my hand, but out of 4, I have given 1, 1, and 1 resource, and all the processes will get successfully executed because they said they need 1, and I provided it easily since I have 4 and their total demand is only 3, so I can easily provide it. 
+
+So the answer can be 1. The K value can be 1. But this is just one of the possible answers. The value of K we have to find is the maximum. So whether 1 is the maximum or not, let's check. If the K value is 1, it means the demand of each process is 1. I can easily give 1, 1, and 1 resource, but still, is it the maximum value? The K value is not the maximum. 
+
+So let's increase the value of K. Let's make the value 2. Now, what is the meaning of this? Every process says their demand is 2. They need 2 resources, and we have 4. So what can we do? One option is we can give 1, 1, and 1 resource to every process, and the fourth one we give to any of them, like P1, P2, or P3. 
+
+The thing is, whenever there is a question like this, what you need to do is first write down all the processes. Try to give the minimum need. We are having 4 resources in our hand. What I did: I gave 1, 1, 1 to all the processes, and the fourth one I can give to any process. Let's say the fourth one I have given to P1. So how many resources does P1 get? 2. P1 gets 2, and what is the need of P1? 2. 
+
+So when the need is fulfilled, P1 will get executed, and when P1 gets executed, the 2 resources will be free. Whatever 2 resources it was holding will be free, and those 2 resources I will provide to P2 and P3. P2's need is also 2, which is fulfilled; P3's need is 2, which is fulfilled. So yes, the K value can be 2 also. 
+
+So the K value can be 1, and the K value can be 2. But as the question is asking for the largest value of K, we cannot say that 1 is the appropriate answer because we found 2 to be appropriate as well. So now 2 is a candidate. 
+
+Let's check for 3. Let's say the demand is 3, meaning every process needs at least 3 resources (or you can say 3 resources) to get executed. And how many processes are given? 3 processes are given. So if it says that I need 3 resources, what can we do? Yes, we can provide like this: 1, 2, 3—meaning out of 4 resources, I provided 3 to P1, and the fourth one, which is left, I provided to P2. 
+
+What did I do? The number of resources I have is 4, and each process needs 3. So out of 4, I picked 3 and gave these 3 to P1, and the fourth one I gave to P2. Now you can easily say P1 needs 3, so P1 gets 3. When P1 gets 3, it will be successfully executed, and when it gets successfully executed, 3 resources will be free. 
+
+When those 3 resources are free, I will give them to the other processes. Let's say I give 2 to P2 and 1 to P3. Now P2 also gets all 3 resources (it needs 3, I gave it 3), so it will also get successfully executed and removed. Whatever resources were occupied by P2 will be free, and I will give them to P3. Then P3 will also successfully execute. 
+
+So can we say the value of K can be 3? No, because you have to follow all the cases, as the word 'always' means it will 'always' avoid the deadlock situation. So whenever a question is asked about what will 'always' happen, you have to analyze all the cases. 
+
+Now let's say the demand is still 3. What else can happen? Let's take this case: out of 4 resources, 1 resource I gave to P1, 1 resource I gave to P2, 1 resource I gave to P3, and the fourth one, let's say, I gave to P1. Now see: P1 needs 1 more resource to get executed, P2 needs 2 more, and P3 needs 2 more. How will P1 get 1 more? No, there is no chance that P1 gets 1 more. There is no chance that P2 gets 2 more, and there is no chance that P3 gets 2 more. 
+
+So this allocation will be stuck because P1 needs 1 more resource (since its request is 3), P2 needs 2 more, and P3 needs 2 more. Who will fulfill this? Nobody is going to fulfill the request. So in this situation, there will be a deadlock, because P1 is waiting for 1 resource, P2 is waiting for 2 resources, and P3 is waiting for 2 resources. And who will be providing them the resources? Nobody, because P1 has taken 2, P2 has taken 1, and P3 has taken 1. 
+
+So what is the meaning of this? Why did I write this? We have to examine all the cases; don't directly say that a K value of 3 is the answer. For one or two cases, a K value of 3 can be correct, but you have to examine all cases. And this is one case: if I take the number of resources as 4 and the demand as 3, then there will be a deadlock. So you can say 3 cannot be the right answer. 
+
+What is the next value? 2, because 3 is not the right answer. Can we take the demand as 4, 5, or 6? We cannot increase the demand, because when the demand is 3 only, there is still a possibility of deadlock in one of the cases. So we cannot increase the value of K from 3 to 4, 5, or 6. 
+
+So what is the appropriate answer? The value will be 2. The answer should be 2 only. If I take the demand of each process as 2, then there is no case in which a deadlock can occur. If I take the demand as 2, all cases will be deadlock-free. We can say all cases will be free from deadlock. So the answer should be 2. 
+
+Let's find some other way. This is the manual method. You can follow this method also, but there is another method: let's derive a formula. 
+
+Let's say I'm having $R$ number of resources. The total number of resources I have is $R$. In my system, the total resources are $R$, and let's say I'm having $n$ number of processes. I'm having $R$ number of resources and $n$ number of processes, written like $P_1, P_2, P_3$ up to $P_n$. And the demand—let's say the demand of $P_1$ is $D_1$, the demand of $P_2$ is $D_2$, up to $D_n$. 
+
+So what have we assumed? Let's say $R$ number of resources, $n$ number of processes, and $D_1, D_2, D_3$ as the demands. Let's derive some formula that relates all these three. 
+
+Now, if I want the system to be deadlock-free, one thing is that I can provide the $D_1$ resources ($P_1$ needs $D_1$ number of resources), and I will provide them. $P_2$ needs $D_2$, I will provide. $P_3$ needs $D_3$, I will provide. Meaning, whatever their need is, if I provide it, the need will be fulfilled, and there will be no deadlock. 
+
+But here we have to find the minimum—it should not be like we just fulfill the maximum demand directly. We have to find the minimum number of resources, meaning the resources should be as few as possible while still removing deadlock. It should not be like if there are 3 processes and a demand of 2, the total is 6, and I just give all 6 resources. If I give 6 resources, that is a trivial answer. But I have to follow the concept in which the number of resources should be minimum and deadlock should not be there. So this is quite tricky, but if you follow it, you will definitely get clarity. 
+
+Let's say we are deriving the maximum resources I provide according to the demand, but still, there is a deadlock. Still a deadlock means I'm trying to provide the resources to the processes according to their demand, but still, there is a deadlock. 
+
+This is quite tricky. Let's say I'm having $P_1, P_2, P_3$. Every process says their demand is 2—it says 2, it says 2, it says 2. If I provide 2 to him, 2 to him, 2 to him, meaning a total of 6 resources, then there is no problem, it is deadlock-free because $P_1$ needs 2 (I provide 2), $P_2$ needs 2 (I provide 2), $P_3$ needs 2 (I provide 2). So total, how many resources must I have? 6. But no, this is not the appropriate answer. You have to minimize the value. You should not purchase the maximum possible resources; you should purchase the minimum while remaining free from deadlock. 
+
+So how do we derive this? What can we do? Rather than directly giving the full demand—their demand is 2, but I'm not giving 2; I'm giving 1, I'm giving 1, I'm giving 1. Meaning how many resources am I giving? 3. But now there is a deadlock, because everybody needs 1 more resource. Every process needs 1 more resource. What will I do? If I add 1 more resource, it will be free from deadlock—meaning if I add 1 more and give it like this, if I give 2 to $P_1$, it will be executed. The resources will be free, they will be given to $P_2$ and $P_3$, and they will also execute. 
+
+So what are we trying to find? We are trying to find the maximum number of resources we can have such that there is *still* a deadlock. How do we find it? Same thing: the demand is $D_1$, but I'm not giving the demand $D_1$; I'm giving $D_1 - 1$, one less than the demand. Same for this: $D_2 - 1$. Same for that: $D_3 - 1$, and so on up to the last. 
+
+Now, what is the total number of resources I have? The total number of resources is the sum of all these—just add all the resources: the summation of $(D_i - 1)$ where $i = 1$ to $n$. That is $(D_1 - 1) + (D_2 - 1) + (D_3 - 1) + \dots$ up to $n$. So this is the formula we can derive. 
+
+So what is this? The total demand minus $n$ (meaning this number of resources). If I have resources $R$, and the number of resources $R$ is less than or equal to this, there will be a deadlock. There will be a deadlock because whatever the demand is, I'm not fulfilling that demand directly; I'm giving 1 less than, 1 less than, 1 less than. So there is still a deadlock existing. 
+
+If I provide this many resources $R$, there will be a deadlock. So $R$ should be greater than this if I want to be free from deadlock. In this case (where $R \le \sum (D_i - 1)$), there is still a deadlock. But if I do $R$ greater than the summation of $i=1$ to $n$ of $(D_i - 1)$, in this case, it will be deadlock-free. 
+
+Meaning, the number of resources I have provided is more than the summation of all the requirements minus $n$ (that is the number of processes). So we can say that $R + n$ should be greater than the summation from $i=1$ to $n$ of $D_i$. 
+
+This is what it simplifies to: $R + n$ is greater than this. What is the meaning of $R + n$? $R$ is what? The number of resources. Total resources plus $n$ (the total processes) should be greater than the total demand. This is the meaning of this. So the total number of resources plus the total number of processes in the system should be greater than the total demand (total demand means the demand of all the processes). 
+
+If I provide this, then there will be no deadlock. In this situation, there will be no deadlock. 
+
+So if a question is asked like this, you can solve it manually as shown previously, but you can also follow this method. What is the method? What is the formula? 
+$$\text{Total number of resources} + \text{Total number of processes} > \text{Total demand}$$
+This is the important formula. We have also seen how to derive this formula, and you don't need to derive it again and again in the exam; you just remember this formula and apply it according to the question. 
+
+So according to this question now, we can apply it, and the answer is 2. This is how we have to solve questions like this in GATE and other competitive exams if a question is asked in that way. 
+
+Let's examine the formula again, just to cement it. Let's say I'm having 4 processes and 4 resources. What can be the maximum demand? We have 4 processes and 4 resources, so $4 + 4 = 8$. 8 should be greater than the total demand. 
+
+If each process demands 1, then $8 > 4 \times 1 = 4$, which is valid. 
+Let's try to increase the demand: $4 + 4$ should be greater than if each process demands 2. So $8 > 4 \times 2 = 8$. Is 8 greater than 8? No, this is false. 
+
+So this is a very important formula. If I am having 4 processes and 4 resources, and each process demands 2 to get executed, this is false; there will be a deadlock. But if every process demands only 1, there will be no deadlock. 
+
+You can check it like that also: 4 processes ($P_1, P_2, P_3, P_4$), each process demands 2. If I allocate 1, 1, 1, 1 (giving 4 resources total), how can I give 2 to anyone? Everybody is waiting for 1 more resource, and I have already allocated all 4 resources that I have, so there will be a deadlock. Thus, the demand of each process cannot be 2. They cannot demand 2 resources; they can demand 1, with no problem. If they demand 1, I can easily give 1, 1, 1, and 1 to every process, and they will get successfully executed. 
+
+So this is how we can solve questions like this both manually and by using this formula.
+
+If you like this video, please share it with your friends and colleagues, and please subscribe to my channel. Thank you.

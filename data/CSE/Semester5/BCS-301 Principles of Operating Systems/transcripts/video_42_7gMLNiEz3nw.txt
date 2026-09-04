@@ -1,0 +1,107 @@
+Hello friends. Welcome to GATE Smashers. The topic is Banker's Algorithm in Operating System. We also call the Banker's Algorithm a Deadlock Avoidance Algorithm. 
+
+The reason is that in deadlock avoidance, we have to provide information to the operating system beforehand—which processes are coming, which processes will request which resources, how many resources will they request, and for how long they will do it. I have to give information to the system beforehand so that the system performs accordingly, decides which process to perform and which process not to perform, and makes it wait. 
+
+Many times it is asked in theory whether Banker's Algorithm is a Deadlock Prevention or Deadlock Avoidance algorithm. It is a Deadlock Avoidance algorithm. Other than this, it is also used for Deadlock Detection. Detection means we can detect in the system whether a deadlock can occur in the future or not. Questions on this have been asked many times in GATE and all competitive exams where you are given a scenario—for instance, a number of processes (like in this case, 5 processes), and all of these 5 are requesting some resources and some number of resources. 
+
+Let's say there are three resources: A, B, and C. These are different kinds of resources, whether physical or logical resources like CPU, memory, cache—they are all resources. Five processes are requesting these resources, and along with that, they are stating their needs: how much more they need. On this basis, we have to find out at the end whether a deadlock occurs or not. That's why we call it a Deadlock Detection Algorithm. We check in this scenario whether a deadlock can be detected or not, and what the reason for that is.
+
+In this scenario, we have 5 processes ($P_1, P_2, P_3, P_4,$ and $P_5$) and 3 resources ($A, B,$ and $C$). These are three resource types. For example, $A$ is CPU, $B$ is memory, and $C$ can be a printer. You can call them any resources, or label them $R_1, R_2, R_3$. $A, B,$ and $C$ are 3 different types of resources, and we have in the system 10 resources of $A$, 5 of $B$, and 7 of $C$. This means we have 10 CPUs, 5 memories, and 7 printers. Total, we have these many resources in the given numbers.
+
+Other than that, what are we given here? Allocation. What is the meaning of allocation? It tells which process has already been allocated how many resources by the system. For instance, no resource of $A$ is allocated to $P_1$, but 1 instance of $B$ is allocated, and $C$ is 0. We can call these instances—like we have 10 instances of $A$, 5 instances of $B$, and 7 instances of $C$, or you can simply say there are 10 CPUs, 5 memories, and 7 printers. Whether you call it an instance or a number, it is the same thing. 
+
+Here is the information given:
+* $P_1$ has 0 instances of $A$ (no CPU has been allocated yet), 1 instance of $B$, and 0 instances of $C$. 
+* $P_2$ is already allocated 2 instances of $A$, 0 of $B$, and 0 of $C$. 
+* $P_3$ is allocated 3 of $A$, 0 of $B$, and 2 of $C$. 
+* $P_4$ has 2 of $A$, 1 of $B$, and 1 of $C$. 
+* $P_5$ has 0 of $A$, 0 of $B$, and 2 of $C$. 
+
+Allocation tells how many resources the system has already given to a particular process. 
+
+Along with that, what are we given? Maximum Need. Maximum Need means which process needs how many resources. This is the main point. This is why we call it deadlock avoidance: because we tell the system beforehand. $P_1$ tells beforehand that I want 7 resources of $A$, 5 of $B$, and 3 of $C$. "If you give me these, then I will be successfully executed and terminated." Similarly, $P_2$ also tells its demand for resources, and $P_3$ tells its maximum demand or maximum needs of resources. 
+
+What is the maximum need of $P_3$? $9, 0, 2$. $P_3$ says, "Give me 9 instances of $A$, I don't want any instance of $B$, and give me 2 instances of $C$. If you fulfill these needs, then I will be successfully executed." So this is the meaning of maximum need: how many maximum instances they want. $P_4$ and $P_5$—all 5 have told their respective maximum needs.
+
+Now our main question starts. In questions, they can ask to show if there is a deadlock or not. If there is a deadlock, then simply you can say that this is unsafe. We call it safe or unsafe. Safe means a deadlock will not occur, and unsafe means a deadlock will occur. If a deadlock occurs, your question simply finishes, stating that there is a deadlock. Alternatively, a deadlock might not occur. If a deadlock does not occur, its sequence comes, which we call a Safe Sequence. A Safe Sequence means how we sequence resources and processes so that a deadlock doesn't occur. When we solve this, we will see how it works.
+
+The third thing is Available. Available means the total availability of resources we have. Total, we have 10, 5, and 7. But the system has already allocated some resources. We are not starting from zero time; we are talking about a particular point in time, so at that particular point, the system has already given some resources to particular processes. 
+
+What will be available? $\text{Total} - \text{Allocation}$. Let's take the total of Allocation here:
+* For $A$: $0 + 2 + 3 + 2 = 7$ resources of $A$ are already allocated.
+* For $B$: $1 + 1 = 2$ resources of $B$ are already allocated.
+* For $C$: $2 + 1 + 2 = 5$ resources of $C$ are already allocated.
+
+So, $7, 2, 5$ are the already allocated resources. 
+* Total $A$ was 10, already allocated is 7, so remaining is $10 - 7 = 3$.
+* Total $B$ was 5, already allocated is 2, so remaining is $5 - 2 = 3$.
+* Total $C$ was 7, already allocated is 5, so remaining is $7 - 5 = 2$.
+
+This is our present availability, or we can call it Current Availability, which is $3, 3, 2$.
+
+The next part is Remaining Need. What is the meaning of Remaining Need? As we did with allocation, the system shows that processes have a certain maximum need. From the maximum need, if we subtract what is already allocated, what do we have left? Remaining Need. 
+
+Think of it like a math question we used to get when we were little: if I give a child 3 apples, but he needs 10 apples, I will have to give him 7 more apples. If 3 apples are already given, but the child says I want 10 apples, I will provide him 7 more apples. That's what we are saying here: I have already allocated some, and maximum need tells me how much is needed. If you fulfill my need, I will be successfully executed. 
+
+So, we calculate Remaining Need by: $\text{Maximum Need} - \text{Allocation}$.
+* For $P_1$: Maximum need is $7, 5, 3$. Already given is $0, 1, 0$. So, Remaining Need is $7 - 0 = 7$, $5 - 1 = 4$, and $3 - 0 = 3$.
+* For $P_2$: $3 - 2 = 1$, $2 - 0 = 2$, $2 - 0 = 2$.
+* For $P_3$: $9 - 3 = 6$, $0 - 0 = 0$, $2 - 2 = 0$. (Be a little careful when you calculate: $A$ from $A$, $B$ from $B$, $C$ from $C$, otherwise mistakes may happen).
+* For $P_4$: $4 - 2 = 2$, $2 - 1 = 1$, $2 - 1 = 1$.
+* For $P_5$: $5 - 0 = 5$, $3 - 0 = 3$, $3 - 2 = 1$.
+
+So, this is the remaining need of all the processes: $P_1, P_2, P_3, P_4,$ and $P_5$. 
+
+Now, what do we have available at present in the system? $3$ resources of $A$, $3$ of $B$, and $2$ of $C$. We have to check if, according to my availability, I can fulfill any of the remaining needs. 
+
+Let's check $P_1$: $P_1$ needs $7$ resources of $A$. Do we have $7$ resources now? No, we have only $3$. It needs $4$ of $B$; we have $3$. It needs $3$ of $C$; we have $2$. We cannot fulfill the remaining needs of $P_1$ because we have less availability. So $P_1$ will not be in the sequence right now.
+
+Next, let's check $P_2$: The remaining need of $P_2$ is $1, 2, 2$. We have $3, 3, 2$ available. Yes, I can fulfill the remaining needs of $P_2$. 
+
+*(Note: What if $P_2$ needed $4$ of $A$ instead of $1$? Could I do it? No. The remaining need of all resources should match—meaning either equal to or less than the total available. If that happens, that is fine; otherwise, we check the next process. Here the value was $1$, so we proceed).*
+
+Let's check $P_3$: The remaining need of $P_3$ is $6, 0, 2$. But how many resources of $A$ do we have? We have $3$ available. You might think we can give $B$ and $C$ because it doesn't need $B$ and we have freely available $C$, but it is demanding $6$ CPUs, and you only have $3$ CPUs. So we cannot fulfill this. You have to be a little careful on this point.
+
+Since the remaining need of $P_2$ is $1, 2, 2$ and we have $3, 3, 2$ available, we can easily fulfill the needs of $P_2$. Therefore, the first process whose need we fulfilled becomes $P_2$ in our sequence. 
+
+When we fulfill the need of $P_2$, it will be successfully executed because its remaining needs are less than or equal to what we have available. It will successfully take all resources and get terminated. When $P_2$ is terminated, the resources already held by $P_2$ in allocation will be released and freed. $P_2$ was holding $2$ resources of $A$, $0$ of $B$, and $0$ of $C$. We add this back to available:
+$$\text{Available} = (3, 3, 2) + (2, 0, 0) = (5, 3, 2)$$
+Now, our availability is increased to $5, 3, 2$, and process $P_2$ exits from the system because it got successfully executed.
+
+Now let's check $P_3$: Can we fulfill the need of $P_3$? $P_3$ says I need $6$ resources of $A$. Do I have $6$? Our new availability is $5$, which is still less than $6$. So we cannot run $P_3$ yet.
+
+Let's come to $P_4$: $P_4$ needs $2$ resources of $A$, and I have $5$ available, so I can give. It needs $1$ resource of $B$, and I have $3$ available. It needs $1$ resource of $C$, and I have $2$ available. Yes, I can now fulfill the need of $P_4$. 
+
+The rule is: the current availability should be greater than or equal to the remaining need for all processes and all resources. If this holds true, you can provide it. 
+
+So, we fulfilled the remaining need of $P_4$, and $P_4$ got successfully terminated. When $P_4$ is terminated, the resources it was already holding ($2$ of $A$, $1$ of $B$, $1$ of $C$) will be released. We add them back to the available pool:
+$$\text{Available} = (5, 3, 2) + (2, 1, 1) = (7, 4, 3)$$
+My current availability becomes $7, 4, 3$.
+
+Now let's check $P_5$: $P_5$ says I need $5$ resources of $A$, and I have $7$ (I can easily give). I need $3$ of $B$, and I have $4$. I need $1$ resource of $C$, and I have $3$. So I can easily give $5, 3, 1$ from my availability. $P_5$ will be successfully executed. 
+
+So $P_5$ comes next in my sequence. When $P_5$ is executed, the resources it was holding ($0$ of $A$, $0$ of $B$, $2$ of $C$) are added back:
+$$\text{Available} = (7, 4, 3) + (0, 0, 2) = (7, 4, 5)$$
+My current availability becomes $7, 4, 5$.
+
+Now let's check again starting from $P_1$: $P_1$ needs $7, 4, 3$. I have $7, 4, 5$ available. What I have available is more than or equal to its remaining need. Now I will give $P_1$ all the resources it needs ($7$ out of $7$ needed, $4$ needed, $3$ needed). It will be successfully executed. 
+
+Next in the sequence is $P_1$. Whatever resources $P_1$ was holding ($0, 1, 0$) are taken back and added to the pool:
+$$\text{Available} = (7, 4, 5) + (0, 1, 0) = (7, 5, 5)$$
+This is my current availability: $7, 5, 5$.
+
+Which process is remaining? Only $P_3$. $P_3$ says give me $6$ resources of $A$, and I have $7$. It doesn't need $B$ and $C$, and we have resources available. So I fulfill the remaining need of $P_3$. 
+
+$P_3$ comes next in the sequence, and because it is terminated, $P_3$ exits the system. Whatever resources it had taken ($3, 0, 2$) are also released and added back:
+$$\text{Available} = (7, 5, 5) + (3, 0, 2) = (10, 5, 7)$$
+The total returns to our original system maximum: $10, 5, 7$.
+
+From here, you can have an idea whether we are going right or not. Finally, what is my total? 10, 5, 7. And how many did I have? 10, 5, 7. All the resources after allocating, we terminated the processes, so whatever resources I had previously available, I have those many again total available, and this Safe Sequence is created. We call this a Safe Sequence. 
+
+Why a Safe Sequence? Because deadlock did not occur. This safe sequence P2, P4, P5, P1, P3—first thing is it is not unique; here P3 could have also come before, that doesn't matter. But you can be asked a question where some sequence may be asked, so you have to carefully design the sequence. Second, you may be asked whether deadlock will occur or not. Deadlock will occur only if I cannot fulfill the need of any of the 5. If I can fulfill even 1, then it will come first in the sequence. 
+
+This is what we call Deadlock Avoidance. In deadlock avoidance, we have to feed the system beforehand that I want these many processes, I have these many resources, and this is their demand, as we saw with maximum need. Can this be implemented in real life? It can be; you can code it in C programming. But how can you tell in real life which process is static? Here we are talking about static need; it is static. This means it tells beforehand that my need is 7, 5, 3. But in real life, this never happens; processes never tell their static need, their need is always dynamic. They can increase or decrease their need anytime during run time. That's why this is not possible in real life. However, to implement it in reality, we have to create some base. That’s why this is a very important algorithm. Because it is asked many times in GATE and other competitive exams, you must do this question carefully. 
+
+Second, we call it Deadlock Detection. We saw that we have to detect whether deadlock will occur or not. If it occurs, then simply your question ends. Second, if it doesn't occur, then which will be the safe sequence? That you will have to clearly find out here. 
+
+If you liked this video, please like it, share it, and please subscribe to my channel. Thank you.

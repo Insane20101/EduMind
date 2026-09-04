@@ -1,0 +1,37 @@
+Many of you have solved Exercise 5. In today's video, I will share the solution to Exercise 5. I will also give a shoutout to all of you who have solved this question. Write "Sigma Patch Up" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+I have made a folder named "video 41" here. The first thing I will do is open it in VS Code and show you how we can design this layout. I will name it "layout," and this will be the solution to our exercise. I will toggle the word wrap and screencast mode for you so that you can see what keys I am pressing.
+
+Now, pay careful attention. We have to make this layout, and we can also use these colors. The first thing I will do is create a navbar. My body will have a header, main content, and a footer. I am using HTML's semantic tags, and in my header, there will be a navbar. I won't use Flexbox because I didn't mention it when I assigned this exercise, but I will show you how to achieve this by setting the background color and making the height 133 pixels.
+
+I will also adjust my settings in the Live Preview extension. I want to open it in an external browser instead of a new tab. I will set the height to 83 pixels and apply a universal selector to set margin and padding to 0. This will eliminate any visible spacing. 
+
+Next, I will create a container and add padding. My main content will be inside this container. I will write `div.container` and give it a background color of red for testing purposes. I will later remove it. I will set the margin to 12 pixels from top and bottom and 34 pixels from left and right. 
+
+Now, I see that the height of the container is not set correctly. I will make its height 233 pixels. The idea is to make this layout green, so I will change the background color to green. You can see that it looks like this, with two boxes: one pink and one blue. I will create `div.box1` and `div.box2`. Box 1 will be pink, and I will apply CSS to it. I will remove the height of the container because it will adjust automatically.
+
+For box 1, I will set the background color to pink. For box 2, I will set the background color to blue. I need to adjust the heights of both boxes to 70vh. I will also set the width of both boxes to 50%. Now, the two boxes are inside the container. 
+
+To align them in the same line, I could make both boxes inline, but that is not a good practice. Instead, I will use Flexbox. I will adjust the widths to 45% each to accommodate for margin and padding. I will also add padding to both boxes and center the text.
+
+Next, I will add a footer. The height of the footer will be 100 pixels, and I will change its background color to bisque. This is my footer, and I want it to be sticky. I will add "Welcome to Sigma Web Development Express" in the footer. 
+
+I will create a `div.textbox` and add a paragraph with the text "Welcome to Sigma Web Development Express." I will set the padding to 34 pixels and give it a border of 2 pixels solid white. The main container's background will be black, and the text color will be white. 
+
+To center the textbox, I will set the margin to 0 for top and bottom and 34vw for left and right. I will also set the border radius and font size. I will adjust the margin for top and bottom to 10 pixels.
+
+Now, I need to ensure that the black background is visible. I will add padding to the main container to achieve this. I will make the margin 50 pixels for the textbox. I am intentionally not making this layout responsive right now; I may address that later.
+
+After finishing the footer, I will make the navbar sticky by setting its position to sticky and top to 0. If it doesn't work, I will apply the sticky position to the header instead. 
+
+Next, I will create an orange circle. I will create `div.orangebox` and set its height and width to 32 pixels, with a background color of orange. I will position it fixed at the bottom right of the screen. I will adjust the border radius to make it a perfect circle.
+
+Now that the layout is complete, I want to give a shoutout to everyone who accepted this challenge and solved it. I know many people have solved it, and while I can't shout everyone out, I will do my best to mention some names: 
+
+Shoutout to Lakshraj Das, MD Maru, A.N.I Factual Films, Digital Connect, SKSK, Rao Mase, Elmort XM, Developer Pankaj, Nikhil, Stonic, Arna Verma, Maharaj Sagarwal, Shubh 409, Abhishek Singh, Rathan Veer Arts, RRC Gaming, Shakti, Chandan Singh, Jack Order, Kuldeep Sharma, Oma Ali, SXM, Mansoor Ali, Maulik Digwal, RAF GDN, Crazy Neha, Pranjal Barman, Rana Tariq, Nishant, American Nightmare, Ram Kumbar.
+
+When you are solving the exercise, focus on doing it well. The satisfaction you get from solving it is what matters. My effort is always to create videos that help you understand. I try to take the least time to explain things clearly.
+
+Remember, the hard work you put in will pay off and contribute to improving your life. Keep up the hard work, and if you haven't accessed this playlist yet, please do so and bookmark it. If you want to get a shoutout in the future, turn on channel notifications and comment quickly when the exercise is posted. 
+
+Your hard work is what truly matters. I aim to teach you efficiently with my limited knowledge. I am updating the source code. That's all for now, guys. Thank you so much for watching this video, and I will see you next time!

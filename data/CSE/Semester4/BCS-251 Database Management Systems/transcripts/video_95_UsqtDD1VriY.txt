@@ -1,0 +1,51 @@
+Next, the important point is that the problem in the shared-exclusive lock is that it is a simple method. You apply this, there will be simple software for this, and it will have simple programming. But the problems with this are very important, as direct questions can come in competitive exams about whether it is suffering from this problem or not. This type of question may appear, so I have written down all these problems. There can be direct questions about this in theory. 
+
+It may not be sufficient to produce only the serializable schedule. We are saying that locking basically provides a serializable schedule, which is really a good thing because it will be serializable and consistent also. But it is not necessary that if we use shared-exclusive locking, then it will always be serializable. It could be or not, so there is no guarantee. That's why "may be" is written here. Sometimes it could also happen, so never write "must" here; it is "may not." 
+
+Like, this question may come: serializability can't be achieved, or serializability may be compromised in a schedule—true or false? Obviously, true: serializability can be there, and in some cases, it might not be. 
+
+Like if we take this case: let's say T1 and T2. T1 has to do $\text{Read}(A)$ and $\text{Write}(A)$, a simple $\text{Read}(A)$ and $\text{Write}(A)$. T2 wants to perform $\text{Read}(A)$, and let's say that after that, T1 wants to perform $\text{Read}(B)$ and $\text{Write}(B)$ or anything simple. And it is a concurrent protocol. Concurrent, as you know, first T1 is coming, and then T2, and then T1. Whenever there is a loop—meaning first T1, then T2, then again T1, and then T2—this was a non-serializable schedule, so we try to make it serializable. And it means either first T1 finishes or T2 finishes. Meaning either first T1 goes to T2 form, or T2 goes to T1, tries to form any one of them, and if it forms, it means it is serializable. 
+
+If we apply this, then you will also understand how we apply the shared-exclusive lock. $\text{Read}(A)$ and $\text{Write}(A)$ came first. T1 said that I want an exclusive lock on $A$, as there is $\text{Read}$ and $\text{Write}$ both. So yes, it will get it, as till now there is no lock given. Obviously, in this case, here, if we talk about T2, it is saying that I want to do $\text{Read}(A)$. For $\text{Read}(A)$, it will ask for a shared lock on $A$. Obviously, it will, but will we give that to it? We will not grant it right now, and the reason is, as an exclusive lock is given, so shared mode—if exclusive is given, then shared we will not [grant]. But when it got unlocked here—unlock of $A$ means unlock of exclusive lock on $A$—at the same time, it got a shared lock. What will it do after getting a shared lock? It will unlock, and just as it gets unlocked, this transaction is over. 
+
+Now it is the turn of T1. T1 wants to perform $\text{Read}$ and $\text{Write}$ both. So there is an exclusive lock on $B$, and here it unlocks the $B$ lock. It is a simple thing. So here, is serializability being achieved anywhere? Is this "T1 goes to T2" or "T2 goes to T1" forming? No. Here, first we are doing T1, then we came to T2, after T2 again we came to T1. So this is a loop. 
+
+So it is not necessary that it will achieve serializability in every case. My first point—"may not be sufficient to produce only serializable schedules"—is true here. 
+
+Then, "may not be free from irrecoverability." It is not giving a guarantee that your schedule will always be recoverable; it can be irrecoverable also. See, a simple thing is here. Note this; there is a simple thing. 
+
+Let's say, first T1 came and then T2. On T1: $\text{Read}(A)$, $\text{Write}(A)$, and T2 has done $\text{Write}(A)$. So this is recoverable, as I've told earlier in detail with an example. Here, it demanded an exclusive lock on $A$; we gave that. And here, when it unlocks $A$, this [T2] will get a shared lock on $A$. Just as it gets unlocked, it will get a shared lock on $A$. 
+
+Meaning what? It will read. This value will be read—that which is written by it [T1]. And if, after read or whatever it wants to do, if it wants to take exclusive, whatever it wants to perform—as it can get exclusive also if it writes also, so it will get exclusive also, as it is also unlocked—and if it [T1] commits earlier and it fails in future, so can this be rolled back? Yes, we can. Can we roll back this [T2]? No, we can't, as it is already committed. And shared and exclusive locks are not talking anything about commit—that it will happen after commit or before commit. It is not talking about anything. 
+
+So here we can say there is no involvement of its recoverability; it can be recoverable or it may not. So "may not be free from irrecoverability" is also true. 
+
+Take a simple example of this: if it commits by changing anything in a data item. Let's suppose this read got failed. This fail means you will roll back this. And if we see this, what does it read? It reads that which is written by it [T1]. And which read is it? It is a dirty read. As we have rolled back this [T1], but we cannot roll back this [T2] because it is committed. Obviously it can't, because it is not talking anything about this here—that when it gets committed, the shared-exclusive lock is not talking about the means. An irrecoverable schedule is possible. 
+
+Now, "may not be free from deadlock." So what is the concept of deadlock? It is, as I have explained in operating systems, that deadlock is basically when two people are waiting for resources and both are waiting in an infinite loop. When we wait in an infinite loop, then we call it a deadlock stage. 
+
+Let's say T1 wants to do an exclusive lock on $A$—meaning T1, if it wants to perform anything, read or write, it asks for an exclusive lock, and we grant it to them. T2 came and asked for an exclusive lock on $B$. If it asked for $A$, then we wouldn't be granting it, but it asked for $B$, a different data item, so we granted it. 
+
+Let's say that T1 wants an exclusive lock on $B$. How will it get $B$? No, it won't, as it is granted to this [T2], and until it gets unlocked, it won't get it. We'll ask it to wait. 
+
+Let's suppose T2 demanded an exclusive lock on $A$. T2 said that I need an exclusive lock. We'll ask: already exclusive is granted on $A$, and on exclusive we don't get exclusive, so what will you do? You have to wait. 
+
+See what situation this is. T1 was holding its own resource and waiting for the other, and T2 also got one resource and was waiting for the other. And when will this [T1] release? When this [T2] releases. And when will this [T2] get it? When this [T1] releases. Both are waiting for each other, that one should leave the resource. "You unlock this, then I'll get this," and he is like, "Why?" Both are requesting. Obviously, this case is called a deadlock situation. 
+
+This type of case is specially made so you can understand what we mean by a deadlock stage, or we call that deadlock is possible in this. It is made in this way because obviously we will take all the possibilities, and on those possibilities only, questions come in competitive exams. So here, because of the exclusive lock, you can say a deadlock problem has occurred. It could be because of shared also, but this is the special case which you need to remember. 
+
+Then, last: "may not be free from starvation." So what is starvation, basically? This is the difference between deadlock and starvation: deadlock means infinite waiting, we don't know—this is waiting for this, and this is waiting for this, as there is no such particular priority. They are asking to unlock from each other, both are waiting for each other, and will wait for infinite time. 
+
+But what is starvation? In starvation, there is waiting, but it is not for infinite time, okay? The methodology is in such a way, or the protocol works in a way, that it has to wait for long, but not for infinite time. 
+
+Let's say T2 starts. We will see from here: T2 starts, and T2 asked for a shared lock on $A$ at this time. This is a timeline, and time is increasing in such a way. It asked for a shared lock on $A$, but we didn't give it, as nothing is there; it will keep doing its work. Meanwhile, T1 came—little downside of it. Let's suppose if it comes at 11:00, and let's say at 11:05 T1 came. T1 demanded an exclusive lock on $A$. We'll ask it to wait. They [T2] already got a shared lock; till it gets unlocked, you won't get it. So this is waiting. 
+
+Meanwhile, T3 came at this point and demanded a shared lock on $A$. Let's suppose it unlocks here—it will unlock here at this point of time, then it will get an exclusive lock. But before it unlocks, T3 also demanded a shared lock. Yes, it will get it, above shared can get, and the exclusive one is waiting. So okay, keep on waiting; this took the shared lock. Now, just as it is about to unlock—just after unlocking this, it [T1] could get the exclusive lock. But let's suppose just before unlocking this, T4 also demanded a shared lock on $A$. 
+
+So what will happen? We will grant it, because you can grant multiple grants on shared, above shared, as it is read-only. So this is also waiting. 
+
+See, this [T1] can get the lock here, but because of this [T3] and this [T4], when will it get the lock? On this point of time. So on this point of time, it is waiting till here. Basically, what do we call it? We call it that there is waiting, but that waiting is not infinite; it is finite. 
+
+So starvation came, deadlock came, irrecoverable I've told you, and serializability is not properly achieved in all the protocols. So you should remember all these points, as there is not much in shared-exclusive. All the points I've told here are more than enough. 
+
+So, shared-exclusive lock is a protocol, and later we'll discuss that after some changes we changed it into two-phase locking. So what we are achieving in there, we will discuss in the next video.

@@ -1,0 +1,67 @@
+Now the Second Normal Form. According to E.F. Codd, the rules for the second normal form are: the table must be present in the First Normal Form, and the table should not contain any partial dependency. And we can write in that format; that table will be in second normal form. Like there is a "second," meaning there are two, so two rules are over there. 
+
+So what was the first rule? The table or relation must be in the first normal form. That must be present in the first normal form. And this is the important condition over there. The important condition is: all the non-prime attributes of the table should be fully functionally dependent on the candidate key. 
+
+What are non-prime attributes? The attributes which are not participating in the formation of the candidate key, as we had discussed in the previous video. So these all attributes, if they want to be functionally dependent, they must be present on the candidate key. They should not be dependent on a part of a candidate key, or you can say a subset of the candidate key. 
+
+I'll tell you with an example. Let's see, there is a customer table. In the customer table, I'm having Customer ID, Store ID, and Location. Now I have put data over there. In the customer table, the primary key, or you can say the candidate key, is Customer ID and Store ID combined, meaning a composite primary key over there. So a composite primary key, or you can say a candidate key—so a composite candidate key is there. But see the location. Location, like Delhi, Mumbai, Delhi, Bangalore, Mumbai. 
+
+As I have discussed in the functional dependency topic, I am just again discussing. Like location. If you see the location, which is a non-prime attribute, how can you say? Because the candidate key is formed with Customer ID and Store ID, so what are the prime attributes in this table? Prime attributes are Customer ID and Store ID. And what is the non-prime attribute? The non-prime attribute is Location. 
+
+Now, according to the rule of Second Normal Form, all non-prime attributes should be fully functionally dependent on the candidate key, or we can say the primary key. Now see, the non-prime attribute is location. So location must be fully functionally dependent on the candidate key, meaning Customer ID and Store ID combined. But if you check that carefully, location is—in this table, location is dependent on Store ID only. See, Delhi, Delhi, means if I have a confusion here that Delhi once, is it the same value, or are these two different values? So as I checked, Store ID 1, 1 means that Store ID is determining location. Now see Mumbai, Mumbai, and Mumbai. Values are same. So according to functional dependency, if right-hand side values are same, then the left-hand side must be same. And yes, this is same. 
+
+So what is the meaning of this? That location is determined by the Store ID. Since Store ID determines location by itself, the table is not in the second normal form. So how to make it in the second normal form? See, we have to divide. Every time whenever there is a problem over there, we have to divide the table. So how to divide it? Customer ID and Store ID will be one table, like this: 1, 1; 2, 3, 4; and over there 1, 3; 1, 2, 3. And there will be one more table in which Store ID and Location are present. So Store ID is 1, 2, 3. What is 1? Location of Store ID 1 is Delhi. Sorry, location of Store ID 1 is Delhi, location of Store 2 is Bangalore, and location of 3 is Mumbai. So these will be the two new tables. 
+
+Now, what will be the primary key, or you can say candidate key, in this table? Store ID. And what will be the candidate key over there? Customer ID and Store ID combined. So Customer ID and Store ID combined over there, and over there Store ID. So now we can say location is dependent on Customer ID—sorry, Store ID—which is a candidate key. No problem. It is a non-prime attribute; it is determined by a candidate key. Yes, this should be there. But there should not be any non-prime attribute which is determined by a part of the candidate key. So here the candidate key is the Store ID, and location is determined by the candidate key itself. So this is not a problem. Thus, this table is in second normal form. And over there, both are part of the candidate key, so they are non-prime attributes—or you can say this is also in second normal form. 
+
+Fine. So you can say, I have to divide this big table into two tables, and you have to write like this, so both the tables are in second normal form. 
+
+Now I'm just trying to relate this with one more example. We are trying to solve a question from GATE. Solving a GATE question on the second normal form. So let's see how to solve the question. 
+
+All the non-prime attributes should be fully functionally dependent on the candidate key. I can rewrite that in another language: that there should be no partial dependency in the table, in the relation—meaning there should not be a single partial dependency in the table and in the relation. See guys, this is the negation of this: all the non-prime attributes should be fully functionally dependent on the candidate key, meaning whatever the non-prime attributes are there, all must be determined by the candidate key. And if in case, like we just gave an example, location is a non-prime attribute. If any of the non-prime attributes is determined by a part of a candidate key, then it is known as partial dependency. 
+
+Let's see, like if I have a candidate key $AB$. If I have been given in the question that my candidate key is $AB$, so what could be the proper subset of $AB$? Proper subset. So the proper subset of $AB$ is either $A$ or $B$. So if I'm talking about this, $A$ can determine some $C$ attribute, which is non-prime. $AB$ should determine $C$, but here a part of the candidate key, that is $A$, is determining some $C$, which is a non-prime attribute. So this is called partial dependency. Fine. So this should not be present in the table. And if it is there, you can clearly say, yes, that the table is not in second normal form. 
+
+So let's see a question over there. A relation is $A, B, C, D, E, F$. The relation is here $A, B, C, D, E, F$, and functional dependencies are given as:
+- $C \rightarrow F$
+- $E \rightarrow A$
+- $EC \rightarrow D$
+- $A \rightarrow B$
+
+These four functional dependencies are given in the table. 
+
+Now if I want to check what is the candidate key. As we have already discussed, by using the closure method we can find how many candidate keys and what are the candidate keys in the table. So what is the formula for that? First, you have to check all right-hand sides. Right-hand side of all, what are the right-hand side elements? $F, A, D,$ and $B$. Meaning these attributes are determined by some of the values. So meaning on the right-hand side I have $A, B, F,$ and $D$. So you can say on the left-hand side there must be $E$ and $C$. Because on the right-hand side, someone is determining $F, A, D,$ and $B$, but no one is determining $E$ and $C$. So $E$ and $C$ must be present on the left-hand side. 
+
+So what does it mean? That whatever the candidate key will become, at least $EC$ will definitely be in it. So why don't we start with the closure of $EC$? So let's check the closure of $EC$. So, $EC$ as reflexive is there, $EC$ can determine $EC$, determining itself. But let's say from $C$, I can determine $F$. Now from $E$, I can determine $A$. And from $EC$, I determine $D$. And from $A$, I can determine $B$. Done. 
+
+Now all the attributes of the table are determined by $EC$. So you can clearly say that, yes, $EC$ is the candidate key in the table. So what is the candidate key? $EC$. 
+
+Let's check if there is any other candidate key in the table. So I have already told you in a previous video: let's examine again. Either $E$ or $C$ must be present on the right-hand side of any functional dependency. Let's check: is $E$ present on someone's right-hand side? No. Is $C$ present on someone's right-hand side? No. So there is only one candidate key in this table, which is $EC$. 
+
+So if $EC$ is the candidate key, what is the next step we have to do? You can note down the steps. What is the first step? You have to find the candidate key of the table, all the possible candidate keys of the table. So my step one has been done. I have found all the candidate keys in this table; there is only one candidate key, which is $EC$. 
+
+The second step is to write prime attributes. What are the prime attributes? The attributes which are used to form a candidate key. $E$ and $C$ are the prime attributes. 
+
+Now, non-prime attributes mean other than $E$ and $C$, the rest of the attributes are non-prime. So what are the rest? $A, B$ ($C$ is here), $D$ ($E$ is here), $F$. 
+
+Take note of it. First of all, you have to find the candidate key. So I had $EC$ as a candidate key, but you have to check all the candidate keys in the table. So by chance, there is only one candidate key in the table, so I wrote it down. Then prime attributes: $EC$ are the prime attributes, and non-prime attributes are $A, B, D,$ and $F$. 
+
+Now come back to the functional dependency. What is this non-partial dependency? What is this partial dependency? That a part of the candidate key is determining some non-prime attribute. A part of the candidate key—the candidate key can determine any of the attributes. That must be there. But a part of the candidate key is also determining a non-prime attribute; this is a problem over there. 
+
+So check $EC$. What is the proper subset of $EC$? Either $E$ or $C$. So let's see first. One by one, you have to check. Is $C$ on the left side? You have to check whether this is a proper subset of the candidate key or not. Yes, $C$ is a proper subset of the candidate key. And check whether the right-hand side is a non-prime attribute. Yes, the right-hand side is a non-prime attribute. So it means a part of the candidate key is determining some non-prime attributes. So here a partial dependency is being created. If there is a partial dependency in the table, then this table is not in the second normal form. 
+
+Let's check it again here. Check for a second. You have to check for all, one by one. By chance, if it already comes, you can stop this, but complete the question once. 
+
+So let's check for this left-hand side. But you have to check: LHS should be a proper subset of the candidate key, and RHS should be a non-prime attribute. This is the condition; take note of this. This is a very important condition to check the partial dependency: that the left-hand side should be a proper subset of the candidate key—any of the candidate keys—and the right-hand side should be non-prime. This condition is for partial dependency. And if it exists in your table, even one only, then you can clearly say that the table is not in second normal form. 
+
+So let's check $C$: left-hand side should be a proper subset. $E$ is a proper subset of the candidate key. Yes, true. And there is an AND over there, and the right-hand side should be non-prime. What is the right-hand side? $A$. Check: $A$ is non-prime. Yes, $A$ is non-prime. So true and true. As we know, according to Boolean algebra, true and true is always true. So what is this becoming as well? Partial dependency. If even one has come, you can clearly say that the table is not in second normal form. Here two are coming. 
+
+Let's check the third: $EC$. Left-hand side is what? $EC$. Left-hand side should be the proper subset of the candidate key. Check: $EC$ is the proper subset of the candidate key? No. $EC$ is a subset of the candidate key; it is not a proper subset. You know a proper subset: like if I'm given a subset $AB$, then what is the proper subset of this? Either $A$ or $B$. $AB$ is a subset; $AB$ is a subset, so you can write like this: $A$ is a proper subset of $AB$. And if you write here, then it means $A$ is a subset of $AB$. 
+
+So check: left-hand side a proper subset of candidate key? No, it is the subset. So what will be the condition on the left side? It is false. So in the AND, as we know Boolean logic, if in a false AND you do anything, either true or false, the answer will be false. Meaning this is not a partial dependency. If it's not a partial dependency, then what is it? Full dependency, fully functionally dependent. 
+
+Check for the last one: left-hand side is a proper subset. No. Meaning this is also not a partial dependency. 
+
+If there is even a partial dependency, then you can say that my table is not in the second normal form. Here two are coming, so you can easily say that this table is not in second normal form. 
+
+So in next videos, we will solve more questions of GATE, okay? If you like this video, please like it and comment so that I get more motivation, and further I can bring more good videos for you. And please subscribe to my channel. Thank you.

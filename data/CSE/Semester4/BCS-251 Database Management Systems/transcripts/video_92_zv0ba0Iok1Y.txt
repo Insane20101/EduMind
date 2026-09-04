@@ -1,0 +1,68 @@
+Hello friends! Welcome to Gate Smashers. The topic is conflict serializability. This means we are given a schedule, and we have to check whether the given schedule is a conflict serializable schedule or not. This question is the most important question from the point of view of GATE, UGC-NET, or even if we talk about other competitive exams. Inside transactions, the first priority and the first topic that they choose is this only. 
+
+What is the question? How to check whether a schedule is conflict serializable or not? So, over here, a schedule is given. Schedule means a collection of transactions, and this schedule is to be checked to see if it is conflict serializable or not. So, for that, what is the method? 
+
+First of all, you see the schedule: Read of $X$, Read of $Y$, Read of $X$, Read of $Y$, Read $Z$, Write($Y$). I have written the schedule in this way. So, first, you note this schedule, and after that, we have to check. The method is very easy. The method is very easy if it is clear to you one time. You try questions of GATE and definitely the whole concept will be clear. 
+
+How do we check? So, first of all, what do we have to make over here? Precedence graph. We have to make a precedence graph over here. In a way, we have to make a graph only. And what is in the graph with us? Edges are there and vertices are there. Vertices mean nodes, and to join them, we draw edges. 
+
+So, in the graph, how many vertices, how many vertices do we have to take? That depends on how many number of transactions are there in this schedule. So, in this schedule, there are three transactions: $T_1$, $T_2$, and $T_3$. So, how many nodes or vertices will be there? Three. So, you can draw as you wish: $T_1$, $T_2$, and $T_3$. We gave it some name: $T_1$, $T_2$, and $T_3$, which are the names of the transactions. 
+
+Now, we have to draw edges. We have to draw edges. To draw the edges, we have to remember one line only: check the conflict pairs in other transactions and draw the edges. 
+
+You have to check conflict pairs. So, first of all, always remember conflict pairs: read-write, write-read, and write-write. These three are conflict pairs. If we talk about the same variable, $X$ and $X$, $Y$ and $Y$, $Z$ and $Z$. It should not be that Read of $X$ and Write of $Y$. No, Read of $X$ and Write of $Y$, if the variable is different—that is working on $X$ and I am working on $Y$—then there is no conflict in both. 
+
+So, read-write, write-read, write-write. What are these three? They are conflict pairs. 
+
+So, first of all, we will start with the first operation. From these, if this is increasing the time like this—this is a timeline—the first operation is read of $X$. So, you have to check carefully: read of $X$. Which will be the conflict of read of $X$? Write of $X$. Who will be the conflict of read of $X$? Write of $X$. You have to check write of $X$ in $T_2$. Is there any write of $X$? Or in $T_3$, is there any write of $X$? So, check $T_2$ also. It is not there. In $T_3$, it is not there. So, that means there is no problem. You can cut it in a way because we have checked this. 
+
+Now, we are talking about read of $Y$, which is the next operation. Read of $Y$. Conflict of read of $Y$: write of $Y$. So, first check write of $Y$. So, it is there here in $T_2$. Is it there in $T_1$? Write of $Y$. It is not there. So, that means there is no problem. You cut this also. Cut this means we have checked this. 
+
+Read of $X$, which is the third operation. Go on checking sequentially. Read of $X$. Conflict: write of $X$. Check, is write of $X$ there anywhere? It is not there. Write of $X$ is there anywhere? Here is write of $X$. Where are you standing? Over here. And where did you get the conflict? On $T_1$. So, draw a line from $T_3$ to $T_1$. You have to make this a directed graph. Directed graph means where direction is also there. So, you are checking in $T_3$, and where did you get it? In $T_1$. So, draw a line from $T_3$ to $T_1$, and complete. Complete means we have checked read of $Y$. 
+
+After that, we will come over here, next: read of $Y$. Conflict: write of $Y$. Check write of $Y$. It is not there. Check write of $Y$. Here it is. There is no need to check again above because we have already checked that. You just have to check below. Below that, read of $Y$, write of $Y$. We got it. So, where are you standing? On $T_2$. And where did you find it? In $T_3$. So, from $T_2$ to $T_3$, draw a line. We did it. Finish. 
+
+We have checked read of $Z$. Read of $Z$. Conflict: write of $Z$. Is there write of $Z$ anywhere? Yes, here it is, write of $Z$. So, you are standing at $T_2$ and you got it in $T_1$. So, from $T_2$, draw a line to $T_1$. We did it. But now over here also we have to check, but over here there is no operation write of $Z$. So, you don't need to check. Done. 
+
+Next, write of $Y$. In the case of write, you have to be careful. In the case of write, there are two conflicts: read and write both. So, that means write of $Y$, who will be the conflict? Conflict of write of $Y$ will be read of $Y$ and write of $Y$ both. So, in the case of write, take care. So, the conflict of write is read and write. Is it anywhere? No. Is it anywhere? Here it is. No, it is not there. There is no conflict of $Y$ over here. 
+
+So, first of all, internally you don't have to check in itself. Means, if you are checking read of $X$, then you don't have to check write of $X$ in itself. In other transactions, you have to check. If you get it in itself, the transaction itself can perform the transaction it wants to. The transaction itself can perform any operation. Where does the problem come? When they go parallel. So, you have to compare with each other. We did not get write of $Y$. 
+
+After that, we will come on write of $Z$. So, which is the conflict of write of $Z$? Read of $Z$, write of $Z$. Just take care, in the case of write, there are two conflicts: read of $Z$, write of $Z$. Is there read of $Z$ anywhere? Here it is. Even write of $Z$ is also there. Both are there. So, no problem. From $T_2$ to $T_1$. We have already drawn from $T_2$ to $T_1$, so there is no need to overwrite, because if one time line has been drawn, then the edge is there. So, we are standing at $T_2$ write of $Z$, and the conflict is read of $Z$. We got it. It is here. But already the line from $T_2$ to $T_1$ is drawn, so you need not draw it again. So, this is also checked, this is also checked. 
+
+Now, its operations are only left, so there is no one to compare. So, you can say this—these are also checked because its comparison is nowhere. So, this is already done. 
+
+Now, you come to this graph. In this precedence graph, you have to check that inside, loop or cycle—does it exist or not? Cycle means you have to simply just remember only one point of view: that you start from any node, can you again come back? If you can come, then that loop or cycle, we call it as "cycle exists." It is not necessary that in that cycle all nodes should come. It is not necessary that all the nodes should come in that cycle. It is possible that we come back from one node only. That is also a kind of cycle. 
+
+So, if I start from $T_1$, I cannot go anywhere. If I go from $T_2$ to $T_3$, from $T_3$ I go at $T_1$, but I cannot go back. From $T_3$, if I go at $T_1$, then also I cannot go back. So, in this graph, no loop or no cycle, you can say. 
+
+So, if no loop or no cycle you found—if in this graph no loop or no cycle came—that means that this conflict is a serializable schedule. So, that means you can clearly say that yes, you are conflict serializable. And if one schedule is conflict serializable—why is conflict over here? Because it is the name of the method. In this, we are checking conflict pairs. That is why we are saying its name as conflict serializable schedule. So, yes, this schedule is conflict serializable. And if this is serializable, then you can give a guarantee that this is serializable. Means, equivalent to this schedule, some serial schedule exists. Means, in seeing, this is parallel, but you can convert this and make it serial. 
+
+If this is serializable, so that means that this is consistent also. It is consistent also. So, conflict serializable, yes, so that means this is serializable and this is also consistent. But over here a problem comes: that if it is serializable, then what will be made? How? 
+
+Means, as there are 3 transactions, so for serializable we have 6 possibilities: 
+$T_1$, $T_2$, $T_3$ 
+$T_1$, $T_3$, $T_2$ 
+$T_2$, $T_1$, $T_3$ 
+$T_2$, $T_3$, $T_1$ 
+$T_3$, $T_1$, $T_2$ 
+$T_3$, $T_2$, $T_1$ 
+There are these 6 possibilities. 
+
+This is equivalent to which one? How can we say first this happened, then this or this? So, to check that also, you have to check the graph only. 
+
+See, in this graph, and in this graph, you have to check indegree. Indegree zero. Means, find the vertices whose indegree is zero. Means, where any vertices, any edge is not coming towards it. Towards this $T_1$, 2 edges are coming. Towards $T_3$, 1 edge is coming. See, towards $T_2$, is any edge coming? No, towards $T_2$, no edge is coming. So, first of all, pick $T_2$. 
+
+So, first of all, what you have to do? Pick $T_2$. As you picked $T_2$, in a way you finish $T_2$ from the graph. It will be removed from the graph only. If the vertex is only not left, then there is no role of the edge also. So, in a way, the edge is also finished. An edge must have 2 end points, so 2 end points will not be there; one end point we have finished, so that 2 edges are also removed. 
+
+See, in the remaining graph, indegree—any edge is coming towards the vertices? It is coming. Towards this, is it coming? It is not coming. So, you pick the second one, $T_3$. And then when you will remove $T_3$, then what is left in the last? $T_1$. 
+
+So, that means that out of these 6 possibilities, $T_2$, $T_3$, $T_1$—yes, this is the possibility. 
+
+So, is this graph conflict serializable? Yes. What is this graph? It is serial. What is the sequence? This is the sequence. Is this graph consistent? Yes, it is a consistent graph. 
+
+So, this is how we check whether a graph is consistent, or serializable, or conflict serializable, or not. And you will get a lot of questions on this in GATE, UGC-NET. So, please, you see this video properly, and you try all the questions after that. 
+
+If you want to write this, you can write this schedule like this: $T_2$ is together because $T_1$, $T_2$, $T_3$ means first of all $T_2$ will be completed. $T_2$ will be completed, then $T_3$ will be completed, then $T_1$ will be completed. So, first of all, operations of $T_2$, then operations of $T_3$, then $T_1$ operations at last. 
+
+So, this is how we check whether the schedule is conflict serializable or not. Thank you!

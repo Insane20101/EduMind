@@ -1,0 +1,82 @@
+Process synchronization is a very main topic of operating system. In process synchronization, if multiple processes runs in our system then there could be two modes, one is serial mode and the other is parallel mode. Serial mode means processes will get executed one by one. When one process got started, other process can't start until it won't get terminated. 
+
+It is like an ATM. When customers use ATM machines, they are using that one by one. Nobody else can enter until one person's transaction does not end. This way, when we execute processes, then there is no problem in it because one running process won't make any effect on the other. 
+
+However, if we talk about parallel execution, our system these days uses a multiprogrammed environment and a time-sharing environment. We can't give a guarantee that there'll be one process at a time. A lot of processes can run simultaneously. When this many processes run at a time, then we get a very big problem that there could be some processes which are cooperative and others could be independent. 
+
+I am categorizing the processes into two types: cooperative processes and independent processes. Independent processes mean execution of one is not putting any effect on the other. There is nothing common. For example, if I am doing a transaction today on SBI's online server, and another transaction I am doing on HDFC's server, there is nothing common between them; both are getting executed on different servers. Those are independent processes, so there's no benefit to studying about them because they are getting executed differently, so there's nothing common between them. 
+
+Cooperative processes are those processes where execution of one affects the other. The important point is why we call them cooperative and how the execution of one affects the other. The reason is that they share something. There is something common between them. 
+
+Now, what could that common thing be? The common element could be a variable, meaning two processes are sharing something with each other, i.e., a variable. They are using a common variable. They can share the memory or buffer; when two processes are running at a time, maybe they are sharing the same memory or buffer. The third can be code; there could be some code or coding that is common between both. One more thing can be resources. In resources, we are having a CPU, printer, scanner, and various other hardware. 
+
+If there is anything common between them—whether it's a variable, memory, code, or resources—we call those types of processes cooperative processes. Here is a very crucial point: if they share anything common, then the execution of one can affect the other. 
+
+For example, in IRCTC, thousands of people can do transactions at a time. Even in our laptops, PCs, and mobiles, there are many processes at a time which can share something common. We call those types of processes cooperative processes. 
+
+Now, our topic is process synchronization. Why is there a need for process synchronization here? If we won't properly synchronize these cooperative processes, then they can create a problem. It's not always mandatory that they will create problems, but yes, they can create problems. 
+
+We will see an example here. It is just like a simple example: if I would give a guitar to someone who doesn't have any knowledge about music, then he'll create noise rather than music. Why? Because all the strings in it won't get synchronized. If he'll play it in a synchronized way, then definitely it'll create music rather than noise. 
+
+If cooperative processes won't get executed properly, then it'll create some problem here; it'll lead to some inconsistent or deadlock state that it'd be very difficult to come out of it. So that's why it's very important to synchronize them. 
+
+Now, before synchronizing, let's see one problem about where cooperative processes create problems. We are discussing this through a simple example. There are two processes, P1 and P2. They are running on the same system. 
+
+In P1, the code is like: there is a variable X, X++, and `shared = X`. 
+And in P2, there is some local variable Y: `Y--`, `Sleep(1)`, and `shared = Y`. 
+
+So guys, I am writing the code partially. Here I have two processes, P1 and P2, and they are sharing a variable. I gave that variable a name as a shared variable. Let's say we initialized it with the value 5. It's a shared variable we initialized with 5. There is a local variable in P1, i.e., X of integer type. P2 also has a local variable of integer type. 
+
+Now, the condition is that both processes are running at a time, meaning both processes are parallel. We are not talking about serial execution because when two processes are serial—meaning P2 can't get started until P1 is completed—no problem will get created. But when two processes are parallel, what problem can arise? 
+
+Now we are seeing here what is common in P1 and P2. If you look properly in P1 and P2, then one thing is common, i.e., `shared`. `shared` is what? A variable. I already told you that cooperative processes share something common. That could be memory, a variable, code, or some resources, so we took a variable in our example. They both are sharing a single variable, i.e., `shared`. 
+
+Now, for example, let's say that either process can run first in P1 and P2. But we are talking about a uniprocessor system here. We have a constraint because we are talking about a uniprocessor system, meaning we have only one CPU, and this is the constraint. Generally, in our laptops and mobiles, our CPU is the same in a uniprocessor system. 
+
+Out of P1 and P2, anyone can run first. Both will come in parallel, but due to the uniprocessor, one will get the CPU first. Let's say P1 got the CPU first, then it'll execute instruction number one. 
+
+What is instruction number one? `shared = X`, meaning we are assigning the value of `shared` to X. What is the value of `shared`? 5. We assigned the value 5 to X. Now X contains the value 5. 
+
+The next instruction is `X++`. `X++` means X's value will become 6 there. Let's say X's value here was 5; now it became 6 after instruction 2. 
+
+The third instruction is `Sleep`. In previous videos, we have discussed many times that processes can be preempted. Processes can jump, meaning the CPU can leave a process and start executing another. These types of processes are called preemption—meaning a running process will get preempted and the CPU can start executing another process. To implement this, we write `sleep`. `Sleep` means this process will go to sleep; sleep means pause. It's just a simple meaning, i.e., pause. We paused a running process. 
+
+What is the meaning of `Sleep(1)`? 1 second. It means we paused the process for 1 second. This is the way of writing the code. We generally say in theory that a high-priority process came, then the CPU got preempted, like we discuss time quantum, where the CPU gets preempted after 2-3 time quanta. We discuss a lot in theory always, but this is one way how we implement it in actual practice. 
+
+I tried to implement that `Sleep(1)` means we paused the running process. But can we pause the CPU? No. The CPU is not in our hands, it's not in the user's hands. It's in the operating system's hands. We paused this process because I want to preempt this process. To preempt this, I intentionally wrote this line here, i.e., `Sleep(1)`. 
+
+Now, when this process will get paused, the CPU won't get paused; the CPU never stays idle. So the CPU will say, "Okay, P1, you want to get paused for 1 second? No problem. But I want some other process. So is there any other process in parallel?" 
+
+Yes, P2 will say that it's parallel, and it'll shift from the ready queue to the running queue. When it comes into the running queue, then in technical terms we call it context switching. Meaning, here context switching took place, and we saved P1's values in the PCB (Process Control Block) and we loaded P2. 
+
+When we loaded P2, then it'll also start from its first instruction, i.e., `shared = Y`. What is the value of `shared`? The `shared` value is 5. So Y got the value 5. 
+
+When we executed the second instruction, `Y--`, what does it become? In the local variable, Y's value is 4. 
+
+Now it comes to the third instruction. The third instruction is `Sleep(1)`. Meaning we said in process 2 also that it'll get preempted. But how do we actually do coding to make it preempt? This is a simple C language code: `Sleep(1)`. Meaning we told process 2 also to get paused for a second. 
+
+Again, the same thing: the process will get paused. But will the CPU get paused? No. The moment it comes to `Sleep(1)`, the CPU will again preempt because it'll tell P2 to get paused, but the CPU won't get paused. If it won't get paused, then the CPU will search for some other process that could be running. 
+
+Yes, P1 is here because P1's one-second pause is completed. So it'll again come to P1, and P1 will start from the fourth instruction, because we've already seen the concept of PCB. All information is saved in the Process Control Block as to up to where you executed it before. So we already executed up to the third instruction, then the address of the fourth instruction will get noted in the program counter. 
+
+So when we execute the fourth instruction, then we load X's value into `shared`, that was `X = 6` in the local variable. Meaning now the value of the `shared` variable becomes 6. So this process is done executing all its statements; meaning this process got terminated. 
+
+And when a process gets terminated, we take all the resources back. Now the CPU will search if there's any other process. If there won't be any other process, then the CPU would become idle. But there's already P2 pending because P2 was on a 1-second sleep, and 1 second is already completed. Now P2 will again get the control. 
+
+Now we'll load the PCB again, then this status will be written there that the first 3 statements have been already executed. So the PCB will say the fourth instruction, and again the address of the fourth instruction will get loaded. 
+
+What is the value of Y? The value of Y in the local variable is 4. So the value 4 came into the `shared` variable. Meaning the `shared` value got updated again, and the final value of `shared` is 4. 
+
+But what do you think? Is this right or wrong? This is wrong. Because there was a value 5; if we added 1 to 5 and then subtracted 1 from it, what should the answer be? 5. If we add and subtract the same value, then the answer will be 5. But the answer here is 4. 
+
+Why? Because these two processes, which are parallel and which are cooperative, are sharing something, that's why they are cooperative, and they're not synchronized. If they were synchronized, then my answer would be 5. But if you execute it—we executed P1 first and my final answer was 4—you can also start P2 first. If you start P2 first, then in that case the answer would be 6. 
+
+But 6 and 4 are both wrong. Any of the two answers can come. If you execute P1 first, then the answer would be 4; if you start P2 first and then run it and preempt it, then the answer would be 6. 
+
+So this problem is called a race condition. Meaning here 4 and 6 are racing as to who will win. If you execute it, then maybe 4 will win in some of them, or 6 will win in some other systems. But both are wrong because the answer was supposed to be 5, but it won't come out as 5 because these processes are not synchronized. 
+
+This is why we need synchronization. It's telling us here what problems can be created without synchronization. So there are a lot of methods to synchronize: we can use semaphores, Peterson's solution, and locking methods also, which we'll see in future videos. 
+
+So this is why we need process synchronization wherever multiple processes will run at a time, and for cooperative processes. We'll only talk about cooperative processes because only they can create problems if they won't get synchronized. 
+
+So if you liked this video, then please click the like button and share. And if you have any query, then you can ask in the comments. Thank you so much!

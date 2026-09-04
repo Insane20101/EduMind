@@ -1,0 +1,110 @@
+Hello students, my name is Dr. Gajendra Purohit, and you are watching our YouTube channel where I upload videos for BSc and engineering. If you are preparing for any competitive exam where higher mathematics is asked, our YouTube channel is very helpful. Today, I am going to explain the integral representation of the hypergeometric function. This is part of special functions. In a previous video, I uploaded an introduction to the hypergeometric function, explaining its basics. Today, I will explain how we represent the hypergeometric function using integrals. Here, we also have two or three more concepts and theorems, such as Vandermonde's theorem, Kummer's theorem, and some important formulas that I will try to explain to you here. So students, let's get started.
+
+Let's first understand that the integral representation of our hypergeometric function is a certain expression, but sometimes exams ask for its proof—specifically, why this is the case, and why its value is equal to this expression. Normally, I want to tell you that if any function is given as $F(\alpha, \beta, \gamma; z)$, then, my dear, the way to represent it is:
+$$\sum_{r=0}^{\infty} \frac{(\alpha)_r (\beta)_r}{(\gamma)_r} \frac{z^r}{r!}$$
+Here, these are the Pochhammer symbols, which I explained in the video I uploaded just before this one. If you haven't seen it, you can check it out by clicking the I-button.
+
+Now, this hypergeometric function can also be represented in the form of an integral. So, you have to prove that its value is also equal to that integral form. Right? So, what we will do, students, is either start with the LHS or the RHS. Here, we will start with the RHS and prove that its value is equal to the LHS. Let's see how we do this step by step.
+
+We start with the RHS:
+$$\frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} (1-zt)^{-\alpha} \, dt$$
+
+First, we expand $(1-zt)^{-\alpha}$. Pay attention, students:
+$$\frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} \left[ 1 + \frac{\alpha z t}{1!} + \frac{\alpha(\alpha+1)(z t)^2}{2!} + \frac{\alpha(\alpha+1)(\alpha+2)(z t)^3}{3!} + \cdots \right] dt$$
+
+Now, we can write this using summation:
+$$\frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} \sum_{r=0}^{\infty} \frac{(\alpha)_r z^r t^r}{r!} \, dt$$
+
+Let's rewrite the summation index cleanly:
+$$\frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \sum_{r=0}^{\infty} \frac{(\alpha)_r z^r}{r!} \int_{0}^{1} t^{\beta-1+r} (1-t)^{\gamma-\beta-1} \, dt$$
+
+Now, recall the standard beta function integral formula:
+$$\int_{0}^{1} x^{m-1} (1-x)^{n-1} \, dx = \frac{\Gamma(m)\Gamma(n)}{\Gamma(m+n)}$$
+We can apply this formula to our integral. Let's rearrange the summation term first:
+$$\sum_{r=0}^{\infty} \frac{(\alpha)_r z^r}{r!} \left[ \frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{(r+\beta)-1} (1-t)^{(\gamma-\beta)-1} \, dt \right]$$
+
+Applying the beta integral formula, the integral evaluates to:
+$$\frac{\Gamma(r+\beta)\Gamma(\gamma-\beta)}{\Gamma(r+\beta + \gamma-\beta)} = \frac{\Gamma(r+\beta)\Gamma(\gamma-\beta)}{\Gamma(r+\gamma)}$$
+
+Substituting this back, we get:
+$$\sum_{r=0}^{\infty} \frac{(\alpha)_r z^r}{r!} \frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \frac{\Gamma(r+\beta)\Gamma(\gamma-\beta)}{\Gamma(r+\gamma)}$$
+
+Notice which terms cancel out: $\Gamma(\gamma-\beta)$ cancels in numerator and denominator. We can also use the property of Pochhammer symbols to write $\frac{\Gamma(r+\beta)}{\Gamma(\beta)} = (\beta)_r$ and $\frac{\Gamma(\gamma)}{\Gamma(r+\gamma)} = \frac{1}{(\gamma)_r}$.
+
+After cancellation and simplification, we obtain:
+$$\sum_{r=0}^{\infty} \frac{(\alpha)_r (\beta)_r}{(\gamma)_r} \frac{z^r}{r!}$$
+
+We know that this expression is precisely equal to the hypergeometric function $2F1(\alpha, \beta; \gamma; z)$. Thus, we have easily proved the integral representation.
+
+---
+
+Next, let's look at Gauss's theorem, which asks us to prove that:
+$$_2F_1(\alpha, \beta; \gamma; 1) = \frac{\Gamma(\gamma)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\gamma-\alpha)\Gamma(\gamma-\beta)}$$
+
+To prove this, we use the integral representation of the hypergeometric function we just established:
+$$_2F_1(\alpha, \beta; \gamma; z) = \frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} (1-zt)^{-\alpha} \, dt$$
+
+Since we need the value at $z = 1$, we simply substitute $z = 1$:
+$$_2F_1(\alpha, \beta; \gamma; 1) = \frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} (1-t)^{-\alpha} \, dt$$
+
+Combining the powers of $(1-t)$:
+$$\int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\alpha-\beta-1} \, dt$$
+
+Using the beta integral formula again, this evaluates to:
+$$\frac{\Gamma(\beta)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\beta + \gamma-\alpha-\beta)} = \frac{\Gamma(\beta)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\gamma-\alpha)}$$
+
+Substituting this back into our expression:
+$$\frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \cdot \frac{\Gamma(\beta)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\gamma-\alpha)}$$
+
+The $\Gamma(\beta)$ terms cancel out, leaving us with:
+$$\frac{\Gamma(\gamma)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\gamma-\alpha)\Gamma(\gamma-\beta)}$$
+And this is precisely what we needed to prove. You can check the proof notes here if you are preparing for CSIR NET, IIT JAM, or GATE.
+
+---
+
+Moving forward, let's discuss another related identity for negative integer parameters, where $\gamma = -n$. Using the integral representation:
+$$_2F_1(\alpha, \beta; -n; z) = \frac{\Gamma(-n)}{\Gamma(\beta)\Gamma(-n-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{-n-\beta-1} (1-zt)^{-\alpha} \, dt$$
+
+Setting $z = 1$, we get:
+$$_2F_1(\alpha, \beta; -n; 1) = \frac{\Gamma(-n)}{\Gamma(\beta)\Gamma(-n-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{-n-\beta-1} (1-t)^{-\alpha} \, dt$$
+
+Combining the terms with powers of $(1-t)$ and simplifying using gamma function properties, we obtain the required Pochhammer symbol relationship:
+$$\frac{(\gamma-\beta)_n}{(\gamma)_n}$$
+This can be proved very easily using the same integral approach.
+
+---
+
+Next, let's look at Kummer's theorem, which is frequently asked in exams. How do we prove it? We substitute $\gamma = 1 - \alpha + \beta$ and $z = -1$ into the integral representation of the hypergeometric function:
+$$_2F_1(\alpha, \beta; \gamma; z) = \frac{\Gamma(\gamma)}{\Gamma(\beta)\Gamma(\gamma-\beta)} \int_{0}^{1} t^{\beta-1} (1-t)^{\gamma-\beta-1} (1-zt)^{-\alpha} \, dt$$
+
+Substituting $\gamma = 1 - \alpha + \beta$ and $z = -1$:
+$$_2F_1(\alpha, \beta; 1-\alpha+\beta; -1) = \frac{\Gamma(1-\alpha+\beta)}{\Gamma(\beta)\Gamma(1-\alpha)} \int_{0}^{1} t^{\beta-1} (1-t)^{-\alpha} (1+t)^{-\alpha} \, dt$$
+
+Combining $(1-t)^{-\alpha}$ and $(1+t)^{-\alpha}$ gives $(1-t^2)^{-\alpha}$:
+$$\frac{\Gamma(1-\alpha+\beta)}{\Gamma(\beta)\Gamma(1-\alpha)} \int_{0}^{1} t^{\beta-1} (1-t^2)^{-\alpha} \, dt$$
+
+Now, we make a substitution. Let $t^2 = u$, which means $2t \, dt = du$, or $dt = \frac{du}{2t} = \frac{du}{2\sqrt{u}}$. Also, $t = \sqrt{u} = u^{1/2}$.
+
+Substituting these into the integral:
+$$\frac{\Gamma(1-\alpha+\beta)}{\Gamma(\beta)\Gamma(1-\alpha)} \int_{0}^{1} (u^{1/2})^{\beta-1} (1-u)^{-\alpha} \frac{du}{2\sqrt{u}}$$
+
+Simplifying the powers of $u$:
+$$\frac{1}{2} \frac{\Gamma(1-\alpha+\beta)}{\Gamma(\beta)\Gamma(1-\alpha)} \int_{0}^{1} u^{\frac{\beta}{2} - 1} (1-u)^{-\alpha} \, du$$
+
+This integral is again in the standard beta function form, which can be easily evaluated further to complete Kummer's theorem.
+
+जानते हैं बेटा, यहां पे गामा-बीटा का कॉन्सेप्ट निकल जाएगा। क्या होगा मेरे भाई, इधर देखिए। यह आएगा 1/2, बेटा यह आएगा 1 - अल्फा + बीटा डिवाइडेड बाय गामा-बीटा और 1 - अल्फा, बेटा यहां पे क्या आएगा? यह आएगा गामा बीटा / 2, यहाँ आएगा साइन - अल्फा + 1 या इसको लिख सकते हैं 1 - अल्फा और इन दोनों को ऐड कर देंगे, तो बेटा यह आएगा 1 - अल्फा + बीटा / 2 का गामा आ जाएगा, राइट? 
+
+तो ये हमारे पास यहां पे वैल्यू आएगी। बेटा, कुछ टर्म हमारे पास यहां पे क्या हो रही हैं? कैंसिल हो रही हैं। बेटा, कौन-कौन सी टर्म कैंसिल हो रही हैं, चेक कर लेते हैं। तो एक तो हमारे पास ये से ये क्या हो रहा है? कैंसिल हो रहा है। बाकी टर्म को हम एज़ इट इज यहां पे लिख सकते हैं, तो वो टर्म हमारे पास क्या होगी, वो मैं लिख के बताता हूं स्टूडेंट्स। 
+
+तो यहां से हमारे पास इसकी जो वैल्यू आएगी, बेटा मैं यहां लिख रहा हूं क्योंकि हमारे पास जगह नहीं है, तो मैं इसकी वैल्यू को यहां लिख देता हूं ताकि समझने में आपको दिक्कत नहीं आए। तो बेटा, यहां से हमारे पास इसकी जो वैल्यू आएगी, वो आएगी 1/2 एंड 1 - अल्फा + बीटा आएगा बेटा यहां पे, और ये हमारे पास आएगा गामा बीटा / 2 डिवाइडेड बाय बेटा, ये आएगा हमारे पास गामा बीटा एंड यहां से हमारे पास इसकी वैल्यू आएगी 1 - अल्फा + बीटा / 2। बेटा, ये हमारे पास वैल्यू आ गई। 
+
+पर हमारे पास जो प्रूफ आ रहा है, उसमें 1 + बीटा दे रखा है, तो इसका मतलब बीटा को यहां पे हमें क्या करना पड़ेगा? ऊपर-नीचे मल्टीप्लाई-डिवाइड करना पड़ेगा। तो हम क्या करते हैं, स्टूडेंट्स, बीटा को ऊपर-नीचे मल्टीप्लाई-डिवाइड करेंगे, तो हमारे पास ये कहानी मिल जाएगी बेटा। तो सुनिए, वापस हम इसको लिखेंगे, तो यहां पे आएगा गामा 1 - अल्फा + बीटा और बेटा, मैंने बीटा को ऊपर-नीचे मल्टीप्लाई किया, तो मैं इसको लिख सकता हूं बीटा / 2 गामा बीटा / 2 है ना बेटा। ये जो टू है ना, उसको मैंने यहां पे... मैंने किया क्या? देखो, ध्यान दीजिएगा है ना। 
+
+मैंने किया क्या मेरे भाई? मैंने क्या करा यहां पे बीटा को ऊपर-नीचे मल्टीप्लाई-डिवाइड कर दिया, तो ये जो डिवाइड बाय टू है, इसको एक साथ लिख दिया मैंने यहां पे है ना। डिवाइडेड बाय बेटा, ये आ जाएगा हमारे पास बीटा गामा बीटा, तो बेटा ये हमारे पास क्या आएगा? बीटा + 1 हो जाएगा एंड ये आएगा 1 - अल्फा + बीटा / 2 होगा। 
+
+अगर हम इसको सिंपलीफाई करते हैं, तो मेरे भाई यहां पे बहुत इजली ये चीज़ आ जाएगी। बेटा, यहां पे आ जाएगा ये 1 - अल्फा + बीटा स्क्वायर। इसकी जो वैल्यू होती है, वो हमारे पास होती है गामा बीटा / 2 + 1 हो जाएगी एंड स्टूडेंट्स, ये हमारे पास हो रहा है बीटा + 1 एंड यहां पे हमारे पास इसकी जो वैल्यू होएगी, वो आएगी 1 - अल्फा + बीटा / 2। 
+
+तो इस तरह से हम यहां पे बहुत इजली इसको प्रूव कर सकते हैं, तो बकायदा बाय नेम ये एग्जाम में पूछा जाता है। बाकी, इसका प्रूफ मैंने यहां समझा रखा है, ये यहां से भी आप समझ सकते हैं, क्लियर है? 
+
+तो सुनिए यार, बुक्स के बारे में बता ही चुका हूं, इनका लिंक आपको डिस्क्रिप्शन में मिल जाएगा। हमारा जो मैथ्स केयर ऐप है, उसका लिंक डिस्क्रिप्शन में मिल जाएगा। बाकी, हमारा जो अलग कॉम्पिटेटिव एग्जाम के लिए बहुत ही हेल्पफुल है, तो वो यहां जा के देख सकते हो और यहां जा के चैनल को सब्सक्राइब कर सकते हैं। आप सभी का बहुत-बहुत धन्यवाद, थैंक यू, बाय-बाय।

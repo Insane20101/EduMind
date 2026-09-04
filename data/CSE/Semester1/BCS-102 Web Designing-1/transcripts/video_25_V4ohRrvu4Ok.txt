@@ -1,0 +1,15 @@
+Today's exercise is going to be related to the DOM. I will give you an exercise in which you have to use the methods of the DOM. After that, you have to solve this problem. Whoever solves this will get a shoutout. You guys like this video and write "challenge accepted" in the comment section. Let's go to the computer screen. Let's roll the intro.
+
+Alright, guys, I have come inside my computer screen. Do you know what I will do first? I will make video 70. After making video 70, I will open it by doing a shift right-click and selecting "Open with Code." Now I will tell you what you have to do in this exercise.
+
+By writing `index.html`, I have quickly put the boilerplate code here. What is happening to me? I will give you a question. You have been given five boxes. Assign a random color and a random background to each box using DOM concepts. I hope you understood what you have to do. I don't think there is any rocket science in this.
+
+Suppose you have a `div.container` and `div.box`, and you need to create, let’s say, five boxes. In these five boxes, you have to use DOM concepts to assign random colors. How will you assign random colors? Along with that, I will make you do an easy task: set the height to 45 pixels, width to 45 pixels, and a border of 2 pixels solid black. Here, I will show you.
+
+If you have not accessed the playlist of Sigma, then do it. If you have not accessed the code, then do it. I am updating the code, and now I will quickly preview it. So these boxes are here, and see, I can do a lot. I will set the display to flex here, justify content to center, and align items to center. I can do many things. I can also write "box" here.
+
+You can put margin and padding as well. I will put a gap when there is a flexbox. Why will I use margin and padding? I have studied the gap property. Yes, I will have to apply all these styles to the container. This is the box, and now the gap will come. You didn't have any rocket science; you knew all this, and I have done all this here.
+
+I should also set the display to flex, so I have done this. I will copy this and put it here as well, so that I can create a flexbox. You can do whatever you want; you know everything. You just have to assign random colors and backgrounds and show me. I hope everyone understood the exercise.
+
+I will keep the video short. That's all for now. Thank you so much for watching this video, and I will see you next time. Bye!

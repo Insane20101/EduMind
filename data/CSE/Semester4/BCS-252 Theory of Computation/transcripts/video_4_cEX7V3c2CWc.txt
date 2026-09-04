@@ -1,0 +1,46 @@
+Hello, those Soviet smashes make us forget. Their next example is to construct a DFA which accepts the language of all strings that end with 'a'. This is chaotic containing a cur is freedom, emrys is career: how to construct a DFA which will accept all the strings which must end with the 'a'? 
+
+To start, let's look at the subset. First, we need to write the language. What is a language? Language is a collection of strings. Here, we are required to accept strings that end with 'a'. 
+
+First, what are the minimum strings? The minimum string we have is 'a'. Can we have epsilon? No, because epsilon does not end with 'a' (it doesn't have any letters). So, the minimum string must be 'a'. 
+
+What else can we have? We can have 'ba'. Can we have 'aa'? Yes, because it also ends with 'a'. Can we have 'bba'? Yes, because it also ends with 'a'. Can we have 'aba'? Yes, because it ends with 'a'. Can we have 'abba'? Yes, because it ends with 'a'. 
+
+So, any string that ends with 'a' should be accepted. Therefore, we should first write down the language containing all such strings. This is an infinite language. 
+
+Now, let's design the DFA for strings that end with 'a'. When we design a DFA, we must first design it for the minimum string. The minimum string we have is 'a'. 
+
+Let's take an initial state, the starting state $Q_0$. From $Q_0$, if we get an input alphabet 'a' (the alphabet in question is 'a' and 'b'), we go to $Q_1$, where $Q_1$ is our final state. Since 'a' is a single 'a' and it is our minimum string consisting of a single 'a', we reach the final state $Q_1$ on input 'a'. 
+
+Now, let's fill in the blanks to make the DFA complete. From state $Q_0$, where does 'b' go? If we get a 'b', where should it go? Can we have a string like 'ba'? Yes, we discussed that 'ba' is a valid string. So, if we get a 'b' at $Q_0$, we should stay at $Q_0$ (self-loop of 'b' on $Q_0$). Why? Because if we get any number of 'b's initially, and then an 'a', it ends with 'a'. For example, in 'ba', we read 'b' at $Q_0$, stay at $Q_0$, and then read 'a' to go to $Q_1$ (final state).
+
+What about state $Q_1$? If we are at $Q_1$ and we get an 'a', what happens? Since we want strings that *end* with 'a', after getting an 'a', if we get more 'a's (like in 'aa' or 'aaa'), it is still ending with 'a'. So, we can put a self-loop of 'a' on $Q_1$. 
+
+What if we get a 'b' at $Q_1$? Suppose we have a string like 'ab', and then another 'a' (making 'aba'). If we are at $Q_1$ and we get a 'b', where do we go? If we get a 'b', we cannot stay at $Q_1$ as a final state if the string ends in 'b'. But wait, if we get 'ab', and then an 'a' (like 'aba'), the last symbol is 'a', so it should be accepted. Therefore, if we are at $Q_1$ and we receive a 'b', we should go back to $Q_0$. 
+
+Let's trace this carefully. If we have a string like "aba":
+- Start at $Q_0$.
+- Read 'a', go to $Q_1$.
+- Read 'b', go back to $Q_0$.
+- Read 'a', go to $Q_1$ (final state, accepted).
+
+What about a string like "abb"? 
+- Start at $Q_0$.
+- Read 'a', go to $Q_1$.
+- Read 'b', go to $Q_0$.
+- Read 'b', stay at $Q_0$.
+- End at $Q_0$ (non-final state, rejected, which is correct because it ends in 'b', not 'a').
+
+Do we need any trap state here? No, we don't need to send anything to a separate trap state because every state has transitions for both 'a' and 'b':
+- At $Q_0$: on 'a' go to $Q_1$, on 'b' go to $Q_0$.
+- At $Q_1$: on 'a' go to $Q_1$, on 'b' go to $Q_0$.
+
+Let's test another string, like "ababa":
+- Start at $Q_0$.
+- Read 'a' $\rightarrow$ $Q_1$.
+- Read 'b' $\rightarrow$ $Q_0$.
+- Read 'a' $\rightarrow$ $Q_1$.
+- Read 'b' $\rightarrow$ $Q_0$.
+- Read 'a' $\rightarrow$ $Q_1$ (accepted).
+
+This is how we can easily design the DFA for a language where all strings must end with 'a'.

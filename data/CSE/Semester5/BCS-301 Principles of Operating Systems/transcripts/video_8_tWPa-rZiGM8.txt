@@ -1,0 +1,41 @@
+Hello friends, welcome to Gate Smashers. The topic is system call. In the last video, we discussed how we work in user mode and kernel mode. If the user is using any application or API or writing any program, then we generally write it in user mode. But if I want to access any functionality of the operating system, then I have to go in kernel mode. 
+
+Because our access is on the user mode, because we are accessing the user, to go in kernel mode we use a system call. A system call is a programmatic way through which we shift from user mode to kernel mode or can access the functionalities of the kernel and operating system. 
+
+Like if I take a simple example, if we are writing a C program and I want to get any value printed on the monitor, let's say 2 + 2 = 4, then 2 + 2 is up to user mode, the processor will do 2 + 2 no problem. But we have to get it printed on the monitor, or if I want to get something printed, or I want to access a printer, so wherever I have to access devices, I have to take help and do it through the kernel. Kernel means through the operating system. 
+
+Same way, if I want to access some file, let's say I want to perform a transaction, want to change data in some file. The file is in the hard disk, so again, to access any file or hard disk, I have to go in kernel mode. Because these all devices and resources are being governed by the operating system, so in the operating system, the kernel is the main logical unit. Here, I have to take help of a system call, and a system call is generally... 
+
+Many times, many operating systems are like, if we talk about Linux, then when we write a C program in the text editor, then we can use a system call there directly. Like we can use read, write, close, open, fork, etc., and many other system calls directly. Generally, in the Linux operating system, or if we'll talk about any other system also, there are hundreds of system calls. Same way, if we'd talk about Windows, then there are around 700 system calls. 
+
+But there are many operating systems where we don't write system calls directly. We rather use APIs or we use local libraries like printf or scanf. Printf means that we want to get some value printed, then we are writing printf. But that printf or scanf is not a system call. Printf is a function, but that function is accessing the system call. Print means writing on the monitor, so whether you use a system call directly or you use some API or any function, but at the end, work will be done through a system call because the system call will invoke the kernel to perform this work. 
+
+As I said, system calls generally vary according to the operating system. Many of them have around 300 system calls, Windows 7 has around 700 system calls. So we categorize these system calls. 
+
+First, we have file-related system calls. File-related system calls mean where we want to access any file. Let me tell you with a simple example. What happens generally is when we write any C program, then we are writing that program using some API or application. But when we execute that program, then we say in the operating system that the program has become a process now, means when it's in running mode, then it became a process. And running mode means that the process will be in the RAM, means that the process has arrived in the RAM now. And our operating system, i.e., the kernel, is in the RAM also. I'm just taking a general architecture, many times just a part of code lies in the RAM rather than the whole code or kernel. So we are talking through a simple example where it says that our kernel is in main memory and the process is also there. 
+
+Now, if we want to do any execution in the process, let's say I want to access some file, then this process doesn't have privilege; that privilege will be given by the kernel. So the process will invoke a system call and will access that file. So all this work here has been done through a system call. 
+
+So if we'd talk about files, then what do we do in a file? Let's say I have to create some file, create a file, let's say I want to open a file, want to read a file, or write some file. So all the file-related work that we are doing here, we are doing all that through file-related system calls. 
+
+Next is device-related system calls. Device-related system calls mean if I want to access any device or hardware, here we are calling a device as hardware. If we want to access hardware, whether it is a hard disk, printer, or monitor, so to access all these devices, the user can never do direct access, he has to take privilege. Privilege will be given by the operating system, so here we'll again take privilege through a system call. Whether we are reading any device, or writing on a device, or repositioning the value of that device, or we are accessing its attributes. 
+
+Same way, we use `ioctl`. We use this to control input-output devices or to control a file also, although file control is a header file, but we generally use it here. 
+
+Next, we have information-related system calls. Information means regarding processes or devices. If I want to take information of any attribute, there we use information-related system calls, like `getpid` is a simple example. We use `getpid` if I want to know about some process's ID, `getppid` means if I want to know about parent ID. Wherever we need any process-related information, which we call metadata in general terms. Metadata related to data is, data is like there's an audio file, and the content in the audio file is its data. But data related to it, like its size, file name, file's permission, file's extension, all this is called an attribute. So if I want to access data like this, for this, we use information-related system calls. 
+
+Same way, if I want to access system's time, system's date, system's data, then in that case, we use information-related system calls. 
+
+Then process control. This is also a major system call that we use, where if you are getting a process loaded. As I just told you, generally the programs that we write or save, we are doing that in secondary memory in the hard disk because we want to save it permanently. But when we have to load them in main memory or want to execute them, for that, we use process control system calls. If you want to abort a process, fork system call. This is a very important system call. 
+
+Fork system call means, like we talk about a multiprocessing environment in operating system, means we want to do multiple processes and tasks at a time, for that we use a multi-threading environment, means we run multiple threads related to the process, or we can use a fork system call. In a fork system call, a process creates its own child process, and that child process is doing its work, the parent process is also doing its work. This way, we can create a multiprocessing environment here. So we create a fork system call also through process control system calls. 
+
+`wait` and `signal`. We use it under process synchronization, if you want some process to wait, or want to increase semaphore values, or want to allocate memory, so we can access all these things through this system call. 
+
+Then communication. In communication, we generally use inter-process communication. Inter-process communication means two processes are communicating with each other. They can either use this `pipe()` method or shared memory. So here we have the `pipe()` system call, `shmget()` that we use to get the value of shared memory, or if I want to create or terminate connections, we have system calls related to it here. 
+
+So these are major categorizations of system calls. We have system calls other than these also, like system calls related to protection and security, where we use `chmod`, privileges. If I want to change permission on any file, then we can use `chmod`, `umask`, and many other privileges and system calls that we use. 
+
+So you don't have to directly memorize these system calls, but at least you should be clear with their idea, that why we use a system call and what is their importance in operating system. 
+
+So this is all about the system calls. Thank you!

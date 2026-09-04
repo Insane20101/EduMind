@@ -1,0 +1,33 @@
+Our next example is to construct a DFA which accepts the language of all binary strings divisible by 3 over the alphabet 0 and 1. To be proportionate, a number is divisible by 3 if you divide a number by 3, what are the possible remainders? 
+
+If you divide any number by 3, the possible remainders you can get are 0, 1, or 2. For example, if you divide 3 by 3, the remainder is 0. If you divide 4 by 3, the remainder is 1. If you divide 5 by 3, the remainder is 2. Then next would be 6, so for 6, the remainder is again 0. This is how our loop will run, and we will have remainders 0, 1, and 2.
+
+Based on this, we need to determine how many states we will need. Even if we do not know the exact number of states immediately, we should at least have an idea of how many states will be formed. We will have three states: `Q_not`, which represents that whatever number comes, if you divide that number by 3 and it is divisible—meaning the remainder is 0—then you should end up at `Q_not`. 
+
+Then, if you divide any number by 3 and the remainder is 1, you should end up at `Q_1`. And if you divide any number by 3 and the remainder is 2—such as 5 divided by 3, where the remainder is 2—then you should end up at `Q_2`. That means the strings will end up at `Q_0`, `Q_1`, or `Q_2` respectively.
+
+Now, we can construct this using simple examples. Let's suppose our starting state is `Q_not`. In `Q_not`, what do we accept? Obviously, if you have 0, then 0 is divisible by any number. So you can say that `Q_not` is by default our final state. 
+
+Any number of 0s—meaning whenever 0 comes, the string is divisible by 3 because 0 is divisible by any number—should end up at `Q_not` so that the string is accepted. For instance, if you get `0`, `00`, `000`, all of these should end up at `Q_not` and be accepted.
+
+Next, let's suppose `1` comes. What happens when `1` comes? You want `1` to lead you to the `Q_1` state. Let's trace this: suppose we have `001`. In decimal, `001` is `1`. If you divide `1` by `3`, the answer/remainder you get is `1`. So as soon as `0` `0` `1` comes, it should take us to the `Q_1` state, because any value that leaves a remainder of `1` should end up at `Q_1`.
+
+Next, what about the next remainder, which is `2`? Since the possible remainders are 0, 1, and 2, and 2 is represented in binary as `10` (since `1` already went to `Q_1`, and appending a `0` makes it `10`), this forms the `Q_2` state. Whenever the remainder is `10` (binary for 2)—meaning when the remainder is 2—the string should always end up at `Q_2`. 
+
+For example, consider `5`. In binary, `5` is `101`. Look at `101`: starting from `Q_not`, `1` goes to `Q_1`, then `0` goes to `Q_2`, and then `1` comes, which should take us back or keep us at the correct state. Wait, let's trace `101` properly: `1` takes us to `Q_1`, then `0` takes us to `Q_2`, and then `1` coming from `Q_2` should take us where? Let's design it to see.
+
+To design this properly, let's look at a string like `11`. In binary, `11` is `3`. If you divide `3` by `3`, the answer you get is `0`. That means if `11` comes, you want it to end up at `Q_not`. 
+
+From `Q_not`, on input `1`, we go to `Q_1`. From `Q_1`, if another `1` comes, it should take us to `Q_not` (since `11` is 3, which is divisible by 3). We do not want a self-loop on `Q_1` for `1` because that would lead to a different value. 
+
+Let's test another string, like `1111` (four 1s, which is 15). `15` divided by `3` gives a remainder of `0`, so it is divisible. Let's trace `1111`: `Q_not` to `Q_1`, `Q_1` to `Q_not`, `Q_not` to `Q_1`, `Q_1` to `Q_not`. It successfully ends up at `Q_not` and is accepted.
+
+Now let's complete `Q_2`. Let's take the earlier example `101`, which is `5`. `5 / 3` gives a remainder of `2`, so it should end up at `Q_2`. Let's trace `101` starting from `Q_not`: `1` goes to `Q_1`, `0` goes to `Q_2`, and then `1` comes. From `Q_2`, on input `1`, where should it go? Since `5 / 3` has a remainder of `2`, it should stay at `Q_2`. So from `Q_2`, on input `1`, we can put a self-loop back to `Q_2`. Let's check: `5 / 3` obviously has a remainder of `2`, so that is correct. 
+
+Now, what about input `0` at `Q_2`? Let's test a string like `100`. In binary, `100` is `4`. If you divide `4` by `3`, the remainder is `1`. Therefore, you want this string to end up at `Q_1`. So from `Q_2`, on input `0`, it should go to `Q_1`, so that `100` (which is 4) ends up at `Q_1`. 
+
+Let's test another string to verify if the DFA is complete. Let's take `1100`, which is `12`. `12 / 3` gives a remainder of `0`. Let's trace `1100`: `Q_not` -> `1` -> `Q_1` -> `1` -> `Q_not` -> `0` -> `Q_not` -> `0` -> `Q_not`. It ends up at `Q_not`, which is correct. 
+
+Let's test `1110`, which is `14`. `14 / 3` gives a remainder of `2`. Let's trace `1110`: `Q_not` -> `1` -> `Q_1` -> `1` -> `Q_not` -> `1` -> `Q_1` -> `0` -> `Q_2`. It ends up at `Q_2`, which is correct because the remainder is 2.
+
+This is how you have to decide state transitions. Not only for divisible by 3, but you can use this exact same approach to design DFAs for divisible by 4, divisible by 5, or any other number. Thank you.

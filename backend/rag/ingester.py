@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from rag.vector_store import get_langchain_vectorstore
+from rag.vector_store import upsert_chunks
 from rag.chunker import chunk_markdown, chunk_transcript
 
 
@@ -148,9 +148,9 @@ def ingest_document(
     if not documents:
         raise ValueError(f"No valid chunks produced for document '{filename}'.")
 
-    # 3. VectorStore Persistence
-    vector_store = get_langchain_vectorstore(subject_id)
-    vector_store.add_documents(documents)
+    # 3. VectorStore Persistence (Qdrant Cloud)
+    chunks_to_upsert = [{"text": d.page_content, "metadata": d.metadata} for d in documents]
+    upsert_chunks(chunks_to_upsert)
 
     logger.info(f"Ingested {len(documents)} chunks for file '{filename}' into subject collection '{subject_id}' (unit: '{effective_unit}').")
 

@@ -1,0 +1,242 @@
+Hello everyone, good morning! I am live now. Great to see you all again, welcome to the class. 
+
+As you know, in this series, we are conducting some special classes where the current discussion is on DBMS. We have already conducted four classes, and today is the fifth class. Here, our fundamental discussion is about transactions: what transactions are, what transaction states are, and what a database transaction basically is. All these points we have understood and covered well. 
+
+After that, we discussed how transactions can be used to make schedules. We talked about schedules, and then about the properties we have—such as conflict serializability, view serializability, and whether a schedule is recoverable or not. All those properties we have discussed. 
+
+After doing that, we understood how we can design protocols that guarantee these schedules and properties. So, hello Shubham, hi everyone. 
+
+On the side, let's discuss lock-based protocols. Basically, a lock-based protocol is an approach where you decide properties when multiple transactions are trying to access the same data item inside the system. 
+
+Before going deeper into the system, I want to take a question. In timestamping, as we understood, before a transaction is controlled by the system, we operate with timestamps, and along with those timestamps, we decide whether we need to serialize or not. 
+
+But the different idea I was discussing is the lock-based approach. Yesterday, we fundamentally understood it like this: if you put a lock on a data item, the problem is that if any data item we have, and at one time more than one person tries to access it, a clash happens 100%. 
+
+So, if we put a rule here that suppose transaction $T_1$ and transaction $T_2$ are operating on a data item $A$, then before performing a read and write operation, what do you have to do? You first have to acquire a lock, and only after locking can you perform the transaction. 
+
+So, will this prevent multiple transactions from performing operations on the same data item at the same time? Yes, will multiple transactions be able to perform operations on the same data item simultaneously? No, because everyone is coming to the condition that first you have to apply a lock, and only then apply the operation. 
+
+So, that fundamental idea is very simple. Coming to properties, last time we understood conflict serializability and view serializability, but the remaining four properties—recoverability, cascade-lessness, and deadlock—were still issues, and we were not able to resolve them. 
+
+So, how can these issues be resolved, and how can this problem fail further? That is what we mainly need to study in today's class. The first version I am going to discuss with you is conservative two-phase locking. 
+
+Let me make it clear again: no single version of conservative two-phase locking can solve all problems. Due to some problems, conservative two-phase locking is needed; if those problems were not there, we wouldn't need it. 
+
+Now, let's talk about the life cycle of every transaction. We divided it into two parts: one is the growing phase, and the other is the shrinking phase. I hope everyone can follow this point. We have two phases: one growing phase and one shrinking phase. The top-most point is called the lock point. 
+
+Now, why is the lock point important? Let's see. If I make a very small scenario so we can understand it, suppose there is no deadlock. Any transaction $T_1$ acquires a lock on $A$ and performs read and write operations. Meanwhile, transaction $T_2$ acquires a lock on $B$ and wants to perform read and write operations. 
+
+After that, suppose transaction $T_1$ says that I want to apply an exclusive lock on $B$. Now, you tell me, will $T_1$ be able to proceed? Currently, no. Because we know that data item $B$ is currently held by transaction $T_2$, and $T_2$ has applied a shared lock on it. 
+
+The compatibility of shared mode and exclusive mode is false—meaning two transactions cannot apply shared and exclusive mode locks on the same data item at the same time. So, $T_1$ will have to wait. 
+
+Now, suppose further ahead, $T_2$ says that I also want to acquire an exclusive mode lock on $A$ and perform my read/write operations. But again, does transaction $T_1$ currently hold a lock on $A$ under exclusive mode? Yes, it currently holds the lock. So, can $T_2$ be allowed to acquire a lock on $A$ at this time? No. 
+
+So, that fundamental scenario—what is the deadlock idea here? Suppose two transactions $T_1$ and $T_2$ are present, and currently, two data items $A$ and $B$ are allocated where $A$ is allocated to $T_1$, and $B$ is allocated to $T_2$. What is happening is that $T_1$ is trying to acquire $B$, and $T_2$ is trying to acquire $A$. This creates a deadlock because no one is ready to step back. 
+
+So how can we solve this problem? One by one, let's try to understand. The problem is that although standard two-phase locking lets us acquire locks as late as possible, if you acquire locks too early, what happens? 
+
+No other transaction will be able to use them. Our intention should be that transaction concurrency should be as much as possible, not as little as possible. 
+
+So transaction $T_1$ was running on that very principle. It started working very slowly; it thought, "Since I have to work on $A$ first, I will only lock $A$ and do $B$ later." And perhaps $T_2$ thought the same thing. But what happened? One data item went to $T_1$, the other went to $T_2$, and now neither is ready to step back, and we cannot move forward because a deadlock situation has arrived here. 
+
+So to fix this in protocols, what should we do? Basically, an idea that comes up is conservative two-phase locking. In conservative locking, we remove the growing phase from the system entirely. Do you understand what I am saying? 
+
+That means how will transaction processing change if we remove the growing phase from the system and start directly from the lock point towards the shrinking phase? Remind yourselves: what will happen? 
+
+It will mean that a transaction must acquire all locks at the very beginning. That is why I am calling it "conservative." Every transaction says that all the data items you need to operate on must be acquired beforehand. If you can obtain all data items' locks, you can continue execution further; otherwise, you cannot. 
+
+Do you follow? You will not perform operations unless you first acquire all locks. If you can acquire locks, that is very good, and you can continue operations. If you don't get the locks, you will not perform operations. 
+
+For example, look here: transaction $T_1$ acquired a lock on $A$ first and then started performing read and write operations. Is this allowed if we are talking about conservative two-phase locking? 
+
+Conservative locking says: if you also need to lock $B$, apply all locks first. Acquire all locks. If all locks are allocated to you—all data items are given to you—only then will you start performing read/write operations. Otherwise, even the data items you already have locked, you must unlock them and wait. 
+
+That is the fundamental idea of conservative two-phase locking. If everyone does this, then the deadlock problem will not occur. Let's formalize this: divided into a growing phase, a transaction directly starts from the lock point—there is no growing phase. 
+
+During the growing phase, instead of acquiring locks later, the transaction must first acquire all required locks. Only then can it perform read, write, or any operation. All locks must be acquired at the very beginning. 
+
+If all locks are not available, then the transaction must roll back and wait. And by not holding locks, you understand: if a data item is not available, whatever you have acquired, you must unlock that too. 
+
+It is not that you release locks at the very end; as locks are acquired, you work on that side. So we understand that conservative two-phase locking resolves deadlock issues. 
+
+Let's check the properties table. Let's write it in the comment box: does conservative two-phase locking solve deadlock? Yes. 
+
+Let's talk about conflict serializability: there is no change in conflict serializability. This table is very important because ultimately, this is what is examined in exam point-of-view questions; it's an expected question on properties. 
+
+Now tell me, among the three properties that were failing under basic 2PL—recoverability, cascade-lessness, and freedom from deadlock—which problem have we solved this time? The deadlock problem! So you can mark that. 
+
+Can you follow this? Does it mean we can write that, yes, the deadlock problem has been resolved in conservative 2PL? How did it do it? By completely removing the growing phase from the system. Once that is gone, we can handle things easily. Can everyone follow this? Yes. 
+
+Now, what about the remaining two properties: recoverability and cascade-lessness? Let me do one thing again, let me clear this up and ask you a scenario. Tell me whether it is possible or not. 
+
+Let's limit ourselves again to fundamental operations. Suppose we have a transaction $T_1$ that first locks a data item, say $A$, performs a read on it, then performs a write on it, and then unlocks it. The unlock of $A$ happens, and its lock is released. 
+
+Now, another transaction $T_2$ comes, applies a shared lock on $A$, performs a read operation, and suppose it does some operation here. According to conservative 2PL, is this scenario correct? Yes, there is no problem. 
+
+Let's observe this carefully. Is the scenario up to here okay according to conservative two-phase locking? Yes, because it's a single data item, so transaction $T_1$ locked $A$, performed operations on it, and later unlocked it. Transaction $T_2$ did not work until transaction $T_1$ unlocked $A$. After the unlock, $T_2$ applied a shared lock and read it. 
+
+So for serializability, I don't feel there should be any problem or confusion here. The operations performed were within valid ranges. Yes. 
+
+But if we observe and understand carefully how things are going to be handled here, let me change the color so you can notice this. Notice that this read is a dirty read operation. Just hold on for a minute and observe this. 
+
+As I am repeatedly saying, wherever you hear the properties of recoverability and cascade-lessness, the question that should come to your mind is: is a dirty read possible or not? 
+
+So you tell me: has transaction $T_1$ unlocked the value of $A$? Yes. But has transaction $T_1$ committed yet? No, it has not committed. So this value is still a value written by transaction $T_1$, uncommitted. 
+
+And again, suppose $T_2$ reads it. If $T_2$ reads it, has any rule or regulation told you about the order in which they will commit? No one talked about the order of commitment. So if we look here, what will happen? 
+
+Suppose $T_2$ commits first and $T_1$ commits later. Tell me what will happen. $T_2$ commits, but $T_1$ aborts. This is a dirty read problem, and it is a clear-cut example of a non-recoverable schedule and a cascading abort schedule. 
+
+Suppose a failure occurs here. If a failure occurs, transaction $T_1$—wait, did $T_1$ commit before or after the failure? Suppose $T_1$ commits after the failure. Then transaction $T_1$ has every chance to roll back, yes. 
+
+But you tell me: can transaction $T_2$ roll back here? No. $T_2$ has no way to roll back because it already committed. So non-recoverability is arising here. That's why I am explaining each example like this, making diagrams, and checking which properties hold and which do not. 
+
+So now, I will have to write "No" in both places. All those who are live right now, quickly observe and understand this, and comment to tell me if you are able to follow this point. 
+
+Don't forget, we don't need to worry about deadlock now; we understand that while conservative 2PL solved the deadlock problem, it still has issues with recoverability and cascade-lessness. 
+
+One more point I will ask you from what we learned earlier: do we treat deadlocks very seriously in general? No. As we understood in operating systems, after doing avoidance, prevention, detection, and recovery, ultimately, abortion is our insurance. So generally, we don't give deadlocks any special value in conservative 2PL, and we just ignore them. 
+
+However, one property that is mandatory for a database—which we understood under conflict serializability—is recoverability. If a transaction does not satisfy the recoverability property, the schedule is not acceptable. 
+
+So can you run it on a database? You cannot run such a schedule on a database. So conservative 2PL solved the deadlock problem, but for us, the more important problems were recoverability and cascade-lessness. 
+
+The next idea I am going to discuss with you will concentrate on these two properties: how we can achieve recoverability and cascade-lessness. I hope the discussion up to here is clear to you. 
+
+Let's move on to the next locking protocol. We are making some changes to the old protocols. If the first idea (conservative 2PL) is clear, then further concepts will make sense; otherwise, you will get confused. So please comment if you have any questions. 
+
+Now, let's talk about strict two-phase locking. In strict two-phase locking, what is the change? Let's look at the name itself: "strict." 
+
+We are making the rules stricter. In basic 2PL, we had a growing phase and a shrinking phase, and as soon as the lock point was reached, we could start releasing locks (the shrinking phase). 
+
+In strict two-phase locking, we make a rule: all exclusive locks (X-locks) acquired by a transaction must be held until the transaction commits or aborts. 
+
+Let me repeat: all exclusive locks must be held until the transaction terminates (commits or aborts). Shared locks can still be released earlier, but exclusive locks cannot be released until the end of the transaction. 
+
+By doing this, what happens? If a transaction writes a data item, it holds the exclusive lock on it until it commits. Therefore, no other transaction can read or write that data item until the first transaction commits or aborts. 
+
+This completely eliminates dirty reads! And if dirty reads are eliminated, what happens to recoverability and cascade-lessness? They are both satisfied! 
+
+So strict two-phase locking solves the recoverability and cascade-lessness problems, though it may reintroduce some deadlock issues since we brought back the growing phase. But recoverability and cascade-lessness are guaranteed. 
+
+I hope this distinction between basic 2PL, conservative 2PL, and strict 2PL is now clear to everyone. Let's proceed further with the next protocol based on this.
+
+# Database Transactions and Protocols: Lecture Transcript
+
+Let's understand very good fundamentals. If I remove the shrinking phase from a system, will I lock out any deadlocks? No. Now, think about it: this is not a write issue, it's an unlock issue. If you don't unlock after writing, how will transaction T2 get the lock? Think about it! If you don't unlock, how will T2 lock? It won't lock. And if it doesn't lock, how will T2 read? So, there will be no possibility of a dirty read at all. All these possibilities will go away. Are you able to observe this? 
+
+So, just as you unlock and then lock, this problem happens. But if I don't unlock at all, the other transaction won't be able to lock either, and there will be no possibility of a dirty read. Yes, everyone must be able to observe this. There will be no dirty read, and concurrently, we know for a fact that there won't be any issues or problems there either. 
+
+So, what the strictness says is that in a system with a strict 2-phase locking (2PL) phase—tell me quickly, are you able to understand this? If a strict protocol is followed, dirty read is not possible. Unlocking is not possible, so dirty read is not possible, and if dirty read is not possible, we achieve both of these properties here. We achieve both of these properties here. 
+
+I am asking this as a follow-up: What could be the disadvantage of this protocol? What is the disadvantage if I don't unlock at any value, and remove the shrinking phase from here? I mean, until I commit, I won't unlock. After the commit, it will automatically get unlocked. So, what will be the disadvantage of this idea? 
+
+Can anyone tell me what the disadvantage would be? Let's say concurrency is your issue. If any transaction does not shrink, and every transaction says, "Well, we don't have any shrinking phase; we locked whatever we had, and we will unlock later," then tell me, what is the first problem inside this idea? Concurrency will suffer very seriously! 
+
+Concurrency, how will it suffer? If I am running a transaction, and I am locking but not unlocking—meaning I am not releasing it—then how will the other transaction apply a lock on it? And if it cannot apply a lock, the transaction will not perform operations, meaning concurrency will suffer. And we must not forget that from start to finish, our entire discussion revolves around the idea of how good or how bad a transaction protocol is, based on the level of concurrency we can achieve in it. Right? If we cannot achieve a good level of concurrency here, no doubt there will be a problem. Tell me, are you able to follow this? If there is no concurrency, there will be a problem, yes. 
+
+Now, the second problem: As many people are pointing out, in a system with a growing phase, will there be a possibility of a deadlock? Yes, absolutely! So again, if I ask you about the properties of 2PL, if I ask you: conflict serializability will not be compromised here, we are not making any changes there, so it is not an option. Dirty read is not there, so finally, recoverability is also achieved, and dirty read is not there, so cascadelessness is also achieved here. Deadlock freedom? No. Why? Because again, we try to target only one of the two problems, and—what is the answer? Let's do it quickly. What is the answer? 
+
+The answer will be strict 2PL. Let me again read each and every option one by one. In strict 2PL, all locks held by a transaction are unlocked only after—wait, let's differentiate between strict 2PL and rigorous 2PL. If I talk about rigorous 2PL, it says that all locks (both shared and exclusive) are held until the transaction commits or aborts. And if I talk about strict 2PL, it says that only exclusive locks are held until the commit, while shared locks can be released earlier. 
+
+So, if I talk about a shared lock, there is no exclusive lock on it, so if I want to unlock those shared locks, can unlocking them create any possibility of a dirty read? Please understand this. If I only want to remove the shared lock, probably because of that, there will be no possibility of a dirty read. Are you getting this? And because of this, strict 2PL is relatively better. 
+
+Strict protocol is relatively—yes, we can modify it, and we can bring an improved version. In that version, what will happen? The relative concurrency will be better. Concurrency will be better, so rigorous 2PL is a bit different, but no, wait. 
+
+If I talk about the tabular format, let's check: Is there any change in conflict serializability? No, that remains the same for both. So, all of these properties for both strict and rigorous 2PL are mostly similar. The efficiency-wise, concurrency-wise, I am assuming rigorous 2PL is relatively better? Wait, what does strict say? Strict says that there will be a growing phase, but for a shrinking phase, it can release shared locks early. Rigorous says *all* locks (shared and exclusive) are held until commit. 
+
+So, if someone has performed a write operation, they must have applied an exclusive lock. Here, the idea is that un-locking, shrinking—if we want to release shared locks, can it cause a dirty read? No, shared locks do not cause dirty reads. Exclusive locks cause dirty reads. So strict 2PL allows releasing shared locks early, which gives it better concurrency than rigorous 2PL. 
+
+Let's look at the table format. The classification of protocols is visible on your screen: simple 2PL, conservative 2PL, strict 2PL, and rigorous 2PL (or strong 2PL). Both variants of 2PL are here. Observe and tell me if anyone has any confusion or problem with any property. All the classes we have conducted so far—back-to-back—I don't think there should be any doubt in this. 
+
+Yes, tell me, are you able to follow this? 
+
+Now, see: this is a very important question. I will give you more than 2-3 minutes. No problem at all, solve this question. This question is based on 2PL, and what is the result? 
+
+Great! Is everything clear so far? Yes, deadlocks can definitely happen. There is always a possibility of a deadlock as long as transactions are requesting locks. 
+
+We are solving questions based on all the properties we have studied so far. Shailendra is saying option 4 is very good. Let others also tell us. 
+
+It is written according to 1, 2, 3, 4. You have to observe and tell the answer. 
+
+Okay, let me read the question and wherever you have a confusion, please let me know. 
+Consider the following statements about database transaction schedules:
+1. Strict two-phase locking generates conflict serializable schedules that are also recoverable. 
+If we talk about strict 2PL, there is no confusion at all. It is telling us about strict 2PL: Strict two-phase locking generates conflict serializable schedules that are also recoverable. Perfect! Absolutely correct statement. There is no problem with this statement anywhere. I hope everyone is able to follow this. 
+
+Now, let's look at the next one:
+2. Timestamp-based concurrency control protocol with Thomas's write rule can generate view serializable schedules that are not conflict serializable. 
+Has Thomas's write rule been explained? Yes! In timestamp ordering, when we apply Thomas's write modification, does the possibility of blind writes come up? Yes. Can we directly generate view serializable schedules that are not conflict serializable? Absolutely! If you remember, timestamp ordering usually says to rollback, but Thomas's write says no such thing. If the final result is the same, the transaction just ignores the operation and, instead of rolling back, just continues with the execution. Yes! So in timestamp ordering, this statement becomes absolutely correct, and both first and second are—wait. The answer points to 1 and 2. 
+
+Some people were still saying option B. Tell me, why? No, no, no. The answer has to be this:
+Wait, will there be a growing phase? Yes, as long as locks are being requested, there will be a growing phase, then a shrinking phase, then a point where it becomes serializable. Then, is there any point of concurrency left? The question is really good, but if it becomes completely serial, is there any point of concurrency left? But both target concurrency differently, right? 
+
+Let's read each option one by one: 
+In strict 2PL, all locks held by a transaction are unlocked... wait, let's look at the next question. Let's try another question from 2016. In GATE, questions on serializability and concurrency control are asked very frequently, and they can be quite interesting. Let's observe this and tell me if it is talking about something we studied, or if it's talking about something completely different. 
+
+[Applause / Silence in transcript] 
+
+Okay, Vishal is saying option 3 is the correct answer. Very good! Others can also tell us: Is the answer 3 or something else? 
+
+Let me read it one by one and tell me where the confusion is. 
+This says: "Consider the following two protocols: In protocol 1, a transaction acquires all necessary locks before execution and releases them after execution. Suppose transaction T1 accesses data for read and write operations, etc., in the following manner..." 
+Wait, if a transaction acquires all locks before execution, what protocol is this? This is Conservative 2PL (also known as Static 2PL), where a transaction has to acquire all locks it needs *before* it starts execution. If it cannot get all locks, it gets none (to avoid deadlocks). 
+
+Let's check the options. Protocol 1 ensures conflict serializability, but does it ensure freedom from deadlocks? Yes, Conservative 2PL is deadlock-free because it acquires all locks upfront. 
+
+Let's look at the second protocol or the options given. Are you able to observe this? Where did the others get confused? Ah, someone wrote 3, so everyone wrote 3! But you have to observe in every question that even if direct names are not given, we are in GATE, so they will twist things a little bit. But the properties and ideas are completely the same. 
+
+If you keep your options straight and analyze correctly, we can easily reach the right answer. Tell me, are you able to follow this point? Yes or no? 
+
+Let's move to the next idea. Tell me the answer to this one: Which of the following statements is/are correct? 
+
+[Applause / Silence in transcript] 
+
+Tell me, are you able to follow this? Which option? Option B or 1? 
+"Every conflict serializable schedule allowed by strict 2PL is also allowed by rigorous 2PL." 
+Wait! Let's analyze this carefully. 
+Every conflict serializable schedule allowed by strict 2PL is also allowed by rigorous 2PL? No! Rigorous 2PL is *stricter* than strict 2PL. Strict 2PL allows releasing shared locks early, while rigorous 2PL holds *all* locks (shared and exclusive) until commit. Therefore, the set of schedules allowed by rigorous 2PL is a *subset* of the schedules allowed by strict 2PL, not the other way around! So, every schedule allowed by *rigorous* 2PL is allowed by strict 2PL, but not vice-versa. 
+
+Let's look at the relationship between View Serializability and Conflict Serializability. 
+Every conflict serializable schedule is view serializable, but not every view serializable schedule is conflict serializable. 
+What about Thomas's write rule? Schedules generated by Thomas's write rule are view serializable, but they might not be conflict serializable. 
+
+If we represent this with Venn diagrams: 
+- Conflict Serializability (CS) is a subset of View Serializability (VS). 
+- Timestamp ordering with Thomas's Write generates View Serializable schedules, but some may lie outside Conflict Serializability. 
+
+So, if we look at the statements carefully: 
+- Statement about Strict 2PL and Rigorous 2PL: Rigorous 2PL is more restrictive. 
+- Statement about Thomas's Write: It can generate View Serializable schedules that are not Conflict Serializable. 
+
+Let's double-check: Does Thomas's write rule always generate conflict serializable schedules? No! As we studied, Thomas's write rule can allow blind writes that break conflict serializability, but it guarantees view serializability (specifically, consistency). 
+
+Let's summarize: 
+- Strict 2PL $\implies$ Conflict Serializable and Recoverable (and Cascadeless). 
+- Rigorous 2PL $\implies$ Stricter than Strict 2PL (holds all locks till commit). 
+- Thomas's Write Rule $\implies$ Generates View Serializable schedules, but not necessarily Conflict Serializable. 
+
+I think with this, you are able to follow and observe the concepts clearly. Are there any other doubts? 
+
+"Every view serializable schedule is not conflict serializable..." Yes, that's a standard theorem. 
+
+Alright, keep practicing these questions, and your clarity on transaction protocols, serializability, 2PL, and timestamp ordering will become rock-solid. Let's stop here for today!
+
+तो आप चाहे यूनिवर्सिटी एग्जाम्स के लिए या जनरल नॉलेज के लिए, यू कैन हैव ए लुक। तो उस पर मैं डिस्कशन भी कर सकता हूँ। तो मेरे ख्याल से अब हम गेट को टारगेट मानकर चल रहे थे, तो वह थोड़ा सा रिडंडेंट डिस्कशन है। उस पर बहुत सारे क्वेश्चंस हैं, उसे मैं यहां पर भी आप देखिएगा, अभी तक कि आप कोई भी ऐसा क्वेश्चन... मैं कोशिश करता हूँ कि ज्यादा से ज्यादा प्रीवियस ईयर क्वेश्चंस आप लोगों के साथ डिस्कस कर पाऊँ। 
+
+बट क्योंकि अच्छा-खासा क्वेश्चन ऐसा मिला जो कोर प्रोडक्ट कॉल पर डिपेंड हो। 99% द टाइम दे जस्ट वांट टू चेक वेदर जो प्रॉपर्टीज हैं, जो आइडिया है, वह आप लोग फॉलो कर पा रहे हैं कि नहीं, प्रॉपर्टीज और बेसिक कॉन्सेप्ट्स क्लियर हैं। वैसे उनको फ़र्दर प्रॉब्लम नहीं है, बस उसी से काम चला रहे हैं। बाक़ी फ़ील्ड्स को ज़्यादा सेट कर रहे हैं। मेरे ख़्याल से ट्रांजैक्शंस के अंदर काफ़ी सारे पॉइंट्स हमने डिस्कस किए। 
+
+इन दिस मॉडर्न सर्वे, अभी आने वाली स्पेशल क्लासेज में, मैं उनके अंदर भी बात करूँगा को रिम्स की और फिर दोबारा एक बार दोबारा डीवीएमएस पर आऊँगा। बट वहाँ पर कौन-कौन से टॉपिक्स डिस्कस करूँगा, एक बार थोड़ा सा आपको बताता हूँ। Just give me a second. So, you can never discuss the schedule of the month September. लुक, यहाँ पर अगर आप देखेंगे, तो अभी आज किस तरह से और पॉइंट किस तरह से, हमने इसको जो लड़कियां... अभी नेक्स्ट थ्री डेज क्लासेज नहीं हैं स्पेशल क्लासेज फॉर डीवीएमएस, अभी मैं बैक-टू-बैक फाइव क्लासेज स्पेशल क्लास कंडक्ट करूँगा, इवन उसमें एंड दीज़ क्लासेज आर नॉट गोइंग टू बी कंडक्टेड... दीज़ क्लासेज आर गोइंग टू बी कंडक्टेड फ्रॉम दिस यू सी, सैटरडे-संडे मॉर्निंग एंड इवनिंग। मॉर्निंग 10 AM, 12 PM और इवनिंग 9:30 PM। उसके बाद में दोबारा डीवीएमएस पर आने वाला हूँ और वहाँ पर क्लासेज करूँगा। और एक-दो और थ्री आवर्स की मैराथन क्लास भी मैं लगाने वाला हूँ। मैराथन में क्या है ना, वहाँ पर काफ़ी प्रॉब्लम्स फीचर्स हैं, तो उस पर लगाना बिल्कुल ज़रूरी है। 
+
+तो अब आप मुझे बताएं, अगर इंडिया-चाइना के लिए, अगर... चलिए छोड़िए, मैं क्या बात करूँ आपसे, इट्स ओके! फ्रेंड्स, अब देखिए यहाँ पर मैं एडिशनल पॉइंट क्या बोल सकता हूँ कि डूइंग... आई एम टेकिंग स्पेशल क्लासेज फॉर रिवीजन पर्पस और यहाँ पर ले रहा हूँ, तो मॉर्निंग में 10:00 AM, 12:00 PM, क्लासरूम 2:30 PM, 6:00 PM, 9:30 PM, तो इन सब का टाइमिंग्स क्या है, किस एजुकेटर के साथ, किस सब्जेक्ट में, कौन-कौन से एजुकेटर, किस ऑर्डर में, किस डेट में पढ़ाने वाले हैं, यू कैन हैव ए लुक। 
+
+तो मैं इलेक्ट्रॉनिक्स पढ़ाऊँगा मॉर्निंग में, फिर कंप्यूटर आर्किटेक्चर, डीवीएमएस, नेटवर्क्स और थ्योरी ऑफ़ कंप्यूटेशन एंड कंपाइलर्स। तो बिल्कुल-बिल्कुल एफिशिएंट एंड डोंट वरी, फटाफट अगर आप सच में इंटरेस्टेड हो, तो इस चीज़ में लोग रेगुलर ना... मैं आपको... आप देखना चाहते हैं, तो यू कैन गो फॉर दिस क्लासेज। प्रति घंटे को आपके चाहिए, उसके बाद आप देख सकते हैं, जो स्पेशल क्लासेज हैं, उनको कम से कम यूटिलाइज़ कीजिए और आगे इस चीज़ में इन्वॉल्व हो जाते हैं। 
+
+इसके अलावा, मेरा क्वालिटी एमटेक बैचेज़ की अनअकैडमी प्लेटफ़ॉर्म पर आ रही होती है। तो दिस क्लास यू कैन चेक, जो बाक़ी एजुकेटर ले रहे हैं, जो क्लासेज ऑलरेडी कंप्लीट किया जा चुका है प्लेटफ़ॉर्म के ऊपर, उसको आप चेक आउट कर सकते हैं। कभी भी आप जाकर, पूरे डिजिटल लाइब्रेरी है, जहाँ पर आप रिकॉर्डिंग्स को एक्सेस कर रहे होते हैं। 
+
+करना क्या है आपको? यहाँ पर जाना है गेट ईई सब्सक्रिप्शन के अंदर एंड यू सी फ्रॉम 1 टू 24 मंथ्स अलग-अलग सब्सक्रिप्शन ऑप्शंस हैं। 12 मंथ्स, 24 मंथ्स, तो आप देख रहे हैं कि मंथली बेसिस पर जितने भी आप सब्सक्रिप्शनज़ लेते हैं, बहुत ज़्यादा प्राइसेस नहीं हैं। लिमिटेड हैं, आप चेक कर सकते हैं। यहाँ पर अगर हमारा कोड यूज़ करेंगे, GVP10, तो एडिशनल 10% डिस्काउंट आपको और मिलेगा मिनिमम, उससे ज़्यादा। मिनिमम 10% डिस्काउंट इसका मतलब, आप अगेन अंडरस्टैंड कि ₹27,000 फ़ॉर टू-ईयर सब्सक्रिप्शन और ₹22,500, यह आप देख रहे हैं फ़ॉर वन-ईयर सब्सक्रिप्शन। तो दिस इज़ द इनफ़ॉरमेशन दैट यू कैन अंडरस्टैंड, इतने कम फ़ीस के अंदर अनअकैडमी, जो कि इंडिया की लार्जेस्ट ऑनलाइन एजुकेशन कंपनी है, वैल्यूएशन... तो यू कैन ऑटोमैटिकली अंडरस्टैंड कि जो क्वालिटी है, जो कंसिस्टेंसी है, वहाँ पर हम कहीं से कहीं तक भी कॉम्प्रोमाइज़ नहीं करते हैं और बहुत शानदार तरीक़े से सारे टॉपिक्स को इन-डेप्थ हम डिस्कस कर रहे होते हैं। 
+
+आई थिंक बहुत अच्छा पेमेंट है, आप किसी भी क्रेडिट कार्ड से पे कर सकते हैं। वहीं अगर इनमें से किसी बैंक के क्रेडिट कार्ड से है, तो उसका भी एडवांटेज उठा सकते हैं। डेयरी हमें सब्सक्रिप्शनज़ मिल रहे हैं। 300, 600, 3000... यू कैन सी फ़ॉर टू इयर्स, 9 मंथ्स, 11 मंथ्स तक, थर्ड ईयर सब्स्क्रिप्शनज़ इस एकेडमिक सेशन के अंदर हमको मिल चुके हैं। मोस्ट ऑफ़ देम आर इन अनअकैडमी सब्सक्रिप्शन हैं। इस महीने के अंदर इतने शानदार तरीक़े से तैयारी कर रहे हैं, हम देख रहे हैं कि एग्ज़ाम्स पास आ चुके हैं। 
+
+तो प्रोडक्ट है और सुपर क्वालिटी है, जो हम करके आपको दे रहे हैं। वहाँ पर बैठा हुआ चीज़ को समझ रहा है। तो बिल्कुल, जॉइन ज़रूर करें। एक अच्छी चॉइस आपको मिल सकता है। तो चलिए, थैंक यू सो मच।

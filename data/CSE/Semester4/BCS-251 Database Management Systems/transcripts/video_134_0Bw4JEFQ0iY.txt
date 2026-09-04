@@ -1,0 +1,257 @@
+Hello, everyone! Good morning, guys. Hello Singh. Subscribe to see all you guys, consistency. Jaldi bataiyega. Use kya hai? Toh subscribe button hai ki hai? Ki is garمي aur audio ka batayega. Clear hai ki? Awaz nikal. Any discussion, jahan last kal humne chhoda tha, aatm-katha products ki aur inki, woh bilkul hamare paas hai, bana hua hai, us par kaam karein. Uske alawa, humne check karne ke liye, jo subscribe woh automatically subscribe to ho gaya. 
+
+So, saach, audio manager hai, clear hai. theek hai, tab discussion start karte hain. Great. Notification start karte hain, aur ek-ek karke jaldi se main jo doosra point ko lambe samjhe thhe, na, pada cry, main aapko samjha, senior aur junior ka, woh chhe, usko jaldi se ek baar dekhte hain aur fir properties start karna hai. Subscribe to the channel. Subscribe to the channel. 
+
+So, basically, kya hai, transaction hai, toh processes toh honge. Ab bajaye iske ki jab transaction system ke andar chale, jaan time par class aur fir humko method wahan par sochein ki kaise inki ladai hum manage karein, usse behtar hai hum samajhte thhe ki jab transaction system ke andar aayega, hum use follow karein aur number of times isko le sakte hain aur kuch nahi kar sakte hain. Yaani ki jis time par system karega, time par hum usko allocate kar denge. 
+
+So, agar transaction T1 start karta hai, let's say, aapne time par step transaction T1 is let's say 1005, hum iski wajah se control mein kisi aur, kahin bhi ja sakte thhe. Idea is the volume se do minute baad ki transaction enter karega, let's say T2, toh jaisa humne kal bhi samjha tha, fir associated and tagged T0, iski sar, aur baad mein jab bhi class hoga, na, sab bataenge, soch kar ki aap isko agar aur Jenson follow karein, aap mujhe batao ek baar transaction ko hum jo time piston allocate kar dete hain, shuruwat at execution, woh time change ho sakti hai ki nahi ho sakti? Doosra, socho batao jaldi se. 
+
+Positive aur kuch, rang, jo timestamp hum yahan par allocate kar rahe hain, out of execution, woh time change ho sakti hai ki nahi ho sakti? Agar do-teen properties hain jo aaj hum aap se poochhne aur kal humne iska brief introduction liya tha, par aaj isme friends ab discussion karenge, kya woh timestamp value change ho sakti hai? 
+
+Yeh sab log, ki agar T1 ko aapne 1005 allocate kiya, toh baad mein change hoga yeh constant rahega? Toh do cheezein yahan par important hai, is par aunga. Pehla, ek baar agar aapne koi timestamp allocate kar diya, toh easily change nahi ho sakta. Kyun nahi ho sakta? Kya yeh timestamp is nothing but like, a date of birth time or date of birth date? Hai na? Toh aapka jo birthday hai, kya woh change ho sakta hai is life ke andar? 
+
+Kam se kam birthday change nahi ho sakta. Mere paas follow kar pa rahe hain kya? Toh for example, maan lijiye, aap mera jo timestamp hai, let's say, 1005, yeh mera timestamp hai, timestamp of T1. Toh aap mujhe bataiye, transaction T1 ka life change ho sakta hai? Number one, expression ka change hoga. Hai na? What is life curtain? Timestamp banane wala hai, hai na? Kya aap ek doosre se warrant hai, kyunki hum mante thhe ki system mein kisi bhi instant par ek hi process run karti hai. Halaki concurrency ho sakti hai alag time par. 
+
+Toh yeh important hai, pehla toh woh, toh der liye kisi transaction ka time change nahi hoga. Ki doosri baat, kya do transaction ka time same ho sakta hai? Yeh bataiye comment karke aur, matlab aapko samajh nahi karte, unko samajh nahi aa pa raha thhe ki aap follow kar pa rahe ho ki nahi, par jitne bhi log jab comment karte hain, ek clarity hoti hai, toh samajh jaana ki main sahi direction mein chal raha hoon. Toh please, main request kar raha hoon, jaldi se dono points jab main aap se discuss kar liya, toh aap mujhe bataiye, kisi bhi transaction ka timestamp same rehta hai at execution? 
+
+Second important point, unique hoga. Yaani ki, two different transactions cannot have same timestamp. Do transaction ka same time nahi ho sakta. Web site se lekar, same time hone se fir banane ka koi fayda hi nahi hai. 
+
+Chalu kijiyega, agar timestamp same hai, toh fir banane ka koi fayda nahi hai. 
+
+Motu par dhyan rakhna, yahan par humne sirf ek transaction ke sath hi timestamp associate kiya tha aur yahan par humne doosri jo baat ki thi, data is data item, har data item kyun ki bhi hai, we have two timestamps, one is called read timestamp Q and another one is called the write timestamp Q. Ab yeh badi important, badi mazedaar hai, woh kyun? Kya transaction ke timestamps ki tarah yeh jo timestamps hain, jo har data item ke paas hote hain, yeh bhi process ki life timestamp rehte hain, change hote rehte hain? 
+
+Bilkul hariyum lagaoonga, don't worry. Ab main inko poochhoon, bataiye, ab, nahi, yeh data item not important, thoda main pooch raha hoon, yeh jo data ke sath timestamp hum associate kar rahe hain, yeh kya transaction ke, transaction ke sath jo timestamps change hote hain, kya yeh inki tarah hai? 
+
+Chaliye dekhiye, for changing, aur jab bhi koi transaction inke upar koi operation perform karta hai, toh woh apna timestamp ke sath isko bhi change kar dega. Yeh change hote rehte hain. Ab isme ek chhota sa jaakar discussion aur kar loon, taaki zyada clarity aapko mile. Let's, let's say ki pehla transaction aaya, maaliye jiska naam hai T1. 20, jaise main samjha, kuch transaction ka timestamp hai chhoda number, let's say, isme 15 for example, uska timestamp hai 15. 
+
+Ab jab woh school read ya write operation perform karega data in the Q ke upar, kya woh apna timestamp yahan par lapet kar dega? Sir, pehle hamein chahiye ek transaction T1 hai, jiska timestamp T1 hai, hai na? Jaise hi woh operation perform karta hai data Q ke upar, successful read ya write operation perform karta hai, toh apna timestamp bhi set kar de raha hota hai, apne dono timestamp zero ho jaate hain 15. 
+
+Kya aap isko follow kar pa rahe hain? 
+
+Yes. Achha, thoda time ke baad dekho hoga kya? Maan lijiye koi doosra transaction aata hai, let's say, T2 aur uska timestamp lete hain let's say 20. 
+
+A timestamp is 20, T1 is 15, T2 is 20. Junior or senior? T2 junior hai, kyunki uska timestamp bada hai, iska timestamp baad mein aaya thhe. Lekin T1 jo hai, woh senior hai, kyunki uska timestamp chhota hai, woh pehle aaya thhe. Toh date of birth waale jaise aage badhte jaayenge, timestamp increase hota jaayega. 
+
+Toh ab main yahan par requirement kar sakta hoon kya? Agar T2 request karega ki mere ko operation karna hai, haan, koi problem nahi hai, kyunki woh junior thhe, woh baad mein aaya thhe, woh baad mein hi request kar raha hai. Toh no problem, toh ab hum kya karenge? Toh jaise T2 yahan par successful write operation perform karega, yeh timestamp change hone wala hai, aur dono hi case mein 20 ho jaane wala hai, right? 
+
+Kya aap follow kar pa rahe hain? Toh jaise hi yeh karega, yeh value change ho jaayegi aur dono hi case mein yahan par timestamp badal jaane waale hain. 
+
+Yeh relation, is this idea? 
+
+Yes. Toh is tarah se apni values ko change kar pa rahe hain aur timestamping transaction ke sath change hote rehte hain. Kisi bhi instant par jab koi naya transaction aata hai, usko operation perform karna hai ki nahi karna, yeh kis base par kal maine decide kiya tha? Yeh decide kiya tha humne is base par ki kaun junior hai, kaun senior hai. 
+
+Naam ke aage aur jaldi se jaldi, isko samajhne ki koshish karein. Subscribe to the channel. 
+
+Toh ab request yahan par banata hai, usne bola suppose a transaction T1 requests Q, koi transaction T1 hai aur woh read Q operation perform karna chahta hai. Again, sath mein share kijiyega, let's, T1 wants to, let's say, 15, koi transaction T1 hai aur woh successful, usne kiya nahi, woh request kar raha hai, usko read Q operation perform karna hai. Bahut achha. 
+
+Ab kaisa kya hai? T1 ka jo timestamp hai, let's say, 15 hai. Ab mere ko toh nahi pata, toh main example leta hoon, timestamp of T1, let's say, 15 aur data item Q ka read timestamp, let's say, kuch hai, let's say, 20. Jaldi bataiye, is the timestamp of TQ ka read timestamp, say, 20 hai, iska kya matlab ho sakta hai? Haan, jaldi sochiye, bataiye. Aapne bata diya toh maja aa jayega. 
+
+Data item Q ka read timestamp, say, 20 hai, iska kya matlab ho sakta hai? Main bata deta hoon, do matlab ho sakte hain. Pehla matlab ho sakta hai, kisi transaction ne data item Q ke upar write operation perform kiya is time par, yaani, jisne, yeh timestamp value yeh bataati hai ki successful write operation perform kiya hai, yaani jis transaction ne Q ke upar write operation perform kiya, uska timestamp inke sath kaunsi baat sahi hai? 
+
+Yeh timestamp yahan par kya bataata hai? Operation jis time par perform kiya gaya ya jis transaction ne operation perform kiya, uska timestamp hai? Nhai, socho, batao jaldi se. 
+
+Agar yeh baat aap samajh gaye, toh yeh clear ho jaayega apne ko. 
+
+First aur second, pehle thoda sa lag hota hai, YouTube delay, toh jab main bolta hoon, kuch samay ke baad hi aap tak pahunchta hai.Junior-senior, idea toh theek hai, main samajhta hoon ki graphs par yahan par main aap se poochha tha, uska jawab chahta hoon, ki matlab kya hai? 
+
+Main aage badhta hoon thoda sa, lekin main sahi bol raha hoon kya? Actually, second one jo hai, yeh nahi bataata ki timestamp par operation perform kiya, timestamp yeh bataata hai ki jisne operation perform kiya, uska timestamp time status hua tha, yaani, toh uska timestamp thhe. 
+
+Ab is baat ka matlab yeh hai, mere ko nahi pata woh transaction kaun hai, par main uska naam leta hoon T2. Ab T2 kaun hai? Junior, kyunki uska timestamp bada hai. Aur T1 kaun hai? Senior, kyunki uska timestamp chhota hai. Aur T1 jo hai, woh pehle aaya thhe, T2 baad mein aaya thhe. Toh T1, T2 junior, T1 senior. 
+
+Ab dekhiye scenario kya hai? Data item Q ka jo write timestamp hai, woh hai let's say 20. Iska matlab, kisi transaction ka timestamp 20 hai aur usne write operation perform kar liya hai, ya karna chahta hai. Dekhiye, yahan par read timestamp or write timestamp ki value 20 hai, iska matlab transaction T2 jo hai, woh write operation perform kar chuka hai. 
+
+Toh ab wohi chal raha hai, detail mein jiss par hum kal discussion kar rahe the. Aur T3 Q hai? Yeh scenario hai. Aap junior ho, aap senior ho, kyunki aapka timestamp chhota hai, aap pehle hi system ke andar aap senior thhe. Aap read operation perform karna chahte thhe, par aap kabhi bhi request nahi kar rahe, iska matlab yeh hai, aapne abhi tak operation perform nahi kiya. Aapke baad mein junior transaction aaya aur jis data item par aap read operation perform karna chahte thhe, wahan par is transaction ne already write operation perform kar diya. 
+
+Ab aap chahte hain ki operation hum idhar karein, allow karein? Yeh scenario waala hai. Agar aap chahte hain ki yeh operation allow karein, toh is it a conflicting instruction? Yes. Aur agar yeh conflicting instruction hai, toh hum chahte hain, is tarah ka operation hona chahiye ya nahi hona chahiye? Nahi hona chahiye. 
+
+Aur yahan par aapko isko manage karna hai. Junior aur senior, kisko allow karna hai? Senior ko allow karna hai ya junior ko allow karna hai? Senior operation perform karna chahta hai, toh kya hum allow karein? Nahi, kyunki T1 jo hai, woh senior hai aur woh pehle aaya thhe. 
+
+Toh ab aap jaldi se batao, kya yahan tak kisi ko koi doubt hai kya? Kya main final aap se properties ki baat kar sakta hoon? 
+
+Toh is tarah ka scenario yahan par ho raha hai abhi. 
+
+Let's, I am going forward. Main aap se kuch properties poochhta hoon. Ek property discuss karenge, fir dekhte hain. Pehla point dekhiyega. Jo points main bata raha hoon, yeh bataiye, kya main prove karne ke liye taiyaar hoon, par is poore discussion ka, jo kal humne aadh ghanta kiya, 20 minute kharch kiya, sabse important conclusion yeh hai, jo abhi baat karne waala hoon. 
+
+Pehla point dekhiyega. Timestamping protocol ensures conflicts serializability. Pehle aapko bata doon, kya is point se aap satisfied hain? Yeh keh raha hai ki jo bhi protocol, yeh jo bhi schedule timestamping protocol ka use karke banaya jaayega, woh default case mein conflict serializable zaroor hoga. Aapko separately check karne ki koi zaroorat nahi hai. 
+
+Lekin abhi jo bhi, T1 iski baat yahan par kar raha hai, kyunki yeh hai ki timestamping protocol ke andar rehta hai ki mera jo schedule banega, woh conflict serializable hoga, yeh toh bilkul sahi hai. Yeh sahi kyon hai? Kyunki is niyam ke andar, is protocol ke andar kya kabhi humne conflicting instructions ke sequence ko allow kiya hai kya? Kya kabhi bhi humne conflicting instructions ke sequence ko allow nahi kiya, aur conflicting instructions aapko allow nahi kiya, toh automatically agar woh problem hi humne allow nahi ki, toh isse conflict serializable mein issue aate hain. Conflict serializable, jo doosra topic, serializable hoga. 
+
+Next, again, jo protocol pehle se jaante hain taaki aap revision view ke, second point, timestamping protocol does not ensure coverability. Yeh bhi important point hai. Yeh property pehle se jaante hain ki agar koi schedule conflict serializable hai, toh kya woh view serializable bhi hoga? Yeh poochh raha hoon, agar koi schedule conflict serializable hai, toh kya woh recoverability ko ensure karega? 
+
+Nahi. Yeh toh humne pehle hi padh rakha hai ki agar koi schedule conflict serializable hai, toh iska yeh matlab nahi hai ki woh recoverable bhi hoga. Yeh automatically hold nahi karta hai. Is par alag se kaam karne ki zaroorat nahi hai. Kya aap follow kar pa rahe hain? 
+
+Toh zaroori toh nahi ki, dekhiye, jaise ki possibility hai, jaldi se network aayega, confirm karega, isse pehle mere ko thoda sa define karna padega, and recovery, conflict serializability, aur recovery mein discussion kar sakta hoon. 
+
+Recovery schedule dekhiyega aur mujhe bataiyega, timestamping protocol recoverable hai ki nahi? Transaction mere paas hai, pehla transaction hai, let's say, T1, uska timestamp hai, let's say, T1 aur doosra transaction hai T2, let's say, uska timestamp hai something like this. 
+
+Toh kaun junior aur senior? T1 jo hai, woh senior hai, kyunki uska timestamp chhota hai aur T2 jo hai, woh junior hai. 
+
+Ab maan lijiye, ki T1 ko pehle transaction mein, let's say, read operation perform karna hai, sir, write operation perform karna hai aur uske baad yeh keh raha hai ki main isko read operation perform karne doon. Ek minute ka time lijiye, dhyan se sochiye, mujhe bataiye, kya timestamping protocol mein is tarah ka schedule banana possible hoga ki nahi? Bas itna bata doon, toh maja aa jayega. 
+
+Timestamping protocol ke andar is tarah ka schedule banana possible hoga ki nahi? 
+
+Toh wahan par jo hai, woh aapko bataenge apna answer, ab aapko interpret karna hai, kyunki aap bol rahe ho, possible hoga ki nahi? Fir main kya karoon, mere ko pata hi jaldi hai, mere ko pata hai ki main aap se poochh raha hoon, aisa ho bhi sakta hai ki nahi? 
+
+Kya timestamping protocol ke andar is tarah ka schedule nahi aa sakta? 
+
+Yeh toh abhi aapne padh liya, tab aap mujhe bataiye, base of our understanding of view jo scenario main yahan par bana raha hoon, is tarah ka scenario possible hai ki nahi? 
+
+Is it possible that jis tarah ka scenario possible hai ki nahi hai? 
+
+Hoga. Theek hai. Agar dekhiyega, yahan par T1, kaun junior aur senior? Aap senior. T1 senior hai, isliye usne pehle operation perform kiya. Dono mein problem nahi hona chahiye. Toh pehle read operation kiya ya write operation kiya aur usne read operation kiya. 
+
+Yeh schedule conflict serializable, hum yeh maante hain ki humne pehle hi seekh liya tha ki conflict serializable, toh yahan par guarantee milti hai, usme koi problem nahi hai. Problem kahan jaati hai? Again, jaisa problem aayi thi, conflict serializable hone ke baad bhi schedule recoverable hai ki nahi hai? Toh woh kis case mein aane waale hain? 
+
+Woh recoverability ko discuss karte hain. Maan lijiye, T1 ne write operation kiya, T2 ne read operation kiya. Jaise hi T2 read operation karta hai, kya wahan par dirty read hoga ki nahi hoga? Let's say, T2 ne read operation perform kiya Q ke upar, jo T1 ne write kiya thhe. Jaise hi data Q detea hai, wahan par dirty read hoga ki nahi hoga? 
+
+Pehli baat, dirty read hone ke baad, jab dirty read ho gaya, toh rule kya hai? Usi order mein commit hona chahiye, jis order mein dirty read hua hai, hai na? Toh, again, agar pehle yahan par T1 commit kare, uske baad T2 commit kare, toh kya yeh schedule recoverable ho jaayega? 
+
+Main yeh poochh raha hoon, agar yahan par pehle T1 commit kare, uske baad T2 commit kare, toh kya yeh schedule recoverable ho jaayega? Haan. 
+
+Kya aisa question mein aap se bola gaya hai? Nahi. Poore protocol mein aapko junior-senior ki baat toh batai gayi, kya poore protocol mein kisi ne yeh baat capture ki kaun kis order mein commit karega? Aisa nahi bola gaya. 
+
+Aur agar aisa hai, toh mere ko toh filhal problem identify karni hai, na? Toh main jaan-बूझ kar define karunga aur aap se poochhoonga, agar pehle T2 commit kare, uske baad T1 commit kare, toh kya yeh recoverable ho jaayega? 
+
+Kya timestamping protocol ke andar yeh possible hai ki nahi hai? Yeh schedule recoverable, possible hai? Possible hai, toh T1 yahan par aise schedule ban sakte hain, jo na toh recoverable ho aur jo conflict serializable toh ho. 
+
+Poori kahani dekhiye, hum yahan par kis schedule ko ensure kar rahe hain? Hum conflict serializable schedules ko ensure kar rahe hain. Aapke samajh mein aa gaya hoga. 
+
+Ki aapko koi jawab nahi de raha, recoverable and view serializable, iske baare mein aur is beech ke, main bataana nahi chahta thhe. Ab main agle point par jaata hoon, bolta hoon, the possibility is no restriction for which transaction commit. Yes. Humne koi restriction nahi lagayi ki transaction kab commit karega, isliye timestamping protocol ensures conflict serializability, but it does not ensure recoverability. Yes. 
+
+Aap ise follow kar pa rahe hain ki nahi? 
+
+Agar main is baat ko bas aapko bataane ki koshish kar raha thhe, na, toh main fir se poochhta, "Sir, property toh theek hai, par mujhe proof karne ke liye aap tayyar ho?"
+
+बट ऐसा क्यों है यह समझ नहीं आ रहा, बट साथ-साथ हमने उसे नारियल भी देखा, पिंपल कि क्या पॉकेट कि फिर से हम काम कर रहे हैं, तब मुझे बताइए फॉलो कर पाएंगे इस पॉइंट को कि हां टाइम विड्रॉल के अंदर हम प्रेसिडेंट और जो ना तो रिकवरीबल होंगे, अब पिंपल हो सकते हैं और उनके अंदर हो सकता है कि डेडिकेटेड वाला प्रॉब्लम ही हो। तो जल्दी से मुझे बताइए यह पॉइंट समझ पाते हैं सब लोग कि दोनों सिचुएशन यहां पर पॉसिबल है।
+
+क्लियर है सभी को?
+
+सेकंड पॉइंट डिस्कस करते हैं, आगे बढ़ते हैं। 
+
+ए टाइम ऑफ़ फ्रिक्वेंट सीरवी रिजल्ट ऑन हुए अलार्म्स नो पॉसिबिलिटी आफ डेवलपमेंटल की बात नहीं, डालना के समय यह देखिए बिल्कुल डिफरेंट सेट ऑफ़ प्रॉपर्टी है और अलग तरीके से हमारे काम आती है। डिवेलप को बट थोड़ा सा डिटेल में समझने की बात करें तो किडनैपरों ऑब्जर्वेशन कैसे करेंगे? एक-एक करके समझाता हूं, देखिए, लेट मी क्लियर द स्लाइड। सब्सक्राइब बटन सिस्टम में को... 
+
+चार कंडीशन में फैमिली हो तो डर लगता है, कौन सी और कंडीशन है? सबसे पहले चम्मच यह बताओ, मिर्च फ्लेक्स फ्यूचर होना चाहिए, होल्ड एंड वेट होना चाहिए, सर्कुलर वेट होना चाहिए, और लो प्रेशर होना चाहिए। तो बस मैं थोड़ा साइड आपसे पूछता हूं, क्या यहां पर इस तरह का ऊपर चला कि आपको मिलेगा? साइड आप सबमिट कर आइए, देखिए कि दो ट्रांजैक्शन t1 और t2, और t1 वेट कर रहा है ट्रांजैक्शन t2 के लिए और t2 वेट कर रहा है ट्रांजैक्शन t1 के लिए, मुझे जल्दी से पश्चिम यह बताइए कि क्या इस तरह का सिनेरियो हमारे पास है क्या? 
+
+कि t1 t2 के लिए करें और t2 t1 के लिए करें। 
+
+सेकंड ऐसा क्वेश्चन सिनेरियो नहीं है, ऐसा क्वेश्चन है। अब तक इन देखिए, हमेशा मुस्लिम या तो माफ किया या तो साफ किया। इस प्रकार का अच्छी बात यही है, अगर कंडीशन सेटिस्फाई होती है, ऑपरेशन लव करते हैं, अगर कंडीशन सेटिस्फाई नहीं होती, तब हम वेट करने के लिए नहीं बोलते, हम ट्रांजैक्शन से चूर्ण बोलते कि आप रोल प्ले करें, सिस्टम से बाहर जाएं और दुबारा एंटर करें विद न्यू टाइम जरुर। बंद करके मुझे बता, मैं सिर्फ बोल रहा हूं क्या कि हम दोनों कंडीशन चैट करते हैं और उसके बाद रिजल्ट पर पहुंचते हैं? यह सालों? 
+
+यस। तो बहुत इंपॉर्टेंट कंफ्यूजन है जो अपने को सोचना पड़ेगा और वह सोच कर पा रहे हैं, तो आपको समझना पड़ेगा। अगर मैं कभी किसी से बेल्ट ही नहीं करा रहा हूं, तो डैंड्रफ कैसा मीट होता है? डेवलप्ड ऐसा मिल है, इसे ज़ाइन फाइनल एडमिट कार्ड, डेट लक्ष्य से इन फेज़, यह सब लोग? 
+
+यस। तो अगर नेटवर्क सिंपल आइडिया है, अगर डिवेलप हमारा इनफाइनाइट बेच है, तो यहां पर हम किसी से पीछे नहीं रहेंगे, दोबारा पर एंग्री अट द टाइम ऑफ एक्टिविस्ट्स फेज़ भी अलाव और भी रिएक्ट, सुधिजनो आइडियल ऑफ़ माइनर। फॉलो कर पाएंगे या गमलों करते हैं या तो मजाक करते हैं, इसका मतलब यहां पर डो का कोई आइडिया नहीं है। यह त्यौहार है सभी को? 
+
+अब एक और पॉइंट देखिये, रिकॉर्ड देखिये, यहाँ पर शिड्यूल नोट कनफ्लिक्ट्स लेबल्ड एज़ नॉट अलोन बाय टाइमस्टैंप वंडरफुल एंड हिडक्वाटर्स ऑल कंट्रीस पिंपल या शेड्यूल्स एंड ग्रीटेड बाय टाइमस्टैंप। इंपॉर्टेंट पॉइंट्स पर यह वो छोटे पॉइंट जो आर्म होल फिर हम इतना सोचते नहीं है, उस पर की बात नहीं करते, चयन सूची में एक बात समझ जाएगी, देखिये। 
+
+हो सकता है पावडर इलेक्ट्रॉनिक्स लूब्रिकेटिंग, अब क्या मैं आपसे यह बोल रहा हूं फिर है कि टाइमस्टैंप इन फुटबॉल में जो शिड्यूल बनते हैं, वो कनफ्लिक्ट्स लेबल होते हैं? जी हां, जिसका वादा करवाती जोगी चड्डी टाइमस्टैंप के अंदर बनेगा, वो कनफ्लुएंस आफ है। बट क्या मैं आपसे यह बोल रहा हूं कि सारे के सारे confluence शेड्यूल्स जो बनते हैं ना, वो टाइम स्टंपिंग अंदर बोलते हैं? तो यह बिल्कुल भी नहीं, तो से सैकंड, इसमें कोई नहीं है, सारे के सारे सब्सक्राइब टाइम नहीं चाहिए, आपको चाहिए में हो सकता है। तो जल्दी से बताइए कर दो कि आइडिया अबाउट टाइमस्टैंप इम्परेटिव आज की टॉप ऑर्डर कर पाएंगे सब लोग? 
+
+कबी सुनो, आज जितने भी इंपॉर्टेंट प्रॉपर्टीज़ थे, वो डिस्कस की है और अब एक छोटा सा मीडियम और डिस्कस करना है, ब्लड स्कूल थॉमस राइट टू अवॉयड। आपमें से कितने लोगों ने इस स्टंट को सुना होगा कि थॉमस नाइड्स क्या है? यह इसको किस तरह से परहेज़ करते हैं? क्रिकेट में दो बार इसको डिस्कशन किया गया है, तो एक आईडिया छोटा समय वहां पर पूछना है और कैसे क्वेश्चन आएंगे, एग्जांपल से कोट करेंगे, तो बटन होगा, यह? चलिए फटाफट देख सकते हैं। 
+
+तो यहाँ पर देखिये, एक अगेन जो कंडीशन ठाट आप मिनिस्टर्स में जनरल स्टडीज पेपर प्रिंटर देखना चाहिए, क्या बोला वैनिटी गई अटेम्प्ट्स टो राइट डाटा इट्स समथिंग ऑन इट आई है और किसी डाटा इन टंकियों के ऊपर राइट ऑपरेशन परफॉर्म करना चाहता है और यह देखिये क्या है, f&f यौनिक सच इसस... 
+
+Is less than and equal to... 
+
+तो हम क्या करते हैं इस चैनल सब्सक्राइब हमारे पास कोई दूसरा ऑप्शन है परफॉर्म करना चाहते थे, ऑपरेशन नहीं किया है, तो प्लीज सब्सक्राइब कर। 
+
+हवा प्रेषण परफॉर्म करना चाहते थे, हमने ऑपरेशन परफॉर्म नहीं किया, हमारे बाल जाने वाले कोई ऑपरेशन पहले परफॉर्म कर दिया, बात अपनी कमबैक अरेस्ट करेगी शर्मनाक में लेट हो गए हैं, कृपया आप हमें नीचे या ऑपरेशन अलार्म सेट करें। यहाँ पर ऑपरेशन हुआ नहीं था, लेकिन नेट कमेंट जरूर प्रभुत्व करते समय इसको बिल्कुल मतलब लेंगे। टॉप मुझे बता दें कि यह साफ करना हम अलाव करेंगे कि नहीं करेंगे टाइमस्टैंप इमो कॉल करके बताएं? सोमवार सुबह टूल बहुत लोगों को समझ नहीं आता है, बहुत कंफ्यूजन हो जाता है, कविता बेहोश होने लगे, टाइमस्टैंप इन नहीं प्रॉब्लम कंडीशन होता है, अब ट्रांजैक्शन मुद्दे प्रॉब्लम रहेगा, तो जल्दी से बताइएगा जरूर। 
+
+यह सब... 
+
+यह सब्सक्राइब नहीं किया है, तो प्लीज सब्सक्राइब कर के, तो सीनियर नेशनल नहीं करते, अगर आप पूछेंगे टाइमस्टैंप इन में चाहिए कि यहाँ पर इसको करना चाहिए और ऑपरेशन नहीं, और उसको दोबारा सिस्टम एंटर करना है। 
+
+ट्रांजैक्शन इतिहास रोल रहा है और उसको दोबारा सिस्टम में एंटर करना होगा विद न्यू टाइम सिस्टम के। पॉइंट्स को घर पर है क्या? 
+
+ए ग्रेट ईयर ऑफ़ बर्थ। अब देखिये मजे की बात देखिये और आप सोचेंगे अरे वाह, ऐसा भी हो सकता था मैंने सोचा ही नहीं था कि यह चाहे की बात करूं, चाहे की चाहिए, दोनों ही राइट साइड है, दोनों ट्रांजैक्शन ऑपरेशन परफॉर्म कर रहे हैं, दोनों साइड है। जी हां, अगर डोण्ट राइट साइड मतलब क्या होता है कि हम घाघरे, ट्रांजैक्शन बिना कोई व्यक्ति करें कि अगर कोई ट्रांजैक्शन बिना वैलिड करें राइट ऑपरेशन डायरेक्टली फ्रॉम करता है, तो उस तरीके लाइट को बताओ हम क्या बोलते हैं? लाइन ड्राइंग। 
+
+यस, तो यहाँ पर आप देखेंगे टीआई और ट्यूसडे टिप्स दोनों साइड करें। अब 2 मिनट के लिए करते हैं, अगर सब कुछ ऐसा हुआ होता तो क्या होता और अगर ऐसा न हुआ तो वे सदन में क्या डिफरेंस को अपने मन में सोचते थे कि मेरे को मेरे को फोन करने वाली थी - 1313, 3131... 
+
+सब्सक्राइब करने के लिए, तो मैं हूं शुक्रवार मेरे को ठंडे लिखना है, तो मैं रोटी ही लिखूंगा। आई होगी बता फॉलो कर पाए, यस। 
+
+पहले अगर टीआई ने किया होता तो क्या हुआ और क्या चाहिए, क्या चाहिए और इसे कट करके, इसके बाद 2 और को यह पसंद है। 
+
+जहाँ पर पहले टीआई रन हुआ, उसके बाद जतिन थोड़ा सा हुआ ने दावा किया कि बजाय इसके कि पलट यही काम करता, डायरेक्ट्स आया और उसने 13020 कर दिया और अब यह कहना चाहता हूं कि मैं आपसे पूछ रहा हूँ, यहाँ पर रोलबैक कराने की जरूरत भी नहीं चाहिए ऑपरेशन परफॉर्म करता, नहीं करता हूं कि जो भी डिप्रेशन परफॉर्म करता था कि दूसरा करें, यहाँ पर परफॉर्म करने वाला हूँ कि गैस। 
+
+अगर ओवरराईट होना ही था और आपने लिखा ने, उसने डायरेक्टर ने लिखा, तो अबरोल व कराने की क्या जरूरत है? हम मान रहे हैं कि चैरिटी के लिए इस नोट करें कि आप इस ऑपरेशन को इग्नोर से नहीं कर सकते हैं, बट यहाँ पर अगर करेंगे तो ज़रूर पसंद नहीं पड़ता है, अगर मैं आपसे बोलो अब टीआई से बोलो, इन्सटिड कि आप रोलबैक करो, इन्स्टाग्राम रोल पर करो, इनजस्ट इग्नौर थिस राइट ऑपरेशन, फैलाने सब भूल जाओ। 
+
+इसके ऊपर मिट्टी डाल दो और मानो कि ऑपरेशन कंफर्म हो गया था और अपना ऑपरेशन आगे कंटिन्यू करो, अपना एडिशन आगे कंटिन्यू अगर ओवर आपको कोई प्रॉब्लम नहीं होगा। इस अवसर पर देखो मैं क्या बोल रहा हूँ, ने अपना ऑपरेशन आगे कंटिन्यू करो, आपको कोई प्रॉब्लम नहीं होगा। त्यौहारों पर पा रहे हैं? 
+
+ये सब लोग। टिकट किस तरह से हम काम करेंगे और प्रॉपर वहाँ पर एजुकेशन करेंगे, इन लोंग रन हम इस पर कोई भी प्रॉब्लम नहीं होगा, यस। 
+
+अब जब और इस पॉइंट को है ना, तो थॉमस राजू रिसीव नोटिफिकेशन की बात करता है, तो के तक यह सिलाई जो हमारे पास है, तो बजाय इसके यहाँ पर कि हम ट्रांजैक्शन को रोलबैक कराएं, ना रोलबैक होगा, वापिस आएगा, डे प्रॉब्लम है कि द्वितीय प्रॉब्लम, तो इंस्टॉल उसे रोलर कराएं, इससे बेहतर है कि हम उस लक्ष्मण से बोले कि आपके सुसाइड ऑपरेशन को इग्नोर कर दो, हैण्डसेट। अगर आप एक बात ध्यान दूं कि कैसे 2 3 चीज रिलेटिव होती और पहले हद तक उसका रिवीजन जब हमने समझा जा सकता है, अगर आपको याद हो, जब मैं आपसे भी वो सेलिब्रिटी की बात की जाए, तो मैं आपसे पॉइंट्स किया था, जो शेड्युल कनफ्लिक्ट्स रिलायजेबल नहीं और फिर भूषण लेबल होते हैं, उनके अंदर कम से कम एक लाइन वाइट होता है, या करो क्या शेड्यूल जो कनफ्लिक्ट्स लेबल नहीं होते ना, सिर्फ व्युअर्स हैं, उनको कम से कम होता है, यह क्यों होता है? 
+
+इस वजह से होता है, व्यवस्था Android ट्रू लव करता है, इसके अलावा आप जितने भी शर्लिन से प्रोडक्ट्स आगे बढ़ोगे, क्या किसी ने इस तरह का नोटिफिकेशन हमला करते हैं? नहीं करते, यही पकड़ते हैं, हाँ, सभी ठीक करता है, फिर बहुत इंपॉर्टेंट पॉइंट तो बनते हैं, क्वेश्चन उसका व्हाट्सएप क्वेश्चन पूछे अवधेश, यह बहुत सिंपल से काट लिया है, ध्यान से देखिये, यह भी एक ही है, हालांकि डे मिस्टर विजय साबुत धनिया पिंपल क्वेश्चन साल बाद कमी इस पर कर सकते हो, बस जरा ध्यान से देखिये। 
+
+अब ज़रूर करो और मुझे बताओ कि आपको समझदार, चार ट्रांजैक्शन यहाँ पर है, चारों का टाइम स्टंट आपको बता दिया घाटी 1052 का 23 उड़ान चुटकी 2420, पर पूछ रहा है बेसिक कंटेंट पर थॉमस राजपूत इसमें अल्लाह होगा, किसमें लो नहीं होगा, ट्राइब्स इन थे रिवर। 
+
+पता नहीं क्या है? 
+
+थोड़ा सा कॉम्प्लिकेट है, फिर सोचेंगे को व्हाट्सएप मिल जाएगी, लेकिन थिंग नेटवर्क शेड्यूल बनाता हूँ और टाइम्स टाइम्स के हिसाब से आपको सोचना बताता है। 
+
+तो यहाँ पर अगर मैं चार्ट करेक्शन लोग टेबल 3233 एंटी को और अभेद के अवसर करते हैं, ये देखिये, ट्रांजक्शन टीचर में राइट ऑपरेशन कंफर्म किया के ऊपर, उसके बट ट्रांजैक्शन टीटू ने भी राइट ऑपरेशन परफॉर्म किया, लेंथ इसलिए विधायिका ऑपरेशन परफॉर्म किया था, यह जो पावर पड़ेगी कैसे मिटेगी में कंवर्ट कर रहा हूँ, उसके बाद ट्रांजैक्शन टीटू दुबारा यहाँ पर रियल ऑपरेशन परफॉर्म करना चाहता है और उसके ट्रांजैक्शन 2014 यहाँ पर रीड ऑपरेशन पर कॉल करना चाहिए। जरा वजन करते इसको वन बाय है ना, तो सबसे पहले डाटा आइटम क्यों हमारे पास, जैसा हम जानते हैं कि टेंशन चेंजेस होते रहते हैं, यहाँ पर आपको पड़ता है, सर्विस फाइव ब्रेस्ट कैंसर डिफिकल्ट एंड nh-24 और मेरे पास डाटा आइटम क्योंकि 2 टाइम्स इन थे, लेटेस्ट रीड टाइम्स टाइम्स एंड सॉइल टैंक कॉल्स में मैसेज सेंड कर दूं, फिर देखते हैं। 
+
+तो सबसे पहले ट्रांजैक्शन स्टीवन राइट ऑपरेशन आपके ऊपर, तो उसका जो भी टाइमस्टैंप है और राइट टाइम सप्ताह वैल्यू फाइल भर देगा, व्यक्ति का कोई वैल्यू है, यह, उसके बाद अगले दिन जब आप राइट ऑपरेशन परफॉर्म करेंगे, ठीक उसी तुरंत होगी 10 फ्री फ्रॉम करेगा, तो इस वजह से भी 300 पेजेस अपडेट मिलती रहेगी, अब तो वो फर्क नहीं पड़ेगा कि मैं दोनों अली चेक कर हूं, पहले मिनट मिलूंगी, कोई प्रॉब्लम नहीं। अब देखिये जब यहाँ पर टाइम दक्षिण की तू बोलेगा कि मैं उसको रीड ऑपरेशन परफॉर्म करना है, मेरे को डिप्रेशन परफॉर्म करना है, तो यह डिप्रेशन अल्लाह होगा कि नहीं होगा, बस इतनी सी बात बता दूं कि लुटेरे की के अलावा करेगा, थोड़ा सा एजुकेशनल सिर्फ पूछना चाहता हूँ, जो सेलेरियो ज़रूर देखिये और मुझे बताइए क्या होगा, यहाँ पर जब हम यह ऑपरेशन परफॉर्म करेंगे, डेडिकेटेड डॉक्टर फॉर करेगा, तो ऑपरेशन होगा कि नहीं होगा? 
+
+अब देखिये, आपका जूनियर सलेक्शन जटिल ऑपरेशन परफॉर्म कर चुका है, यह, अगर आप डिप्रेशन परफॉर्म करना था, आपको पहले करें, ताकि बाद में तो एक सेटअप है कि वो ऑलरेडी जाएगी ऑपरेशन परफॉर्म कर चुका है और आप सीनियर अगर बाद में आए हैं और कहते कि अब आपको हम वो डिप्रेशन परफॉर्म करने मे है, तब मुझे बताएं, मैं भी लटक क्वेश्चन, वेदर इट्स फेमस राइटर ऑलवेज एमेच्योर, क्या यह ऑपरेशन अलर्ट होगा या नहीं होगा? 
+
+आपका जूनियर ट्रांजैक्शन पहले इस ऑपरेशन परफॉर्म कर चुका है, राज्य के ऑपरेशन परफॉर्म करने दे, आप मुझे बताएं कि अभी ऑपरेशन लॉ बोर्ड के नहीं होगा? 
+
+आई डोंट थिंग की अभी ऑपरेशन अलर्ट होने वाला है, बट आई डोंट थिंग की दोनों में से किसी भी केस में काम होगा, वेदर इट्स फेमस राइट रूल और वेदर थिस टाइम स्टैंड आपको यह बताएं कि क्या दोनों में से किसी भी केस में ऑपरेशन उड़ाऊंगा कि चाहे थॉमस नाइड्स बात करें, टेंशन की बात करें, आई डोंट थिंग से और फिर दोनों में से किसी के समय ऑपरेशन लागू नहीं होगा, मुझे बताइए एक बेसिक अ फॉलो कर पा रहे हैं क्या? 
+
+यस, सॉरी, थोड़ा सा अट्रैक्ट क्वेश्चन था, बट अगर आप रीड ऑल वेट करना चाहता था, जब मैंने एक सिंगल फोल्ड करना है, जिसको भोजपुरी अवधेश में काम करती है कि भाई जूनियर को लागू है, पर सीनियर फॉलो नहीं है, जूनियर ऑपरेशन परफॉर्म कर सकता, मैं सीनियर नहीं कर सकता। 
+
+अच्छा, चाहिए थोड़ा पाटन भी चेंज करता हूँ और 1000 गांव से, इस पुस्तक के विषय इधर हमने डिस्कशन नहीं किया, ऑपरेटिंग सिस्टम में इनफील्ट्रेशन पढ़ तो काफी वाली साड़ियों को डिस्कस करने के, ऑपरेटिंग सिस्टम एवं फ्रंट कलेक्शन प्रॉब्लम परिचय, फिर मेंबर खाना, तो वे इसका फिजिकल सेक्शन प्रॉब्लम ही अंडरस्टैंड व्हाय थे डेट कि जब कोयला प्रेषण यहाँ पर प्रोसेस किसी शेयर डाटा पर काम करना चाहता है, तो उन किस तरह से डिसीजन लेता है कि काम भला होगा कि नहीं होगा? 
+
+तो सिंगल पांडे जनता होता है, हम एक बार फिर टिप्स फॉलो करते हैं, यस। अगर एक बार में एक ही प्रॉसेस पल्लव करेंगे, तो आप मुझे बताइए होगा क्या, से कम एक बार चेक कर लो, मेरी व्हाट्सएप करूंगा, शिवम अगर एक बार में एक ही प्रॉसेस अलाउ करेंगे, तो क्या होगा मुझे बताओ? 
+
+होगा यह थी कि क्या होने का चांस नहीं, वो बात तो ठीक है, ट्रांजैक्शन पर भी लागू होती है, कि अगर एक बार में एक ही ट्रांजैक्शन करेंगे, सनम फैलिन बात कर चुके हैं, तो उस केस में क्या पॉइंट से रिलेटेड कोई भी शुरू हो सकता है? अगर एक बार में ऑपरेशन लगे, तो पोंटिंग से रिलेटेड कोई भी शुरू नहीं होगा, है ना? 
+
+अब मैं इस बार डिफरेंट तरीके से आपको समझा तो देखिये, यहाँ पर हम एक बार मेतेबान दक्षिण कलाम नहीं करते, बट एक बार में डाटा आइटम थिस ट्रांजैक्शन लव कर सक भी कर सकते हैं, इन दिस गिव्स यू न आइडिया अबाउट थे लांगेस्ट वर्ड। 
+
+और अब क्या कहानी है? लोग वेस्ट प्रोडक्ट रोल्स की, फर्क इस तरह से हम इनको ऑब्जेक्ट कर सकते, छोटा साइड लेकिन यह मैं आपको समझाता हूँ, फिर समझे थे। 
+
+अगर कोई भी सैंपल साइज है, मरीजों को डाटा आइटम है की है, ना और कोई ट्रांजैक्शन इसके ऊपर में दाल में कुछ भी किया तो फाइल उधर ऑपरेशन परफॉर्म करना चाहता है या तो राइट ऑपरेशन प्रथम दौर में जो की डिप्रेशन एयर टाइट ऑपरेशन, अगर हम क्या करें, प्रॉब्लम क्या है? 
+
+यह ट्रांजैक्शन किया है क्लास का होता है, यह इस पर आलरेडी काम कर रहा है, कोई दूसरा ट्रांजैक्शन आटा चीज़ है और वो भी यहाँ पर काम करना चालू कर देता है, ना तो डेकौरेट सब प्रॉब्लम, डेट से कंफ्यूज सके इस कंडीशन से बचने के सिंपल तरीका क्या है, अगला थोड़ा सा चेंज कर देता है और रूल अब क्या कहता है कि कोई भी काम लक्षण इलेक्ट्रिसिटी आई अगर किसी डाटा आइटम एक के ऊपर काम करना चाहता है, तो कोई भी ट्रांजैक्शन टीआई अगर किसी डाटा आइटम एक ऊपर काम करना चाहता है, तो डाइरैक्टली काम कर सकता है या पहले उसको लॉकेट वापिस करना होगा? 
+
+कर कैंसर लीटर पूछ रहा हूँ, वो यॉट ऑपरेशन परफॉर्म नहीं कर सकता बोलते हैं कि पहले इसको यहाँ पर एक लॉकेट पर करना होगा और जब लौह तत्व का होगा, किसकी बात करूँगा? जब मुश्किल हो सके फंडामेंटल्स ऑफ़ डिस्कस करूँ, तो बेसिकली घर पर लॉक लगा लूंगा, तो अब मेरे अलावा कोई भी ट्रांजैक्शन, कोई भी ना ट्रांजैक्शन ऑपरेशन परफॉर्म नहीं कर पाएगा, उस डाटा आइटम ने के ऊपर। 
+
+मेरा पूरा डाटा बेस लूप नहीं किया, समझेगा, मेरा वो डाटा आइटम को लॉक कर दिया कि आज डे गुयस है, दूसरा कंजक्शन के मामले का रास्ता है और वो कहता है कि मेरे को डाटा आइटम बीचो-बड़ा सामना करना पड़ सकता है, विश्व में के बेटे कांग्रेसी वे कांग्रेसी पर काम करें, पर एक पर काम नहीं करेगा, जब तक फ्रॉम दक्षिण दिशा ही काम करता है, तो आप मुझे बताएं कि Idea इस टाइमस्टैंप इन कैंसर को सिर्फ एक ही तरफ मॉडिफिकेशन हम इस थॉमस नाइड्स रूल, बट इन केस ऑफ़ लॉर्ड बेस्टो कल बहुत सारे नोटिफिकेशन से यहाँ पर हो हैं। 
+
+तो यह सब फंडामेंटल आईडिया है कि किस तरह से हम डिसीजन लेंगे कि ऑपरेशन अलाव करने से पहले लॉक रिक्वेस्ट आपको करना होगा, लॉक आपको मिलेगा तो यह मॉडरेशन परफॉर्म कर सकते, थे फंडामेंटल क्लासेज में लोग इस प्रोटोकॉल गिरफ्त लो कुछ इस तरीके हो सकते हैं, एक्सप्लोजिव हो सकते हैं, शैडो सकते हैं, आगे जाकर पढ़ेंगे उसमें परहेज़ आफ्टर सो सकते हो, जिस इंटेंशंस एक्सक्लूसिव इंटेंशंस, बट वो लक आएंगी। 
+
+आ जाए, उसके बाद मैं आपसे बात करूँ, तो लॉकिंग भी स्पेशल लड़कियों पड़ता एंट्री पिंपल्स भी होते हैं, या फिर तू खुसरो कम होती है, तो इसके अंदर फटकर टाइम्स है, रेस्पेक्ट है, हर किसी के अलग बेसिक है, हर किसी के अलग-अलग अप्रोच है, लग रहे डैंटल जैसे घंटे जिंजर प्रॉपर्टीज है, जिसको हम...
+
+करते हैं तो मेकर्स अब बस कमांड स्पेशल होगा और अभिनेता मिस्टर बीन के तारों क्वेश्चन नहीं करेंगे, ओपन होगा क्या कि वह अपने क्वेश्चंस के अंदर एग्जाम जब दोनों प्रोडक्ट्स का इसमें ऑप्शन लगता है एक ऑप्शन दिखेगा टाइमिंग और दूसरा ऑप्शन लगेगा अनलॉक्ड इस फ्रीडम फाइटर। 
+
+बट अब तक तो आपने नहीं पढ़ा होगा उसको आप उस आंसर मिल कर पाएंगे है ना? तो इसके ऊपर अफसर डिस्कशन करेंगे। यदि फिर इसके बाद अपन डिस्कशन करेंगे मॉक पोल में डिस्कशन करेंगे और अगली क्लास जो हमारी होने वाली है, जैसा जानते भी सैटरडे-संडे हम दो क्लासेज लगा रहे हैं तो अब यह हमारे स्पेशल क्लास होने वाली है कि इवनिंग में बहुत लोगों को चैप्टर नंबर का और हमारा जो टाइम टेबल है वह नहीं पता हो तो जस्ट अभी अपने चल पॉइंटिंग कल मीटिंग दोनों टाइम क्लास लगेंगे। अभी जो लेटर बेस पर दूसरी क्लास लगाने वाला हूं डिफिकल्ट टो विन द इवनिंग सैंड आज शाम को 9:00 से 10:00 बजे डॉक्टर ऑफ कोर्स लगाने वाले हैं इस पर ध्यान रखिएगा। 
+
+अजीत उसके बाद में दोबारा आपके बता दूं खिलाड़ी रेगुलरली आपके फॉलो कर रहे हैं, काम कर रहे हैं यहां पर और दूसरे मतलब से लेंगे इसे कुछ स्पेशल क्लासेस यहां पर हमें साइडिस्क्राइब होता है तरफ प्रोडक्ट अपनी मार्केटिंग करने के लिए। लेकिन जैक्सन प्रोडक्ट है द बेस्ट ऑल अनअकैडमी प्लस जहां पर मैं डेली तीन से चार घंटा लाइव पढ़ा रहा होता हूं एक क्लासेस मॉर्निंग में 7:00 से 8:30, जहां पर एंड टेकिंग और इससे और दूसरी क्लास जमशेदपुर टीम ने जहां पर में ड्यूरेस प्रणाम पूरे साल का टिकट मिल कैलेंडर आप देख सकते हैं तो जो सबसे टॉयलेट ठीक हो चुके हैं उनकी अगली विडियोज देख सकते हैं जिससे मैंने कौन-कौन से सब्जेक्ट किस डेट से किस डेट तक होने वाले हैं, कितने टाइम पर चलने वाले हैं सारा डिटेल यहां पर लिखा हुआ है। 
+
+तो सारे सब्जेक्ट जो मिक्सचर को पढ़ाते हैं वैसे इस कंप्यूटर नेटवर्क्स फॉर इनटीयूसी कंपाइलर डिजाइन किया डॉक्टर ने स्टार्टेड सिस्टम में के प्रतिनिधि है कि जब चेक कर सकते हैं, फॉलो कर सकते हैं और आगे अगर आप सीनियर सेक्शन और दिन में दो-तीन घंटा जैसा बोलो मनडु एडिटिंग ढूंढ सकते हैं, घंटा मॉर्निंग में जलन टाइमिंग में और पढ़ने की इच्छा रखते हैं वेदर गेट कोई भी कांटेक्ट जामुन के लिए कृपया इस तरह चीजों को समझना चाहते हैं तो साइड यह प्रोडक्ट बने एक साथ में ब्रिटिश रिलेट कर पा रहे होते हैं। 
+
+नमस्ते जी के दो तीन हम है कि पहला तो हर बच्चे को बात समझ आनी चाहिए पर यह मैं जानता था कि समय एग्जांपल्स लेता हूं बहुत basic से बताना स्टार्ट करता हूं तो झट पहले अगर आपने बहुत कुछ नहीं भी सीखा तो उसमें कोई प्रॉब्लम नहीं हो तो। 
+
+दूसरी बात कि अगेन जो सब्जेक्ट ऑडियो जैक उसका रिकॉर्डिंग देखेंगे तो कोई प्रॉब्लम नहीं। 
+
+एक वह आपको देखना पड़ेगा जहां तक टाइम मैनेजमेंट केसेस में बताएगी इंटर स्कूल सेक्टर 10 में से एक बार आपका जो टाइम है ना वह क्रश करें किसी बहुत इंपोर्टेंट आपके साथ तो उसके हिसाब रिक्वेस्टेड वीडियो देख सकते हैं और देखा अल्टीमेटली आपको पता होना चाहिए कि आपको चिपक समय जब मैं जानता हूं कि सेमेस्टर एग्जाम की जितनी इंपॉर्टेंट है और बाकी वह परसेंटेज किचन है आपके काम आएगी हर यहां जवाब पढ़ाई करते हैं गेट नंबर एक नंबर भी आपका आपका अच्छा आता है तो उस पर कितना अच्छा प्लीज आपको मिलेगा और किस तरह से आपकी लाइफ और बैटर पार्क की जा सकती है। 
+
+हालांकि एक और बता दूं कि आप मैं सिर्फ में यह जो सबसे ऑप्शन की बात करने से मेरे लिए ही नहीं एकेडमी प्लेटफार्म मौजूद दूसरे जी बैटल्स एंड कंप्यूटर साइंस के अंदर कुछ अजीब लैटर से रैपिड बना रहे हैं वो सिगरेट तो सिर्फ मैथमेटिक्स पढ़ा रहे हैं फिर बहुत बड़ी टीम में एडमिशन विक्रम ने सेट ए थाउजेंड करोड़ कंपनी वह सब जेल बॉडी पढ़ाई कर चुके हैं उनको आप repetitions देख सकते हैं तो दोस्तों अगर आपको यहां पर मिल जाते हैं, टेंशन आपको लेना नहीं है। 
+
+करना क्या है आपको गेट और टेस्टी सब्सक्रिप्शन के अंदर जाना है 12024 मंथ्स अलग-अलग ऑप्शंस आपके पास है। 
+
+अगर आप इस विडियो को टारगेट कर रहे हैं तो आप चाहे तो पैन को सब्सक्राइब लेकिन अगर थर्टी फर्स्ट ईयर में सब्सक्राइब माय चैनल सब्सक्राइब इंडिया के टॉप क्वालिटी सब्सक्राइब आवर विडियो और उसके बाद आपको यहां पर जो सब्सक्राइब करते हैं, वह आ रहा है। 
+
+एक और इंपॉर्टेंट बात यहां पर अगर आप हमारा बटन को यूज करते केजरीवाल ठीक है ना सिर्फ एडिशनल टेंथ हिंदुस्तान को मिल जाता है, पिंपल प्रोडक्ट रेजिडेंट्स ऑयल मिलता है तब जो भी एक प्लैटफॉर्म यह सब नशन विघ्न ट्वेंटी-20 फोल्डिंग पेमेंट आपके सीरियल है। 
+
+ऑप्शन ए ट्रू कर सकते हैं, किडनी ऑप्शन भी अवेलेबल है तो 10 लाख रेड्डी बैंक तो आप लोग पॉसिबल भी जा सकते हैं जहां पर इस मंत्र इंस्टॉलमेंट आपको देने विदाउट एंड। 
+
+नयी दिल्ली द्वारा नंबर बढ़ता जाता है अब यह आप देख रहें हैं इस समय जब भी चांपा जिले में आलरेडी थर्टीन लोग सब्सक्राइब कर चुके हैं इस एकेडमिक सेशन जज नर्सेज सब्सक्राइब 1234 सब्सक्राइब और जो भी चीज है। 
+
+फाइनल ईयर के एग्जाम की टेंशन लगे सिर्फ थोड़ा सा लिस्ट आफ है जैसे व्हाट अमेज़न ऑफ है हम नहीं तो थोड़ा सा आपको पहले कॉल लेना था। 
+
+बट अगेन आपसे बोलो दृष्टि डिस्कस किया था अभी भी टाइम आपके पास है अमीरी टाइम आपके पास है जब एग्जाम होना होगा हो जाएगा और ज्यादा से केस में एग्जाम कितनी चीजों से अपने आप जानते है ना वह सब प्रोस्टेट ऑनलाइन एग्जाम कंडक्ट कर रहे हैं तो उसके ऊपर गांठ एक-दो दिन पढ़ाई करके एग्जाम पास कर सकते हैं फाइनल ईयर तक पहुंचने के साथ से मिस्टर कैसे अपने पास कि आप जानते हैं बट ए प्रोडक्ट जो आपकी लाइफ बदल सकता है। 
+
+यहाँ पर डिग्री आफ थे यूनिवर्सिटी है कि मैं नहीं जा सकता, बट नॉलेज आपको मैं दे सकता हूँ और बेहतर दे सकता हूँ है ना? तो चीजों को सही तरीके से समझ ना पढ़ना तो उसके बाद चाहे किसी कंपनी का टेक्निकल लौंडे इंटरव्यू हो या कोई भी देखा टेक्निकल हेल्पर हो या अगर आपने ऐसा इस कम से कम छह महीना या एक साल मुशर्रफ मेरे साथ डेटिंग घंटा अपने को देंगे तो कोई आपको टेक्निकल आर यू वंट बाहर नहीं आ सकता। 
+
+तो कॉलेज और अगर आपको लगे कि टीचिंग लेवल है और यह नॉलेज ऑब्जेक्टिव टाइप करना है तो जल्दी से जल्दी सब्सक्राइब करिएगा सॉलिड जो भी हमारे कोर्स है वह आप एक्सेस कर पाए Google इतना लेट करते जाएंगे उसमें अपडेट कर उस माइक हम टाइम रहता जाएगा तो इट्स वेरी डिफिकल्ट हमारी कुछ हो सकता है सबसे प्रॉमिस करें हाउ टू फ्रंट रॉक वन इन लाइक 500 वर्ड्स बट मेरे पास ऐसा कोई सलूशन नहीं है तो आप जितनी जल्दी सेलेस्ट करोगे उतना डिटेल में उतना अच्छे से पढ़ पाओगे। 
+
+अब देखिए सब्सक्राइब और लास्ट ईयर सेलिब्रेशन सेट किया हुआ है तो लाइक घंटों टेबलेट कहां प्रिपरेशन कितने अच्छे से में बहुत चुकाया है तो चलिए इस पर विचार करेगा हाइट इन इट्स वेरी गुड प्रोडक्ट जहां पर आप इनवेस्ट करेंगे साइड वो कितने स्पोर्ट्स आपको बाद उसका रिटर्न मिलने वाला है न तो विचार करेगा बाकी आज शाम में घी इन थे टेंथ क्लास क्योंकि उस पर ध्यान रखिए थैंक यू सो मच

@@ -1,0 +1,55 @@
+Hello friends, today we're going to discuss normalization. Normalization is a very important concept of DBMS. So let's start with normalization. It is a technique to remove or reduce the redundancy from a table. Many times, in a table we have duplicacy or redundancy of the data. To remove that redundancy or duplicacy, there is a method which is normalization. If we can't remove it, then we can reduce the duplicacy. 
+
+There are basically two types of duplicacy in the database: one is the row level, and another is the column level. So let's start with the row level first. In the row level duplicacy, I have mentioned one example. In the example, there is a student table. In the student table, we are having SID, S. Name, and Age. We have taken student's ID, student's name, and student's age. Now I have put some values over there, like 1, 2, 1. These are the values. 
+
+Now, if you look at it carefully, the first row—we call it the first row—first row and the third row are exactly the same, meaning both the rows are exactly the same. This is what row level duplicacy is. And guys, this row level duplicacy should not be there in the table. The method to remove it we have already discussed in my previous videos, but I'll still tell you once again that we use the concept of primary key. We set a primary key in our table on any attributes. But how do we set it? That is mentioned in my videos. 
+
+So what did I do? I made the SID as the primary key. When we made the SID a primary key, we know the property of the primary key: it is unique plus not null, meaning neither value can be repeated in it, nor can it be left empty. So we cannot put this 1 value in it twice. So it will take care of the row level duplicacy. 
+
+But guys, the important part is the column level duplicacy. I have mentioned one table over there. In this column level duplicacy, let's start with the student ID, student name, course ID, course name, faculty ID, faculty name, and salary. You can note that later. I have put some values over there, I have put some values of the rows. 
+
+Now, basically, if we look at it carefully, no two rows are exactly the same here. No two rows are exactly the same. Why? Because we already removed the row level duplicacy. How did we do it? I just told you: set the primary key. We made SID as a primary key, so no two rows can be exactly the same in it. But can the columns be the same? Yes. 
+
+Let's see, like this is the column: Course ID, Course name, faculty ID, faculty name, and salary. See the third row and fourth row. Although I have mentioned only four values over there, but guys, four values are not only there when we create the database. In the database, we can have more than a thousand or in lakhs. We can have the rows. So in all these rows, if I have some data, some columns' values are exactly the same, then what will be the problem that comes? 
+
+So basically, the problem comes in three types. One is an insertion anomaly, the second one is a deletion anomaly, and the third one is an updation anomaly. 
+
+Guys, what is an anomaly? A problem. Anomaly means a kind of problem, but such a problem that occurs on a special occasion, that is what we call an anomaly. 
+
+So guys, let's start with insertion. If I want to insert something in this table, will it create a problem? For example, I want to put the data of a new student. Let's say a new student has taken admission in the university. Let's say it's a database of a university. So if I have put the information of a new student, like SID is 5 and S. Name is, let's say, Varun, guys, there is no problem. You can easily insert the data over there. 
+
+But let's take another case. If the university starts a new course, let's say the university starts a new course like C10, and the course name is MBBS. Guys, note it down well: the course ID is C10 and the course name is MBBS. This information you cannot insert over there. Even for faculty also, like if you want to insert the new faculty data, some new joinee has come, so if I want to insert their data, then I cannot insert the data. 
+
+The reason being is, what will you insert in the SID? You can't insert anything in the SID. How will you insert in the SID? The new course is introduced; I didn't talk about the student. The student will be registered later on in that course. Then if I leave it empty, since it is a primary key, it can't be left empty. If I'll put a dummy value like—what kind of dummy value? You cannot insert the wrong data in the database. That will create problems for you later on, guys. Moreover, you can put `#` or put some special character, but guys, this will create a huge problem. Instead of solving a small problem, you will get stuck in a big problem. So we should not follow this kind of thing. So then how to insert? We cannot directly insert in it. This is what is called the insertion anomaly. 
+
+Let's check the deletion anomaly. What is a deletion anomaly? Like if I have given a query, a simple query: remove the database of roll number 1. I mean, if someone would tell me that roll number 1, his data has to be removed, so guys, how do we write a simple query? `Delete From Student`—means table name—`Delete from Table Name Where SID = 1`. Simple: `Delete from Table Name where SID = 1`. 
+
+What will this do? It will delete the whole row. So there was no problem. That's why I am saying it's an anomaly; it occurs in a special case. 
+
+So look, guys, if I ask you the question again, like that you have to delete the data of roll number 2, so simply you do `delete from table name where SID = 2`. So what will happen, guys? This row will be totally deleted. It's been totally removed from the database, means you can say that this row is not existing over there. 
+
+So if I remove this row, can you tell me who is teaching roll number 2? What was the course name of roll number 2? It can happen, guys, that there is only one student who was studying that particular course. It may be possible that there was only one student who was studying that particular course, and he had the same faculty—a particular faculty was teaching him. Guys, it just removes the student's details, but because of that, all the information was removed. So that means I have lost the information of the course and the information of the faculty as well. So that means extra information is getting removed which I cannot recover later. 
+
+Okay, then the third: updation anomaly. Actually, why are we taking only three—insertion, deletion, updation? Basically, there are three operations in the database. Generally, we discuss that we update. Before that, we do database designing, like create a table, insert something into the table, etc. But if we talk about the operation, then these are the three operations: insertion, deletion, and updation. That's why I'm taking only these values. 
+
+Let's start with the updation anomaly. In the updation anomaly, like I have written a query, writes a simple query: student 4, student ID is 4, his name is Amrit, he wants to change from Amrit to Amritpal. So guys, we already know what is the query for that; I'm writing over there: `Update Student`—that is a table name—`Set Attribute Name`—what is the attribute name? `S.Name`—let's take the new value like `Amritpal`, `where`—because a `where` condition we have to apply—`Where SID = 2`. 
+
+So this is the simple query which will change the value from Amrit to Amritpal. There will be no problem. 
+
+But now note down another query. If you want to change the salary of faculty F1 from 30,000 to 40,000—means change salary of F1 from 30,000 to 40,000, 40k. If I change the salary to 40k, so guys, see what will happen? From 30,000 to 40,000 here, here also 30,000 to 40,000—means as many times as F1 will be repeating, the same number of times the updation query will run. 
+
+Guys, when you will run it on an Oracle server or on a Microsoft SQL Server or on an IBM DB2, so you won't know much about time gap; you will feel that the query has run. But guys, if you see it technically, then there were 30k to 40k here, 30k to 40k here. As many times as 30,000 was written, the more times it would be 40,000. But guys, if I ask how many faculties of F1 are there? There is only one faculty of F1, just a faculty whose ID is F1. So if there is only one faculty F1, then his salary should also change once. But due to the column level duplicacy, how many times is it changing? As many times as that data is written here. 
+
+So these are the three: insertion, deletion, updation anomalies. 
+
+And now, if it is seen, what does normalization say? Normalization, what does it do to remove redundancy from here? So it has different rules, which we will see later. 
+
+Basically, if you look at it, if I divide this table—a simple solution is if I divide this table, if I divide this table into multiple tables, into multiple tables—like SID, S.Name becomes one table; CID, C.Name becomes one table; FID, F.Name, and salary becomes one table. Means this can be one of the solutions. I am not saying this is the only solution; this can be one of the solutions. 
+
+What will happen after that, like, if the same question is asked again, that enter a student's information? Put it directly. To insert information about a new course? Put it directly in this table. There will be no problem, there will be no problem. Insert any faculty's information? Insert it easily. 
+
+Similarly, for deletion: you are restricting a student, removing it, remove it. It won't affect the courses or the faculty. 
+
+Same in the updation: you are changing the salary of F1. So what will be the F1 here? Primary key. If his salary is, like, 30,000, if you do 40,000, how many times will it change? Only one time, because in this table, FID will become the primary key. In this table, the CID will become the primary key. In this table, SID will become the primary key. 
+
+Alright, guys. Thank you.

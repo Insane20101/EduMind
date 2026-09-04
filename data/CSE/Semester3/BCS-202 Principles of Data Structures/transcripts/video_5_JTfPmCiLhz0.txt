@@ -1,0 +1,23 @@
+Welcome to Gate Smashers. This is Naina, and I am going to explain to you how to calculate the address of any element in a single-dimensional array. 
+
+First of all, thank you so much to all. You appreciated my videos and my teaching so much through your comments. Thank you for your support. Keep doing such comments and keep motivating us. 
+
+Our today's topic is how we can find the address of any element in a one-dimensional array. Till now, we have seen that we access the array randomly. Random access means that we access any element directly. In order to access it directly, what will we do? Suppose that I want to access the third location, how many elements do I need to cross here? What is the number of elements that I need to cross? I will have to cross 2 elements. See, why we can do random access, it's because its elements in the memory are stored in a sequence. So we can access it randomly. 
+
+Now see how we can find its address. Let's suppose that I want to find the address of location number 2. What's the initial address? In order to find the address, we must know the base address. We started its base address from 3000. To find the address of the element, we must know where the addresses are starting, which means the address of the first element. The address of the first element is 3000. Plus, how many elements we have crossed? How many elements we have crossed? We have crossed 2 of them. We can also take them from here. We can also come to know the number of elements crossed from the location of it. In which case? When the index starts from 0. We will put the value as 2. See, what's the size of every element? If we have taken integers. I have taken the elements in the difference of 2 bytes each. The size of 1 element will be 2. So we will multiply the number of elements that we need to cross by 2. 3000 + 4. What's the address? 3004. The address of this element is 3004. Right? 
+
+Suppose we want to find the address of location A[3]. The base address will be 3000. Plus, how many elements do we need to cross? 1, 2, 3. Then we have taken the size as 2 for every element. What will we get here? The final value is 3006. What will be the value of A[3]? It will be 3006. Right? 
+
+If we talk about where did we start the index? From 0. The data structure is not dependent on any language. That's why I covered both the aspects using both these cases. I explained one by starting from 0 and the other by starting from 1. 
+
+If we start from 1 and we need to find the location of A[2], how can we do so? The base address of it is 3000. Plus, how many elements do we need to cross? We need to cross 1 element. We will write '1' here. What's the size of an element here? It's 2 bytes. We will multiply it by 2. The location will be 3002. We found this location as 3002. We found the value. 
+
+If we want to derive the formula, suppose we want to find the ith location, our base address will be... The base address is where the first element starts. Then, the ith location. Now see, we need to multiply it by the size. In case the index starts from 1, we will do A[i] = BA + (i - 1) * S. What's S here? It's the size of each element. BA means the Base Address. Right? 
+
+Let's make a general formula. What will be the general formula, whether it starts from 0 or 1, or there is a lower bound in the question? As you know, this is the lower bound and this is the upper bound. Let's move on with a general formula. Look here. If we are asked to find an ith location in the exam, we will be given a base address, add i (the location we need to find) to it. And subtract the lower bound from i, whether it is 0 or 1. Then multiply it by its size. 
+
+What will be the lower bound of this array? How can we write it? Array name... In the exams, it is given like this. The lower bound is here. What's the upper bound? It's 4. This will be the upper bound. In case when the array is starting from 1, we will write the array name, lower bound (1), and the upper bound, which is 5. We will write '5' here. We can also write it this way. 
+
+Sometimes it's also negative. Suppose the array name is 'A'. Here, we are given -3. Here, we are given 4. So -3 is the lower bound and 4 is the upper bound. How will its array be formed? We will also be given the base address. From -3... -3, -2, -1, 0, 1, 2, 3, and 4. The array will be formed this way. Alright? 
+
+Now you have to solve the questions given on the screen and tell the answer by commenting. If you are unable to solve it, I will explain it in the next video. Thank you!

@@ -1,0 +1,94 @@
+### Virtual Memory Concepts
+
+Virtual memory is a concept. Until now, we have discussed a lot about main memory, which is physical memory. In this section, we will examine how virtual memory actually works and what its significance is. 
+
+The first significance of virtual memory is that it provides the illusion to the programmer that a process whose size is larger than the size of main memory can also be executed. That means if we have a process whose size is even more than the size of main memory, we can execute that process as well. How is that possible? Actually, our main memory is finite. If we talk about a laptop, we get RAM up to 8GB or 16GB. Even though the main memory is 8GB or 16GB, there is no limitation on the size of processes. The size of processes is increasing day by day. Normally, when a process does not fit in the main memory, we might wonder how we will provide its pages or data to the CPU, and how the CPU will execute that data. However, the concept of virtual memory provides the first illusion: a process whose size is much larger than the size of main memory can still be executed.
+
+The second point here relates to the degree of multiprogramming. We talk about how more and more processes must come into the main memory. Since main memory is limited, we have to bring the maximum number of processes into the main memory. For that, we should have more main memory, but we have limited the size of the main memory to, say, 16GB. How do we bring the maximum number of processes into main memory and execute them? This is another illusion provided by virtual memory.
+
+
+### How Virtual Memory Works
+
+Next, we will look at how virtual memory actually works. What we are doing here is using a logical address space. Logical address space means we are talking about the hard disk, where there are multiple processes. We have divided those processes into pages. We have already seen the concept of paging, where we divide processes into pages, and page size is equal to the size of a frame. 
+
+Thus, we have already divided multiple processes into pages. Now, instead of bringing one full process into main memory, we are bringing only the required pages of the required process into the main memory. That means the pages that are required right now are the only ones we bring into main memory. 
+
+This relies on a simple concept: locality of reference. What we do in locality of reference is that when we bring a page into the main memory, we do not bring that page only; we bring the related pages along with it. For example, if a school teacher tells someone to call roll number 10, we call roll number 10, but we also call roll numbers 8, 9, 11, and 12—the students with nearby roll numbers—along with it. We do this on the assumption that even though roll number 10 was called now, next time the teacher might call roll number 9 or 11. 
+
+This is an example of how we follow this principle: rather than loading an entire process into the main memory, we keep some of the pages of multiple processes in the main memory. For instance, we might hold some pages of P1, some pages of P2, some pages of P3, and some pages of P4. This allows us to keep only the currently required parts of processes in the main memory. 
+
+Because only some parts of each process come into the main memory, we can hold parts of many processes simultaneously. The advantage of this is that portions of the maximum number of processes can be kept in main memory. As a result, the user feels that whenever they call process 1 it is there, process 2 is there, process 3 is there, and processes 4, 5, 6, and 7 are all there in main memory. However, these processes are not fully loaded; only some of their pages are kept in the main memory.
+
+
+### Swap-In, Swap-Out, and Page Replacement
+
+We accomplish this by using swap-in and swap-out operations, which we also call roll-in and roll-out. Roll-in and roll-out mean that swap-in brings a page into the main memory. Because we have limited main memory, we cannot keep that page in permanent main memory forever. We have to take out that page after some time and bring in a page from a new process. 
+
+We call this page replacement: how we replace pages and bring in new ones. There are many page replacement algorithms—such as First-In, First-Out (FIFO), LRU, and MRU—which we will examine in further videos. 
+
+Here, we are focusing on the advantages of virtual memory. There are two main advantages: 
+1. It provides the illusion that the size of a process can be as large as wanted.
+2. The number of processes can also be as large as wanted; there is no limitation on the number of processes. 
+
+Even though main memory is limited, no matter what the size of a process is or how many processes there are, we can bring them into the main memory. This is a very significant advantage. All the laptops, PCs, and operating systems we use nowadays utilize the concept of virtual memory.
+
+
+### Handling Page Faults
+
+Is there any problem with this? Can problems arise? Let us analyze it. 
+
+Suppose the CPU is executing a process P1. The first thing the CPU will do is demand a page or data. Let us say the CPU makes a demand that it wants the data of page number 1. This means the CPU generated a logical address. From that logical address, we determine that the data the CPU is demanding is on page number 1 of process P1. 
+
+Where is page number 1 of process P1 located in the main memory? How do we find that out? We use the page table. The memory management unit (MMU) loads the page table from the main memory and checks which pages are lying in which frames. 
+
+Here we are talking about page 1 of P1. As soon as the CPU demands the data it wants, the logical address indicates it is a P1 page. However, if we look closely, the P1 page is not present in the main memory. When we inspect the page table entry—and we have already discussed page table entries, which contain valid and invalid bits, also called present or absent bits—it tells us whether the page is present or absent in the main memory. 
+
+If the page that the CPU wants is absent in the main memory, we call this a page fault. If the page is present, that is the best case: the page the CPU is demanding is already in main memory, so we pick that page from main memory and provide the data to the CPU. But if that page is not in main memory, it is absent, which generates a page fault.
+
+
+### Page Fault Service Steps
+
+How do we service a page fault? What do we do after a page fault occurs? 
+
+1. The CPU generates a demand for page 1 of process P1.
+2. Before checking the main memory, we check the page table to see which frame the page is lying in. We do not find any entry here because our valid bit is stating `0`, which means that page is absent.
+3. In this case, a trap is generated. A trap is a kind of interrupt.
+4. As soon as the trap is generated, control shifts from the user to the operating system. You can call this context switching. Just like we do context switching in round-robin scheduling—where a running process is sent to the ready state and another process is loaded into the running state—context switching happens here as well. Because the user had control and a user process P1 was executing, as soon as its page was not found, the user lost control because a trap was generated.
+5. Operating system activation and authentication: The operating system takes control into its hands. First of all, the operating system checks whether the user demanding this page is authenticated or not. This is done for security purposes to verify if the user demanding the particular process or page through the CPU is valid or invalid.
+6. If the user is valid, the operating system locates the page. Where is that page actually lying? If the data is not in main memory, it is in the hard disk—that is, in the logical address space. The operating system goes to the logical address space and searches for where that process is kept. We are looking for page 1 of process P1.
+7. The operating system takes out page 1 of process P1 from the hard disk and places it into an empty slot (frame) in the main memory—let us say, frame number 7.
+8. We update the page table to reflect this change. Because the address the CPU generated must be resolved, and the CPU might demand that page again, we update the address in the page table to show that page number 1 is now present at frame number 7.
+9. Control is returned to the user level. The control goes from user mode to the operating system, and after these steps, it is returned back to the user.
+
+
+### Effective Memory Access Time
+
+If we consider the time used in this process, we can calculate the effective memory access time. 
+
+Let $P$ be the probability that a page fault occurs ($0 \le P \le 1$). When a page fault occurs, we must perform page fault servicing. The time used in this is called the page fault service time. Therefore, a fraction $P$ of the time incurs the page fault service time.
+
+Conversely, $1 - P$ represents the best-case probability where no page fault occurs. If a page fault is not occurring ($1 - P$ times), as soon as the CPU demands a page, we find its reference directly—for example, if it is kept in frame number 1, we access frame number 1 immediately. The time taken in this case is the main memory access time, which we can call $MA$. 
+
+Thus, the effective memory access time formula is:
+$$\text{Effective Access Time} = (P \times \text{Page Fault Service Time}) + ((1 - P) \times \text{Main Memory Access Time})$$
+
+An important point here is that the time required to access main memory is, in most cases, in nanoseconds because main memory is very fast. When we find a page in main memory, we access that data within nanoseconds. 
+
+However, as soon as a page fault occurs:
+1. Control is given to the operating system.
+2. Context switching happens from the user to the operating system, wasting some time.
+3. The operating system searches the hard disk. Hard disks are very slow compared to main memory, so it takes a significant amount of time to retrieve data from the hard disk and place it in main memory. 
+
+This page fault service time is generally in milliseconds. We waste milliseconds of time to bring that page into main memory, whereas if the page fault had not occurred, we would access data in nanoseconds. 
+
+Sometimes, people ask if the main memory access time is also added during page fault servicing (for the final lookup after the page is loaded into frame 7). Because the main memory access time is in nanoseconds, it is very small compared to the milliseconds wasted on hard disk I/O, which is why that small lookup time is often considered negligible in the broader calculation. 
+
+You can encounter many numerical problems based on this formula: if a certain percentage of page faults occurs and the main memory access time is given, calculate the effective memory access time. 
+
+Finally, a very big problem can occur here: if there are too many page faults, it can lead to the problem of thrashing, which severely degrades CPU utilization.
+
+If page fault becomes too much, the threshing and performance in that case will suddenly degrade. Generally, the service time of a page fault is in milliseconds and the access time of main memory is in nanoseconds. You all already know that 1 millisecond equals 10 lakh, or 1 million, nanoseconds. This means there are 10 lakh nanoseconds in a millisecond, so obviously the time gap will increase significantly just because of the page fault.
+
+However, there are advantages too. It is providing an illusion, and there is no limitation of page size or the number of processes. If I lessen the number of page faults and if we increase the number of page hits, then in that case my effective memory access time will perform very well. 
+
+This is how virtual memory actually works, and this is the significance of virtual memory. Thanks a lot; if you liked my video, please share it with your friends. Thank you.

@@ -1,0 +1,59 @@
+Many of you solved Exercise 4. In today's video, I will shout out all of you who solved Exercise 4, and we will also see the solution to Exercise 4. Keep liking the video and write "sigma batch op" in the comment section. 
+
+Let's go to the computer screen. Let's roll the intro.
+
+This is my folder for the Sigma web development course. I will shift-right-click and open it in VS Code. Someone suggested that I open it directly like this, and that's a matter of preference. You can approach it from here; it's totally the same according to me. I will make a folder named "video 36." I made it in video 34, so we will take it out. If we take it out, it will come out. Yes, it came out. Move. After doing this, our video 36 is empty here; it has an index.html. As always, I will solve this question and then we will take things from there. 
+
+Let's get started. I guess our video was the 34th. No, it was not the 34th; I guess it was the 33rd video in which we had to make a multicolor website that can change color using CSS variables. According to me, it was a very basic and simple exercise. 
+
+Let's go. CSS multicolor website. I will write it like this, and here I will put a style tag. I have to write "style" in small. After this, I will make a header tag, then I will make a nav tag, then I will make a ul, and then I will create a header tag, nav tag, ul, and li. After that, I will write "Home," and then I will replicate it. 
+
+How I replicated it, I will show you in screencast mode. I used Alt + Shift + Down Arrow. However, you can change it in VS Code settings; you can also change it by using keyboard shortcuts. If you can't see, let me show you. Here you can use keyboard shortcuts, and now you can see, I hope. 
+
+So here is "Home," here is "About," and here I write "Services," and here "Contact Us." After doing this, you can see that our website looks like this. I can do the preview here and there. I can say that the li in ul, the list style of that, make it none. After that, I can say that the ul, which is our UL, if I want all of them to come horizontally and I don't want to use flexbox, then how will I do this? You tell me in the comment section, and I will show you. 
+
+If you have guessed correctly, then I will make UL and LI display inline. Will I display inline? Let's see. It came like this. Although it is not a good approach, if you display inline, then you will get this. If you give padding 23px, see this. We can put this navbar, and I can say that my nav color, its background, let's say I take a nice background color. I will put a star M0 and P0. I will write P0 as well, and I will open it in the browser. 
+
+If you have not accessed the Sigma web development playlist, then do it. What are you doing? I mean, do it like this. I will open it in the browser so that it is visible here. Now it looks like this. I can change its font and many other things, but now I will focus on making it multicolored. 
+
+I will give padding from top to bottom 12 pixels, from left to right 0 pixels, and I will do it multi-color. I will give padding from top bottom 12 pixels, 0 from left right, and I will do it like this. Obviously, I will not put a media query in it; I will make it a very simple navbar. As you can see here, a very simple navbar is here. 
+
+Now here I will search on Google, "Google Font Poppins," and I will take a style of Poppins. I just want to tell you how you will do it. Now I will remove one style. I just want to tell you how you will do it. Now I will remove "Ballo Brother." I don't want "Ballo Brother," so I will minus "Ballo Brother." I will keep only Poppins and copy this. 
+
+I will say that I have to do the whole site from Poppins. I will copy this import statement and put it in my style tag, or I will copy the whole style tag. A new style tag, by the way, you can put more than one style tag if you don't know. I hope you know. I will right-click and do "Format Document." It will look like this. 
+
+Now see it is appearing like this. If you want, you can reduce the font size of the li, but I will tell you one thing: if I reset it, it will look like this. You can change the font weight. I know what I will do; I will change the font weight. I will change the font weight here, and here I will right-click and inspect. Let's say I want to make it bolder, so I make it bolder. I want to make the color white, so this is a very basic navbar. 
+
+This is a very basic navbar, and these two properties I will copy and paste here. I don't have any Figma file; I have not made anything here that I can refer to, but I will show you one thing here. Oops, did I do something wrong here? What did I do wrong? Okay, so I removed the padding and font width. I removed the padding. Now if I format it, it will be fine. Yes, now our website is looking like this; our navbar is looking like this. 
+
+But if you want to change its color, then how will you do it? You know how you will change this on the navbar. By not doing blue violet, let's say you want to keep this color or blue color. You can keep any color you want. If you like this color or this color, then you can keep anything. But you know what I will do? I will store this in a CSS variable. 
+
+What I will say here is that in the root, I will say here is the root. In that, I will have a primary color, and I want to make the primary color this color, not blue violet. This color I have changed it by mistake. A little less; this is good. I will copy this color. I have done it. 
+
+I told you the syntax already. Where did I tell you? In the video of CSS variables. Where is the video of CSS variables? The video of CSS variables was our video number 30. I will show you here in video number 30 how we made variables in CSS variables. The way we learned to make variables in video number 30, in the same way, we will make it now. 
+
+After this, I will do a secondary color. I will do one thing: I will put the text color, and my text color will be white. What I will do here is secondary color. I will put not primary color; I will put this color, but I will change it a little. I will show you how I will change it so we will change it in such a way that it will be light. It will be my background color. 
+
+I will say that the body, the background color of that, use variable secondary color. The one I have used here, use variable, and what should I do? Use primary color, and the text color here is use that. The color I was using in the nav, I will also bring it from the variable, and here I will say that use the text color. 
+
+Will it make any difference to the site? It will not make any difference to the site; the site will be like this. But if I want, I can change the color by changing only one variable, and changing one variable will change my whole website. Now see, I will build this website more when I will make it in reality. 
+
+Second thing is, if you think this is looking weird, then I want to show you one more thing: that you can put an anchor tag in li like this. You can put an anchor tag like this. Now see what I am doing here. I did this, then pressed end, then Ctrl + V. Here it is written which key to press. I did all this by pressing. I wrote "a" here, actually, and I will do Ctrl + Z. I have to bring all these things to this "A." 
+
+You can do this. You can also use multi-cursor functionality in VS Code. As you like it, you can do it. I have put "A" in li. I will home it like this. Then you see here that I have put "a" in li, so here I have put an anchor tag, and here I will put href="." You can see that these links are made. 
+
+Now obviously, the thing I have done for li, I have to do for "a" also because for "a," there are some default styles. I will write here "UL A," and the color I will take from here, and I will do text-decoration: none. What happens by doing text-decoration: none? This is our anchor tag; the underline below it goes away. If I remove it, then you see the underline has come. You are seeing I am toggling, and you know the color. 
+
+Why do I have to change the color? So this thing is done. Now let's see how we can make different variants of our website. If I change these colors, let's say make it greenish. I say we need green, so one is darker green, and one is white, and this is lighter green. Comment it out something like this, and you see our same website is made in a green theme. 
+
+I will make it darker so that it will be dark because it has white text. So see, our green theme is made. Now suppose you want to make a blue theme from this. Make a blue theme from this and change it to make a blue theme. Dark blue theme; no problem. You have made a blue theme here. You take it to whiteish, and here it is your blue theme. 
+
+If you see it purple and you want it to be blue, then you can make it blue. The sky is the limit. You can hover here, so this hand is going here, and as soon as I click here, see it's bringing me to index. 
+
+We have made a very good website. If I put a logo in the navbar, then it will look better, and putting that is not a big thing. I will put a div here and image and logo. In this way, we can make a website of multiple colors. 
+
+Now what I will do here is that I will give a shoutout to those who have solved this exercise. I will quickly load all the comments, and a lot of people have commented. Let me tell you that all of you who have commented, your hard work will not go in vain. Solving the exercise for you and for your web development career will prove to be very useful. 
+
+Now I will give a shoutout to the following people: Vishnu, Ankit, Heli, Alok, Amit, Developer, Shubh, Enchanted Gamer, The Great Navid Khan, Rajesh, Ankit, Yuk, Local, Sahil Rehman, Aishwarya Tech, Developer Foundation, Amit Mohli, Itsmeedilip, Awais Mughal Fan, Rohit, Developer Foundation, Saurabh, Tharan Ansari, MD Athar Ansari, Use Nothing, Swastik, Shiv Mahapuriya, Mahapuran, Manas, Python Krish, Manas Agarwal, Python Krishna, Amit Mally, Vansh, Python Krishna, Ankit Sahuio, Gaming, Bhupendra Jogi, Enchanted Gamer, Ankit Kumar, Kaman, Haldar, Web Development, Code with Rohhit, Use Nothing, and Zubair Khan has solved it. He has put the right approach, and I hope that you guys will also be able to work with this approach. 
+
+The code will be updated very soon, and I hope that you guys have accessed this playlist. That's it for now, guys. Thank you so much for watching this video, and I will see you next time.

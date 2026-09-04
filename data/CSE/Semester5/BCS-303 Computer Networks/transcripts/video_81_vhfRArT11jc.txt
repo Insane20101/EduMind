@@ -1,0 +1,35 @@
+Hello friends. Welcome to Gate Smashers. 
+
+The topic is DNS, Domain Name System. Why do we use the Domain Name System or Domain Name servers? To map the domain names with the IP address. In a real-life environment, on a daily basis, we open lots of websites and lots of web applications. What do we enter? Let's say, Google, Facebook, YouTube. Do we ever add an IP address? No. We always enter domain names. 
+
+Here, the concept is that users always recall websites by domain names, not by IP addresses. The reason behind this is that it is easy to remember pictures and names, as our mind can easily capture names and pictures, whereas capturing numbers is difficult. For example, as I have written an IP address, do we ever discuss with our friends or anyone to open this or any IP address? No, we never talk like this. Let's say this is an IP address, and this IP address is of Crickinfo. As a cricket lover, I take the example of cricket. It is an IP address of crickinfo.com. So we never open it with an IP address; we always use the domain name. 
+
+So the very first use of the domain name server or domain system is that users always remember domains by name, so it becomes very easy to search any website. We can also say that it works like a phonebook. In a phonebook, we never say to search anyone with a number; we remember a person's name, and then by that person's name only, we search alphabetically in a dictionary or in a phonebook to find out the particular value. 
+
+The second main reason to use DNS is that IP addresses are dynamic; they are never static. For example, if you made any web application, let's say xyz.com, you made a website and hosted it on Amazon Web Services, purchased a database, and hosted it. Hosting means that you got your IP address, but everyone will search you by which name? They will search you by the xyz name, not by your IP address. 
+
+Let's say after 1-2 years, you or Amazon decided to shift to another IP address, or you find Amazon a bit expensive, so you decided to use any other web application or any other web provider, let's say GoDaddy. When you shifted to another web application, your database will remain the same, so there your name of the website xyz remains. Everyone remembers you with your name xyz, not by your IP address. Your IP address in this case is changed, but your name remains the same. If you change the name of your website from xyz to abc, then you have to start your business in a new way because everybody knows you by your name xyz. 
+
+So here, IP addresses are changing from the backend, but the name of the domain database remains the same. Yes, it keeps on updating, but the domain name should remain the same. So these are the major two reasons to use DNS.
+
+Next, if we talk about how we search by adding a domain name. Let's say in my system I opened a browser, and on the browser I entered, let's take an example, crickinfo.com. When I typed crickinfo.com, what happens next is I have entered a domain name, so this domain name will first get mapped with an IP address. This is not my responsibility; for this, we have an architecture, and this is a hierarchical architecture. 
+
+In this architecture, there is a root server. This is the root road; from here, the request will firstly go to the root server. This also has two methods: it can be in recursive or iterative mode. So firstly, the request goes to the root server, or basically, it works as a resolver. In the middle, a resolver is there, and the work of the resolver is to resolve this domain name into an IP address. 
+
+The root server will get the request first. For your knowledge, I will tell you that in this entire world, there are 13 root servers all over the world, so your request will go to the root server first. From the root server, it will give you an IP address—you mean to the resolver, it will give an IP address, and that IP address and location will be of the next level. 
+
+Now the next level is the generic server level or country server level, in which the domain which you have searched, crickinfo.com, will be resolved from right to left, meaning it resolves from the backside to .com. Here, .com is for commercial, non-profitable organizations; .in we use for India; for military, for education, there are different, different domains. So your request will be forwarded to which server? They will forward it to the .com servers. 
+
+Here what we have done is distribution; we have divided the traffic. Instead of going to one place, traffic is sent to this load or to this link; there is no need to move to the rest. Generally, these .com servers are not a single server; they are multiple servers so that load balancing can be done easily. 
+
+After .com, from the second level, we move to the authoritative level. Authoritative servers are servers that store all IP addresses and names. The name is crickinfo, and the crickinfo IP address is saved in the authoritative server. It can also happen that crickinfo has multiple IP addresses. Like Google, YouTube, these are high-level organizations; they cannot work with a single server. Like we talk about Facebook, in Facebook only there are near about 70,000 servers. So as there are so many servers, there could be a chance of having multiple IP addresses also. 
+
+So the authoritative server will choose one of the IP addresses, and that IP address you have to search. So how is your request working? Firstly, it is sent to the resolver, the resolver to the root server, the root server asking the resolver to move to commercial, then to commercial. Commercial is giving the address to the resolver, and with that address, you move to the authoritative server. From there, the request is sent to the authoritative server, from here I get the IP address, and that IP address will be given to the resolver, and that resolver will bring it back to my browser. 
+
+So this is resolving: the name is mapped with the IP. After this, this crickinfo, let's say crickinfo, it is hosted in a European country, so now your request will be sent to Europe that any data you have to check or check match score, from there your data will come. This is how, from a basic level, I have explained. 
+
+I will explain recursive and iterative mode in more detail in my next video, but here I have explained the basic idea of how DNS works and how many components there are in the hierarchical architecture from where the domain name is mapped into the IP. 
+
+Although every time we don't require this because our ISP, Internet Service Provider, is responsible and it always keeps cache. Cache meaning it stores in cache memory always. Your request is not sent to the root server whenever we search any website for the first time; then it is sent to the root server. Next time, the ISP will store it, so the next time your request does not take this much time, and it gets resolved easily. 
+
+There is a DNS caching concept also that we will discuss in the next video, and recursive and iterative mode will also be discussed in the next video. So here are the two reasons I have mentioned why we use DNS. Thank you.

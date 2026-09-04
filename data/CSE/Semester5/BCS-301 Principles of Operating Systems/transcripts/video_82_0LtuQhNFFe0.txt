@@ -1,0 +1,86 @@
+Hello friends, welcome to Gate Smashers. In this video I am going to explain file systems in operating systems, and in this video we are going to discuss all the points related to file systems which are important for your competitive exams and even your college and university exams. 
+
+First of all, if we talk about operating systems, out of all the major functionalities of an operating system, file system is the most important system. We say the operating system manages the files, but inside the code of the operating system, we get a module—the file system—which manages all of the files. 
+
+If we talk about Windows, Windows has the NTFS file system. Earlier there was DOS; in the DOS operating system, there was the FAT file system. If we talk about Unix, there is the Unix file system. If we talk about Linux, there is the extended file system. In today's time, we are talking about big data, a large amount of data; for that, there is the ZFS file system and data-wide file systems. 
+
+Means, if we talk about any operating system, in the code of the operating system, in the kernel, you will find one module: that is the file system. 
+
+So what is the first point that is covered here? Whether a file system is a hardware or software? A file system is a software. 
+
+So if this is a software and comes under the operating system, what work does it do? This manages files. 
+
+Now what is the meaning of "manage" here? How the data will be stored and how the data will be fetched? Like we discuss in database DBMS—what is DBMS? Database Management System, which manages the data. 
+
+So here, if we say what does the file system do? It manages data of users in the form of files. Meaning, how the data will be stored and, if data is stored, then how it will be fetched. 
+
+So from where does the story begin? Let's take the example of myself or any user: how do we manage our data? We manage our data in the form of files. Take a simple example: we copy any data with a pen drive in the form of a file. What we download, it is in the form of a file. If you are sending an email, there also we are attaching a file. We send a file on WhatsApp. 
+
+So if I talk about PPT, Excel, PDF, or DOC files, it can be of any type: MP3, MP4, PNG, JPG. On a daily basis, with what are we dealing? We are dealing with files. 
+
+So in actual, how do we manage these files in our laptop, in our computer, even in our mobiles also? And who manages those files? Who stores those files in the back end? 
+
+"Back end" means the permanent storage, because we want our data to be stored permanently. It is not that I downloaded any file or downloaded any movie and that I would place in a volatile memory kept in RAM or in cache, so that when we close the system and open it the next day, we will not have that data. So I want my data to be stored permanently. 
+
+From where do we have permanent storage available? It is provided by a hard disk. A hard disk is a permanent storage, although SSDs (Solid State Drives) are also becoming popular. However, most likely we use a hard disk in majority because its size is more. 
+
+So because of large size, especially nowadays we have it in terabytes—today if we buy a laptop in a price range of 20 to 25 thousand, there also you get a hard drive of minimum 1 terabyte. 
+
+So who gets the data to be permanently stored in the permanent storage? The file system. 
+
+So the story is: what does a user do? The user has created some file—let’s say I made a doc file, or Excel file, or PPT, MP3, MP4, or I downloaded any file, or I copied any file. Whatever I am doing, the form in which I am managing the data is in the form of a file. 
+
+How is the user viewing his data? The user views his data in the form of a file. 
+
+So in your laptop, what is there in C drive or D drive? There are files only. And where are those files? They are inside folders. You will find the file inside any folder. 
+
+So you can say, what is a folder? It is a collection of related files. As we call it "directory" in Linux or Unix. So even if we say "folder" in Windows, what do we call it in Linux? Directory. 
+
+So what do we do in a directory? We store and keep related files there. 
+
+Now who is managing all these folders? The file system is managing them. So whether we talk about Windows, Linux, Unix, or any operating system, the file system is managing data. 
+
+How far can the user see? The user view is up to here: the user can see his files and folders. But beyond the folder, a user can’t see anything. So there the file system works. 
+
+What do we have to do now? Actually, we are storing the data inside our disk. But the architecture of the disk is something else. 
+
+What do we have in the disc? We have platters, surfaces, tracks on these surfaces. What do we have on the tracks? There are sectors. Let’s say if I have a track, so on this track we have sectors. I have already made videos on the architecture of the disk. If you haven’t checked it, then definitely check it once so that all the points you have are cleared. You will find their link in the description box. 
+
+So see here, we have sectors. So actually, the data are on these sectors—meaning the data which the user is creating, we want to put that data on these sectors. 
+
+So the file system will put the data over these sectors. 
+
+So let’s say I downloaded one file—let’s say I downloaded a movie of 1 GB. It is not necessary that I have 1 GB of space lying continuously in my disk. Will it be directly stored in that 1 GB file of yours? No. 
+
+What happens? When all these files come to the file system, what does it do? Divides these files logically. In what? In blocks. 
+
+Let's say if we have a 1 GB file, so we divide it into small parts: divided into blocks. And those blocks, then what did we do? We mapped those blocks. We mapped those blocks with whom? With the disk—means we map with those sectors inside the disk. 
+
+What does "map" mean? Look, it's not necessary—let's say that I said, here in block number one to sector number one, block number two to sector number two, block number three to sector number three. Contiguous is not always possible. Maybe you can do that too, but it is also possible that the data is already lying there. 
+
+So what are we doing? We are simply mapping that this block goes to this sector, this block should go in this sector. 
+
+Like if I explain you with a simple example: 
+Let's say if I have ten rooms, there are ten rooms, and I have five students: Student 1, Student 2, Student 3, Student 4, Student 5. And let's say out of the ten rooms, some rooms are already booked. Let's say this room is already booked, this room is already booked. 
+
+Now let's say this is a section; inside this section, there are five students. So what did I say? That now in section one, where I have Student 1, you go in room number one; and told the Student 2 to go to room number three; told Student 3 to go to room number five; told Student 4 to go to room number nine; told Student 5 to go to room number ten. 
+
+Means, I have mapped all these. So what I did here? Here in the section, there are many students; by dividing them logically, with whom did we map them? We mapped them that you go to this room, and you go to this room. 
+
+If I have five rooms already available, contiguous, I will send them continuously: you go to one, you in two, you in three, you in four. But this is not always possible because there is already a lot of data lying in the disk. So obviously, what are we doing? We're mapping. 
+
+So the file system has a major role here. The file system stores this mapping, manages this mapping, so that when we fetch data—let's say I said, "Students 1 to 5 come back," meaning I called the whole section, and now when I am calling the whole section, I should know where I have sent Student 1, where did I send Student 2, where did I send Student 3. If I will not know, then obviously I may call wrong data. 
+
+So that is how the data will be stored and how the data will be fetched. 
+
+So this is a complete mapping, that means we divide data in blocks. We divided the files logically—not dividing physically, we only divided logically that this much address in this block and this much address in this block. And then what we did, we mapped it and then we put that in sectors. We put them in sectors inside the disk. 
+
+So who is actually doing this work? This work is actually done by the file system. So the file system has a major role to store and fetch the data. 
+
+We as a user only see our folders and our files, but the scene behind it and work behind all this, that work is actually done by the file system. 
+
+So in the file system, other than all these, if we talk about files, files also have their attributes. Files have some operations: we can create files, delete files, or truncate, resize, and modify. So all these we will discuss in further videos. 
+
+Here I have told you only this introduction about file system: what is a file system, what it does, and why do we use it in our systems. 
+
+Thank you.

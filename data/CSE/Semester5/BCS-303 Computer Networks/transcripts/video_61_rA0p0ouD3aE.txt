@@ -1,0 +1,31 @@
+Hello friends! Welcome to Gate Smashers. In today's video we will discuss about routing protocols and its categorization. What is a routing protocol, and what are its different categories? We are going to discuss about this. But before that, I want to tell you what the major functionality of network layer is: forwarding. Forwarding the packet. 
+
+What is the meaning of forwarding? To put the packet on its right path is forwarding. Who does the forwarding? Let's say there is a router, and a router generally, in a network, is connected to multiple networks. Let's say a router is connected to N1, to N2, to N3, to N4. It is connected to multiple networks. Now any packet—let's say a packet arrives—is received by the router. After receiving the packet, it will open the packet internally and send it on the right path. And what is the right path? It should be the optimal path. Optimal means the shortest path with lesser delay. Cost should also be less. Packet should reach quickly. 
+
+What is the way to choose the optimal path? How should the router find out? How does a router find out whether to send it to N1, to N2, to N3, or to N4? How does it find out? By routing tables. Here comes the concept of routing tables. 
+
+What is a routing table? It is a collection of entries of what is happening inside my network. All the values in my network are contained in my routing table. It is basically a to-and-fro communication, meaning what is happening inside the complete network: which connection is working, which connection is not working, from which network to which other network it has to go, from which node to other node it has to go, what is my cost? All these points are under the routing table. 
+
+And how is a routing table created? To properly create a routing table, either we can make a static routing table or dynamic. What is a static routing table? Meaning manually. One that is created manually. You have to manually insert data in the routing table. And who has to do it? The network administrator will do it. This is possible in a small network: enter the data manually, what a person is connected with, what is the underlying cost, what is the delay. 
+
+But if we talk about the internet, everything is possible on the internet. Everything is possible means, rather than using static, we work on dynamic. Our routing table should automatically send information to each other, and they should be automatically updated. 
+
+So how is a dynamic routing table created? To make them, we use routing protocols. We use different types of routing protocols. What are they? They are a set of instructions, rules which help routers to share data, and after sharing, update your routing table from time to time. Because if any packet comes, that packet, on the basis of the routing table, could be checked for the direction in which it should be sent, so it reaches its destination on the network as soon as possible. 
+
+The routing protocols that we have—there are different types of routing protocols: intra-domain and inter-domain. How does this intra-domain and inter-domain work? As we all know, internet is a very big term. Meaning internet is a very big term. What do we call this big area? What do we call this complete network? Internet. 
+
+But internally, we have divided the internet into autonomous systems. Autonomous systems mean that the particular network—let's say it is a collection of different networks, like there is one network N1, N2, N3, N4, there are different networks that are connected to networks and each other. And what is an autonomous system? One autonomous system is one that is under one particular network administrator. Meaning, the network under one particular network administrator, we call it an autonomous system. 
+
+Let's say, if we talk about Delhi, under Delhi, all the complete networks, all the small-small networks, after connecting them together, complete Delhi could be called an autonomous system. Similarly, if we talk, let's say, Bombay, Mumbai also has its own autonomous system. 
+
+Under different autonomous systems, how does the communication occur? That is known as inter-domain. Meaning, this is one autonomous system, this is another autonomous system. How would they communicate with each other? How will they share data? How will they share routing information? That is the inter-domain. 
+
+And intra-domain is within one autonomous system. Meaning inside one autonomous system. Like, I gave the example of Delhi, let's say I want to send information from Hauz Khas to Green Park. We are talking about a simple example. If we want to do routing within an autonomous system—meaning within the autonomous system, we want to share data, different routers want to share data, how much is the cost, which net is running, which link is basically not working—all this status, how is that status shared? With the help of intra-domain. That's why it is intra. And inter means between the autonomous systems. 
+
+Under intra-domain, we have distance vector and link state routing. And how do we implement distance vector? RIP. RIP is a real-life protocol. That is a Routing Information Protocol that we generally use to share information in intra-domain. Similarly, there is OSPF, that is Open Shortest Path First. And this basically works on link state routing. Similarly, we have Border Gateway Protocol. It works on path vector. 
+
+But if you are preparing for GATE, NET, or any other exam, even if you are preparing for a college or university level exam, then remember distance vector is the most important, the very important algorithm: that is a distance vector. After that, we sometimes talk about link state routing. Here this is the major portion. 
+
+And all the three algorithms, all the three protocols work on unicasting. The meaning of unicasting: we generally use unicasting or multicasting. Meaning if we want to do one-to-one communication, one person wants to send data to the other person. Or multicasting, meaning I want to send data to a full group. Then there are different protocols for multicasting. These protocols are under unicasting. 
+
+This is basically basic information of routing protocols. Next we will discuss one by one what a distance vector is and how it works. Thank you.

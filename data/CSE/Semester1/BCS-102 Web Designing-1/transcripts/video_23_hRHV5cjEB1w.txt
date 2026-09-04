@@ -1,0 +1,75 @@
+If you remember, we saw in HTML that there are some inline elements and some block elements. There we talked about how we can change this property. In today's video, I will tell you how to change the display property with the help of CSS. What is the display property in CSS? There are some default values of the elements; how do we change them? What kind of changes will we see in their appearance? What is inline? What is inline-block? What is flex? I am going to tell you all these things in this video. 
+
+Let's go to the computer screen. Do write "sigma batch op" in the comments. Let's roll the intro.
+
+So, guys, I am on my computer screen, and today we will talk about the display property. It is a very important property. I had already told you in the HTML tutorial that there are some elements that are inline and some elements that are block. Now I will tell you some more things here. There will be some openings in this video about inline and block properties, and you can think of any other thing. 
+
+Now, what I will do is create a folder. I will name it "video 23." After creating "video 23," I will click on "Shift + Right" and open it with code. After opening it with code, the index.html will be the same with an exclamation mark, and here I will write "CSS display property." If you want, I will also turn on screencast mode.
+
+Here, we have to see about the CSS display property. I will make a style tag here. As I told you already, some elements are inline elements. For example, if I make a div here and write "I am a box," then I will preview it and show you. You will see a div that says "I am a box." It will display as "I am a box," but if I tell you that you can convert it into an inline element, what does that even mean? 
+
+Let's do one thing. I will give it a class of "box," and here I will put CSS for ".box." Now, I'll give you a pro tip: many people are worried about how to indent their code. I will say that when you are coding, write it roughly, and indent it in the opposite direction. Listen to me completely; don't listen to half. Indent it in the opposite direction. I'm writing here: 
+
+```css
+.box {
+    border: 2px solid blue;
+}
+```
+
+Now, right-click and format the document, so your code will be beautified by VS Code. Your VS Code is already working for you, so why do it manually? 
+
+You see here that the content is only "I am a box," but it has taken the full width. I will also put a universal selector and say that the margin should be zero and the padding should be zero. Thank you, and it will go up. You see, it has given a border around it of blue color, which I requested to give a 2-pixel border of blue color. 
+
+Now, I want it to work like an inline element. Can I do it? Yes, I can. How? I will tell you now. Suppose I have written a span here: "I am a good," then I wrote another span and wrote "boy." Since span is an inline element, it is a block-level element. What will happen? It will come in one line, something like this: "I am a good boy." It didn't break. 
+
+But if I write another div and also a "nice box," you can see that "also a nice box" came down. It didn't come in one line; it took its full width. Now, I want "I am a box" to become an inline element. I can set its display property. I can say `display: inline;` and as soon as I do this, you can see here it is now an inline element. This means if I put any other box here with the class "box," this will also be an inline element because I have set the display property in the class to become an inline element. 
+
+Now, because I have set it as an inline element, that's why it became like this. Inline elements come side by side. 
+
+Let's do one thing: let's give padding inside it. It will be fun. Let's add padding. How much padding should I add? Let's add a padding of 45 pixels. Wow, it will look good from all sides. It will be fun. 
+
+Why didn't I add padding from the top? Did I make a mistake? Why is padding not touching the top? Did I do something wrong? Actually, padding-top does not respect inline elements. So, what you have to do is, if you add margin, let's say 34 pixels, the margin will touch everywhere but not the top. If you want this behavior to be fine, then you can block it inline. 
+
+As you can see here, I have blocked it inline. If I remove the inline-block and try to set the width, I want to set the width to 344 pixels. It is not making any difference. If I increase the width, it is still not making any difference. Google Chrome is also telling me that the display inline property prevents width from having an effect. 
+
+Now, I will say that I have to set its width. I have promised my client that I will set its width up to here, so you will have to use the inline-block property. If you want your width and margins to be obeyed, then you have to do something like this. You can see here that I have set its width and margin padding, so you can see here that it has padding. The box is taking its width, and padding is also set properly. I have also given a border to it, so everything is done perfectly. The inline-block property is useful for you.
+
+Now, I will tell you about display none and display block. For this, I will go to settings. You may wonder what I am doing. I will show you what I am doing. I will go to settings and make my face disappear so that you do not have any problem. I am live previewing; this is my setting. Live preview, open preview target, I will make it an embedded preview. After doing the embedded preview, what I will do is preview it here. You can see why I did this; I want to tell you some properties. 
+
+Now, see here, if I don't inline-block the display and make it none, then it will be gone. I will add another class, "box1," and after adding box1, I will do `.box1` and make its display none. As soon as I made the display none, it made the space and the box disappear. If I remove it, what will happen? 
+
+So, see "I am a box" is here. I made the display none and removed it. As soon as I remove the display none, the space that this box was giving will also disappear, and this box will disappear. 
+
+But there is a visibility property. If I do visibility hidden, then the box will disappear, but its space will remain. You use visibility hidden when you want that space to remain. As soon as you put it to save space, when you remove it, the space will be intact. But if you put display none and remove it, the space will be gone. 
+
+So, this display none is used here. I hope you understood something. Now, if you want to remove the display none and set the display again, then you can set the inline block.
+
+Now, in flexbox and grid, we will study what is display with flex and what is display with grid. But I want to show you a great example of flexbox. Suppose I want this to be my box in flexbox. You can make anything into a flexbox, and I will say 70-80% of the time you will be using flexbox to center things. 
+
+Here, you can see my box, and here also a box is written. Suppose I want to center this box, so I will say `display: flex; justify-content: center;` You can see it is centered here. But I will tell you about flex in the coming videos, so don't worry. 
+
+Display flex is done, and justify-content is centered. See, it is centered now. I hope you are understanding and everything is clear. 
+
+After this, there is inline flex. If I flex it inline, then it will come in the same line. I will show you inline flex. When I was flexing it earlier, the other things fell down, but by doing inline flex, these things will not fall down from the other side. I will tell you about flex very well; don't worry. 
+
+After this, there is a display grid. When you flex inline, you can change the flex direction, and then you can flex wrap. I will tell you all these things in the coming videos. If I grade the display like this, it will tell you about the properties of the grid. 
+
+I will tell you about the grid in the coming videos, but for now, you can understand that grid is also a display property. We can do display grid or inline grid. I have curated the link of MDN for you. I will copy and paste it here, in which you will get to see all the properties. 
+
+They have told you that this is an inline block display, gone from none, none, display flex, display grid. But I am telling you that these are all the properties which you can use. Again, I told you that which will be used the most. 99% of the websites you will make will use this. 
+
+I am giving you the link. I will close it and give you the exhaustive list link here in case you want to know what other display properties are there. You can pick it up from here. 
+
+But again, we are going to learn what matters. I told you earlier that we will learn only what matters because if we get behind the exhaustive list, then our time is very limited. We have to learn things in a very short time. 
+
+I hope you understood. If you haven't accessed the playlist, then access it quickly, either by clicking on the bookmark or by clicking on save. 
+
+I would like to request you that if you have watched the videos till here, then go to the first video and please give me a review. Give me a review of the course so that those people who are underestimating this free course can see your feedback. 
+
+I have received a lot of comments that this course is free, so will it compete with paid courses? I want to tell you that I had thought of keeping this course as a paid course, but I made it free later. I want you to comment in the first video—not based on what I am saying and not influenced by your learning. 
+
+Comment in the first video that did this course help you? Did this course make you a better developer? As you have learned, I hope you have understood what kind of developer you will become after the coming videos. 
+
+I want you to give me a 5 out of 5 stars for this video and for this course. What kind of course is this? You must write here. I will feel good, and your comment will make my day. 
+
+I hope you are liking this video, and I have given you the link to cheat sheets. You have accessed all of them. Thank you so much, guys, for watching this video, and I will see you next time.

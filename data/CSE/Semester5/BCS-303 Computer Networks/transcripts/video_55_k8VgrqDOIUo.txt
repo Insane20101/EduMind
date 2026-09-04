@@ -1,0 +1,64 @@
+Hello friends. Welcome to Gate Smashers. In today's video, we are going to discuss fragmentation in IPv4. 
+
+In the last video, we discussed the introduction to the IPv4 header. In that, I gave a basic introduction about all the fields. I discussed about which field has what property and what work it does. So you must check this video once because you will get a basic idea of what IPv4 is, what the fields in IPv4 are, and how it works. 
+
+In this video, we will discuss fragmentation. The second row in IPv4 contains three important fields: identification, flag, and fragment offset. What are these three fields for? They are for fragmentation. Fragmentation is a very important topic of IPv4, especially in competitive exams. Many numerical problems come on this topic. In this video, I am going to discuss with numerical examples how these fields work.
+
+I want to give a basic introduction first. What is the meaning of identification? Where do we use it? As I have told in the last video, in that video we discussed packets and datagrams. We divide them into small parts and then send them through different paths. This is the property of IPv4. When these packets reach their destination through different routes, how do we know that they belong to the same packet? For this, we use the identification bit. This can have a value of 16 bits; a total of $2^{16}$ values are possible.
+
+Next is the flag. The flag is of 3 bits. You can take it in this way: the MSB (most significant bit) is reserved, its value is fixed as zero, and you don’t have to change it. But the next values are "do not fragment" (DF) and "more fragments" (MF). 
+
+For "do not fragment," you can set it as 1 or 0. If you set "do not fragment" as 0, it means fragmentation is done, meaning fragmentation is allowed. But if you have kept "do not fragment" as 1, it means there is no fragmentation. And we do this generally when, suppose, I want to know what the maximum size of a packet I can send is, or if there is any node in between that wants to do fragmentation, then we don’t allow this. Then obviously we have to drop the packet. So what will happen in that field? What will be the value of "do not fragment"? It will be 1. But if you allow fragmentation—that anyone can divide the packet on the way—then keep this value 0. 
+
+Next is "more fragments" (MF). The meaning of "more fragments" is that this is actually a significant bit, and its value can also be 0 or 1. And what does it actually say? Is it the first packet? Or is it a middle packet? Or is it the last packet? It tells about whether it is a first packet or a last packet, what number of packet it is, when you are dividing it into sub-packets. How do we actually use this? We can understand this from numerical examples. I am just telling you a basic point. After this, there is a numerical in which I have discussed in detail how we give the value of the identification bit, how we set the flag, and the fragment offset. 
+
+Fragment offset basically is the number of bytes ahead of you: how many bytes are already moving ahead of you? Meaning, how many bits of the packet are moving? And this is a field of 13 bits. How do we use this? All the three things you will understand with the help of a numerical. You should practice this type of numerical more because this is asked in many competitive examinations.
+
+Let’s read the statement first: 
+"A datagram of 3000 bytes, which contains 20 bytes of IP header and 2980 bytes of IP payload, reached a router and must be forwarded to a link with an MTU of 500 bytes. How many fragments will be generated? Also write the MF, offset, and total length values for all."
+
+This type of question often comes from fragmentation from the network layer. Questions come mainly from the network layer, either from classful or classless addressing, and the other topic is related to fragmentation. And where does this topic come from? From the IPv4 header format. 
+
+So what do we do in IPv4? We have a header of a minimum of 20 bytes, and what is the remaining one? The IP payload. What is payload? Pure data which comes to us from the upper layer. 
+
+So what scenario do we have? There is a router, and the router has received data from somewhere. A datagram came; that datagram is of 3000 bytes, out of which 20 bytes is the header and the remaining 2980 bytes is the payload, meaning data. Now this router has to send this data to any link. That link is connected to any network, and to that link you cannot send data of more than 500 bytes. It means that link can’t handle data of more than 500 bytes. Or you can say like this also: when you send data of more than 500 bytes from this link, the network ahead—the data link layer of that network, where we say MTU—the data link layer can’t accept data of more than 500 bytes. 
+
+So what do we have to do? The router can’t send data of 3000 bytes directly. So what will the router do at its end? Fragmentation. And this only we have to find out in the question: how many fragments will be formed? What will be their values?
+
+So guys, let’s start here. First of all, how many fragments will be formed? You will have to find this first. If we send 500 bytes to this link, what will happen in 500 bytes? 20 bytes will be the header, and what will be 480 bytes? It will be data. Obviously, from 500 we can’t make it 501 or 502 because the link will not accept more than 500. And why should we send less than 500? When we have the capacity to send 500, then why should I send 400? We don’t want to make unnecessary wastage here. 
+
+So, a header of 20 bytes and 480 bytes of data. We know how much our data is: 2980 bytes, because from the total datagram we separated 20 bytes of header and we took out 2980 bytes of remaining data. And what we want to send, that capacity is 480 bytes. So if we divide this and take its ceiling value (upper value), then what will come? Six point something, which comes out to be 7. 
+
+Means the router has to make 7 fragments and then feed this data here. So if we name those fragments or packets, let’s say packet 1, packet 2, packet 3, packet 4, packet 5, packet 6, packet 7—let’s say the router has to send these 7 packets. Now what will the router do? In the first packet, 480 bytes of data and 20 bytes of header will be added; in the 2nd also, 480 bytes of data and 20 bytes of header; in the 3rd, 480 bytes of data and 20 bytes of header; then 480 bytes plus 20 bytes; then 480 bytes plus 20 bytes; then 480 bytes plus 20 bytes. So total fragments of 500–500 are to be made. 
+
+But how much data came in the last fragment? If here we use 480, 480 six times, then it will become $480 \times 6 = 2880$, meaning this much data we have already sent from the payload. And how much is remaining? 100 bytes is remaining. 
+
+So when you send the whole data here, 500 bytes would go, 500 will go here. When you add a 20-byte header here, these will become 500-500 all, but what would the last one become? When you add 20 to 100, the last fragment would be of 120 bytes. 
+
+So, first point here: first we have to find out how many fragments are here? Seven fragments will be formed. And if you have to find the total field length of the seven fragments—as this is given in the question also—the total length of the first fragment up to the 6th fragment would be 500, but what would be the length of the last one? 120, out of which 100 is payload and the remaining 20 is the header. 
+
+Why did we add the header to all these packets? Because IPv4 is a datagram service. What is datagram service? By datagram service, we mean it is not necessary that all the packets travel in one area or one direction; they can also reach from different paths, they can reach the destination from different places. Therefore, we have to tell each packet that this is your header, take the header, and reach the destination. This is all about the total length.
+
+Next, if we talk about the MF field—total length is done—the MF field. MF field means more fragments. More fragments mean: if this is packet number one, then is there any other packet coming after packet 1? Yes. So what is the value of the MF field? 1. 
+
+Is there any other packet after packet no. 2? Yes. The value of the MF field is 1. 
+
+So what will be the value of the last one here? Zero. The last one here is 0. Reason? Is there any other packet after P7? No, there is no packet after P7. So what will be the value of "more fragments" here? 0. 
+
+So you should always remember this point: that the last value we always keep zero. But what is the MF value of the next ones? 1, because after this, this packet is followed by some other packet. But the last packet is followed by some other packet? No.
+
+Next important point is offset. What do we have to find out in offset? What actually does offset represent? How many data bytes are ahead of this? 
+
+If we talk about this fragment or this packet P1, so ahead of P1 how many bytes of data are there? There is no byte in front of P1. So what do we write it as? Zero. 
+
+Let's say if we talk about P2, how much data is there ahead of P2? You will feel that data of more than 500 bytes is being sent ahead of P2, but no, I am just talking about data, not the total length. So how much data is there ahead of P2? 480 bytes of data. But you don't have to represent 480; we always represent it after dividing the fragment value by 8. Here we use a scale of eight. So what would this become? $480 / 8 = 60$. As soon as this packet of offset 60 will reach its destination, and we multiply 60 with 8, what will happen? 480. So with this, the destination will know how much data is there in the next packet: 480 bytes. This is the advantage of the offset. 
+
+Now next, if we talk about P3, so how much data is there ahead of P3? We have to only find out the data payload, not all. So ahead of P3 here it is 480 bytes, and here 480 bytes, so $480 + 480 = 960$. When you divide by 8 ($960 / 8$), what will come? 120. 
+
+Next, if we talk about P4, how much data is there ahead of P4? $480 + 480 + 480 = 1440$. This we divide by 8 ($1440 / 8$). When we divide, what will come? 180. Simple, you only have to divide by 8 and represent it in a scale of 8. 
+
+What will come in the next? $1920 / 8 = 240$. 
+And in the next, what will come? $2400 / 8 = 300$. 
+And in the next here, $2880 / 8 = 360$. 
+
+If you have to find out how much data has passed through this packet, you take up the offset 360 and multiply it with 8, so what would it become? $360 \times 8 = 2880$. So 2880 has passed, and this 100 bytes is here. So how much total? $2880 + 100 = 2980$ bytes.

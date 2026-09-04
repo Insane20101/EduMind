@@ -1,0 +1,45 @@
+Hello friends, welcome to Gate Smashers. In this video, we are going to discuss about AVL Tree. And in this video, we will discuss all important points related to AVL Tree, which will be very beneficial for your competitive exams, even college or university level exams. 
+
+So guys, like the video quickly, subscribe the channel if you haven't done it yet, and please press the bell button so that you get all the latest notifications. 
+
+So let's start. The first important point is what is the usage of AVL Tree? Means why AVL Tree has come? So I want to tell you about this first. In the last video, we discussed about Binary Search Tree. Actually, the story—I am going to tell you a story related to this so that all these three points will be cleared. 
+
+First comes about Binary Tree. What does Binary Tree mean? In which at most two children can be there. Means any node can have 0, 1, or two children. Now the story comes here: is there any order to insert the data in Binary Tree? No. You can insert the data in any way. Means you have any data, any key—without worrying, you simply keep on filling the data, just remember that maximum two children should be there. 
+
+Now the problem is that if there is no order while inserting the data, then there will be a problem while searching the data. Means if we talk about class, if students are not sitting in the proper order in class, they are sitting randomly, obviously there will be a problem while searching. So what are we doing here? What is the meaning of data structure? Organize the data properly so that we can search it easily. So that whatever operation I want to do—I can search, insert, delete—I can do all that easily. So there will be a problem in Binary Tree. 
+
+So then we discussed Binary Search Tree. Now Binary Search Tree says that on the left side, you have smaller elements, and on the right side, there is a bigger element than the root. So we defined an order somewhere. How to insert and delete in Binary Search Tree, I have already made a video. If you have not checked that video, then do check it once, because the link given in the description box will give you all the summary related to Binary Search Tree. 
+
+So what I was telling about Binary Search Tree here—that Binary Search Tree says that put it in an order: smaller on the left side than root and bigger on the right side than root. So if I am putting it in an order, then obviously search will be easy for me. Searching, inserting, deleting will be easy somewhere. The reason for that is if my tree is balanced... What is the meaning of balance? If it is proper, means if its proper children will be made in this way, then somewhere my height is—if my tree is balanced, then my height will go up to $\log n$. 
+
+What does $\log n$ mean? The number of nodes you have, how much your height will go? Height of the tree will be $\log n$. And if it is going up to $\log n$, then it is best. Searching $\log n$, inserting $\log n$, deleting $\log n$. 
+
+But there is a problem in Binary Search Tree too. What is the problem? Worst case. What is the meaning of worst case? If I get data like this, let's say 10, 20, 30, 40, 50 like this. Means if data is coming like this, then it will behave like a linked list instead of a tree. Means 10, 20 bigger than 10 means on the right side, 30 bigger than 20 on the right side, 40 bigger than this, 50 bigger than this on the right side. Means your tree will grow in one direction only, which is called right skewed. What is called right skewed? And if it will grow on the left side, let's say 9, 8, 7, 6, 5, 4, 3, that is called a left skewed. 
+
+Now if this problem is coming of right skewed and left skewed, then you see carefully: if the number of elements will be $n$, then how much will be the height? It will be $n$, and if height will be $n$, then obviously the complexity of searching will be order of $n$. In the worst case, inserting an element is $n$. In the worst case, deleting an element is $n$. I will have to search $n$ times. 
+
+So here the worst case of Binary Search Tree is spoiled, because it is performing well normally, but here we are not talking about balance factor. So now we are going to talk about balance. Balance means we are going to balance Binary Search Tree too. So whenever we talk about balanced Binary Search Tree, it is known as AVL tree. Means it is not known as AVL tree—actually, these are three Russian scientists who have made AVL tree together. Although there are many more trees in balanced Binary Search Tree, the most important one is AVL tree. 
+
+So here first of all I will tell you the relation between these three. Your Binary Tree comes here. Binary Search Tree came inside this. AVL tree came inside that too. So if you get any question like this—that all Binary Search Trees are Binary Trees, but all Binary Trees are Binary Search Trees may or may not be possible; all AVL trees are BSTs, but all BSTs are AVL trees may or may not be possible—so you should remember this relation of all three. 
+
+Now we will talk about AVL. Now what we are saying in AVL is to make balance. How do we make balance? Why are we making balance actually? So that the height of the tree does not cross with $\log n$. And if the height remains $\log n$, then how much will be the search time? $\log n$. And if I have to insert or delete any element, then time complexity will not go above $\log n$. So if height remains $\log n$, then time complexity will remain $\log n$. So in balanced Binary Search Tree, we use AVL tree. 
+
+Now the first point comes here: how do we extract the balance factor? So let's say we make any Binary Search Tree. Let's say I have a Binary Search Tree. First of all, I told you that AVL tree is a Binary Search Tree. Now balancing the Binary Search Tree becomes your AVL. So it should not be that you are making any tree and converting it into AVL—no, you have to convert a Binary Search Tree into an AVL tree only. 
+
+So here what do I have? Balance factor. Now how do we extract the balance factor? Balance factor is height of left subtree minus height of right subtree. And if you extract this, what is its value? Either it is $-1$, $0$, or $+1$. Means it should be between these three values, or you can say these three values are allowed. If any other value comes apart from this, then your tree is unbalanced, and if it is unbalanced, then we will balance it. 
+
+So here the first important point comes: how do we extract the balance factor? Let's say if I want to extract the balance factor of this node, root. So see left subtree. What is the height of left subtree? 1, 2. How do we extract height? I have to go from root to leaf, or take from leaf to root. So how many edges I am crossing? So here 1 edge, 2 edge. And what is the height of right subtree? 1, 2. $2 - 2$. What is it? 0. So 0 is allowed. 
+
+Next see here, if I check this, what is the height of left subtree? 1. Right subtree: there is no one in right, so 0. Means $1 - 0$. What is made? 1. So is 1 allowed? Yes, 1 is allowed. So what is this? Balanced. 
+
+See this: height in left is 0. There is no child in right. No child. $0 - 0 = 0$. This is also allowed. Similarly, if you find out this: in left side $0 - 1$. So what answer came? Obviously, I will get $-1$ here, which is what? Again allowed. 
+
+Next, if you will remove this balance factor, then $0 - 0$, means 0. So this tree is with us. A balanced tree will be made. So you can call it an AVL tree. 
+
+Although I have not put only data till now, I am telling you a general format that if any Binary Search Tree is given to you, then you take out the balance factor of that Binary Search Tree. And after taking out the balance factor, you will know of every node that if it is $-1$, $0$, or $+1$, then it is an AVL tree. If it is not coming, then it is not an AVL tree. 
+
+So if it is an AVL tree, then obviously its height will be $\log n$. And if height is maximum $\log n$, then search time will take $\log n$. So insertion, deletion, searching—all operations will be easy for you. But if any other value is coming apart from this ($2, 3, -2$, anything)—any other value is coming other than these three, then we will convert it into an AVL tree. Now how to convert it into an AVL tree, we will see in the next video. 
+
+So here all these important points are important related to AVL tree, whether they have relations, whether they are time complexity related. Because these types of questions are most common in competitive exams, and even if we talk about college or university level exams, so there also the most common question is: create a Binary Search Tree related to creating, create, delete, or make AVL, draw, delete. So these types of questions will definitely come to you. 
+
+Thank you.

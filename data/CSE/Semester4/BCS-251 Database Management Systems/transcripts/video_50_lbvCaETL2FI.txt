@@ -1,0 +1,102 @@
+Hello friends, welcome to Gate Smashers. The topic is the division method in relational algebra. Before I start with the topic, I just want to request you all, especially those who are watching my videos for the first time, please subscribe to my channel, please share it, and please press the bell button for the latest notifications. 
+
+Today, we are going to discuss the division method in relational algebra. First, we will talk about what the division method is, then what the use of the division method is and where do we use it, and the third part is how it actually works.
+
+### What is the Division Method?
+
+The division method, or division operator (it is also called the division operator), is actually a derived operator. It is a derived operator of relational algebra. As I discussed in my first video on relational algebra, there are simple operators and derived operators. It is clear from the name "derived" that it does not exist on its own, but we derive it from somewhere—we derive it from normal operators. 
+
+We denote the division method with a slash or the normal division we use in math; the same notation is used here. But since it is derived, we use operators like cross product, set difference, projection ($\pi$), and selection ($\sigma$)—meaning the normal operators we have inside relational algebra—and through them, we derive the division operator or division method.
+
+### Where Do We Use the Division Method?
+
+What are the types of questions and queries where we use the division method? As I said earlier, since it is a derived operator, it has a definite function, which is why we have derived it. 
+
+Here I have written a query: "Retrieve the SID of students who enrolled in every course." I will explain this afterwards, but for now, you have to focus on this word: **every**. Wherever in a question—either in GATE, UGC-NET, or college/university exams—you have a query with the words "all" or "every," you should understand that the division method will be used there. Its purpose is for "all" and "every" queries. We use the division method to solve them.
+
+### How the Division Method Works
+
+Now we come to the third part: how the division method works. To know how the division method works, I have taken two tables here. 
+
+First, look at the first table. The name of this table is `enrolled`. "Enrolled" means you can think of a college or university scenario where there is a table called `enrolled`, which tells us which student is enrolled in which course. What is this table telling me? `SID` means student ID, and `CID` means course ID. `S1` is a student ID enrolled under course `C1`. `S2` is enrolled under `C1`. `S1` is enrolled under course `C2`. This is a simple table I have taken here. What this table is simply telling us is which student is enrolled in which course. 
+
+After that, we have a second table, `course`. We give it a short name `E` for the first table, and for the course table, we give it the name `C`. What is the course table telling us here? It shows how many courses there are in the university or school. In this table, it is written `C1` and `C2`, meaning that in that university or college, two courses are running. You can compare this with real life, but assume that in real life there will be many courses and many values. Our motive here is to understand how the division method works, so for that, I have taken simple tables: `enrolled` and `course`.
+
+Now, this is the notation of the division method: 
+$$A(X,Y) / B(Y)$$ 
+What is this? These are tuples/attributes. You can compare this with the `enrolled` table. What is $X$? `SID`. What is $Y$? `CID` (course ID). And the second table is $C$ (`course`). What is $Y$ inside $C$? `CID`. 
+
+Whenever you have to take data from a table, the table containing the primary data will come in the numerator. For example, you have to find `SID` from the `enrolled` table because that is what is asked in the question: "Retrieve the SID of the student." So the final answer should be `SID`. But of whom? Who is enrolled in **every** course. Here, the course table is helping. The one that is helping is in the denominator, and the table from where the data will come is in the numerator. 
+
+It is just like normal division. What will be the answer if you divide 20 by 5? It equals $20 / 5$. The number 5 is helping, and 20 is where the data comes from to find the final output.
+
+What is the meaning of the notation $A(X,Y) / B(Y)$? It results in the $X$ values for which there exists a tuple $(X, Y)$ for every $Y$ value of relation $B$. Meaning, corresponding to relation $B$ (or `CID`), it will give such tuples which exist everywhere and will give `SID` as output from there. 
+
+Here, in the course table, we have the $Y$ table (or `CID`), and there are two elements: `C1` and `C2`. So, in the `enrolled` table, which is the row where the $X$ value (`SID`) exists for *both* `C1` and `C2`? If you see carefully, `S1` has `C1`, and `S1` also has `C2`. Is `S2` in `C2`? No, it is not. Is `S1` in `C2`? Yes, `S1` is for `C1` and `S1` is for `C2` as well. So what will be the final output? `S1`. 
+
+If you see, `S2` is enrolled in the `C1` course, but not in `C2`. Similarly, `S3` is in `C2`, but not in `C1`. So what output will it have finally? Just `S1`. 
+
+### Internal DBMS Resolution
+
+However, this is just the final output. You will not be asked just what came in the output; you need to know how it is processed. 
+
+Whenever we talk about DBMS, data is at a remote site or I have data lying somewhere else. We write a query through an interface, and we fetch the data from there. The user who is writing this query—whoever is writing this query—does not know anything about the physical storage of the table, where this table is, or how it is stored. But how does the DBMS internally resolve this query? How does it give the answer? That is what we will see.
+
+What do we have to do here in the division method? 
+1. **Find the universal set (Cross Product):** First of all, we assume that all students are enrolled in all courses. How can we find the combination of all students enrolled in all courses? How many students are there? `S1`, `S2`, `S3`. How many courses are there? `C1`, `C2`. You first make a table representing all students enrolled in all courses. For that, we use the cross product. 
+   
+   How do we do the cross product? From the `enrolled` table, we take the projection ($\pi$) of `SID`, meaning we are only projecting `SID` from the `enrolled` table. What output will come? The unique values `S1`, `S2`, `S3`. After doing $\pi$ of `SID`, we cross-multiply this with the course table (taking `CID`, or since there is only one column in the course table, we can simply multiply with the course table). What output will it give? It will give the output `C1` and `C2`. 
+
+   Now, we take all the student IDs from the `enrolled` table and all the courses from the `course` table, and do a cross product of both. What is a cross product? Multiply this table with this table—multiply all values with all values. Let's do it quickly:
+   - `S1` to `C1`
+   - `S1` to `C2`
+   - `S2` to `C1`
+   - `S2` to `C2`
+   - `S3` to `C1`
+   - `S3` to `C2`
+
+   This is a temporary table giving us the output where *all students are enrolled in all courses*. You can see `S1` is enrolled in all, `S2` is enrolled in all, and `S3` is enrolled in all in this theoretical set.
+
+2. **Subtract the actual scenario (Set Difference):** Now, what we are doing from this is subtracting the actual scenario. The "actual scenario" means the actual data of which student is enrolled in which course, which is already in our `enrolled` table. 
+
+   Let's write out the actual `enrolled` table tuples:
+   - `S1, C1`
+   - `S2, C1`
+   - `S1, C2`
+   - `S3, C2`
+
+   What we are doing to this final cross-product output is subtracting the actual `enrolled` table from it ($A - B$). $A - B$ means elements in $A$ but not in $B$. So from our cross-product table, we subtract the values that are present in the actual `enrolled` table:
+   - `S1, C1` is in `enrolled`, so it will be canceled out.
+   - `S1, C2` is in `enrolled`, so it will be canceled out.
+   - `S2, C1` is in `enrolled`, so it will be canceled out.
+   - `S2, C2` is **not** in `enrolled`, so this will remain.
+   - `S3, C1` is **not** in `enrolled`, so this will remain.
+   - `S3, C2` is in `enrolled`, so it will be canceled out.
+
+   So from this whole scenario, what output came finally? The remaining tuples are `S2, C2` and `S3, C1`. 
+
+3. **Identify disqualified students:** From these two tuples, what are we finding? We take the projection ($\pi$) of `SID` from this result. What output will come? `S2` and `S3`. 
+   
+   What is the meaning of this output (`S2`, `S3`)? These are the students who are missing at least one course—meaning these are **disqualified** values. You already know that `S2` and `S3` are not enrolled in all courses, so they are disqualified.
+
+4. **Remove disqualified students from total students:** Now, our output `S1` did not come yet. We have found the values of the students who are *disqualified*. So what do we do next? Remove the disqualified students from the total students, and the qualified students will remain. 
+
+   How do we do this? Take the total list of all students (`S1`, `S2`, `S3`) by doing a projection of `SID` on the `enrolled` table. From `S1, S2, S3`, we finally subtract this disqualified set (`S2, S3`). 
+   
+   $$\text{Total Students } \{S1, S2, S3\} - \text{Disqualified Students } \{S2, S3\} = \{S1\}$$
+
+   What output do I get? `S1`. 
+
+From the total students, we removed the disqualified students, and the qualified students were left. Qualified students mean those students who are enrolled in all courses. 
+
+### Summary for Exams
+
+For this, we have all these relational algebra operations. You can write either $E$ or $C$. When you practice and write down this query, you will get an exact idea of how the division method actually works.
+
+In your exams:
+1. It may come as theory.
+2. If we focus on GATE or UGC-NET, you will be given a scenario of tables, or 3 to 4 queries may be given in the options, and you will be asked which query gives the correct output. 
+3. Another thing that can be asked in theory is: *Where is the division method used?* It is used wherever the words "every" and "all" appear.
+4. Remember the notation: from where we have to take data is the numerator, and the table helping in finding out the data is the denominator. 
+
+This is how the division method actually works. Thank you!

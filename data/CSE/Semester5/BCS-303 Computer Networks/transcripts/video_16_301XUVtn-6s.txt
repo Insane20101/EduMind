@@ -1,0 +1,63 @@
+Dear Student, welcome to Gate Smashers. In today's video, I am going to explain what a broadcast domain and what a collision domain are for various networking devices. This video is going to be very important, and it is especially important for students preparing for competitive exams, college and university exams, and from an interview point of view. You should have knowledge of what a collision domain is, what a broadcast domain is, and how different networking devices affect them.
+
+Guys, please like the video quickly and subscribe to the channel if you haven't done it yet. Subscribers are very important. 
+
+So let's start here by looking at which devices affect collision domains and broadcast domains: repeater, hub, bridge, switch, and router. I am going to cover all the main devices here. 
+
+First of all, before starting this, you should know the meaning of a collision domain. Look at the meaning of domain: in a way, it is the territory or range—up to how much area we are talking about. If we talk here, I will explain it to you with an example. Like this, you might not grasp what I have written in the case of a repeater, which is that there is no change in the collision domain—that means the collision domain that was there will remain the same—and there is no change in the broadcast domain. You might not understand anything yet, I can say with certainty. 
+
+So now let me explain with an example. Let's say I have a link, a shared link, and different devices are connected to it, like you must have seen in bus topology. In bus topology, you will have many devices connected in this way. Now, what I am doing here: this circle you are seeing represents all the devices that are sharing this media. 
+
+If I talk about collision, what is the meaning of collision? As you know, we are here in a LAN; we are not talking about the internet here, we are talking about a LAN. And if we talk about these four devices—repeater, hub, bridge, and switch—all these four devices come under the LAN. So here we have all these devices, and if we check the collision domain, then what is the meaning of collision domain? 
+
+Suppose a device is 'A'. Now this device sends a message on this media. At the same time, if the rest of the devices also send messages, will the messages collide? Absolutely. And if I have a total 'N' number of devices here, then what can happen in the worst case? That all 'N' devices transmit data at once, and all the messages collide. That means in this entire domain, how many devices have collided? All of them, meaning 'N' number of devices. Okay, so in the worst case, the maximum number of collisions can be your 'N', because 'N' is the number of devices here.
+
+Now, if we talk about broadcast, first understand what a broadcast is. What is the meaning of collision? Let me tell you again: in a collision, if A sends a message, and at the same time B sends it, C sends a message, and D sends a message, if everyone sends a message, then all that data travels in only one media. I have only one shared media, then what will happen to all the data? It will collide. That means the maximum collision domain will be 'N', fine. 
+
+And if you talk about broadcast, in broadcast we know what happens inside the LAN: if A sends a message, that message will go to B, C, and D—meaning to all devices. By default, all devices will receive that message. But in the case of whoever has the destination MAC address, he will receive and respond to the message of that destination; the rest will discard this message. 
+
+However, what is the meaning of broadcast? If A sends a broadcast message, will that broadcast message go to everyone? Yes, it will, i.e., how much is your broadcast domain? 'N', because the message is accessible to everyone. 
+
+It is clear. Now you will easily clear all the points. How? 
+
+First, look: by default, we didn't put any device, and we know maximum collision can be 'N', and broadcast can also be 'N'. 
+
+Let's pick which device first? Let's assume a repeater. I put a repeater here. Let's assume I put a repeater, suppose after cutting a little area here, I installed a repeater here, just for example. What did we do? Cut the wire in the middle and put a repeater. The rest of the things are the same, just cut the wire and put a repeater in the middle. You tell me: whether there will be any difference in the collision, and whether there will be any difference in the broadcast? 
+
+No. Because what happens in the repeater? It is only an amplifier; its only function is to boost the energy of the signal. Its function is only that. Neither is there any buffer inside it, nor is it using a store-and-forward method, nothing. It is just a simple device which increases the signal strength. 
+
+Okay, so here, if I say—I say again—that 'A' sent a message, and at the same time B, C, and D all sent messages, so what? The data can still collide; it can still collide in the same way. The repeater didn't make any difference. 
+
+And second, if we talk about broadcast: if A sent the message, is this near B, C, and D? Yes, it will go to everyone. So that's why we can say that there was no difference in the collision by installing the repeater, and there was no difference in the broadcast domain. That is why I have written: no change, no change.
+
+Now suppose I replaced the repeater here with some other device, which is the second device. The second device I have is a hub. Now I have put a hub between these two. So tell me whether there will be any difference in the collision, or in the range of broadcast, or in the domain? 
+
+No, it will not matter, because a hub is just like... as I talk here, I have two ports here. We have two ports in the repeater, so we call it a multi-port. What is the meaning of multi-port? Now I have more than two ports here, but the funda is the same. It is also a layer 1 device, so that means there is no difference. Even still, if A sent a message, B sent a message, C sent a message, and D sent a message, still if any message comes over the hub, all those messages can collide among themselves. It will not make any difference, even in your maximum worst case. 'N' can be the collision domain, meaning all of them collide with each other. And talking about broadcast, if A sent the message, then it will be received by everyone. It will also not make any difference; obviously, everyone will receive the message, so still the collision and broadcast domain is 'N'. That's why: no change, no change.
+
+Then we put a bridge here. I am using a bridge. What is the meaning of installing a bridge? It means that I am using a device of Layer 2. It is a Layer 2 device. We use a bridge when we have to connect two LANs, but the LANs should be similar. For that, we use a bridge. 
+
+When we connect them, now see what difference it made inside collision or what difference inside broadcast if it falls. First, take a device from the collision domain, let's say 'E'. Now, if A sent a message, B sent a message, C sent a message, they may collide among themselves. But if A sent a message, it came near the bridge. From here, 'E' also sent a message, that message also came near the bridge. Then will both A's and E's messages collide? 
+
+No, now there will be no collision. What is the reason? What a bridge uses is that it uses a store-and-forward technique. It has a store-and-forward technique; it has its own buffer on which it stores the message of A, and will also store the message of E, and then forward it to whatever MAC address will be on it. 
+
+What is the meaning of saying this? That your devices here can have collisions within their segment—yes, within the device segment it can have collisions—but there will be no collision between these two segments. Because if a message was sent from here, the bridge kept it with itself, and a message came from there, the bridge kept it with itself. So the bridge did not allow those two messages to collide. 
+
+So, in a way, the bridge divided the collision domain, which means there may be collisions among themselves in a segment, but all of them cannot collide across segments. So what has been done to the collision domain? They have been reduced. Very important point, okay. 
+
+There is no difference in broadcast, because if to the bridge any message comes from A—a broadcast message, meaning if it goes to everyone—the bridge will not stop it. He will send this side as well, and even if it goes to this side, still the message will go to everyone because, by default, in the LAN, a broadcast message means everyone receives that message. That's why in the broadcast domain there is no change. It is okay to note this point.
+
+After this, the switch. A switch is also the same funda; there is no change inside it. What is the difference between the bridge and the switch? A bridge is a device with 2 ports; there are multiple ports inside the switch. That is it. The rest of the story is the same. 
+
+This one is also a Layer 2 device; it is also a data link layer and a physical layer device. In this, I also work over the MAC address, and it has the same process: store and forward. It has a buffer. A message came from here and a message came from here, there are no collisions in it, so the collisions are reduced, but the broadcast will remain the same. Because it is also a device of Layer 2, the data link layer will check the MAC address, and whatever broadcast message happens—whose destination would be all Fs, meaning 1111—still that message will be received by everyone. Then the collision domain has been reduced, but there is no change in the broadcast domain.
+
+Now, our router, which is the most intelligent device of all the devices, out of which your entire internet is standing on this device itself. If we talk about a router, if I have to connect two different networks, to connect two different LANs, then what I use there is a router. 
+
+Inside a router, we will have collisions reduced because when smaller devices reduce them, a router does too. But it will reduce the broadcast domain for the same. How? 
+
+Like, let's say I have a LAN-1 here, and in the middle a router is installed, and this is a LAN-2. Okay, so any broadcast message from LAN-1—any broadcast message that came from LAN-1—will go to LAN-1's all devices. But it cannot traverse the network; it does not mean that it will reach everyone in LAN-2. No, no. It will only reach everyone in its own network, but it will not reach in other networks, because a router works on direct broadcast address or limited broadcast address. If it's a case of limited broadcast, it will send to all in its own network. And for direct broadcast, then it will send to everyone in other networks. He has so much intelligence that he can measure what type of broadcast message it is.
+
+Major differences come device-based on who has reduced the collision domain or who has reduced the broadcast domain. This router is a device of Layer 3, meaning up to the network layer. There is also a device above it which is at the gateway, which means one level above, up to the transport layer. It works across two different types of networks, meaning if two different technologies are working—suppose an IP network is working in the first, and in another, a Fiber Channel or ATM network is working—then in the middle, it is working as a translator. 
+
+Then your collision domain in that too will be reduced because it is above that. It's done: when the small device is doing that work, then the big device will work the same way as our car. Inside the car, there is a base model; the things that are getting in our base model will be found in the top model too, but some extra things will also be available in the top model. So the same things are here: as you are going down, you are going to the upper devices, so somewhere you get all functionality. 
+
+So this is all about Collision Domain and Broadcast Domain. Thank you.

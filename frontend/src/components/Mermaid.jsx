@@ -75,13 +75,14 @@ function sanitizeMermaidChart(rawChart) {
 
 export default function Mermaid({ chart }) {
   const containerRef = useRef(null);
+  const lastValidSvgRef = useRef('');
   const [hasError, setHasError] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    if (!chart || !containerRef.current) return;
+    if (!chart) return;
 
     const cleaned = sanitizeMermaidChart(chart);
-    setHasError(false);
 
     const applyUnfilledLightStyles = (container) => {
       if (!container) return;
@@ -101,12 +102,11 @@ export default function Mermaid({ chart }) {
         const parts = currentViewBox.split(/[\s,]+/).map(Number);
         if (parts.length === 4 && !parts.some(isNaN)) {
           const [x, y, w, h] = parts;
-          // Add 18px padding buffer to viewBox top/left/width/height to ensure no top borders or text edges cut off
           svgEl.setAttribute('viewBox', `${x - 18} ${y - 18} ${w + 36} ${h + 36}`);
         }
       }
 
-      // 1. Expand Node Rect Widths (add extra padding buffer inside every node box so text never touches border)
+      // 1. Expand Node Rect Widths
       const nodeGroups = svgEl.querySelectorAll('.node');
       nodeGroups.forEach((nodeG) => {
         const rect = nodeG.querySelector('rect');
@@ -120,7 +120,7 @@ export default function Mermaid({ chart }) {
         }
       });
 
-      // 2. Force all Node Boxes to be UNFILLED (White background + Sharp 2px Dark Slate border)
+      // 2. Force all Node Boxes to be UNFILLED
       const nodeShapes = svgEl.querySelectorAll('.node rect, .node circle, .node polygon, .node ellipse, .node path, rect.basic, .label-container');
       nodeShapes.forEach((shape) => {
         shape.style.setProperty('fill', '#ffffff', 'important');
@@ -131,7 +131,7 @@ export default function Mermaid({ chart }) {
         shape.setAttribute('stroke', '#1e293b');
       });
 
-      // 3. Force all Node Text to be crisp black, properly sized and spaced
+      // 3. Force all Node Text to be crisp black
       const nodeTexts = svgEl.querySelectorAll('.node text, .node tspan, .node span, .node div, .label text, .label tspan');
       nodeTexts.forEach((txt) => {
         txt.style.setProperty('fill', '#0f172a', 'important');
@@ -142,7 +142,7 @@ export default function Mermaid({ chart }) {
         txt.setAttribute('fill', '#0f172a');
       });
 
-      // 3. Force Edge Labels to have white background and crisp black text (NO dark navy blocks)
+      // 4. Force Edge Labels
       const edgeLabelRects = svgEl.querySelectorAll('.edgeLabel rect, .edgeLabel polygon, rect.bg');
       edgeLabelRects.forEach((rect) => {
         rect.style.setProperty('fill', '#ffffff', 'important');
@@ -162,7 +162,7 @@ export default function Mermaid({ chart }) {
         txt.setAttribute('fill', '#0f172a');
       });
 
-      // 4. Force Edge Paths and Arrow Markers to be dark slate
+      // 5. Force Edge Paths and Arrow Markers
       const edgePaths = svgEl.querySelectorAll('.edgePath path, .edgePath line, path.path');
       edgePaths.forEach((path) => {
         path.style.setProperty('stroke', '#334155', 'important');
@@ -178,17 +178,19 @@ export default function Mermaid({ chart }) {
     };
 
     const id = `mermaid-svg-${Math.floor(Math.random() * 10000000)}`;
-    containerRef.current.innerHTML = '';
 
     mermaid.render(id, cleaned)
       .then((res) => {
+        lastValidSvgRef.current = res.svg;
+        setHasError(false);
+        setIsRendered(true);
         if (containerRef.current) {
           containerRef.current.innerHTML = res.svg;
           applyUnfilledLightStyles(containerRef.current);
         }
       })
-      .catch((err) => {
-        console.warn('Mermaid initial render notice:', err);
+      .catch(() => {
+        // Clean leftover error elements mermaid might append to DOM
         const errEl = document.getElementById(`d${id}`) || document.getElementById(id);
         if (errEl) errEl.remove();
 
@@ -197,21 +199,25 @@ export default function Mermaid({ chart }) {
 
         mermaid.render(fallbackId, fallbackCode)
           .then((res2) => {
+            lastValidSvgRef.current = res2.svg;
+            setHasError(false);
+            setIsRendered(true);
             if (containerRef.current) {
               containerRef.current.innerHTML = res2.svg;
               applyUnfilledLightStyles(containerRef.current);
             }
           })
-          .catch((e2) => {
-            console.error('Mermaid render final notice:', e2);
+          .catch(() => {
             const errEl2 = document.getElementById(`d${fallbackId}`) || document.getElementById(fallbackId);
             if (errEl2) errEl2.remove();
-            setHasError(true);
+
+            // If we don't have a valid SVG yet, don't hard crash to null, keep trying on next stream chunk
+            if (!lastValidSvgRef.current) {
+              setHasError(true);
+            }
           });
       });
   }, [chart]);
-
-  if (hasError) return null;
 
   return (
     <div className="my-3 rounded-2xl border border-slate-200 bg-white shadow-md overflow-hidden text-slate-900">
@@ -229,6 +235,11 @@ export default function Mermaid({ chart }) {
           ref={containerRef} 
           className="mermaid-render-area w-full flex justify-center text-slate-900 [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:bg-white" 
         />
+        {!isRendered && hasError && (
+          <div className="text-xs text-slate-500 italic py-2">
+            Rendering diagram...
+          </div>
+        )}
       </div>
     </div>
   );

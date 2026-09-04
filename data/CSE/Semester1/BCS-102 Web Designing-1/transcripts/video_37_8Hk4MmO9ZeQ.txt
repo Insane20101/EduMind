@@ -1,0 +1,41 @@
+In today's video, I will give you an exercise in which you have to design a layout. You will have a lot of options to design that layout, but I want you to use all the concepts we have seen in this course. If you accept this challenge, write "Challenge Accepted" in the comment section below. This will let me know that you are confident in your ability to solve this question.
+
+Let's go to the computer screen. Let's roll the intro.
+
+**Intro**
+
+Today's exercise is going to be very simple. First of all, I want to assure you that you will not have any problem at all. Everyone must solve it. Our exercise is as follows: Let's say this is your screen. I want you to create a navigation bar that will be fixed to your screen. This will be your nav bar. 
+
+You need to design it in such a way that it is very thin. I am giving you a rough layout here. After this, you have to create a section that will look like this. Let me explain how it will look. One side will be here, and one side will be here. I will replicate it and show you. Now, you see that it will look like this. 
+
+You might ask how many pixels these elements should be. The exact pixel dimensions do not matter; your website should look like this. By the way, when you use Figma to design a website, all these dimensions are specified, such as the pixel sizes and other measurements. However, there are no restrictions here. This is an exercise for you to solve. 
+
+Make this layout with one element here and one element there, ensuring these two spaces are apart. To improve the appearance, let's adjust it. One box will be here, and another box will be here, with a background. I will cover it with one more box, send it backward, and again send it backward. 
+
+Now, see this box. You need to give it a background color. You have to assign different background colors for each box. For example, I can fill this box with blue. I am using draw.io for this exercise, but it is not necessary for you to know how to use draw.io. Just observe; it is useful for making diagrams.
+
+Now, let's add a footer. Here comes the catch. I will tell you how to make this exercise more engaging. We need to create one more rectangle, which will have a border radius. In this rectangle, we will add some text. Let's say we write something about our services. 
+
+I will add the text "Welcome." By the way, I pressed 'T' to add text: "Welcome to Sigma Web Development Express." Now, to make this exercise interesting, I will change the color of the navigation bar. I want to enhance its appearance. The navigation bar should be sticky, meaning when you scroll, it should remain at the top. 
+
+You need to place an icon here. I will use a circle for it. You have to decide which position to use for it; that is your task. I have shared my ideas, and now you need to determine how to make it sticky. The icon should be positioned in such a way that it remains visible as you scroll. 
+
+Now, there will be a logo here, which you can make circular. This will be your layout. If someone scrolls the layout, it will look like this. I will make it a little bigger. Let’s say our screen is so large that I am adjusting it accordingly. 
+
+As you scroll, the footer will appear at the end. If you don't understand, don't worry; I will explain it again. 
+
+Look, I will create the footer now. Yes, this is fine. I made the footer like this. I will change the color of this footer to white. I want to make the fill color white. 
+
+This is our layout. It is a very basic, simple layout. I will adjust it so that the nav bar spans the full width. I have made some changes, but you need to create it as I have shown you in the final video. 
+
+Let’s say your screen is this big, meaning it extends from here to here. This circle should be hanging here. As you scroll the site, the text "Welcome to Sigma Web Development Express" will appear, followed by the footer. 
+
+You need to keep the navigation bar sticky, and it should be positioned on the lower right. As you scroll, the footer will come into view. I hope you understood this layout. 
+
+Now, design this layout, and we will meet in the upcoming videos. I will show you how to design it and evaluate whether you did it correctly. 
+
+Remember to keep the height and width appropriate so that when you scroll the page, the entire content does not fit on one page. A scrollbar should appear, and the height of your content should be such that scrolling is necessary. 
+
+I hope you understood and enjoyed this exercise. If you have not accessed the playlist of the Sigma Web Development course, please do so. Keep liking the video; it motivates me. 
+
+I am updating the source code here. Thank you so much for watching this video, and I will see you next time. Thanks for watching!

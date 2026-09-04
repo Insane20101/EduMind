@@ -1,0 +1,59 @@
+In LRU, we replace the page which is least recently used in the past. This means we replace that page which was used firstly in the past. Let's solve it with an example. 
+
+This is the reference stream given to us, and four number of frames are there. Whenever there is a demand of the first page, that is page number 7, initially all the frames are empty. So we service the page number 7 and we call it in the main memory. That is called a page fault. 
+
+After that, we checked for page number 0. Is that page number present? Page number 0 is also not present, so we serviced the page number 0, meaning we called it from the hard disk, and this also we call as a page fault. 
+
+After that, page number 1 comes. Page number 1 was also absent, so that also we called to the main memory from the hard disk. That is also called a page fault. 
+
+Then page number 2 comes. That is also a page fault because it was also initially absent. 
+
+Now the next is page number 0. When page number 0 came, is my page number 0 present or absent? Page number 0 is already present, so that is called a page hit. We can write it as a page hit. 
+
+Next is page number 3. Page number 3 came. Is my page number 3 present? Page number 3 is not present. So now here LRU will start. What will LRU do? On which frame are we standing? On page number 3 we are standing. This is the page that I have to put in the main memory. So to put this page, I will have to replace any of the page. 
+
+Which page will we replace? In LRU, we check the past, meaning previously used pages. So in previously used pages, which page is there among these four which was used at first? Which was called at first? Whose demand was earliest? 
+
+If we see here, 0 has come here, 2 here, 1 here, and 7 here. So if we see carefully, 7's demand was at first among these four. You just have to compare these four. Standing at this point, we have to compare these four to see that in the past, which one came at first, whose demand was at first. 
+
+So if you see carefully, 7's demand was at first among these four. After sending 7 outside, we brought 3 inside. So we entered 3 in and wrote the rest of these as it is. That is called a page fault because 3 was absent. 
+
+Now the next page number is 0. Is page number 0 present? Yes, it is present. So we directly copy over here. We copied, and below that, we wrote hit. 
+
+Then page number 4 comes. When page number 4 comes, we will have to check, is page number 4 present? No, page number 4 is not present. So now here, from 4 towards the back, meaning in the past, I will check. These four should be compared: among 2, 1, 0, and 3, which one was used at first? 
+
+4 and 0 came here itself, 3 came here, 2 came here, and 1 came here. So if you see carefully, 1 is used at first among these four. So we will replace 1 with 4. The rest of these we write as it is, and this also we will call as a page fault because this page number 4 was absent. 
+
+Now we have put it after service. The next is page number 2. Is page number 2 present? Yes, it is already present, so we can call this as a hit. 
+
+Next comes page number 3. Just put a mark so that you don't try any page again. Is my 3 present over here? Yes, 3 is already present. So that is again called a hit. 
+
+Next is page number 0. Is page number 0 present? Yes, it is already present. That is called a hit. 
+
+Next is page number 3. Is page number 3 present? Yes, it is already present. That is called a hit. 
+
+Next is page number 2. Is page number 2 present? Yes, it is already present. This also I will write as it is, and that is again called a hit. 
+
+After that comes page number 1. Is page number 1 present? No, page number 1 is absent. So from here onward, I have to check back in the past among 4, 3, and 0 to see which one came first. 2 came here, 3 came here, 2 here, 4. Among these four, 4 came first in the past. So we will replace 4 with 1. We write 1, 4, 3, and the rest all as it is. And what is it? A page fault, because this was absent. 
+
+Next comes page number 2. Is page number 2 present? Yes, it is already present. That is called a hit. 
+
+Next comes page number 0. Is page number 0 present? Yes, it is already present. That is again called a hit. 
+
+Next comes page number 1. Is page number 1 present? Yes, it is already present. That is again called a hit, so we write it as it is: 2, 1, 0, 3. That is again called a hit. 
+
+Next comes page number 7. Is page number 7 present? No, page number 7 is not present. So again, I will check in the past. Among 1, 2, 0, and 3, which one came first? 1 came here, 0 came here, 2 came here, 3. 3 came here first among these in the past. I replace 3 with 7, and the rest all remain as it is. That is called a page fault. 
+
+Next comes page number 0. Is page number 0 present? Yes, it is already present. This also we will call as a page hit. 
+
+After that, page number 1 came. Page number 1 is already present. That is again called a hit. 
+
+So this way, we can replace pages through LRU. There is only one simple formula for LRU: we replace the page whose demand in the past was at first. What I mean to say is, the page which was called in the past a long time ago, there is no need of that page over here. So that page we will replace by sending it to the hard disk, and we will bring any fresh page in the main memory. 
+
+So you can simply count the number of page faults: one, two, three, four, five, six, seven, eight. So the number of page faults are eight. In maximum questions, they will ask you what the total number of page faults is and what the total number of page hits is. 
+
+So you can also calculate page hits: one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve. So 12 number of hits are there. 
+
+That is how LRU works. Although it is given a lesser number of page faults as compared to FIFO, what is the problem with it? Performance and speed. Because this always, if you have checked carefully, searches in the past which one was farthest in the past. So over here, a searching algorithm is being used. Due to that, if I compare it with FIFO, the speed factor of LRU is less. So at some point, it is taking more time as compared to FIFO, but yes, it is performing better than that in terms of page performance. 
+
+So this is all about LRU. Thank you.

@@ -1,0 +1,93 @@
+Guys, I gave you a flexbox-related exercise. Many of you solved it. Now, I want to give a shoutout to all those people who solved it. Like the video and write "Sigma Batchop" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+**Intro**
+
+So, guys, I have come to my computer screen. I will make a new folder named "video 43," and we are going to solve our last exercise. Here, I will first create an index.html file and put a boilerplate template in it. If you look here, we had to make a navbar using flexbox. I will go to the link and design the navbar using flexbox.
+
+The first thing I can see is that I have to reserve space for the logo of Ultra Edit. After this, I need to write "Products," "Pricing," "Resources," and "About Us." 
+
+Let's go! The first thing I will do is make a header and put a nav in the header. In the nav, I will put a div with the class "logo." Along with that, I will put a div with the class "right," and here I will write an unordered list (ul). After this, I will add some list items, writing exactly what is here: "Products," "Pricing," "Resources," and "About Us."
+
+After this, you can put an icon, but I will style our logo. I will set the width of the logo to 40 pixels and the height to 23 pixels. I will tell you why I am doing this. I will make the background color blue. I have done this, and if I show you the preview, it will look like this. You might say, "What is this joke?" I am not joking here; I will make the navbar a flexbox and set the display to flex.
+
+I will come back to the navbar, but I want to show you some things. I made the navbar a flexbox, and this ul also needs to be a flexbox. In fact, I will display flex on my "right" div. By doing this, all these items will come horizontally. 
+
+Now, I will right-click on the ul and select "list style" and then click on "none." Now it is done. I will show you one thing: either you can use a background to know where the item is, or you can use Chrome DevTools. I have a navbar which is a flexbox. First of all, I will say justify-content. If you center it, it will come to the center. I will try different values. If I do this with flex and set it to flex-start, "space-around" is the property I am looking for. 
+
+For align-items, I will make it center so that everything is centered vertically. You saw why I did this. I have explained this very clearly in my flexbox video. You won't even ask me that because you know if you do, I will send you directly to the flexbox video. The point is the same; you have to go and watch the flexbox video if you don't understand. 
+
+In short, we use align-items when we have only one row. If there are multiple rows, then we use align-content. I hope you have understood all this. Now, see what will happen here. I have made it "space-around." Here, I want this logo. I will open the image in a new tab. 
+
+I can use this logo, but to be honest, it is not a very good practice. Why is this not a good practice? You might be thinking that I am using it and saying it is not a good practice. The reason is that this image can disappear from this link in the future. You can't depend on any other website. You can't say that you will depend on the Ultra Edit website for this logo. No, you shouldn't do this.
+
+After this, I have set the width and height of the logo. I will target the img inside the logo class. Never target img directly; make the selector specific. You are doing only this img; it should not be like this because sometimes you have images in the footer, and their height and width are the same as what you are giving here. 
+
+Let's say I am giving it 34 pixels, which is a little bit small. I will remove this background color blue and give it 134 pixels. It's a little bit bigger. No, actually, it's not big; to be honest, it's perfect. In fact, I will make it bigger; I will make it 164 pixels. Yes, it's a little bit better now. 
+
+I told you about the gap property in flexbox. When your knowledge increases, this happens. Now I will say to make the gap 34 pixels. So, we had to make the gap 34 pixels, and it came all around. 
+
+You see here we have made this navbar. I told you not to use the hover animation. We will learn all this from JavaScript. Many things can be done with pure CSS, but again, I told you to take it easy. 
+
+Now, I see that this image is coming from somewhere. I guess this is an XML; I am not sure what the scene of this background is. Let's see where this image is coming from. I will open the image in a new tab. To be honest, I didn't pay much attention to where this image is coming from, but now I am going to directly use this image.
+
+What I will do is either put this image in the li, or I can put a div with the class "end" and add an img tag. If I do this, it came down because of the div. It might be a good idea to put this div inside the flexbox as an li. 
+
+Let me see how I can do this. Here it is. Good! As you can see, this image is also here as it was before. Now, if you want the icon to be placed next to it, you can take that too. 
+
+I need an SVG for this icon. First of all, I will see if I can find this icon. If I find it, then I will use it directly. This is the content of "After Actually." Here, you can see that they have made it using CSS. I am just seeing how they have made it using CSS content 3. 
+
+I don't want to spend time finding out how they did it, but if I am talking about a very quick and dirty way, I will say "down arrow" huge icons. Actually, there is a website called Huge Icons. Let me see if I can find an icon here. 
+
+I found it! I copied this SVG and will put it here after everyone. I will see how it looks. Where is my website? It was here. See, the down arrow is looking like this, so I have to work on the down arrow. 
+
+What I will do is put it in a span tag. I will do an opening span tag and place it before my SVG, then I will do a closing span tag. I accidentally pressed the Windows key; no problem, it happens. 
+
+According to me, things will be better, but I have to do one more thing. If I inspect the element, you see a problem is coming. The most powerful feature of flexbox is that if I make the li a flexbox and set display flex, I don't even need to do center or align items center. I have already done my work by removing it. I will definitely do align-items center so that everything comes in the center. 
+
+So, I have to set li to display flex and align items center. Okay, let's go! Here, you can see that if you want, you can change the width and height of the SVG. I will change its width and height like this. I will make it 14 pixels. By making it 14, I think this is perfect. 
+
+The rest you can find out which font this is. You are good to go. I will bring the font from Google. I will see which font this is. They must have given the family. If I say here "font-family," where is my font family? The font family of my nav is "Cogi." 
+
+Let's see how it looks. If I don't have the exact font, it won't look exactly as I want, but it is looking pretty good to be honest. If I reload it and show you here, this is how it came. 
+
+Okay, great! Maybe I need to increase its height a little. Here it is written 14; by changing the occurrences, maybe we will make it 18 or 19 if 18 is not good. I think 18 is good; let's do it 20. 
+
+You can do this trial and error at home, but you got the point of how these things are made. Now, yes, I know there is a little padding on the left and right of the switch. If you want, you can give it; if you don't want to give it, then leave it. I am liking it anyway, but I am just telling you that if you want to give padding, then do it. 
+
+The span in li needs something like padding of 0 and 9 pixels. By doing this, padding is here. I think I gave 9 pixels a little more harsh, but you got the arrow on it. 
+
+This is how production websites are made. It is not a big deal to make production websites. If Ultra Edit has made a website, then it must have been made like this. You got the point. 
+
+Now, here you see, it is Ultra Edit. This is how it looks with hover effects, etc. Now, let's go to this exercise. I would like to give a shoutout to those people who have solved this. I will scroll down and give a shoutout from above as well. 
+
+I told you earlier that I am going to give a shoutout to many people in this video. Shoutout to Atmosphere Lyrics, shoutout to Ameesh, shoutout to Devdutt Paul, shoutout to Om Nalya Para, shoutout to Codevin Naeem. 
+
+Let me tell you that in this video, I am giving a shoutout only. If you are in a hurry, if you have an exam or you have taken very little time, then you can leave the video. In the next video, I will give shoutouts to everyone here. 
+
+Shoutout to Codevith Naeem, shoutout to Nishant, shoutout to Otaq Gamer, shoutout to Panda Indite, shoutout to Game Shorts, shoutout to Ovas, shoutout to Nadeem, shoutout to all the supporters, then Bhaag Gaya Shri Patil, then Neel Kumar, then Neel Kumar has given a lot of comments, Himanshu Indoria, Overwatch Gaming, Shahida Begum, Utkarsh, Artik Roy, Umesh Technique, Jai Shri Ram, Soham Singh Rajput, Alfiaam, Ajit, Atmosphere Lyrics, Be Unique, Dhanjit Zanath, Tech Shamsi, Rahul Samanta, Chaitanya Zungkurkar, Love39 Gaming, YT Sort Xpoint, Gorkira Singh Ghuman, Abdul Samad Patil 7901, Raja Fahad.
+
+Now I will scroll down and while scrolling down, I will give you guys a shoutout to those people who solved it first. From here, I will start with Mac Gaming and Elmortx. I will give the top 100 people who solved it first. 
+
+From here, I will give the top 100 people who solved it first. 
+
+From here, I will give the top 10: Cody Anderson, Paramjit Singh, Ravi Karan Singh, Mac Gaming, Navneet Gupta, Saif Ansari, Rule Breaker, Patel Manan, Arnav Adol, Sharash Enrique, Rishabh, Jack Order, Rahat Py, Love Mark Khel, Billionaire Vikas. 
+
+Now you can see the handle of YouTube; I mean you can't see the name, so these are user handles. But again, Bhawani Jangit, Mohammad Tanveer Alam, Nishant, Lav Kumar, Vicky, Shree Funisha, Animals Funny Videos, Felix, Bhawan Jangit, Mohit, Mohammad Tanvir Alam, Abuzar Afridi, Wiser Gaming, Rishabh, Bengal Tiger, Vijay Lakshmi Gupta, Godwithkrishwan, Lakshman, Baisho Karma, User, Bhargav Parmar, Nothing, Rahul Bajwa, Vivaan Yadav, Code with Rohit, Yusuf Khan, Jameel, Askeera, Askeri, Sharif, Rayan, Van Shop, Tech Shamsi, Ali Hamza, Chetan Upadhyay, Sanket, Sarangi, Gaurav, Shivam.
+
+I pronounced it wrong: Jumam, Bkoder Games, Man Kothari, Quester, Awais Mughal, Zeeshan, MrWebDeveloper, CodeWithSunil, Shiraz, Sejal Patil, Vardhan Di Programmer, Rishabh, Freestyle Joy, Swaroop Mahata, Teer Tha Raj Turkar, Tanmay Tanay, Teer Tha Raj Turkar, CodeWithDheria, BtechVlog, NMX. 
+
+I will scroll down and continue with the shoutouts. I hope I haven't missed anyone's source code. In fact, I did miss it by giving a shoutout, so here is Deepa...
+
+Tanu Kundu's source code matched the title very well. I am very happy that they used `display: inline-flex`, which is good. They didn't use `display: flex` because they wanted to apply inline properties. This is a very good approach. I am pleased that they also used the same image directly, which I think is a good thing. 
+
+The image they used is the same one we did, and it's great to see everyone applying good common sense. I learn a lot by watching you all. Here, you can see that they matched the font fade and other elements, which is commendable. If you are making a clone of something, you can make it static. I love this mentality. Codex Bug, amazing work! Shoutout to you!
+
+After this, RRC Gaming also solved it, and I am thrilled that they matched the exact font family. A clone means a clone; I don't want any compromises. I love this mentality. Then, Solution Journey07 also contributed, but they didn't capitalize the "U." They created it with a lowercase "u," but I hope that "U" is capitalized here. Yes, it is "U," and they made it all the way to the bottom, which is good. Nice work!
+
+Has anyone else done a solution? Yes, Mr. Web Developer has done it, and he matched everything exactly, which is amazing. He missed the side image, but that should be fine. He used an `<a href>`, and I am happy that he included it because if something happens by clicking on this, it's better to use a link. I didn't use a link; I should have done that. I cloned it like this, UI clone.
+
+I hope I didn't miss anyone's solution. Did I miss anyone's solution? Yes, I did miss Saif Ansari's solution and Navneet Kumar's. Saif Ansari has done the same thing, and Navneet Gupta has also done the same thing, which is very nice. I believe I have not missed anyone else's solution.
+
+Shoutout to everyone who has solved here! I will run this visual shoutout for everyone. I will run it like this; it has become a little fast. I hope you are not dizzy after watching this. I have tried my best to give shoutouts to everyone. 
+
+If you have not accessed the Sigma development playlist yet, please do so. That's all for this video, guys. Thank you so much for watching, and I will see you next time!

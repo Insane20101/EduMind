@@ -1,0 +1,29 @@
+Hello friends. Welcome to Gate Smashers. Let’s talk about the repeater. 
+
+A repeater generally works in the physical layer, which means it is purely hardware. What is the meaning of the physical layer? It is the hardware, because in the data link layer, MAC addresses come into play, and in the network layer, IP addresses come into play. If a device works in the data link layer, that means it can check the MAC address, but a repeater is purely hardware, meaning they work in the physical layer and they don’t have any role in the data link layer.
+
+First of all, why are repeaters used? Why should I use a repeater? The first reason is, let's say 10BASE2, as I have discussed in cables. 10BASE2 means 10 megabits per second is the bandwidth, it is baseband, and it can move one signal at a time. What is the meaning of 2? 200 meters. This means I have made a LAN of 200 meters and I have connected various devices to it. Now, if a signal moves here, up to where can it go maximum? Up to 200 meters. 
+
+After 200 meters, what will happen? Attenuation, which means its strength will go down, and this means the signal will become corrupt, lost, and it will not be of any use. Here also, I am using 10BASE2, meaning here also it is 200 meters. So what will happen here? As I transmit a signal to any node, what will happen after 200 meters? Attenuation. 
+
+So what have we put here? A repeater. What does a repeater do? That signal whose strength is weak, it raises that signal, meaning it regenerates its strength. Here, many times it is asked: the same work is done by an amplifier also. What is the meaning of an amplifier? To amplify the signal and increase its strength. Are a repeater and an amplifier the same thing? No. What does an amplifier do? Suppose the strength of the signal at the start is $x$, and it goes down from $x$. Then what will the amplifier do? It can make it $2x$ or $4x$; it will increase it very much. 
+
+If we are using a repeater here, the original strength is $x$, and the repeater will regenerate and make it equal to $x$. As the signal moves, its strength will decrease from $x$, so what will the repeater do? It will take bit by bit and give it its original value, the original voltage it was having, and make its original strength equal to that. An amplifier is a different thing. Yes, you can say that it amplifies, but the purpose of an amplifier device is somewhat different from a repeater. A repeater will always make it equal to the original strength. 
+
+And what is the benefit from it? Here, a device is sending, so after 200 meters there will be attenuation, but because of the repeater, it can travel even after 200 meters. So how much can the signal totally travel? 400 meters. So what have I increased here? The distance covered by the signal. The distance covered by the signal can be increased with the use of a repeater. 
+
+What else is a repeater? It is a two-port device, meaning this is one port and this is the second port; you can connect two different wires. It is a two-port device and is purely a device of the physical layer, meaning hardware.
+
+Apart from this, what is asked here? Forwarding. Does a repeater do forwarding or not? Forwarding means, let’s say A has to send a message to B. This is A and this is B. As A sends a message to B, when the message reaches the repeater, it will forward it, meaning forward it and put it here. Obviously, the repeater will forward it and place it in this link.
+
+Next is filtering. Can a repeater filter? What is the meaning of filtering? Let’s say here there is a repeater, and from here a signal comes. Any station sent a signal. If I don’t want to move that signal further—let’s say here it is A and here there is B, and if A has to send a message to B, so B is here, and the destination is also in the same link—will the repeater send that signal further? Yes, it will send that signal further, meaning it does not know whether to filter or not. 
+
+Filtering means we have to stop this signal: "To whom you are sending is in your link only, on this LAN already, why should I send it to the next LAN, the next cable?" But it does not have such software to stop that so that it does not move further. The devices further down, like routers and bridges, have this facility because they have software. This is purely hardware, so it cannot filter; it will send it further. It will send it further.
+
+If we talk of the collision domain of whose? Of the repeater. If we find out the collision domain of the repeater, what will happen? Meaning, if this is a repeater, what are the maximum collisions possible? $n$. What is the maximum collision possible? $n$. What is $n$? The number of devices connected on both sides, the number of devices totally connected through the repeater. 
+
+Why? Where will the collision be less? Where there is a buffer inside. What will a buffer do? Keep the packet and forward it—store and forward—kept the packet and forwarded it. Here, there is no buffer. Any packet comes, any signal comes from here, another signal comes from here, and all will collide with each other. If there is a buffer or memory, I will keep putting signals there, then I can check, but such functionality is not in the repeater because it is purely hardware. 
+
+So it does forwarding, filtering it does not do, and the collision domain is maximum, $n$. 
+
+This is the basic functioning of a repeater. Always remember, it always works at the physical layer and has two ports. So from these points, from these small points, if we talk especially of UGC NET, this type of question comes many times, but it is not much important from the GATE point of view. So you don’t have to learn in more detail than this—that there are analog repeaters, digital repeaters, optical repeaters for optical fibers—no, don’t go into more details. If you do these many points, it is more than enough for the UGC NET and PSU exams. Thank you.

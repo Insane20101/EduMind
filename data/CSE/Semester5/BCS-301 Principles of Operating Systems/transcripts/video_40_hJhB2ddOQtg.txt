@@ -1,0 +1,88 @@
+Let's solve the example on Multi-Instance RAG. A Multi-Instance RAG means in which the resources are having multiple instances. As we discussed in the previous video in which multiple instances means a resource is having more than one instance, like registers—in our system we are having more than one register. So in the multi-instance, let's say, there is a resource $R_1$ and $R_2$, here $R_2$ is multi-instance. 
+
+So if the RAG is given like that in which multi-instance resources are present, again they can ask the same question: check whether this RAG system contains the deadlock or not. One thing is you can do it manually. Manually means you can check that first of all, there is a circular wait or not. Like in this, there is a circular wait. So this, this, this, and this—there is a cycle, and there is another process that is $P_3$. 
+
+So you can do it manually also, like $P_3$ having no request. $P_3$ is requesting nothing, so $P_3$ will get successfully executed because $P_3$ is requesting nothing. $P_3$ needs one resource of $R_2$, and it is having one resource. When it gets executed, one resource of $R_2$ will be free. When the resource of $R_2$ is free, then this resource will be given to $P_1$ because one resource will be free, it will be given to $P_1$, then $P_1$ will get executed. When $P_1$ gets executed, $R_1$ and $R_2$ both will be free, then $P_2$ will get executed. 
+
+This is a manual way of doing it, but rather than the manual way, again we are solving with the same method. Let's say three processes $P_1$, $P_2$, $P_3$, and write down allocation and request. Allocation and request of $R_1$ and $R_2$ because there are two resources, one is $R_1$ and one is $R_2$. 
+
+Now, first of all, $P_1$. $P_1$ has allocated one resource of $R_1$, $P_1$ has taken $R_1$. So just write $1$ because $P_1$ has taken $R_1$. Has $P_1$ taken any other? No. 
+
+Check for $P_2$. $P_2$ has taken one resource of $R_2$. This is our allocation kind of, because $P_2$ has taken $R_2$, so $P_2$ has taken $R_2$. Whether $P_2$ has taken $R_1$? No, $P_2$ has not taken it; it is requesting. 
+
+Check for $P_3$. $P_3$ has taken $R_2$. $P_3$ has taken one resource of $R_2$ and not for $R_1$, so $0$ for $R_1$ and for $R_2$ we write $1$. So this is a simple way of writing the allocation. 
+
+Now, writing the request: who is requesting for which resource, which process is requesting? $P_1$ is requesting for $R_2$—you can clearly check $P_1$ is requesting for $R_2$. So just write $0$ on $R_1$ because it is not requesting $R_1$. 
+
+$P_2$ is requesting for $R_1$, so just write $0$ for $R_2$. 
+
+$P_3$ is requesting nothing. 
+
+So first of all, just make the table like that. Now check the current availability. What is the current availability? It means how many resources I have available. $R_1$: no, only one instance of $R_1$ I have, but that is already taken by $P_1$. Two instances of $R_2$, but that are already taken by $P_3$ and $P_2$, so there is $0, 0$ availability. I am having no availability. $R_1$ is not available, $R_2$ is not available. 
+
+Now, using this availability, can I fulfill the request of any of the processes? Yes. I can fulfill the request of $P_3$ because $P_3$ is demanding nothing. So when $P_3$ gets successfully executed, because $P_3$ is demanding nothing, first of all, $P_3$ will get terminated. When $P_3$ is terminated, whatever resources it is having assigned will be free. Which resources are there? $0$ of $R_1$, $1$ of $R_2$, so just add it to the previous availability. So it will be $0, 1$. This is the new current availability: $0$ of $R_1$, $1$ of $R_2$. 
+
+Now check: can I fulfill the request of $P_1$ or $P_2$? Yes, I can fulfill the request of $P_1$ because $P_1$ needs $1$ resource of $R_2$ to get executed. $P_1$ is having $R_1$, but it needs $1$ resource of $R_2$ to get executed, and yes, I'm having one, so I will give this one resource to $P_1$ and $P_1$ will get executed. And when $P_1$ gets executed, it will terminate. So when $P_1$ terminates, whatever resources it is having will be freed, so $1, 0$ will be free. Just add it to the previous availability, so it will be $0 + 1 = 1$, $1 + 0 = 1$. So what is the current availability I'm having? $1, 1$, meaning one of $R_1$ and one of $R_2$. 
+
+Can I fulfill the request of—I'm having only $P_2$ because others are terminated. What is the request of $P_2$? $P_2$ needs one resource of $R_1$ to get executed. Do I have it? Yes, I'm having one resource of $R_1$. So I simply give it to $P_2$, and $P_2$ will also get successfully terminated, and there will be no deadlock in the system. So you can clearly say in this diagram, in this RAG, there is no deadlock. 
+
+So what is the learning in this diagram? Whether there is a circular wait? Yes, there is a cycle, there is a cycle in the graph. So if there is a cycle in the graph, will there always be a deadlock? No. It is only in the case of single-instance systems. Meaning, if the system is single-instance and there is a circular wait, there will be a deadlock. Yes, it is true, in all cases it will be true. 
+
+But here the system is multi-instance. I'm having two instances of $R_2$. So if the system is multi-instance and there is a circular wait—is there a circular wait? Yes, in this diagram I'm having a circular wait—can I say there will always be a deadlock? No, there will not always be a deadlock. It can be possible, it cannot be, but we cannot say that if a multi-instance system is there and there is a circular wait, there will always be a deadlock. This is false. This condition is not always true because of this example: there is a circular wait, but whether there is a deadlock? No, there is no deadlock. But why? Because it is a multi-instance system. So just remember this: in the case of multi-instance and in the case of single-instance, this is very important.
+
+Now let's solve the second question. The question was already asked in the GATE exam, so it is a little complex. If a question is like this, it will be very difficult to analyze it manually; that's why we are following this particular method. Because the system diagram is looking very complex, you cannot do it manually unless you have practice solving it, but I would suggest following this method because we have sufficient time to solve the question in the GATE exam. It is not like a banking system in which we have to do more and more questions in less time; we have sufficient time because every single mark is very important. 
+
+So here you just follow this method, it will be very advantageous. How many processes? Just write down the processes first. Again, it is multiple-instance, because $R_3$ has 2 instances, $R_1$ has 2 instances, and $R_2$ has 3 instances. Even if there are two, we can call it multi-instance; here all the resources are multi-instance. 
+
+Let's say $P_0, P_1, P_2, P_3$—four processes are there. Allocation and request, allocation and request. What are the resources? $R_1, R_2, R_3$. Just write in the request also: $R_1, R_2, R_3$. 
+
+First of all, fill the entries for allocation. Check $P_0$: $P_0$ is having $R_1$. $P_0$ is already holding one resource of $R_1$, so you can write $1$ in this case because $P_0$ has $1$ resource of $R_1$. Check whether $P_0$ is having any other? Yes, $P_0$ is also having one resource of $R_3$, so just write $1$. So you have to fill this table first: $P_0$ is having one resource of $R_1$ and one resource of $R_3$. Check if $P_0$ is having any other resource? No, $P_0$ is not having any other resource. 
+
+Check for $P_1$: $P_1$ is holding one resource of $R_1$. $P_1$ is holding one resource of $R_2$. Check for $R_3$: no, $P_1$ is not holding $R_3$, so just write $0$. 
+
+Check for $P_2$: $P_2$ is holding how many resources? $P_2$ is holding one resource of $R_2$. Any other resource? No, so just write $0$ for $R_1$ and $R_3$. 
+
+Check for $P_3$: $P_3$ is holding any resource? Yes, $P_3$ is holding one resource of $R_2$. Any other resource? No, so just write $0$. 
+
+Now, check for the request. You have to do it very carefully because if there is any problem in this, it will affect your answer. 
+
+Request table:
+- $P_0$ is requesting for $R_3$ (one resource of $R_3$) and $P_0$ is requesting for one resource of $R_2$ also. It is not requesting $R_1$, so just write $0$.
+- $P_1$ is requesting one resource of $R_1$. Any other resource? No, so just write $0$ for the rest.
+- $P_2$ is requesting one resource of $R_3$. Any other resource? No.
+- $P_3$ is requesting two resources of $R_2$ (see two lines, it can happen; a process can request more than one resource, yes, that is also possible). Two resources of $R_2$ and any other? It is holding this one, yes, it is also requesting one resource of $R_1$. $R_3$? No. 
+
+So this is how you have to design the table first. 
+
+Now check the current availability. What is the current availability? Check for $R_1, R_2, R_3$:
+- $R_1$: do we have any available? No, all two instances are already booked, so just write $0$.
+- $R_2$: do we have any availability? No, all dots are occupied, so write $0$.
+- $R_3$: yes, I am having one availability of $R_3$, so write $1$. 
+
+Now, this is my current availability: $0, 0, 1$. Taking this current availability in your hand, check: can I fulfill the request of any of the processes?
+- $P_0$ requests $0, 1, 1$? No, because I am having $0, 0, 1$, but it needs one resource of $R_2$, and I am not having it, so I cannot fulfill it.
+- $P_1$ requests $1, 0, 0$? No, $P_1$ needs one resource of $R_1$, do I have one resource of $R_1$? No.
+- $P_2$ requests $0, 0, 1$? $P_2$ needs one resource of $R_3$, do I have it? Yes, I have one resource of $R_3$. 
+
+So what will I do? I will give this one resource to $P_2$ first. $P_2$ gets—sorry, I gave $P_2$ this one resource. This one resource will be given to $P_2$, and $P_2$ will get terminated. $P_2$ will get terminated successfully. When $P_2$ gets terminated, whatever resources it is occupying, it is holding, will be released. When it is released, I will add it. My current availability will be updated: $0, 1, 0$ will be added ($0+0=0$, $0+1=1$, $1+0=1$). So this is the new current availability: $0, 1, 1$. 
+
+Now check: can I fulfill the request of $P_3$? No, because $P_3$ needs two of $R_2$ and I'm having only one. 
+
+So check again from $P_0$: $0, 1, 1$. Do I have $0, 1, 1$? Yes, I can fulfill the request of $P_0$ because $P_0$ needs one of $R_2$ and one of $R_3$, and I have one of $R_2$ and $R_3$. So I will fulfill the request of $P_0$. When I give these resources to $P_0$, $P_0$ will successfully terminate and it will be removed from the system. When it is removed, whatever resources it is occupying—that is $1, 0, 1$—will be added. Simply add it, so it will be $1, 1, 2$. 
+
+So this is my current availability. I'm just writing here: $1, 1, 2$ ($R_1, R_2, R_3$). This will be the new, updated availability: $1, 1, 2$. 
+
+And I am having now two processes left. Can I fulfill the request of $P_3$ still? No, but no problem, $P_3$ can wait. 
+Can I fulfill $P_1$? Yes, $P_1$ needs only one of $R_1$. I'm having one of $R_1$. I will simply give it to $P_1$. So $P_1$ will get terminated, it will be removed from the system, and whatever resources it was holding will be freed. These are freed, so I will simply add them ($1+1=2, 1+1=2, 2+0=2$), resulting in $2, 2, 2$. So this is my current availability: $2, 2, 2$. 
+
+What is the last process? $P_3$. $P_3$ needs one of $R_1$ and two of $R_2$. I am having enough: I am having two of $R_1$ (I will give one), and I am having two of $R_2$ (I will give both). So $P_3$ will also get successfully terminated and it will be removed from the system. So whatever resources it held ($0, 1, 0$) will be added again, making the final availability $2, 3, 2$. This is just for knowledge, like what the current availability is if they ask at the last; you can say $2, 3, 2$. 
+
+The main question is: does it contain a deadlock? You can clearly say no, there is no deadlock in the system because, first of all, $P_2$ gets terminated. You can also write the sequence explicitly; sometimes they ask for the sequence also. Here, first $P_2$ got executed, after $P_2$ $P_0$ got executed, after $P_0$ $P_1$ got executed, and then $P_3$. So you can write the sequence in a rough way so that if they ask for the sequence, you can write it. But the main point is: does this system contain a deadlock? No. 
+
+So you just need to clear one thing: by using this method, you can easily say if there is a very complex RAG or they are asking for deadlock occurrence, you can use this method. This will make the question very easy. 
+
+And the second part is the theory part: that is, if the RAG is having multiple instances and it contains a cycle, will there always be a deadlock? No. If there is a single instance, then there will always be a deadlock if there is a circular wait. Yes, it is true, in all cases for single-instance. But here, in the multiple-instance case, if there is a circular wait, will there always be a deadlock? No, this is false. MI means multi-instance; circular wait means there will always be a deadlock? No, this is false. This is true for single-instance, but for multi-instance, it can be or it cannot be. Meaning, it is only a sufficient condition, not a necessary condition. But in a single instance, it is a sufficient and necessary condition for a deadlock. For multiple instances, it is a sufficient condition, but not a necessary condition. 
+
+So if there is a circular wait in a multi-instance system, you can't simply write that there is a deadlock, because we have seen the previous example where there was a circular wait, but there was no deadlock in the system. 
+
+So this is how we have to solve questions on RAG regarding whether the system contains a deadlock or not. If you liked the video, then please like it, share it, and please subscribe to my channel. Thank you.

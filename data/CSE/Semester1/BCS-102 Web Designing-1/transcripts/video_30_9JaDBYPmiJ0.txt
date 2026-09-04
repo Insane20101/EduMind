@@ -1,0 +1,169 @@
+In today's video, I will tell you about callback functions. Callback functions are used whenever you want to call a function once another function executes. We will see how it works in a while, and then we will discuss promises. Promises are a very important concept in asynchronous JavaScript because they can be confusing for JavaScript enthusiasts. But in this video, I will clarify promises for you. 
+
+Please like this video, and in the comment section, write "JavaScript OP." Now, let's go to the computer screen and roll the intro.
+
+I have come to my computer screen, and here I am going to create a folder for video number 75. By doing a shift right-click, I will explain what callbacks and promises are. 
+
+If we talk about callbacks, a callback function is simply a function that runs inside another function. Let me explain what this means. We just saw that a function runs when we give an argument to it and execute it. However, here we can pass a callback function. I will take you to the notes and give you an example of this, so you can understand it very clearly. After that, we will move on to promises and see what they are.
+
+Before I tell you about callbacks and promises, I want to explain the asynchronous nature of JavaScript. What is this asynchronous nature? If I preview this website, you will see clearly. If I write `console.log("Harry is a hacker")`, you can see that "Harry is a hacker" appears. If I write `console.log("Rohan is a hacker")`, there are two different hackers: one hacks, and the other just makes noise. 
+
+Now, I will show you that this line will come first, and then this line will come afterward. If I accidentally switch their order, Rohan will come first, and Harry will come later. The one above will execute first, then the one below. However, this does not always happen in JavaScript due to its asynchronous nature. Whenever JavaScript encounters a function that is asynchronous, it defers that function for later execution.
+
+Now, let's say I write `setTimeout` and put a timeout here. I will write `console.log("I am inside setTimeout")`, and if I set the timeout for 2 seconds, you might think that this will run first, then this will run, and so on. However, that is not the case. First, the two `console.log` statements will be printed, then the script will pause for 2 seconds, and it will move forward without stopping. The `setTimeout` function simply instructs JavaScript to run the code after 2 seconds, but due to its asynchronous nature, the first two lines will run immediately, and the `setTimeout` will be deferred.
+
+You will see that the end will be printed first, and after 2 seconds, the message from `setTimeout` will appear. If I set the delay to 0, you will see that "end" is printed first. Whenever we use `setTimeout`, it indicates that the function should run after 0 seconds, but it will wait until the entire script runs before executing it.
+
+Now, if I write `console.log("I am inside setTimeout 2")`, then the first two lines will be printed, and the `setTimeout` will be deferred. The end will be printed first, and after that, the `setTimeout` message will appear. This is the exact execution order.
+
+With that said, we have just seen asynchronous programming in JavaScript. Both synchronous and asynchronous actions exist. Some asynchronous actions, like `console.log`, will print first, while others will be deferred for later execution. 
+
+Now, let's look at the callback function. A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete an action. What does this mean? I have a very simple example for you. 
+
+Here, there is a function called `loadScript`, which takes the URL of the script and a callback function. This means that this function will be executed as soon as the script is loaded. We create a script element using `document.createElement`, and we set its `src` to the URL we received. We say that as soon as the script is loaded (`script.onload`), we call this callback function with the script as an argument. 
+
+The callback function can be anything; we can choose to alert the script or simply log it to the console. Let's write this `loadScript` function and understand it better. 
+
+I will write `const loadScript = () => {}`. I want to mention that I have installed the React Redux ES7 extension in my VS Code. This extension allows me to quickly create arrow functions. 
+
+The `loadScript` function takes two arguments: `src` and `callback`. Inside this function, we create a script element and set its `onload` property to an arrow function. We can do anything in this arrow function, including calling the callback function with arguments. 
+
+Now, I will create a simple callback function that logs its argument to the console. I will also append the script to the document head. I will call `loadScript` with the source of the script I want to load, for example, `prism.min.js`. 
+
+As I reload the page, you will see that nothing happens initially. I will check if the `loadScript` function worked correctly. I set `sc.onload` to the callback function, which should log "Harry" when the script loads. If I slow down my network and reload the page, you will see that everything loads one by one, and "Harry" appears.
+
+The benefit of using a callback is that it allows you to run a function on demand. You can pass the function as a variable, and it will be called according to its own timing. 
+
+Now, sometimes we need callbacks within callbacks, which can lead to what is known as "callback hell." This occurs when you have multiple nested callbacks, creating a complex structure that is difficult to manage. 
+
+Let’s say I create a function called `fn`, which takes a callback. If I keep nesting callbacks, the code can become very complicated, resembling a pyramid structure, which is often referred to as the "pyramid of doom." 
+
+This complexity arises when you have multiple levels of callbacks, making the code hard to read and maintain. 
+
+To avoid callback hell, we use promises. Promises provide a solution to the callback hell by allowing us to wait for code execution. Instead of chaining multiple callbacks, we can use promises to manage asynchronous operations more effectively. 
+
+I will create a new file called `promise.js` and detach the script from here. I will write the promise code in this new file. 
+
+Additionally, you can create snippets in VS Code. If you go to user snippets and write the name of your language, you can create custom shortcuts for frequently used code patterns. 
+
+This concludes our discussion on callbacks and promises. Thank you for watching!
+
+Log output will come like this, and then your cursor will come here. This is the log output to the console. This is your snippet; you can create many snippets like this. 
+
+Suppose I create a snippet with the name "alert," and I want the prefix of this snippet to be "alt." Let's say I want the body to be written line by line. I will write "alert" and then include "$1," which means the cursor will come here first. I will also show you by running it; then it will be clearer to you.
+
+After this, I will put a comma here and also add a semicolon after "alert." Now, I will put a comma here, and after that, I will write "$2," so my cursor will come here after this. I will close it like this. I wasn't sure why it was coming like this; I didn't put a colon here, so it was incorrect. Now it is fine.
+
+I have made these two snippets. Now, if I write "alt," I am not sure why it is not coming. I wrote "alt." In "javascript.json," I added all these things. I will also add a description. I wrote "alt." In "javascript.json," I have added all these things, and I have made "print to console" and "alert." I hope everything is fine now. 
+
+If I press "ALT" here and then press "Enter," I see that I have written "Harry," and if I press "Tab," my cursor will come to the new line. Now, I have written "$2," so my cursor will come to the new line. If I want, I can create many snippets like this. If I write "Clog," then it will log to the console. 
+
+Now, I will write "Harry is good," or I will write "This is promises," and if I press "Tab," my cursor will come down because I have written my second line in it, which just gives the cursor here. If I want to come back after writing something, I can also do that. Wherever I write, the cursor will come in the next line. 
+
+I have made a number 1, and line number 2; the cursor will come on line number 1 first, then on line number 2. If I put "$1" here and "$2" here, I will show you what will happen. If you write "Clog," the cursor will come down first. Maybe I have saved it incorrectly; I have done 21 by mistake. I should have done 1 here. If I log "C," then the cursor will come down first. I wrote "Harry," tapped, and then came up. 
+
+I will revert this to "$2" here and "$1" here. You should know this. Making these snippets is very important; you should understand this. Here, I wrote "This is promises." Now, I will tell you about "Promise." 
+
+Promise means the promise of code execution. In this, I will do ".then" and ".catch." After it is settled, I want it to be either resolved or rejected. Now, what does this mean? I will explain after doing this. 
+
+Suppose I wrote "prom1 = new Promise," and I will write here that it will take two functions: one will take "resolve," and one will take "reject." I wrote "new Promise," and I wrote "resolve" and "reject." Now, I can do any work, and after that, I can resolve it. For example, I can say "setTimeout," and I want 3000 milliseconds. I can write "console.log('Yes, I am done');" and then I can write "resolve." This means my work is done, so I will write "Yes, I am done," and resolve it. I wrote "Harry," so I will get the value of "Harry."
+
+Now, what I can do here is say "prom1.then," and I can do something like this: "console.log(a)." Now, what does this mean? I will explain quickly. 
+
+What happens here is that you give two things to the new promise: when it will be resolved and when it will be rejected. You will run "resolve" whenever you want to resolve it, and you will run "reject" whenever you want to reject it. For example, I wanted that when this "setTimeout" starts, then this promise will be resolved, and this promise will be canceled. This means this promise is run, and the work is done. 
+
+Then, I will say "prom1.then," which means as soon as my promise 1 is resolved, what you do is log the console with the value with which it is resolved. If I do something like this, and I am clicking on "OK," I don't know why this alert is showing. "This is promises" is shown here, and you can see "console.log" is logged: "Yes, I am done," and "Harry" is printed. 
+
+Why is "Harry" printed? Because I told you to resolve it with the value of "Harry." This function will give me "Harry." You can see here that I have done "promise.then." I said that when this promise is resolved, then what you do is log "Harry." 
+
+In most cases, what we do when we hit a network request is wait for the network request. We say that we wait for the network request, and as soon as our network request is finished, we will print the data. This is used for that. I have made a dummy promise for you just to tell you that you can make your own promise whenever you want. You can resolve it or reject it. 
+
+In most cases, you don't need to make your own promise; you will use promises that you get. You will use ".then" and ".catch." Now, suppose for some reason I say to generate a random number. Let "a" be equal to "Math.random," and I say if "a" is less than 0.5, then you reject this promise and say, "No, the random number was not supporting you." 
+
+If I show you here, this promise will be rejected. If I refresh it, then this promise will be rejected. If I refresh it and show you, you will see that this promise was rejected after 2 seconds, and "No, the random number was not supporting you" error came. 
+
+After this, it ran "Yes, I am done," but I want that "Yes, I am done" should not run in this case if it is being rejected. So, I will do "else" here and put this code in "else." Now, many people will not understand this and will say this is very complicated. I will say you download notes, read them one step at a time, and understand this thing together. 
+
+Many people just see it on the phone and comment that the font is small. They ask to zoom in and make a video. Many people also say, "Where is the code running? Zoom in and make a video." Look at the laptop; look at the phone only when you don't have a laptop. If you are looking at the phone, there is no coding on the phone. 
+
+You need a computer; you can do a little work on the phone, but not everything. If you are working on the phone, plan to buy a laptop as soon as possible; then only you can do something. 
+
+Now, here you can see that "Yes, I am done" resolved with "Harry." I have printed it. Now, how will I find out that this promise is giving an error? See, I have reloaded it here; an error is coming 50% of the time. I will show you. 
+
+I want the error to be like this: let's catch this error. I will say "prom1.then" this, and I will say ".catch." I will say if there is an error, then "console.log." This time you won't see the error in your console. Your goal should be that you don't get an error in your console. 
+
+So here, "No, the random number was not supporting you" came as an error. I got to see this, but if I run this now, then after 2-3 seconds, whatever delay I have put, "Yes, I have done," "Harry" has come. 
+
+Here, a network request can be rejected or it can be successful. If it is successful, then what would you want? If its data comes, then you will use this ".then" function. Or you will use ".catch" to handle the error. Many people say that there will be no error in my code; if I write correctly, then I don't use ".catch." 
+
+No, you have to keep unexpected scenarios in mind. For example, if your internet is down, the user was doing something, and their internet is gone, then they will get an error. They will not be able to connect to your server. Or suppose your server is down. 
+
+Take this possibility: my backend is down. What will the users see? At least the users should see that we are working on a fix. Our systems are not working; please wait for 3 minutes. The user will say, "Yes, it's fine," or say that my site is under maintenance. At least the user will be cool, saying, "Yes, it's fine; things are being checked; it will be fine." 
+
+So this is the promise. What is the work of this? You will not know until we make a project. I am saying it very raw and harsh; you will understand it when we make a project. But for now, understand it as a theory because it will be very useful for you. 
+
+Now, I have told you about consumers, what are ".then" and ".catch." First, you will take a function when everything works, then what to do, and the second function is when the error comes, then what to do. You can also handle the error by catching the ".catch." 
+
+I have taught you by doing ".then" that when a promise is resolved, how will you run it by doing ".then." You will understand this more clearly. 
+
+"Promise.finally" is used to do some general cleanups. Suppose you want to close all your files that you have opened; you can use "promise.finally." 
+
+Now we will talk about promise chaining. We can chain promises and can pass the resolved values to each other. For example, suppose I put a ".then" in a promise of "P," and I say that this function should work, which is alerting and returning 2. If I am returning another promise of 2, then I can put a ".then," and finally, when that promise is resolved, I can see what I have to do. 
+
+This kind of chaining will continue. Here, I am returning a value, but instead of 2, it could have been a promise "P2." So if "P2" is a promise, then it will be resolved, and this ".then" will run, and so on. You can resolve as many promises as you want. 
+
+The idea is to pass the result through the chain of ".then" handlers. It is simple, very simple. If I do ".then" and ".then" and put different handlers on the same promise, then it will run independently. This handler 1 has no relation with this handler 2. 
+
+We can attach multiple handlers with a promise. Now, after this, some methods of the promise API which I want to show you: 
+
+"Promise.all" will wait for all promises to be resolved and will return an array with their results. I will show you an example of this. Suppose I make "prom1," and suppose I make "prom2." I can also make "prom3" and "prom4." I will reduce the time of this; suppose I do it for 1 second, and I will resolve "prom3" and "prom4." 
+
+I will reduce the time; I will do it for 1 second, and I will resolve it with "Harry 2." I will do "Yes, I am done 2" here, and "No, the random number was not supporting you 2." You will see here that when I am doing "prom1.then," I will remove this and simply say "Promise.all" and give an array here: "prom1" and "prom2." 
+
+This will be a new promise "p3," and I will put ".then" on "p3." I will say "console.log." The function I had put earlier could have been used, but no problem; I will write it again. I can say "console.log(err)." 
+
+Whatever will run first among these two, you will see here. If I reload it, it is saying that "err is not defined." Let me see. I have to do "err." If I reload it, you can see here that "Yes, I am done 2" came, "Yes, I am done" came, and when both promises were resolved, then their values came here because I resolved these two promises. One was done with "Harry 2" value, and one was done with "Harry" value. 
+
+When both promises are resolved, then it will come. Now, suppose I reload it, and this promise is not resolved. It will stop here, and this assignment is done, but it will not return the value because one promise is not resolved. 
+
+I will reload it again and try to see if the values of both promises are resolving. Yes, both are resolving, so it will give me the values of both. The condition is that both promises should be resolved. 
+
+What is the meaning of promise to settle? To settle means either it will be resolved or rejected. It will be one of these two. To resolve means that a value should be obtained without error. 
+
+There is a difference between resolve and settle. Listen to me again. What is the difference between resolve and settle? This is very important for you to know. 
+
+If you use "Promise.all," it settles; whatever result comes, now it is resolved or rejected. We don't know anything, but both promises are there. Then what do you have to use? "Promise.allSettled." 
+
+If you use "allSettled," then what will happen? Whether it is resolved or rejected, you will get the status and reason of both. If it is resolved, you will get the status and value, and if it is rejected, you will get the reason instead of the value. 
+
+If you reload it, you will get the status and value of both promises. If fulfilled, you will get the status and value. If rejected, you will get the reason instead of the value. 
+
+So here it is rejected: "No, the random number was not supporting you." This reason was thrown. It is simple. 
+
+We saw "Promise.all," we also saw "Promise.allSettled." What is "Promise.race"? We are making a race of promises. Whatever value is resolved or settled, the result or error will become the outcome. 
+
+If I say here "Promise.race," see which one will get resolved first. It's simple: "Promise 2" will get resolved. You will get "Promise 2," "Yes, Harry 2," and "Yes, I am done 2." 
+
+We will make a race of these two promises. Now, sometimes we don't know. For example, if I am hitting two network calls, one is "google.com," and the other is another API, which one is faster? It can be any of the two. 
+
+Suppose I have five links to download one image, and I want whatever comes first out of the five, whatever is running well, I get that. So I will use "Promise.race." 
+
+I will show the image that was resolved first out of the five. It is simple. What is "Promise.any"? It waits for the first promise to fulfill, and its result becomes the ultimate. It should not be rejected; it should be fulfilled. 
+
+If it is resolved, then you will get the value that is resolved first. If all are rejected, then it will be an aggregate error. Try it yourself with "Promise.any."
+
+To resolve and try it with multiple values, I have done it with `prom1`, `prom2`, `prom3`, `prom4`, and `prom5`. You should try it with at least these. 
+
+`Promise.resolve` creates a resolved promise with a given value. This will give the impression that this value is from a resolved promise. It returns a resolved promise, indicating that this promise was present and has been resolved. The same concept applies to `Promise.reject`, which gives the impression that this promise was rejected along with an error. If you want to directly create a rejected promise, you can do so using this method. 
+
+You can try this with your custom promises. In the next video, we will explore the `async/await` concept. 
+
+Now, this promise concept is tied to callbacks. If this is new for you, I encourage you to read the notes. If you still do not understand after watching the video, I suggest reading the notes and watching the video again. When I mention something, if you do not grasp it after watching the video, I will reiterate: read the notes and watch the video again. 
+
+If you are not writing the code, I guarantee that you will not understand it, especially if you are encountering it for the first time. Without writing the code, comprehension will be challenging. If you write the code and understand it, then I will believe you. 
+
+Download the notes, get the PDF, spend some money at a Xerox vendor, eat less pizza, and save some money. Regardless of the junk food you consume, even if you do not eat pizza, print out these notes and do something productive. 
+
+Access the Sigma web development playlist, click here, and start it. Additionally, please do one thing for me: go to the first video and review the course. Share your thoughts on how the course is, and give it five stars. You will feel good about it. 
+
+For now, this is it for this video. Thank you so much for watching, and I will see you next time.

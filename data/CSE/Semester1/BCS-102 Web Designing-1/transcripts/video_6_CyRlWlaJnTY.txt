@@ -1,0 +1,53 @@
+In today's video, we will learn about Core Web Vitals and why they are important. Your website should run on all devices, including iPad, iPhone, Android, and Surface Pro 4. We need to provide a good experience to all users through our website. We will also learn about a hidden tool in Chrome called Lighthouse and how you can use it to enhance your website. Please write "Sigma batch OP" in the comment section below. Now, let's go to the computer screen and roll the intro.
+
+**Introduction to Core Web Vitals**
+
+I have come to my computer screen, and I will create a new folder named "video 6." In this folder, I will open VS Code as always. The topic I am going to discuss today is very important from the aspect of SEO. 
+
+First of all, what is SEO? SEO stands for Search Engine Optimization. If you look at any website, it has SEO. Let's take the example of Amazon.in. Amazon.in wants to load its website as quickly as possible so that their products can appear in search results. Google, being a search engine, is responsible for showing the best pages to users. Google prefers to show pages that load quickly, present good information, and provide a good user experience.
+
+For example, consider two pages that both discuss dog food. If one page loads very quickly compared to the other, Google will give preference to the faster-loading page. Core Web Vitals are metrics that Google considers when ranking pages. First of all, content is crucial; if your content is good, your website may rank without focusing on Core Web Vitals. However, if you are competing with a page that has similar quality content, your Core Web Vitals will be assessed, and if they are good, you will be given preference.
+
+**Understanding Core Web Vitals**
+
+The first Core Web Vital we will discuss is Cumulative Layout Shift (CLS). CLS measures how much the layout shifts while the page is loading. For example, if a user is trying to cancel an order and the layout shifts unexpectedly, it can lead to a poor user experience. To minimize CLS, you should define the width and height of images so that the layout remains stable during loading.
+
+The next metric is Largest Contentful Paint (LCP). LCP measures how long it takes for the largest element on the page to load. For instance, if the largest element is an image, LCP measures the time taken for that image to load. According to web.dev and Google, a good LCP score should be 2.5 seconds or less.
+
+The third metric is First Input Delay (FID). FID measures the time it takes for the browser to respond to the first user interaction, such as clicking a button. Google recommends that this input should start processing in less than 100 milliseconds.
+
+These three Core Web Vitals are essential for your website's performance. While they may be updated over time, they remain crucial for SEO.
+
+**Using Lighthouse for Performance Analysis**
+
+Now, I will show you what a Lighthouse report is, why it is generated, and how to assess these three Core Web Vitals. To access Lighthouse, right-click on the page and select "Inspect." You can adjust the panel's position as needed. You will see the option for Lighthouse, which generates a report indicating what can be improved on your HTML page.
+
+If I want to see how mobile users experience my website, I will select the mobile option and click on "Analyze Page Load." Lighthouse will generate a report covering performance, accessibility, best practices, SEO, and PWA (Progressive Web Apps). You may notice some items highlighted in red, indicating areas for improvement. For example, it might suggest that properly sizing your images can improve loading speed.
+
+Lighthouse will also indicate if image elements lack explicit width and height. Setting these attributes in HTML reserves space in the browser, preventing layout shifts during loading. If width and height are not set, the browser cannot determine how much space to reserve, leading to potential shifts in the layout.
+
+**Meta Tags and SEO Best Practices**
+
+Next, I want to discuss meta tags and meta descriptions. I will create a new file named "index.html." The first SEO element I want to address is the title. If your title reflects the content of your page, it is considered good SEO practice. Whenever your page changes, ensure the title accurately reflects its content. This is crucial for your website's visibility on Google.
+
+For example, if I write "Code with Harry" as the title, it will help improve my website's ranking. I will add content to the page, including an H1 tag with "Harry" and a paragraph with placeholder text. The title should be relevant to the content to enhance SEO.
+
+I will also show you how to preview this in a browser. If I leave it as is, it will not be good SEO practice. I will update the title to reflect the content better, which increases the chances of my website appearing in Google search results.
+
+Now, I will inspect the page and generate a Lighthouse report to see the scope for improvements. Currently, the report will likely be good since there is minimal content. However, when I add images, I will receive suggestions such as setting width and height.
+
+Additionally, you can check how your website appears on different devices by selecting the responsive option in the browser's developer tools. This allows you to see how your website looks on various devices, such as an iPhone 12 Pro or Surface Pro 7.
+
+**Conclusion and Further Learning**
+
+To summarize, your website should look good on all devices. I will provide more details on this throughout the course. 
+
+Now, regarding meta descriptions, I will add a description for my page. A meta description is a summary of the page's content. While it is not guaranteed that search engines will use your meta description, it is essential to provide a concise and relevant description, especially for blogs aiming for organic ranking.
+
+Meta keywords used to be significant but are now deprecated. Search engines do not consider them as they once did. Instead, the focus is on the quality of your content. 
+
+If you want to learn more about Core Web Vitals, you can access web.dev, which provides comprehensive information on these topics. 
+
+If you have not yet accessed the Sigma Web Development series, please do so. Bookmark the playlist or save it for future reference. 
+
+That's it for now, guys. Thank you for watching this video, and I will see you next time!

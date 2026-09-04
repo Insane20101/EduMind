@@ -1,0 +1,51 @@
+Finally, we will talk about Hamming Code for Error Detection and Correction. Before we talked about Hamming Distance, now we will talk about Hamming Code. We generally use Hamming Code for Error Detection and Correction. 
+
+Now look, remember the first point here: if Hamming Code is of 7 bits, then 4 bits are for data and 3 bits are for parity. Approximately you can say we are using 50% because remaining parity bits are redundant, but again the same thing, to detect and correct you will have to do it. 
+
+Similarly, if we talk about, look, understand the concept: which ones are data bits and which ones are parity? I have a 7 bits code: 1, 2, 3, 4, 5, 6, 7. I wrote it like this. Now see which ones are data bits and which ones are parity. For that, we use the 2 raised to power n formula, where n is 0, 1, 2, 3 and so on. 
+
+Look, 2 raised to power 0 is 1, so my first position is parity. Then 2 raised to power 1 is 2, so the second position is parity. You simply have to put 2 raised to power 2, 2 raised to power 3. So 2 raised to power 2 is 4, meaning this is parity. 2 raised to power 3 is 8; 8 is not here, but if it was, then that too would be parity. Just remember this point this way. 
+
+So remaining is what? Data. Here p0, p1, p2 these three are parity, and d0, d1, d2, d3 are data bits this way. 
+
+Similarly, if I take an 11 bits code, in an 11 bits code, I have 4 parity bits and rest all are data bits. So how do we know which are parity and which are data? See the position: 2 raised to power 0, 1 is what? Parity bit. This r1 is parity, r2 is parity, r4 is parity at the fourth position, then parity comes at the 8th position, then the 16th position. 16 is not here because it is an 11 bits code. So remaining I have data bits. Remaining all data bits I have taken. 
+
+Now what to do? Nothing, now you simply have to pick the data. Let's say I have code 1010, getting the point? 1010. Meaning here I have data 1010. I will change the color, like see this: here I have 1, this is 0, this is 1, and this is 0. I think it's visible to everyone. This is 1, this is 0, this is 1, and this is 0. I wrote 1 in d3, 0 in d2, 1 in d1, and 0 in d0, getting the point? Because this is my MSB, this LSB, so I wrote this according to MSB/LSB. 
+
+Now how to calculate p0? How will parity p0 be calculated? Here is the formula. To calculate p0 you will have to perform XOR between d1, d0, and d3. How will you know it? You have to calculate p0 or you have to calculate first parity. So for the first parity, you have to pick odd number of bits like 1st, 3rd, 5th, 7th, and so on. 
+
+So when you pick odd number of bits, when you pick d3, d1, d0... Pick d3, d1, and d0. d0 is here, 0, 1, 1. 011. What is the answer? 011. Now look, 0, 1, and 1, these are what? These are already even parity. To use even parity or odd, this will also be given to you. Let's say we are using even parity, or you can say performing XOR operation, then what is 0 XOR 1? 1. What is 1 XOR 1? 0. So my answer will be 0. Meaning in p0 I have 0 bits, getting the point? 
+
+Similarly, I will calculate p1. To calculate p1, you have to take d0, d2, and d3. How will you know? p1 means the second parity you have to take. So second and third, then leave the fourth and fifth, take sixth and seventh, leave eighth and ninth. This way you have to pick 2, leave 2, pick 2, leave 2. 
+
+Similarly, when you calculate p2, p2 is at which position? Fourth. So 4th, 5th, 6th, 7th, pick four, then leave four, pick four, leave four. This way you have to calculate this. So when you calculate parity, then you put in parity values. 
+
+Like similarly we calculated p0, then you calculate p1. How to calculate p1? d3, d2, and d0. d0 is what? 001. Meaning if you do between them, then here I will have 1, so my p1 is 1, getting the point? 
+
+Similarly, you calculate p2. For p2, what you have to do is this. For p2 what you have to do? I have written here. I'll erase it slightly here, getting the point? For p2 what you have to do? Pick these 3 bits and do XOR in them so that will give the p2 bit. 
+
+This will be my entire code like I have shown in the example below. This 11 bit code I have, in this if I pick values this way, then this becomes my entire code word. So we send this code word, getting the point? So we will send this code word, then your error will be detected this way. If any error comes, any problem comes in between, then this will detect the error, because my receiver will also use this same funda. Receiver will also use this same funda. Similarly, it will calculate the parity and it will know where any problem occurs. 
+
+Another small example I will show you. Now I will tell you how to detect. Correction is done, now I will tell you how to detect. I will show you in this example below, see this. This I have data words, what's the value in data? 10011011, getting the point? 
+
+Now what do I have to calculate? First r1, meaning parity 1 I calculated, then I calculated parity 2, parity 4, and parity 8. How did I do it? The same funda that I have written here: pick odd for r1; for r2 pick 2, 3, leave 4, 5 then 6, 7, leave 8, 9 then 10, 11 and so on. For r4 pick 4, 5, 6, 7, leave 8, 9, 10, 11. 12, 13 are not here else we would pick it: 12, 13, 14, 15. And for r8 take 8, 9, 10, 11, 12, 13, 14, 15, all eight you have to pick, but here code is only 11 bits, so you pick these 4 and calculate. 
+
+So what did it do? It picked all these values and calculated, and this is my code word. 
+
+Now look, let's say at the receiver end, let's say this ninth bit which is 0, I made 1. This ninth bit I intentionally made from 0 to 1. Now receiver picks it up. When receiver picks it, it will first detect. When it detects, it will again pick these 4, meaning this code that I gave, it will pick this, calculate the parity, so parity obviously will not match, then it will know that error is there. 
+
+Now how to correct? What it will do to correct? First it will calculate r1. When it calculates r1, which values will you pick when calculating r1? 1, 3, 5, 7, 9, 11. When you pick all these bits 1, 3, 5, 7, 9, 11 then what answer will you get? Wrong answer. 
+
+Wrong answer means what? Look, I will do it and show you: 1, 3. Which is 1? This one. 1, 3, 5, 7, 9, and 11, getting the point? Now I have intentionally made the ninth bit 1, so that I know that error has occurred. Now pick all of these. What are the values on them? 1, 1. If you do 1 XOR 1, then what will be the answer? 0. Here if you do 0 XOR 1, then what will be the answer? 1. If you do 1 XOR 0, then what will be the answer? 1. If you do 1 XOR 1, then the answer will be 0. If you do 0 XOR 1, then what will be the answer? 1. Final answer I have is 1, getting the point? 
+
+So when I have the answer as 1, I check parity here. If we check parity, then what answer I got? 1. 
+
+Let's calculate once again. 11th bit I have is 1, 9th bit I have is 1 (I made it 1 intentionally), 7th bit I have is 1, 5th bit I have is 0, 3rd bit I have is 1, and 1st bit I have is 1. So here calculate the number of 1s: 1, 2, 3, 4, 5. So how many number of 1s are here? 5. What is the number of 1s I have? 5. So if the number of 1s is 5, then there is some problem here because this value, I am working on even parity, so it will be like even parity. So in this bit this should be 0, then it would be even. Meaning this shows me that some error has occurred. So wherever error has occurred, you consider that. So error is detected. 
+
+Now to correct: when you calculated r1 there was some problem. So you write the problem as 1. Problem means 1 you wrote. Similarly, when you calculate r2, do it; there will be no problem in it because 9th did not come in it. So you write it as 0. Similarly, when you calculate r4, there will be no problems in that, parity will be correct because the 9th bit did not come in it. Similarly, when you calculate r8, it will have a problem because it has 9. So when a problem comes, you write it as 1. 
+
+So when you do r8, r4, r2, r1 this way, then this answer will be what? 9. When you convert it into decimal, it will be 9. From that, you will know that in the 9th bit, there is some error. 
+
+What is the error in the 9th bit? 1. So meaning this 1 you make 0, because you can only convert 1 to 0 or 0 to 1. So 1 already I have, receiver sees 1. Now it calculates that the problem is in the 9th bit. Then it will convert 1 into 0. So meaning here my error is also corrected. 
+
+So this way we perform error detection and correction. Here you have the whole story of how we do error control in the Data Link Layer. Thank you.

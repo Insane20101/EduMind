@@ -1,0 +1,31 @@
+Welcome to Gate Smashers. The topic is Primary Index. 
+
+A primary index is only applied on data if it follows two situations. The first condition is the data file that you are entering in the hard disk, because we want to store data permanently. So, when we store data permanently, what option do we have? Storing in hard disk means storing in secondary memory. So, in the secondary memory, the file that we are storing—that file has two conditions. 
+
+The first condition is order. Order means sorted, ascending or descending—there is no problem in that, but it should be ordered. 
+
+The second is key value. It means it should be unique. So, first, data should be unique, and second, it should be ordered. If both these conditions get fulfilled, then which index will we use? It is a primary index. So this is the condition to apply a primary index. 
+
+If I will give you a simple example: if you are working on Oracle or SQL Server, and there in a table, a table where you make data—meaning create table, table name—in that, when we insert data in the table, if you make a primary key, anything that we have made a primary key (roll number, registration number), then by default, a primary index will apply on it automatically. So, a primary index is basically used based on this: first, your data is ordered, and second, it has a key value—it is unique. 
+
+So, when its index will form, in the index, as we have discussed earlier also, two things are there: first is the key value, and second is the pointer. Key values mean how you have to search data. How to search data? If I take the example of any university or college, so in any university or college, if I have to find any detail of a student online, how will I find it? I will use the registration number or roll number, and I can find out their detail. 
+
+And the same, we talk about IRCTC in Indian Railways. If I have to search information of any train, how is it searched? By its train number. Although you can do it with train name also. So, what problem can come by name? If you will enter Shatabdi or Rajdhani Express or Jammu or any train, then it is multiple. Shatabdi is not single, but it is present on many routes. So, it will show many options, then again you have to search, so that search will take a little more time. The best option is to add the train number; only one entry will come. Just as if you add a registration number or roll number, then one entry will come that you want. 
+
+So, the biggest benefit of a primary index is the key value and pointer. And here, if I talk about a student table, and in the student table, if I say that in the database we have name, ID, age, address—a lot of data is present—if here roll number is my key value, unique value, so I will use that only as a search key in the index table. So, here I will add values and a pointer that will point out that data.
+
+Now, the second point here is, like I have discussed in the last video also, I have taken a numerical example where I have, with a proper example, explained the meaning of dense and sparse. I will share the link of that video in the description box; do check it because if you are coming to this video after studying that example, then it will be very much clear to you. 
+
+So, if I am talking about the data that we are entering, let's say, will it be sparse or dense? Meaning, when I know that data is sorted—data is sorted and unique—so here 1, 2, 3, 4, if in the first block, in this block first 4 entries are there, block 2 has 4 entries, and block 3 also has 4 entries, so for these 4 entries in the index table, I will not do 4 entries. In the index table, I will do 1 entry for 1, and for that, there will be a pointer that will point this. And then the next entry—2, 3, 4? No, the next entry will be 5, and 5 will point this. Then 6, 7, 8? No, the next entry will be 9, and 9 will point out this. This is called as sparse. 
+
+Although, if you want to make it, you can make a primary index dense also. Meaning, the same number of entries that are here will be here also. If here there are 10 lakh entries, then do 10 lakh entries, but that won't be beneficial because you have to manage so many pointers, and if you manage pointers, that complexity will increase. So, that's why a primary index is generally sparse. So, the best is to make a primary index as sparse. 
+
+In the case of sparse, how many pointers do I have to keep? How will you find that this 1 is for block 1, one and second block second one, for third, one for fourth, and one for fifth? So, you can say the number of entries in the index table is equal to the number of blocks in the hard disk. So, total number of blocks in the hard disk—that many entries. Obviously, the number of pointers will get reduced, and this is called an anchor record. It is working like a leader; it is an anchor. 1 is an anchor, 5 is an anchor, 9 is an anchor, and 13 is an anchor. 
+
+So, let's say I have to search 3, so it is easy. I know if I'm searching 3, here 3 is not there, but I know 3 is lesser than 5 and bigger than 1. So, it is obvious that it will be in block 1. And if I have to search 8, there is no entry of 8 in the index, but 8 is lesser than 9 and bigger than 5, so it will be in block 5. This is how we actually search. 
+
+So, through a primary index, your search time gets reduced. If I say $(\log_2 N) + 1$, where $N$ is the number of blocks—number of blocks, number of blocks in the index table, not in the hard disk, in the index table. Total number of blocks in the index table. Because data here will be sorted, so apply binary search, $\log N$. $N$ is the number of blocks in the index table. 
+
+Why is there $+1$? Because from here you'll get a number, let's say you want to search for the detail of student 1. So, you know that for student 1 you got the pointer, you move to the page number and to that block, but its detail (age, father's name, mother's name, etc.) is on the hard disk, so one time you have to search here, after that you have to search 1 block here in the hard disk. So, you can find out the whole detail of that person. So, the time complexity is $\log N + 1$, or you can say order of $\log N$. 
+
+So, this is all about primary index. This question is already asked many times. This point you always have to remember: first is sparse, and second is on order or key. Thank you.

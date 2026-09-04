@@ -1,0 +1,68 @@
+### Equivalence of Functional Dependencies
+
+Likewise, if we are given two sets of functional dependencies and if we have to check whether they are equivalent or not, now they will not appear equivalent to us, but when we check them, then they may be equal or not. This topic is a bit tricky because students feel that it is a little difficult, but actually, it is not difficult, and we will make it more easy. 
+
+Suppose we have one X functional dependency set and one Y. Now, X and Y don't look equal, but can we prove it is equal or not? For that, we have to check the equivalence of functional dependencies. 
+
+So how to check? Like we have X and Y. Two sets of functional dependencies are given, so first of all, we have to check whether X covers Y or not, which we can write as "X covers Y" or not, and whether "Y covers X" or not. 
+
+First, this is the case: we have to check whether X covers Y or not, and then we will check if Y covers X or not. If both these things become true, then we can definitely say X is equivalent to Y, meaning the functional dependency set X is equivalent to Y. But for that, first I have to check that X is covering the functional dependency of Y, and Y is covering the functional dependency of X. If both these things turn out to be true, this and this symbol will cancel out, so you can say yes, they are equivalent. 
+
+So to check that, how to do it? Let's say first is if X covers Y or not, meaning X is covering Y or not. Then to prove it, first of all, you have to take Y. In Y, what is the first dependency? $A \rightarrow B$, $B \rightarrow C$, $A \rightarrow C$. 
+
+Now, let's take the closure of $A$ of Y's first dependency, like $A^+$. See this carefully: in "X covering Y," X is covering the functional dependency of Y, meaning we will first take the closure of Y. For Y's first dependency, that is $A \rightarrow B$, we will take the closure of $A$, but not from here—from X. 
+
+1. Meaning, first take the left-hand side of Y, but take its closure seeing from X. How? Let's see. We took the closure of $A$. So what is the closure of $A$ in this? $A \rightarrow B$ and $B \rightarrow C$, means you can say $A$ is covering $A$ itself, $A$ is covering $B$, and through $B$, $A$ is covering $C$. 
+2. So here, which is the first dependency coming to me? $A \rightarrow B$. So check whether $A$ is covering $B$ or not. Yes, $A$ is covering $B$, $A$ is determining $B$, so yes, this is fine. 
+3. Now, the next dependency is what? $B$. It means we will take the closure of $B$, which is the left-hand side ($B$). We will take the closure of $B$, but from here (X). So if we take the closure of $B$ from here, then $B$ is first determining $B$, and $B$ is also determining $C$. Now, check for this: What is the dependency here? $B \rightarrow C$. Check whether $B \rightarrow C$ is coming here. Yes, $B$ is determining $C$. We are checking through X because we did not take $B$'s closure from Y. From where did we take the closure of $B$? From X. So yes, $B$ is determining $C$, so this is also valid. 
+4. Now, the third one: we will take the closure of $A$, but from X, that we have already taken. We had checked the closure of $A$ from X, so $A, B, C$ came. That means $A$ should cover $C$, so yes, $A$ is covering $C$, but from X. So $A$ is covering $C$ means this one's dependency is also getting covered, so this one is valid. 
+
+If X covers Y or not? Yes, X is covering Y. 
+
+Now we will check whether Y covers X or not. For that, you have to take the dependency, meaning Y covers the dependency of X. So now we will take the left-hand side of X. What is the first dependency in the left-hand side of X? $A$. So we will take the closure of $A$, but $A$'s closure out of Y. We took the left-hand side of X, but from where will we take its closure? From Y. 
+
+So from there, if we look at the closure, $A$ is coming from $A$. From $A$, $B$ is coming, and from $B$, $C$ is coming. So, through the transitive property, $A$ to $B$ and $B$ to $C$, so $ABC$. 
+
+Now check: in X, there is $A \rightarrow B$. So look here, $A \rightarrow B$ is coming? Yes, $A$ is determining $B$, so this is valid. 
+Now, $B \rightarrow C$. Now we will take the closure of $B$ one by one, meaning for all the dependencies in X, we will take their left-hand side and take their closure seeing from Y. Now, my second dependency in this is $B \rightarrow C$. We will take the closure of $B$, but out of Y. Now, $B$ will come in the closure of $B$ because of the reflexive property. From $B$, $C$ is coming. So now check: what is the dependency? $B \rightarrow C$. Is $B \rightarrow C$ coming over here? Yes, $B \rightarrow C$ is coming here, means we can say this is also true. 
+
+So Y is also covered, Y is also covering X. Both the things are true here: X is also covering Y, and Y is also covering X. So you can cancel out, and we can say X is equivalent to Y. This is the proof of this.
+
+---
+
+### Second Example
+
+Let's see one more example. In that, we will check whether it is equivalent or not. 
+
+Let's say there is X, and in that, we have the dependencies:
+* $AB \rightarrow CD$
+* $B \rightarrow C$
+* $C \rightarrow D$
+
+And one more dependency set is Y. In Y, we have:
+* $AB \rightarrow C$
+* $AB \rightarrow D$
+* $C \rightarrow D$
+
+These two dependency sets are given to you. Now what happens? Many times we will not know whether it is equivalent or not, so that's why you have to follow only this method: first, check if X covers Y, and then we will check that Y covers X. 
+
+#### Part 1: X covers Y?
+For that, let's say X is covering Y, meaning we will take the closure of Y's left-hand sides, but after seeing from X. How?
+1. Y's first dependency is $AB \rightarrow C$. It means we will take the closure of $AB$. We have written the first dependency of Y, we will take its left-hand side closure, but looking from X. Now, if we see the closure of $AB$ from X, then $AB$ will come. From $AB$, for sure (it is reflexive), $CD$ is also coming from $AB$. $C$ and $D$ are also coming from $AB$. And what we have in Y? $AB \rightarrow C$. So let's check: $AB \rightarrow C$ is coming? Yes, $AB$ is determining $C$, means this is valid. 
+2. Check for the second one: $AB \rightarrow D$. This is also $AB$, so we have already taken the closure of $AB$, so you can directly check from here whether $AB$ is determining $D$ or not. We have already taken the closure of $AB$ by seeing X, so from $AB$, yes, $D$ is also coming. This is also valid, this is also true. 
+3. Let's check for the third one: $C \rightarrow D$. We will take the closure of $C$. The third one is $C$, meaning one by one we have to write the left-hand side of all the dependencies and we will take their closure, but from X. So the closure of $C$ we will take from X. So from $C$, we can determine $C$. Now, from $C$ here, $D$ is also coming. Now we will check here: what is it saying here? $C \rightarrow D$. Check: $C$ determines $D$ is coming? Yes, $C$ is determining $D$, so this is also valid. 
+
+So we can say whether X covers Y or not? Yes, it is true, X is covering Y. 
+
+#### Part 2: Y covers X?
+Now we will check the reverse part: that is, Y covering X or not? 
+To prove that, we will take the left-hand side of X. In the left-hand side of X, I have $AB$. We will take the closure of $AB$ after seeing Y, because we are checking if Y is covering the dependency of X. We will take the left-hand side of X and its closure from Y. 
+1. According to Y, from $AB$, $AB$ is coming, $C$ is also coming from $AB$, and $D$ is coming from $C$ (via $C \rightarrow D$). So check here: the dependency of X is saying from $AB$ to $CD$. Let's check whether $AB$ is determining $CD$. Yes, $AB$ is determining $D$. This is done, this is true. 
+2. Now check for the second one: $B$. We take its left-hand side ($B$), take the closure, but from whom will the closure be taken? Out of Y. Then according to Y, in $B$'s closure, $B$ will come because of the reflexive property. So $B$ is coming from $B$. And from $B$, nothing else is coming from $B$. Because $AB$ is determining $C$ ($AB \rightarrow C$), $A$ together with $B$ is determining $C$, and $AB$ together combined, they are determining $D$. But what is $B$ alone doing here? $B$ alone is not proving anything. $B$ alone is not determining anything. But what is X saying? That $B$ determines $C$. But here $B$ is not determining $C$, so this is not covered. This is not covered. 
+3. Let's check the third one, that is $C \rightarrow D$. You can directly say yes, because $C \rightarrow D$ is here as well. It is common in both. If you want to check with closure, then you can also check with closure: take the closure of $C$, but from Y. So $C \to C$ is coming, $D$ is coming from $C$. $C$ is covering $D$, yes, then you can write. 
+
+But there is one dependency which is not covered by Y, meaning one dependency of X is such that Y is not able to cover it, and that is $B \rightarrow C$. So, whether Y covers X or not—this is invalid. 
+
+So here in this question, you can say that X and Y are not equivalent. In this, if you are asked by options, you can say yes, X is covering Y (this is true), but is Y covering X? This is false. And you can say this is false, and this is true. 
+
+So this is how we can check the equivalence of functional dependency sets.

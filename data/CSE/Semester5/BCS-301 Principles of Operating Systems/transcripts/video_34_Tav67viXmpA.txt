@@ -1,0 +1,75 @@
+Let's solve one question. The question is on Binary Semaphore, in which we have been given 10 processes, out of which P1 to P9 (the first 9 processes) are executing this code, and P10 is executing this code. 
+
+What is the meaning of that? P1 to P9 are executing this code, and P10—all the 10 processes—are cooperative processes, meaning they share something common. They share something common like code, a variable, or memory. Now, that common thing, that code which is part of the common resource, we keep that code in the critical section. 
+
+Now, if P1 wants to execute this code, then before executing that, it has to execute this entry section code. And this is the exit section. This means that in the critical section, whatever line of code is there which is shared by all P1 to P10, a process will execute that line of code when it enters the critical section. And to enter the critical section, it has to execute this entry section code, and to exit—when it exits, meaning it comes out of there—it executes this code. 
+
+But for P10, while P1 to P9 are all executing this same code, P10 executes a different code. Meaning, P10 wants to come into the critical section, so what is the entry code for that? This one. And what is the exit code when P10 comes out from the critical section? What is the exit code? This one. 
+
+Now, what is the question they asked? What is the maximum number of processes that may be present in the critical section at any point of time? Meaning, at any point of time, the maximum number of processes which can reside in the critical section that may be present, you will have to find out. 
+
+Now, we can solve this case by case. Let's take a simple case, case 1. In case 1, let's say P1 comes. Since P1 to P9 are executing this code, P1 comes. `P(mutex)`. P1 comes and repeats. This "repeat" and "forever" is just a basis, just brackets only. So, `P(mutex)`, what is the mutex value? The mutex value is initialized to 1. What is the `P(mutex)`? As we already know, it is a Down operation, meaning the value will go from 1 to 0, and the process will properly execute this line and enter the critical section. So, P1 enters the critical section. 
+
+Now P1 enters the critical section, so let's say we keep this case 1 simple. P1 executes all lines of code whatever was common, and P1 exits from the critical section. When P1 exits the critical section, then which code will it run? This one: `V(mutex)`. `V(mutex)` means value Up; the value was made from 0 to 1. When the value was made from 0 to 1, the mutex value again became 1. But now, who is in the critical section? No one. P1 had come; it is gone. This is one of the cases. 
+
+Another case can be, let's say, case 2. P1 comes, P1 runs this code `P(mutex)`. Let's say the mutex value is again initialized to 1. `P(mutex)` means the value will go from 1 to 0, made Down, and successfully becomes Down, meaning P1 enters the critical section. 
+
+Now, what is my question? What is the maximum number of processes? When in the question it is asked that the maximum number of processes that can reside in the critical section, then why take out the process? You keep the process inside the critical section and now check whether another process can enter. 
+
+Let's say P2 wants to enter. P2 comes, and P2 will run this same code. P2 executes `P(mutex)`. What is the mutex value? 0. This means the mutex value is already Down (0), and we already know that if the mutex value is 0 and any process runs `P(mutex)`, then it will stay at 0, and P2 will be blocked, meaning it will go into the suspended list because this unsuccessful operation is performed. The mutex value was already 0, and over that, you again did P. P means you are making it Down; it can't go Down from 0 because there are only two values in Binary, either 0 or 1. Now we did `P(mutex)`, so since this is already 0, P2 will be what? Blocked, suspended. 
+
+Now, at the time P3 comes, P3 is also blocked because already the value of P is what? The mutex value is 0. P3 will also run this, will run `P(mutex)`. As soon as it runs `P(mutex)`, the mutex value is already 0, so P3 is also blocked. P4 can come; P4 is blocked. 
+
+Means, if you see this case, it is a simple case where P1 enters the critical section, and now from P2 to P9, no process can enter the critical section. But we have the P10 process also. 
+
+Now, P10 says that if P10 wants to enter the critical section, then it runs this code for entry. What is the code? `V(mutex)`. What is the meaning of `V(mutex)`? It will make the mutex value go from 0 to 1. The mutex value becomes 0 to 1. This means it is successful. It made the mutex value from 0 to 1 and entered the critical section. 
+
+As we already know, `V(mutex)` never stops any program or process from entering the critical section. V—or we can say Up, or we can call it Signal—they have different synonyms, different functions. This process never stops anything from entering the critical section because `V(mutex)` means making the value Up. The value was 0, it became 0 to 1, and who enters the critical section? P10. P10 successfully enters the critical section. What does the value of mutex become? 1. 
+
+Now let's say P2 comes—meaning first P1 came, then P10 executes, and now let's say P2 comes. Now this is the sequence. If P2 came, P2 will run which code? This one: `P(mutex)`. What is the mutex value? 1. The value is made from 1 to 0, and who enters the critical section? P2. P2 enters the critical section. 
+
+Now let's say that P3 wants to come. If P3 comes, it will be blocked because the mutex value has already become 0. So for P3, P4, P5, P6, there is no scope. If they run—in case if they come, saying "no, we want to execute"—then as soon as they do `P(mutex)`, they will be blocked. So if they are suspended, they will again have to be woken up, and to wake up again, I will have to take the help of `V(mutex)`. 
+
+Now, a lot of students have marked the answer as 3, because P1, P10, and P2 have come, so the maximum number of processes are 3. But what do you think, is this answer right or wrong? This is wrong. You have put P10 inside the critical section. 
+
+This is the twist in the question. Whenever this question comes in GATE, they always check the concept of whether you know the concept of any topic or not, but one step further—meaning, somewhere there is a small twist in each question. 
+
+Now, what is the twist in this question? You understand the concept: P does this, V does this, you made this case, put P10, P1, P2, and in the options, there will be an option 3. You marked 3 and finished it. But there is a twist in this. What is the twist? 
+
+You can take P10 out also. Let's say that P10 exits from the critical section. If P10 exits the critical section, then while coming out it will exit and it will do `V(mutex)`. What is the meaning of `V(mutex)`? The value again became from 0 to 1. This means now again a scope is created for some process; it can enter. 
+
+Now let's say P3, P1, and P2 are already in, and P3 comes. As soon as P3 comes, it sees `P(mutex)`, the mutex value is made from 1 to 0, and P3 enters the critical section. It enters the critical section, and the value becomes 0. 
+
+Now at this time, P4 wants to come; it will be blocked. P5 wants to come; it may be blocked. P6 is blocked because already the mutex value became 0, so no one can run this code. But we can put P10 in again. If I again put P10 in the critical section, then which code will it run? This one: `V(mutex)`, which means the mutex value again becomes from 0 to 1, and P10 comes into the critical section. Who enters the critical section? P10. So the value of mutex is 1. 
+
+Now here, scope is created for P4 to enter. You run P4; what will P4 do? `P(mutex)`, which means the value of 1 becomes again from 1 to 0, and P4 easily enters the critical section. 
+
+Now you may be thinking this is the only case—meaning 1, 2, 3, 4, 5 is the answer. But still, more processes can come. How? You bring P10 out again from the critical section. When you bring it out of the critical section, it will run the exit code. What is the exit code? `V(mutex)`. This means the value of mutex again becomes from 0 to 1, and now here scope is created for P5. So P5 will enter. How? It makes the value from 1 to 0, and P5 will enter. 
+
+Now again the value becomes 0, so P6 cannot enter, P7 cannot enter, but P10 can enter? Yes, when P10 enters again, it will do `V(mutex)`, and the value will again become from 0 to 1. 
+
+So, what are we doing? Like this is one of the cases. This case—when you practice these questions, you can automatically find out this case. Otherwise, it is possible that you mark the answer as 1, 2, or 3, but the maximum answer is what? 10. 
+
+How? You put P1. Now, when P1 is put in, there is no scope for P2 to P9. But there is scope for P10, and what is written in P10? `V(mutex)`. `V(mutex)` means V never stops any process. `V(mutex)`—the value will become from 0 to 1, and P10 will enter. P10 enters. Now you can easily put P2 because the mutex value becomes 1. Now again bring P10 out, bring a new process in, again bring P10 out, bring a new process in, bring P10 out, bring a new process in. This is what you can follow. 
+
+So, one point will come such that in the critical section, all 10 processes can reside. This can be—meaning the maximum number of processes that may or that can present. It is not mandatory that always 10 will be there; it is possible that fewer processes may come, but if you have been asked for the maximum number, then you have to try to bring in the maximum number of processes. Fine. 
+
+So if in this question, let's say, if I make a little change—in this question, if we make a little change: here, instead of `V(mutex)`, if I make it `P(mutex)`, with the mutex value initialized to 1. 
+
+So look again. There is a critical section. In the critical section, let's say P1 came. First P1 came, the mutex value is 1, it will make it from 1 to 0 via `P(mutex)`, and P1 enters the critical section. 
+
+Now P10—if now you want to put P2 in, you put P2 in, then P2 cannot enter because the mutex value is already 0. P3 wants to come, but the mutex value is already 0, so all of them can be blocked. So don't put it. 
+
+But can you put P10? Yes. You can put P10 because P10 does `V(mutex)`, not `P(mutex)`. So P10 you easily put in the critical section. What is the entry code? `V(mutex)`. This means the value was made Up from 0 to 1. 
+
+Now out of these, P2 to P9, any process can enter. Let's say you put P2 in the critical section. How? It did `P(mutex)` (1 to 0), and P2 enters the critical section. 
+
+Now see, P2 enters the critical section. Now if you bring P10 out, then it also does `P(mutex)`. This means the mutex value now cannot become from 0 to 1. If in case you bring P1 out—you bring P1 out, and the mutex value... because when P1 exits, it will run this exit code. It runs this exit code, and the value becomes from 0 to 1. So the value becomes 1. Now let's say P3 comes; P3 made the value from 1 to 0 and entered the critical section. 
+
+So, now more than 3 processes cannot enter the critical section. The maximum number of processes that can enter the critical section is 3. 1 can come, 2 can come, but if the question is "what is the maximum number?", that will be 3 only. 
+
+But why is it 3 here? Because we have made a slight change in this code: there was a V here before, and now we made it P. So this is how we have to solve the questions in GATE. In every question of GATE, you will get a little twist somewhere. If you can catch that twist, then you can solve that question easily. 
+
+And there is only one way to catch the twist: the more questions you try—meaning, on one topic, however much applicability it has—they are all questions. On one topic you do 20-30 different types of questions, then you will not need to practice more than that. So this is how we have to solve the questions of GATE. 
+
+So if you liked this video, then please like it, share it, and if you have any query, then you can ask in the comments, and please subscribe to my channel. Thank you.

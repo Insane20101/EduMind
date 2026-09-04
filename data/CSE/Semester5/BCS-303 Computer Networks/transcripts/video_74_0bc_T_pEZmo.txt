@@ -1,0 +1,61 @@
+Hello friends, welcome to Gate Smashers! Today's question is from computer networks, and the topic I have chosen is TCP congestion protocol. 
+
+Here, what question is given? Let the size of the congestion window of a TCP connection in two cases—Case 1: Timeout, Case 2: 3 Acknowledgements received—is 32 KB. The RTT, that is round trip time of a connection, is 100 milliseconds, and MSS, that is Maximum Segment Size, is 2 KB. The time taken in milliseconds by the TCP connection to get back to a 32 KB congestion window is dash and dash respectively.
+
+So, what are we given first of all in the question? That there is a TCP connection, and on that, the congestion control method is already applied. An error had occurred at any particular time; a congestion had occurred, or you can say a congestion had been detected. There are two cases of congestion detection: either due to timeout or after 3 acknowledgements, we get to know, okay, there is congestion. So, in that case, when this error or congestion is detected, the window's size is 32 KB. The Round Trip Time, if we are sending packets or segments at once, is 100 milliseconds, and the Maximum Segment Size is 2 KB. We have to find out when the window's size will be 32 KB again.
+
+Before solving this question, I am giving you an overview of this. I have already made this diagram here to save some time. How congestion control works in TCP: it works in three phases. 
+
+The first phase is slow start, exponential growth. It means either you have to start from 1 MSS or 2 MSS. That is given in the question, like here it's given as a minimum of 2 KB. Many times it is given as 1 KB, so you have to start from 2. Slow start, exponential growth means 2, 4, after that 8, 16, 32. You have to go in powers of 2. 
+
+When you achieve a threshold value (how to find out that threshold? You will know in some time), when you achieve that threshold value, you have to stop there, and from there you have to grow linearly. Linearly means you have to add one by one or two by two, which we call the congestion avoidance phase. 
+
+The first phase was slow start / exponential growth, the second is congestion avoidance. After that, finally, at a point, you will reach equal to the maximum receiver window size. After that, you have to grow constantly. 
+
+This is a simple point, but when you are doing this work—when you reached here from slow start to congestion avoidance, after that here you become constant—congestion can occur at any point. But when will that congestion get detected? 
+
+Either a timeout occurs, meaning I have sent a packet or a segment and I got no acknowledgement. I have waited till the timeout timer, then I have sent the packets again. In this case, we say that congestion is severe. Severe means congestion is very difficult, congestions are many. 
+
+But in the case of 3 acknowledgements, we say that congestion is light. Light means it is low, because 3 acknowledgements mean, let's say, you have sent some segments. You only received acknowledgements for some of the segments—that I have received these, but did not receive this particular one. 
+
+So you have to remember only this point: if the case is of 3 acknowledgements, then the congestion will be light. In the case of timeout, it is severe. Here, this diagram will help you a lot, not only in this question. If any congestion comes up in TCP congestion, this diagram will help you a lot.
+
+So, let's start this question. It is saying that at any point in time, the window size, the TCP congestion size, is what? 32 KB. After that, what happens? Congestion is detected. Let's say, I will take Case 1 first. Case 1 means timeout. You get to know there is a—meaning you have sent a packet and you didn't receive its acknowledgement. So what's there? A timeout timer. 
+
+In that case, what you have to do is: when the size of the window or congestion is 32 KB, then you get to know that there is a timeout. So, in the case of timeout, what does the protocol say? That in which phase you have to go? In the slow start phase. And you have to go in the slow start phase, meaning your window size, from where will it start again? From 2, which is your initial value. Many times the initial value is given as 1 also. Here you are given 2, so you have to start again with 2, meaning whatever the current window size was, from that window size, you have to go into which phase? The slow start phase. But which one is the case? Timeout.
+
+Now, here you have to find the threshold value. How do we find the threshold value? It's a simple way: when you had been detected with congestion, whatever the window size was at that particular time—let's say it was 32, as given—you have to divide it by 2. So what's the answer? It is 16. 
+
+What is 16 here? It is the window size which will become the threshold value. So, how do you have to go to the threshold value? You have to go with slow start and exponential growth, meaning 2 to 4, meaning first you will send 2 segments, then 4, then you will send 8, then you will send 16. After 16, stop. See, you have grown exponentially till 16, till the threshold. You have to stop there. 
+
+After that, you have to grow linearly. Linearly means simply keep adding into this. Adding means after 16, add 2 into this. What will it become? 18. Meaning how many segments you will send at once? 18, then 20, 22, 24, 26, 28, 30, 32. 
+
+So, at 32 you are asked the same thing: how will you reach the window size of 32 again? After how much time will you reach there? So, you have run this whole process, and now you have reached 32. Here congestion can come again at any point, but we are solving this question, so you have reached 32. 
+
+So you count after how much you have reached. First you have sent 2, because here was timeout, after that first you have sent 2, then this, then this, then this... So how much? 1, 2, 3, 4... 8, 9, 10, 12... So, 12 segments. You have sent 12 different segments. So, 12 into what is the round trip time? 100. Because, let's say, you are sending 2 segments at once, so you will get acknowledgement for both of them. So, that is what a round trip time is: till when you did not receive any acknowledgement. Whole 2 into propagation delay, that we call as Round Trip Time. So, it simply comes out to 1200 milliseconds. This is a simple way.
+
+Now, if we talk about the second case, Case number 2: what is it saying in Case 2? That when the window size was 32, at that time the congestion was detected. But how is that congestion detected? Due to 3 acknowledgements. 
+
+Now, what do you have to do in this case? Now you don't have to come into the slow start phase. You have to go directly into the linear phase. Linear phase means: find the threshold value. I have just told you about the threshold value. What's the formula? 32 divided by 2. What's the answer? 16. 
+
+Means now you don't have to start with 2 packets. There you had to send 2 segments; here you can directly send 16 segments. Because we start from here in the case of 3 acknowledgements. Directly, because we are saying that there the congestion was light. So, light means that we are not decreasing too much; we are directly starting from the half. But what are we saying in the case of severe? That go to the least value. Then we had started from 2. Now you have to start from 16. 
+
+Simply add linearly: after 16, simply 18, 20, 22, 24, 26, 28, 30, 32. So you reached 32 again. This we have to find out. 
+
+So how many segments have you sent? 1, 2, 3, 4, 5, 6, 7, 8, 9. So, nine times. Because every time, first you have sent 16 segments, then 18. Like this, you have run 9 times, and each time you took a time of 100 milliseconds. Because propagation delay is 50, acknowledgement is 50. So, what's the total? 100. So, this is what? 900 milliseconds. 
+
+So, what's your answer coming here? 1200 and 900 milliseconds. So this is how you have to solve the questions related to the congestion window.
+
+I will tell you one more point here. Sometimes the value of the threshold—let's say it is 33. When you will divide 33 by 2, always remember this: what's the answer here? In this case, it is 16.5. So in the case of 16.5, you take the lower value, that is 16. Many times what happens to make the question complex, they do it sometimes. But you don't have to worry! These are very simple level questions. 
+
+But remember one point in the exam GATE: that whenever you are preparing for GATE, go one step further! Meaning you choose any topic—congestion control—read from anywhere, but one step further means as more questions you will try, more you will understand the applicability of that topic, meaning what questions can come from that topic, you will get to know all of those. So this is all about TCP congestion control.
+
+I have to tell you the last point: many times how do we find the total number of RTTs? By drawing the vertical lines. Like this, when we draw the vertical lines between them and we count these lines: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11. 
+
+What I mean to say is: when you have sent the 30 segments, when acknowledgements for those have been received successfully, by default your window size is 32. Meaning when you have received 11 RTTs, what has your window size become? 32. So this is what we have been asked: when will we get back the size of 32? So here if you do 11 into 100, then what's the answer? 1100. 
+
+So here you might be confused: what is the correct answer, 1100 or 1200? So don't get confused in this, because this question is similar to a GATE question. It has been asked in 2014. I have edited it a little bit. So according to the official key, the answer varies between 1100 to 1300. Meaning whoever chose 1100 or 1200, both of these are correct answers. 
+
+Like this also, if you see in this case, here also if you draw vertical lines, if you count those lines, how much are there? 8. What I meant to say is when you have received 8 RTTs, meaning when you have received acknowledgements for 8, then automatically your window size has become 32. So, whether you directly multiply 8 by 100 or multiply 9 by 100, you don't have to get confused in these because here a range is being decided. Here, exact answer: if someone has chosen 1100, that is also a correct answer; 1200, that answer is also correct.
+
+This diagram will help you a lot. Thank you guys! So if you enjoyed the video, then make sure to LIKE it, share as much as possible, and please subscribe to my channel. Thank you!

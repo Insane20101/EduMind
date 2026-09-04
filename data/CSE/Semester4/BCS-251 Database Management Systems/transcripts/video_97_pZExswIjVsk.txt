@@ -1,0 +1,71 @@
+Hello friends, welcome to Gate Smashers. In today's video, we're going to discuss problems in 2PL, that is, two-phase locking. From competitive exams' point of view, this topic is very important, as questions can come on direct theory—that does this problem exist in 2PL or not? Or does 2PL remove this problem or not? So this type of question is asked very frequently. 
+
+So guys, please subscribe and like the channel if you haven't done yet, and press the bell button so that you get all the latest notifications. 
+
+Let's start. Firstly, here I've written an advantage: that it always ensures serializability. In the last video, we've discussed the whole concept of 2PL, discussed about the growing phase and shrinking phase, and there, with an example, I've explained how serializability is achieved, how we achieve conflict serializability with the help of 2PL. The link to that is given in the description box, because in this video I'm only targeting problems, or you can say, drawbacks in 2PL.
+
+***
+
+### 1. Irrecoverability
+
+First, we'll discuss that it is not free from irrecoverability. It means that you can't give a guarantee that it will always produce recoverable schedules only. Maybe it can produce irrecoverable schedules also. 
+
+How? Let's see this. Let's say there are two transactions, T1 and T2. Let's say in T1, we have to do Read(A) and Write(A). So we know how we work in 2PL: first is the growing phase. Growing phase means that in this we have to take an exclusive lock on A, and that is already free, so it can get that easily. And let's say T2 wants to perform Read(A). So for Read(A), it requires a shared lock on A. 
+
+First, there was its growing phase. Till that time, it is waiting, because here we can't give a shared lock—exclusive over shared, we had already discussed. As soon as it gets unlocked—let's say it unlocked, meaning its shrinking phase started—and let's say this got a shared lock on A. Now this has to read the value of A. Which value will it read? By default, it'll read that value only that T1 has written. So that write by this is read by T2. 
+
+Now T2 will perform operations, whatever it wants to—write or any changes. If after the changes it gets a commit, the possibility is there. Possibility—you only need to check. Sometimes it happens that students feel, "Why are these cases there?" We check all possibilities whenever there is a new protocol. We cannot decide on only one or two cases; we have to check all the possibilities. 
+
+So in this case, is there any possibility that it read, it wrote something (anything you can assume), did some changes, and wrote, and got a commit, and this is still working? It is possible. Let's say it gets failed in future. If it fails in future, so according to the atomicity property, what will we do of this? We'll do a rollback. So I have to rollback T1, and I'll check: does T2 read its data? Yes, T2 has read data of this. So I have to rollback T2 also. But can I rollback T2? No, I can't, because that is already committed, and we can't rollback committed transactions. 
+
+So this is an example of an irrecoverable schedule. So is an irrecoverable schedule possible in this? Yes, there is no guarantee that it will always produce recoverable schedules. In this, irrecoverable is also possible. And what is the reason for that? As you can see, there is a simple reason of that: it is simply telling that there is a growing phase, a shrinking phase, and there is no involvement of commit—meaning, before commit I don't have to unlock, or after commit only I've to unlock any lock. There is no such thing. So because of this, here irrecoverable schedules are possible.
+
+***
+
+### 2. Cascading Rollback
+
+And here, if we see, there is a possibility of cascading rollback. Cascading rollback means that if multiple transactions... let's say I'll change this example only—you can note this. 
+
+If I change in this example only, let's say—simple example here, we'll check this only. Let's say it wrote, and that write is read by T2, meaning it asked for a shared lock on A. When this unlocked, we gave a shared lock to this, and it read. Let's say T3 came and asked for Read(A) and wanted a shared lock on A. So obviously we can give shared over shared, because read can be multiple times. So this also read A, which value? That value of A which T1 has changed. 
+
+Like this only, let's say take T4 also. T4 wanted to perform Read(A), and it also asked for shared on A, and we gave it to it also, because we can give shared multiple times. And this will also read, this will also read, which T1 has written. 
+
+Now let's say it gets fail in future—let's say in future it gets failed. So what I'll do with this? Roll back. If I'll rollback this, then obviously I've to rollback this also. See, it is still not committed. In the first case, we committed as we were checking this; now we're checking cascading rollback. So for making cascading rollback, what is read by this, that I've to rollback, as dirty read problems will happen. We've rolled back this one, meaning changes by this—there is no validity of such changes. 
+
+So if we rollback those changes, so I've to rollback this also because this has read. I've to rollback this also as this also has read. I've to rollback this also as this also read. So this is called cascading rollback—that because of one transaction rollback, I've to rollback multiple transactions. That is called as cascading rollback. Obviously, because of this, our performance will get degraded. 
+
+So if this is asked from you—that cascading rollback is possible—yes, obviously. The opposite of this can also be asked from you: that it always produces a cascadeless schedule. False! Because here we've seen a simple example that cascading rollback is possible. Before this, we've seen recoverability also. If it is asked from you that does it always ensure recoverability? No. Irrecoverable schedules are possible, and cascading rollback is possible.
+
+***
+
+### 3. Deadlocks
+
+Third here is deadlocks. Deadlocks we've seen in simple shared-exclusive. Same example we're seeing here also. 
+
+Let's say two transactions are there, T1 and T2. T1 wants to perform Read and Write(A). Let's say it demanded an exclusive lock on (A). We gave it. As till now there is no lock given, so its growing phase starts. 
+
+Now T2 is asking for an exclusive lock on (B). Lock on B is already free; we've only given to A. So its growing phase also starts. Parallelly, both growing phases can start, but it depends upon compatibility. If it demands for exclusive lock on A, then we'll block this, because it is already given. If it demands even for shared lock on A, then also we'll block this, because shared over exclusive we can't give. 
+
+Let's say it didn't demand for shared. It demanded for exclusive lock on B. It also got that; it has also granted this. And this also—let's say later it demanded that "I want exclusive lock on B [referring to A]." Will it get? No, its growing phase has started, but growing phase doesn't mean if it is already given to some other, we'll not give to it; we'll ask it to wait. 
+
+Let's say it demanded exclusive lock on A. Will it get? No, it will not, although its growing phase is also started. Growing phase is there, but it won't get, as exclusive lock is already given. So we'll ask this also to wait. 
+
+So I've discussed in last video also, in shared and exclusive case also. So which situation is this? It is a deadlock—when there is infinite waiting, that is called deadlock. Because T2 is waiting for that resource which is with T1, and T1 is waiting for that resource which is with T2. So this is a circular waiting condition. In operating system, I've already explained this deadlock situation, so there you can check this. 
+
+It is a simple case when two things are waiting till infinite time, so that is called a deadlock situation. This is asking this to unlock, this is asking this to unlock. As there is no priority, so obviously it will keep on waiting for each other. Neither this is releasing lock, nor this one is releasing. So both are waiting for each other's resource. So that is called infinite waiting, which is a deadlock. 
+
+So is deadlock possible? Yes, it is.
+
+***
+
+### 4. Starvation
+
+Next is starvation. Starvation also we had discussed in shared and exclusive; the same example I'm taking here. So starvation is also possible. 
+
+Let's say T2 came first. T2 demanded for shared lock on A, so we grant it; its growing phase is on. Now T1 asked for exclusive lock on A. Later, it asks for exclusive lock on A. We'll ask it to wait, because exclusive on shared can't be granted. So its growing phase is not started yet. 
+
+Let's say on this point of time it has to unlock. So when it unlocks, this will get that. But what we did before unlocking of this? Shared lock on [A] is demanded by T3. Obviously we'll grant it, because shared over shared multiple can be granted. So it is also moving. 
+
+Let's say this has to unlock at this point. When it unlocked, this will get exclusive. But let's say T4 also demanded shared lock on A at this point. It means this will get only when this will unlock. So unnecessarily this has to wait, but this is not an infinite waiting—it is a finite waiting. It can wait for a long time. So that is called a starvation problem. 
+
+So starvation is also possible, deadlock is also possible, cascading rollback is also possible, irrecoverable is also possible. All these problems are in 2PL. Further, in its variations—strict 2PL, rigorous, and conservative—we'll discuss that which problem is getting removed from here. But one problem which was in simple shared-exclusive, that problem is removed—that it was even not able to achieve serializability also. But this [2PL] always ensures serializability.

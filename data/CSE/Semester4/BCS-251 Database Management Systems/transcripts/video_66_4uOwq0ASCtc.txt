@@ -1,0 +1,79 @@
+Hello friends! Welcome to Gate Smashers. 
+
+The next query is: "Write a query to display the highest salary department-wise and name of the employee who is taking that salary." 
+
+First of all, understand the query. What are we asking in the query? That we have to display the highest salary, but in each department. In the series that I am making of the subqueries, in that we have already discussed how to find the highest salary. If this table is given of employee, where employees' data is saved, in this employees' data how we have to find the highest salary in whole data—who is taking the highest salary, find the name of that person, and we have to find out the value of salary. This we have already done. 
+
+And now what is the next level? That is department-wise. Means, in this employee table, those employees are there, they are working in different departments. So, if I want to find out, like HR department—in HR department, Ram is there and Ravi is also there. So from both of these, who is having the highest salary? Means in HR department, who is taking the highest salary? That output should come. Then, in marketing department, who is taking the highest salary? Then in IT, who is taking? Means department-wise, I want to print the highest salary. And then, the salary that came, who is availing that salary? That employee's name I want to print. 
+
+So obviously, this part 5 that I am making, for this part 5 it is necessary to see parts 1, 2, 3, and 4. So I will send the link of the videos in the description. So please watch them as a series, so that you will have a clear idea of how, level by level, we are solving the queries. 
+
+Over here, if I talk about the query, then again we start: "Write a query to display the highest salary department-wise." 
+
+First of all, if I want to select something, what I have to select? That we will see in the last. From, because in each query I repeat that whenever an SQL query is started, where is it started from? With 'from', because what do we write with from? Name of the table. Table or relation name. So, from employee. 
+
+So from where I want the output? From which table I need? I have mentioned that table's name over here: From employee. 
+
+So select, something we will select from employee. And we have to make a group, because whatever department values are there—whatever departments, over here you can see 5 rows, you can see 5 tuples. It is possible in this there are 5000 tuples. There are 50,000 tuples. There may be 5 lakh tuples. There can be a lot of data. Now in that data, it is possible that there may be 10, 20, 30 departments. In an organization, there can be 20-30 departments also. So the values of these departments, like HR, marketing, they can be randomly anywhere. It is possible that HR is in the first row. After that, it is possible HR is in the 30th row, it is in the 300th row. At any place it is. 
+
+So first of all, I have to make groups, so that my output, my aim—what I want to do from the query—that I can easily get. But to get that, first of all, what logic you have to apply over here? That first you convert the table logically, virtually, in such a table where HR values will be at one side, marketing values on one side, IT values on one side. Means, you make a group department-wise. You make sub-groups. You divide this table into groups. 
+
+So to divide into groups, we are using the `group by` clause. 
+`from employee group by, according to what we have to group by? Department. group by department.` 
+
+As we did: `select something from employee group by department`. 
+
+So what you can think logically is that whole HR row, whole HR row came on one side. Means all the HR HR rows—how many are there in your table? Let's suppose there are multiple rows, that will come on one side. Marketing marketing one will come on one side. And IT IT will come on one side. All the values in this way: HR department came together, then marketing department is on one side, then IT on one side. Their groups are formed. 
+
+Now from these groups, what you have to find out? Select salary. 
+Means, I have to use max salary. So over here, which keyword am I using? Salary. And along with that, `max`. Because with `group by` clause we are using salary. Whatever column name we are writing, `group by` clause has its own rule that the column that you have written with `group by`, only that column you can use over here. But I have used some other column. With `group by`, department is written, but I have used salary. So for salary, what we used with it? What have we used? Aggregate function. I am using an aggregate function over here. 
+`select max(salary) from employee group by department` 
+
+As I have done `select max(salary)`, what will happen? `group by` means what is the maximum salary from HR? From HR, 10,000 is also there and 30,000 is also there. So over here, 30,000 value will come in output. 
+
+Then, marketing: all the rows in marketing, their group is formed. So in marketing, 20,000 is also there and in marketing, 40,000 is also there. So over here, 40,000 will come in output. 
+
+Then, IT: in IT, over here by chance there is only 1 row in IT. If you suppose that there are multiple rows, then they will also come in output. But there is only 1 row, then that is only maximum and that is only minimum. So 50,000 will come over here in output. 
+
+So in one way, what we did? First, we have divided them into groups, and then `group by` we found out maximum salary. 
+As we found out max salary over here, then what output will it give? 30,000, 40,000, 50,000. These 3 rows you will get in output. 
+
+So over here, my half work is done: `select max(salary) from employee group by department`. As I write, what will be my output? My output is 30, 40, and 50. So obviously, I know this. Even if you want to print that how much is of which department, then over here you can use department also. So `select department, max(salary)` if you have written, then you will get the output: this much in HR, this much in marketing, and this much in IT. 
+
+So this is the half of the question: "Write a query to display the highest salary department-wise." So we found the highest salary department-wise. You can note this thing over here, so this is how we will find the department-wise highest salary. 
+
+Now, as we do in each question, in each subquery—that we know the half question, that this is the salary, but we have to find the name of the employee who is taking this salary. So for that, what we will use? One upper query. Means, we will keep this like a subquery in an inner query and in an outer query, because whenever in a subquery one inner query, one outer query—how? See this. One is outer query, and inside outer query, there is one inner query. 
+
+So inner query will give its output. Like this is the inner query. Inner query has given its output. Like this is the output. Now we will use the output of this inner query, and we will get the final output from outer query. 
+
+So what we have to display in outer query? Name of the employee. 
+So how we will write name of the employee? Once I will remove the department from here. Because see, `select Ename`, because what is the column name? `Ename`, employee name. 
+`select E_name from employee where salary, where salary IN` 
+
+Over here, we have to use `IN` keyword. By mistake also, don't use equal to. Because equal to always compares 2. But over here, I have 3 outputs of inner query. Inner query is returning 3 rows. So where inner query is returning 3 rows, over here you will not use `=`, but you will use `IN`. You will not use `=`. 
+
+What has come? 
+`select ename from employee where salary IN (select max(salary) from employee group by department)` 
+
+So we have got this output. This is its output. Now we will compare it with the outer one. 
+`select ename from employee where salary...` 
+
+From employee table, salary—first of all, how much is the salary? 10,000. 10,000 `IN` this? `IN` means include. Is 10,000 included in this? No. So wrong. 
+
+Then, what is the next salary? 20,000. One by one you have to compare. Is 20,000 included? No, so this will be neglected. 
+
+Then, what is the third salary? 30,000. You have to compare one by one, because in outer query there is no `group by` or `where`. We have done simple `from employee where salary 30,000`. Is 30,000 included? Yes. 
+
+So what is the name corresponding to 30,000? What is the name corresponding to 30,000? Ravi. So Ravi should be in the output. 
+
+Then next salary: 40,000. Is 40,000 included over here? Yes, 40,000 is also included. So it is true. So what is the name corresponding to 40,000? Nitin. So Nitin should be the output. 
+
+Then 50,000. 50,000 `IN`, 50,000 in this? Is it included? Yes, true. So it is true, so what is the name corresponding to 50,000? Varun. 
+
+Other than this, there is no salary. So over here, it will compare with all the values, and finally, what output will it give? Ravi, Nitin, Varun. 
+
+So these are the employees: Ravi is having the highest salary in HR, Nitin is taking the highest salary in marketing, and Varun is taking the highest salary in IT. 
+
+So this is how we will solve the subquery where we have to return what? Highest salary department-wise and name of the employee who is actually taking that salary. 
+
+So if you liked this video, then please like it, please share it, and please subscribe to my channel. Thank you!

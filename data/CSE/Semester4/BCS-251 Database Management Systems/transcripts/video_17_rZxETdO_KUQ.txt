@@ -1,0 +1,63 @@
+Hello friends, welcome to Gate Smashers. The topic is the one-to-many relationship in a database. Before starting the video, I request my subscribers to please subscribe to my channel and please press the bell button so that you can get the latest notifications. 
+
+The one-to-many relationship is a very important topic in the database. Actually, this topic comes under ER modeling in entity-relationship. Generally, whenever we cover this topic either from books or from anywhere else, we see a general overview that this is a one-to-many relationship, this is its example, and we represent it like this. That's it; we just go two to three levels deep. 
+
+But actually, this topic is very deep. The concept in it is very important to you, and it is also important in the relational model. It is important for your interview point of view, and it is also very important for your UGC NET and GATE exams. So I am here—not to discuss what a one-to-many relationship is, what its example is, or how we represent it, though that is obviously important. More important than that is actually the concept in it, or we can say that we are going to cover this entire topic on the basis of the types of questions that come in GATE, in the UGC NET exam, or in other competitive exams. 
+
+First, I will clear up a diagram for you in a one-to-many relationship. We have "customer" and "order" as two entities, and there is a relationship, "gives," meaning the customer gives the order. Now, here we have customer, gives, and order. To represent the one-to-many relationship, what do we do? A customer can give many orders. That is always given—that my relationship is one-to-many. If this thing is given, or I know this thing, then how do we solve it after that? 
+
+First of all, you see, a customer can give many orders, or one order—a particular order—can be given by one customer only. You can say it either way, because here it is one-to-many orders, but from here, corresponding to an order, you will get only one customer. Now, how do you represent it? By writing 1 to infinity or 1 to M. There are various representations, but the representation is not the actual task. The actual task is something else. 
+
+What do we do after that, when we convert this ER model into a relational model? We know that the ER model is used for design purposes—let's design the database. But when we physically implement it, which model do we need? The relational model. And what do we use in the relational model? Tables. 
+
+When we convert it into tables, we create a table of the customer entity, and we create a table of the order entity. "Gives" is also an entity—actually, this is the relationship. We make a table of that relationship as well. Now, whatever attributes they have, I have converted those attributes into the attributes in the table. 
+
+Now, here I have the ID in the customer table. This is the customer table. So what is the ID in the customer table? A primary key; this is the primary key. And here, my order number is the primary key. So as for now, you assume that this is given. Even if it is not given, well, you have to believe it, because in every single table, one primary key is definitely there, and there is only one primary key. So that thing will either be given, or you have to assume that it is an ID in this table, and an order number is in this table. 
+
+Even this is not the important part. What is the important part? Now we come to the relationship table. In the relationship table, what will be the attributes? The first question that comes up is: which are the attributes in the relationship table? 
+
+So in the relationship table, there will be two attributes which are mandatory. One is ID. How is this ID working in this table? As a foreign key, and these are taking the reference from this ID, from this primary key. And here is the order number, and this order number is taking the reference—this is also a foreign key, and it's taking the reference from this order number, because we always take a reference from the primary key. 
+
+So in this table, my primary key is this. My customer table is this, and the order table is this. How many foreign keys do I have here? I have two foreign keys: one is ID and another is order number. And about the foreign key—how does it work and what are its uses?—that video on foreign key I have already uploaded. You can check this video to see what the function of the foreign key is here. 
+
+And here is a third attribute: date. So many times the question is asked here: can a relationship also have an attribute? Yes. The entity has attributes, and the relationship can also have an attribute, and we call that attribute a descriptive attribute. That is called a descriptive attribute. So this is a descriptive attribute; we have taken date as a descriptive attribute if you want to take it. Otherwise, these two attributes will definitely come. 
+
+Now let's talk about this. In this table, the foreign keys have been found. I have two foreign keys, but which is the primary key in this table? This is my first question, and I also wrote it here: what will be the primary key in this table? To find out, you have to first look at what the relationship is: one-to-many. 
+
+So if we insert some data into it, let's see. This is a customer table. So if I insert some data in the customer table, how will we do it? Let's say there is a customer C1, the customer name is A, and it belongs to Jalandhar. Let's put some data: C2, B, Delhi. Let's say C3, C, Mumbai. Let's say C4, A, Mumbai. There are various customers. 
+
+Here I also put the data in the order table. In the order table, I have the order O1, order name—let's say order O2, order O3. And take any item as O1, let's say bucket. Let's say take shoes here, so different orders that you can place here. Shirt. Our main funda here is different, different orders. Let's say the cost is Rs 1000, Rs 2000, Rs 1500. Here take the jeans, and I have it, let's say Rs 2000. 
+
+So, I have some orders that the customer gave. Here I just have the order table. What do I know from this order table? Order number, order name, and the cost of the order. And from this table, I will know who the customer is and the customer's details. So it's giving me customer details; it's giving me order details. But which customer has placed which order? Who will tell? This relationship table. 
+
+So how do we write it? The relationship is one-to-many, meaning a customer can give many orders. So if there is a customer C1, we can say C1 can give many orders. Then let's say C1 has ordered O1, and C1 has ordered O2. It will come this way, because what is this? A relationship, one-to-many. Meaning a customer can give many orders. So if the customer is giving many orders, then how will the data come? That's the way. I have this side, let's say customer C2, and his order is O3. Here, customer C2 and his order is O4. 
+
+This is the way of putting the data, and any date I can mention here. But what is the main concept here? It is that I have different IDs, and here I have orders. But if you look at this ID, here IDs are repeating. Why is it repeating? Because what is the relationship I have? One-to-many. Meaning a customer can give many orders. So if a customer can give many orders, then corresponding to the customer, multiple rows will come here. Values of the customer are multiple, but the value of the order will always be unique. 
+
+Why? Because it's one-to-many, meaning a customer can give many orders, but a particular order is related to only one customer. That's what happens in one-to-many: a customer can give many orders, but an order can be given by one customer only. So if this order is O1, if O1 has been ordered by C1, then no one else can order O1, because there is a one-to-many relationship. If it happened otherwise, then it would become many-to-many. 
+
+So if you look carefully here, the data of this column is repeating, but in this column, data will never repeat. If I ask here, how can you make the primary key in this table? You can clear-cut write here that in this table, the order number will act as a primary key, or you can say candidate key as well. So in the relationship table, which one do I have? Order number. What is the order number that acts as a primary key here? 
+
+You can remember it like this too. Many times this question has come in GATE and UGC NET exams: whenever you have a one-to-many order, so on the many side—because many is this side—whatever primary key is on the many side, the same primary key will be in the foreign key or in the relationship table. You always remember that. So here the order number acts as a primary key. One of my questions is solved here. 
+
+There's another question. What's that question? If here I want to reduce these tables—reduce the number of tables—so can I reduce these numbers of tables? How many tables are there? Three. So can I reduce from three? Yes, I can convert them into two tables, which I told you in the one-to-one relationship as well. 
+
+Now, if I want to reduce these three into two, how can I reduce? By merging these two tables. Which is the primary key in this table? The order number. Which is the primary key in this table? The order number. So what can you do with these two tables? Merge them. And by merging them, you can design a new table like this. Let's say we merged these two. So what will come? ID. From here we take the order number. From here we take item name, sorry. And one is cost. I have... so here it will come by combining them. The date will also come, because the date is also there in this table. 
+
+You can combine these two tables, and how will the data come? Let's say there is C1 who placed the order O1. C2, C1, O2, C2, and you're going to write as it is C2, O4. And let's say that if there are more orders in this table—this table has more values, if there are more values—you can write them here, because in this table also, the order number will be the primary key. 
+
+That's why we are combining them: because both tables have the same primary key. So wherever there is the same primary key, why are you creating two tables? You can convert them into one table. 
+
+Many times this type of question can also be asked in an entity relationship: can we merge "gives" and "order"? Yes. Can we merge "customer" and "gives"? No. Customers and gives cannot be merged, because this value is being repeated in it. So it is not a primary key. Here it is a primary key, but here it is not a primary key. So you can't merge these two, but you can merge these two and convert them into a table. 
+
+So one table I have is this, and the second table I have is this. That's why when we are coding it physically, at that time also, we can write it by merging it. 
+
+So here I am getting two answers. One is: in this table, which will be the primary key? On the many side. Wherever the many is, that side will be the primary key. And second: can I merge these tables, reduce it from three to two? Yes, but again, on the many side—merge the side where M is written. 
+
+So this is a one-to-many relationship. Same as it is, many-to-one. If I do many-to-one, meaning this side is many and that side will be one, then how will you merge? Where there are many. 
+
+Always remember this. Many times this question came; recently this question came in the NET exam. So whenever this type of question comes, without taking any time you will answer it as you see it. So obviously, somewhere here my time is also being saved. 
+
+This concept is a very important concept of database, but we generally—many times in books—do not read it properly and we miss out on these deep concepts. But this concept is very important. You remember it. This is more than enough about what a one-to-many relationship is. And the many-to-one is also very similar to that. 
+
+Always remember the point: where there is many, the same one—that primary key will be the primary key of the relationship table. And you can merge both the tables on the side where there are many. We will further discuss more questions about it. But this is all about the concept of a one-to-many relationship in DBMS. Thank you.

@@ -1,0 +1,37 @@
+Hello guys. Today, we're going to explain the theory around the reversal of a language, or that is, how regular languages are closed under the reversal operation. 
+
+Consider a string: if we reverse a string, its characters get reversed. For example, if we have "ABC", its reverse becomes "CBA". In other words, we simply host the string in reverse. Looking at it regarding the language, the reversal of a language is denoted as $L^R$. If we consider a language, how do we reverse the language? We take every string that belongs to that language, reverse every single string, and form a new language. This operation is called language reversal. 
+
+Let's see the method that I have explained in four steps. First, let's explain it with an example. Let's say we have a regular language, and our regular language is the set of all strings over $a$ and $b$ starting with $a$. This means our language contains all strings over $a$ and $b$ starting with $a$. The regular expression for this is simply $a(a + b)^*$, meaning it starts with $a$, and after that, we don't have any restrictions. Now, how do we design a DFA for this? The method for designing a DFA for this has already been explained, and the link to that video is given in the description box. You can check that video to see how we design it. 
+
+For this language, we started with state $p$, and on input $a$, we went to state $q$. From $q$, on $a$ or $b$, we looped back on $q$ because there are no further restrictions after starting with $a$. If the string starts with $b$, we go to a trap state where all subsequent $b$'s or $a$'s keep us in the trap state, because strings starting with $b$ are not accepted. 
+
+Now, we have designed the DFA for the regular language. We need to reverse this. For the reversal, what do we need to do? If we have a machine $M$, we need to create its reverse machine, $M^R$. What will $M^R$ do? It will accept all the reversed strings of the original language. 
+
+So, how can we prove the language reversal this way? If you have designed a DFA for any language and want to find its reverse, what do you need to do? Take the finite automata of that DFA and reverse it. 
+
+Here is how we reverse it:
+1. Make the initial state of $M$ the final state of $M^R$.
+2. Make the final state of $M$ the initial state of $M^R$.
+3. Reverse the direction of all edges.
+4. Make no change to the loops. 
+
+The final state of $M$ becomes the initial state of $M^R$, and the initial state of $M$ becomes the final state of $M^R$. Also, we reverse the direction of the edges. 
+
+Let's see how to design this simply. If we reverse this, the transition from $q$ to $p$ with input $a$ will have its direction reversed. The loop on $q$ remains as it is, with $a$ and $b$. The transition from the trap state also gets reversed. Finally, the final state becomes the initial state, and the initial state becomes the final state. 
+
+Wait, when you reverse a DFA, the resulting automaton might not remain a DFA; it becomes an NFA. 
+
+After this, the final step is to remove any unnecessary states, such as unreachable states or states from which you cannot reach the final state. 
+
+Let's look at what our original language was: strings starting with $a$ with no other restrictions. Its reverse means strings ending with $a$ with no other restrictions before it. This is how we perform the reversal of a language. 
+
+In summary, to create the reversal of a finite automata:
+- Do not change any states or loops.
+- Make the initial state the final state.
+- Make the final state the initial state.
+- Reverse the directions of all arrows.
+
+This is how we create the reversal of a finite automata. Obviously, if a finite automata exists for a regular language and we reverse it, the finite automata for the reversal also exists. This proves that regular languages are closed under the reversal operation. 
+
+Thank you!

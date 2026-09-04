@@ -1,0 +1,21 @@
+In today's video, I will give you an exercise. Whoever solves this exercise will receive a shoutout. To accept this challenge, write "Challenge Accepted" in the comment section. If you accept, I will present a question that you must solve, based on the concepts we have studied so far in the Sigma Web Development course. I am very excited to give you this question, and I hope you are equally excited. Let's roll the intro.
+
+I am now on my computer screen. If you haven't accessed the playlist yet, you can click here to bookmark or save it. The code is also updated on GitHub up to video 11, and I will continue updating it as the videos progress.
+
+Now, for the question I want to give you, I will first create a folder. I will name it 'video 12', then Shift+Right-click and open it with VS Code. I hope everyone accepts this challenge; it would truly make me happy. Here, I will create an `index.html` file and present your question.
+
+The question is as follows: You are given 12 files – 6 audio files and 6 video files. Your task is to design a website using HTML only that displays these 12 files. Let me toggle word wrap so you can see it clearly.
+
+The files are named:
+*   `1.mp3`, `2.mp3`, up to `6.mp3` (these are your MP3 files)
+*   `1.mp4`, `2.mp4`, up to `6.mp4` (these are your MP4 files)
+
+You need to display these 12 files by previewing them on the website. I believe this is a very simple question. Please comment and write 'Challenge Accepted.' If you accept, you will receive a shoutout for providing your code. Those who write 'Challenge Accepted' and submit their code will definitely get a shoutout. Please let me know in the comment section.
+
+I hope you will complete this. It's a very simple problem, and I know many people will say it is. One more thing I expect from you is to try and use as many of the concepts I have taught you as possible to solve this question.
+
+This was our question for today. I hope you enjoyed it. I will select this text and press `Ctrl + /`. Doing this allows you to toggle comments – pressing `Ctrl + /` once will uncomment, and pressing it again will comment.
+
+You need to complete this website. It's a very simple and straightforward problem that everyone should solve.
+
+That's it for this video. Thank you so much for watching, and I will see you next time. Thanks for watching!

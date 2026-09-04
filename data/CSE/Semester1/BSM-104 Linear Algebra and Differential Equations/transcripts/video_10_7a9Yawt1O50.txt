@@ -1,0 +1,318 @@
+[Music] [Music]
+
+Hello, students! I am Dr. Gajendra Purohit, and you are watching my YouTube channel where I upload videos on Engineering Transformation. You can watch many videos here. Previously, I explained how to solve a consistent system of linear equations.
+
+I want to inform you that I have recently started a new YouTube channel where I teach General Aptitude Mathematics. If you are preparing for CSIR NET exam with any subject like Life Science, Physics, Chemistry, or Mathematics, where General Aptitude is asked, then my channel will be very helpful for you. You can also watch my videos there.
+
+### System of Linear Homogeneous Equations
+
+Let's discuss the system of linear homogeneous equations. What exactly are homogeneous equations? For example, I will give you an example to help you understand. Suppose you have:
+2x + 4y = 0
+x - 3y = 0
+
+Equations of this type, where the constant terms are equal to zero, are called homogeneous equations. These equations are always consistent. They either have a unique solution or infinite solutions; a "no solution" case never exists.
+
+I will explain the reason behind this. When we calculate the rank of the augmented matrix [A|B], since the B matrix here is a zero matrix, the rank of [A|B] will always be equal to the rank of A. They will never be unequal because B is a zero matrix. This is important to note.
+
+Let's understand the concept here. Ax = 0 represents a homogeneous system of linear equations. In the solution of homogeneous equations, for a system Ax = B of 'm' linear equations and 'n' unknowns, the system becomes a homogeneous equation when B becomes zero. Here, we will take B as zero.
+
+For such a system of equations, the matrix A and the augmented matrix [A|B] are the same because the B matrix is zero. Therefore, the rank of the coefficient matrix A and the augmented matrix [A|B] are always equal. Hence, a system of homogeneous equations is always consistent. It will never be inconsistent.
+
+### Types of Solutions for Homogeneous Systems
+
+Now, let's talk about the two types of solutions. When a system is consistent, it either has a unique solution or infinite solutions.
+
+1.  **Unique Solution (Trivial Solution):** If there is a unique solution, it is always the trivial solution, which means x=0, y=0, etc. (all variables are zero). This occurs when the rank of A is equal to the number of unknowns.
+2.  **Infinite Solutions (Non-Trivial Solution):** If the rank of A is less than the number of unknowns, then there are infinite solutions, also known as non-trivial solutions (non-zero solutions).
+
+The system will have a non-trivial solution if and only if the rank of the coefficient matrix is less than the number of unknowns.
+
+### Examples
+
+Let's clarify this with an example. I will take two equations.
+
+**Example 1: Unique Solution**
+Consider the equations:
+2x - y = 0
+x + y = 0
+
+First, let's represent this in matrix form. We will only consider the coefficient matrix A:
+A = [[2, -1], [1, 1]]
+
+We will find the rank of matrix A.
+A = [[2, -1], [1, 1]]
+
+To make the element below the first element zero, we perform the row operation: R2 -> 2R2 - R1.
+[[2, -1], [0, 3]]
+
+The rank of this matrix A is 2, which is equal to the number of unknowns (x and y). This means there will be a unique solution, which is the trivial solution (x=0, y=0).
+
+**Trick for Unique Solution:**
+You don't need to perform all these calculations to find the rank. For such questions, you can simply find the determinant of the coefficient matrix.
+det(A) = (2 * 1) - (-1 * 1) = 2 + 1 = 3
+
+Since the determinant is 3, which is non-zero, it always results in a trivial solution (unique solution, equal to 0,0).
+
+**Example 2: Infinite Solutions**
+Now, let's take another example.
+Consider the equations:
+2x - y = 0
+4x - 2y = 0
+
+We will write its coefficient matrix:
+A = [[2, -1], [4, -2]]
+
+We will find the rank of A.
+To make the element below the first element zero, we perform the row operation: R2 -> R2 - 2R1.
+[[2, -1], [0, 0]]
+
+The rank of matrix A is 1, which is less than the number of unknowns (2). In this case, we have infinite solutions, also known as non-trivial solutions.
+
+**How to find Non-Trivial Solutions:**
+Notice that both equations are essentially the same (if you divide the second equation by 2, you get the first one). So, we have only one independent equation: 2x - y = 0.
+Let y = k (where k is an arbitrary constant).
+Then, 2x - k = 0, which means x = k/2.
+So, the solutions are (k/2, k). For different values of k, we get different solutions, indicating infinite solutions.
+
+**Trick for Infinite Solutions:**
+Again, you can use the determinant.
+det(A) = (2 * -2) - (-1 * 4) = -4 + 4 = 0
+
+When the determinant is zero, the solution is a non-trivial solution (infinite solutions).
+
+**Summary of Determinant Trick:**
+If the determinant of the coefficient matrix is non-zero, the system has a unique (trivial) solution (x=0, y=0, etc.).
+If the determinant of the coefficient matrix is zero, the system has infinite (non-trivial) solutions (non-zero answers).
+
+### Method of Solving Homogeneous Equations
+
+The method for solving homogeneous equations is as follows:
+
+1.  **Calculate Rank of A (R):** Find the rank of the coefficient matrix A.
+2.  **Compare Rank with Number of Unknowns (N):**
+    *   **If R = N:** The system of equations is consistent and has a unique solution (trivial solution).
+    *   **If R < N:** The system of equations has infinitely many solutions (non-trivial solutions). In this case, N - R variables can be assigned arbitrary values (like 'k' in the example).
+
+### Important Points
+
+*   A homogeneous system is **always consistent**. There is no possibility of an inconsistent system because the rank of the coefficient matrix is always equal to the rank of the augmented matrix.
+*   **Nullity:** Nullity = Number of Unknowns (N) - Rank of A (R).
+    *   If Nullity = 0, it means R = N, leading to a trivial solution.
+    *   If Nullity > 0, it means R < N, leading to non-trivial solutions.
+*   **Trivial Solution:** Means x=0, y=0, z=0, etc.
+*   **Non-Trivial Solution:** Means non-zero solutions.
+*   **When the number of equations is less than the number of variables, a homogeneous system will always have an infinite number of solutions.**
+    *   For example, if you have x + y + z = 0 and x - 2y - z = 0 (two equations, three variables), it will have infinite solutions (non-zero solutions). You don't need to solve such questions to know this.
+
+### Solving a System Using Matrix Method
+
+Now, let's address the given question: "Solve the system of equation using matrix method." When "matrix method" is specified, you must use the rank concept.
+
+The system of equations is:
+x + 3y - 2z = 0
+2x - y + 4z = 0
+x - 11y + 14z = 0
+
+First, we form the coefficient matrix A:
+A = [[1, 3, -2], [2, -1, 4], [1, -11, 14]]
+
+This is in the form Ax = 0. We need to find the rank of matrix A.
+
+A = [[1, 3, -2], [2, -1, 4], [1, -11, 14]]
+
+We will perform row operations to make elements below the first element in the first column zero:
+R2 -> R2 - 2R1
+R3 -> R3 - R1
+
+Applying these operations:
+[[1, 3, -2], [0, -1 - (2*3), 4 - (2*-2)], [0, -11 - 3, 14 - (-2)]]
+[[1, 3, -2], [0, -7, 8], [0, -14, 16]]
+
+Now, we need to make the element below -7 in the second column zero.
+Notice that the third row is a multiple of the second row (R3 = 2R2).
+R3 -> R3 - 2R2
+
+Applying this operation:
+[[1, 3, -2], [0, -7, 8], [0, -14 - (2*-7), 16 - (2*8)]]
+[[1, 3, -2], [0, -7, 8], [0, 0, 0]]
+
+The rank of this matrix A is 2.
+The number of unknowns (x, y, z) is 3.
+Since Rank (A) = 2 < Number of Unknowns = 3, the system has infinite solutions (non-trivial solutions).
+
+Therefore, the given equation is consistent, and there are non-trivial solutions.
+
+**How to find the solutions:**
+From the row-echelon form of the matrix, we can write the corresponding equations:
+1.  x + 3y - 2z = 0
+2.  -7y + 8z = 0
+
+We have 2 equations and 3 variables. Since the rank is 2, and the number of unknowns is 3, we can express (3-2) = 1 variable in terms of a parameter.
+Let z = k (where k is an arbitrary constant).
+
+Substitute z = k into the second equation:
+-7y + 8k = 0
+-7y = -8k
+y = 8k / 7
+
+Now, substitute y = 8k/7 and z = k into the first equation:
+x + 3(8k/7) - 2k = 0
+x + 24k/7 - 14k/7 = 0
+x + 10k/7 = 0
+x = -10k / 7
+
+So, the solutions are:
+x = -10k/7
+y = 8k/7
+z = k
+
+For different values of k, we get different non-trivial solutions.
+
+You will get the value of X, and all three values depend on K. For each value of K, if you put K=0, you will get one answer; if you put K=1, you will get another answer; if you put K=2, you will get a different answer. For different values of K, you will get different values. In this case, we get infinite solutions. This is how we solve this type of question.
+
+**Problem 1: Finding 'k' for a Non-Trivial Solution**
+
+Let's look at this question: "Find the value of K such that the system of equations has no trivial solution."
+
+One straightforward way to approach this is to understand that a non-trivial solution implies the determinant of the coefficient matrix is zero.
+
+1.  **Form the Coefficient Matrix (A):**
+    We write the coefficient matrix as:
+    ```
+    | 1  k  3 |
+    | 4  3  k |
+    | 2  1  2 |
+    ```
+
+2.  **Calculate the Determinant and Set it to Zero:**
+    For a non-trivial solution, the determinant of A must be zero.
+    `det(A) = 1 * (3*2 - k*1) - k * (4*2 - k*2) + 3 * (4*1 - 3*2) = 0`
+    `1 * (6 - k) - k * (8 - 2k) + 3 * (4 - 6) = 0`
+    `6 - k - 8k + 2k² + 3 * (-2) = 0`
+    `6 - k - 8k + 2k² - 6 = 0`
+
+3.  **Simplify and Solve for K:**
+    The `6` and `-6` cancel out:
+    `2k² - 9k = 0`
+    Factor out `k`:
+    `k (2k - 9) = 0`
+    This gives two possible values for `k`:
+    `k = 0` or `2k - 9 = 0 => k = 9/2`
+
+    If `k = 0` or `k = 9/2`, the system will have a non-trivial solution.
+
+**Alternative Method: Matrix Row Operations**
+
+If you want to use the matrix method, here's how you would do it:
+
+1.  **Write the Matrix Form:**
+    ```
+    | 1  k  3 |
+    | 4  3  k |
+    | 2  1  2 |
+    ```
+
+2.  **Perform Row Operations:**
+    *   `R2 -> R2 - 4R1`
+    *   `R3 -> R3 - 2R1`
+
+    The matrix becomes:
+    ```
+    | 1     k      3    |
+    | 0   3 - 4k   k - 12 |
+    | 0   1 - 2k   -4   |
+    ```
+
+3.  **Further Row Operations:**
+    To make the element in the third row, second column zero, we apply the transformation:
+    *   `R3 -> (3 - 4k)R3 - (1 - 2k)R2`
+
+    After applying this transformation, the matrix will look like this:
+    ```
+    | 1     k      3    |
+    | 0   3 - 4k   k - 12 |
+    | 0     0    k * (2k - 9) |
+    ```
+    For a non-trivial solution, the last element in the third row must be zero.
+    `k * (2k - 9) = 0`
+
+4.  **Solve for K:**
+    This gives `k = 0` or `k = 9/2`.
+    These are the values for which the solution will be non-trivial.
+
+**Problem 2: Solving a System with More Variables than Equations**
+
+Let's consider this question: "Solve the system completely."
+
+First, when such a question is asked, we form its coefficient matrix. Here, we have three equations and four variables (X, Y, Z, W).
+
+1.  **Initial Analysis:**
+    *   Number of equations = 3
+    *   Number of variables = 4
+    *   The rank of the coefficient matrix cannot be more than 3. Since the rank is less than the number of unknowns, we will have infinitely many solutions. The system is consistent and will have infinite solutions. However, we need to solve it completely.
+
+2.  **Form the Augmented Matrix:**
+    We write the coefficients of the variables (assuming the order W, X, Y, Z):
+    ```
+    | 2   3  -1  -1 | 0 |
+    | 4   6  -2   2 | 0 |
+    | -6  12  3  -4 | 0 |
+    ```
+
+3.  **Perform Row Operations:**
+    *   `R2 -> R2 - 2R1`
+    *   `R3 -> R3 + 3R1`
+
+    The matrix becomes:
+    ```
+    | 2   3  -1  -1 | 0 |
+    | 0   0   0   4 | 0 |  (4-2*2=0, 6-2*3=0, -2-2*(-1)=0, 2-2*(-1)=4)
+    | 0  21   0  -7 | 0 |  (-6+3*2=0, 12+3*3=21, 3+3*(-1)=0, -4+3*(-1)=-7)
+    ```
+
+    Now, we perform another row operation to simplify:
+    *   `R3 -> 4R3 + 7R2`
+
+    The matrix becomes:
+    ```
+    | 2   3  -1  -1 | 0 |
+    | 0   0   0   4 | 0 |
+    | 0  84   0   0 | 0 |  (4*21 + 7*0 = 84, 4*(-7) + 7*4 = -28 + 28 = 0)
+    ```
+
+    (Note: The speaker's verbal description of the final matrix for R2 was `0 -12 0 4`, and R3 became `0 0 0 0`. Let's proceed with the matrix as stated by the speaker in the final form for the purpose of demonstrating the solution method, even if there was a slight discrepancy in the intermediate row operation calculation.)
+
+    Let's assume the final row-echelon form obtained is:
+    ```
+    | 2   3  -1  -1 | 0 |
+    | 0  -12  0   4 | 0 |
+    | 0   0   0   0 | 0 |
+    ```
+
+4.  **Determine Rank and Number of Free Variables:**
+    The rank of this matrix is 2 (two non-zero rows).
+    The number of unknowns is 4.
+    Since the rank (2) is less than the number of unknowns (4), the system is consistent and has infinitely many solutions.
+    The number of free variables is `Number of unknowns - Rank = 4 - 2 = 2`.
+
+5.  **Derive Equations and General Solution:**
+    From the row-echelon form, we can write the equations:
+    1.  `2W + 3X - Y - Z = 0`
+    2.  `-12X + 4Z = 0`
+
+    From equation (2): `-12X + 4Z = 0 => 4Z = 12X => Z = 3X`
+
+    Substitute `Z = 3X` into equation (1):
+    `2W + 3X - Y - (3X) = 0`
+    `2W - Y = 0 => Y = 2W`
+
+    Now, we introduce two parameters for the two free variables. Let `W = k1` and `X = k2`.
+    Then, the general solution is:
+    *   `W = k1`
+    *   `X = k2`
+    *   `Y = 2k1`
+    *   `Z = 3k2`
+
+    This is how you can solve this type of question.
+
+I hope what I have taught you is clear. If it is, please like, comment, and subscribe to the channel. I will continue to upload more videos of this type, covering topics like eigenvalues, eigenvectors, Cayley-Hamilton theorem, diagonalization, and other remaining topics in linear algebra. Then, I will start a new topic. You can also watch my NET aptitude playlist and all linear algebra videos I have uploaded. These are my channels: one new channel where I upload general updates, and my old channel where I upload all math videos. Thank you so much for watching.

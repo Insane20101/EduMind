@@ -1,0 +1,71 @@
+Hello friends, welcome to Gate Smashers. Let's see the numerical on SRTF (Shortest Remaining Time First). Shortest Remaining Time First is the same as if they would say to solve Shortest Job First with pre-emption. Shortest Job First with pre-emption is also called Shortest Remaining Time First. 
+
+So in Shortest Remaining Time First, the first criteria is burst time and the mode is pre-emptive. Its numerical is a little bit tricky, but if you try two to three questions, then it will be very easy for you. Here I have four processes: P1, P2, P3, P4. Arrival time and burst time are given. 
+
+Now we would start it. At time 0, first we have to check how many processes arrived. You'll move to criteria later; you'll use criteria when you have competition, meaning there are many processes competing. At that time, I have to use burst time. If I got just one arrived only, then there is no competition and you can execute that process. So here first we checked at 0. Only P1 has arrived. 
+
+So if P1 is alone at 0, then no need to check the burst time. Obviously, I have to execute P1 only then. But it's a little bit tricky here that up to how much time. In the case of non-pre-emptive, P1 would get completely executed, meaning if its burst time is 5, then we'd run it up to 5. But in Shortest Remaining Time First, you don't have to run it in one go because it checks again and again if there is any other shorter process arrived in the ready queue. We'd run it only up to 1. You can run it even more—let's say P1 came on 0 and I ran it up to 2. If I ran it up to 2, then it means I reduced 2 from 5, meaning reduced to 3. But it's possible that when it will run from 0 to 2, then there would be one also in between. It may be possible that at that time 1, some small process with low burst time arrived. 
+
+So that's what we are checking here. P1 came from 0 to 1, and I ran it up to one unit only. Then it's left only 4, meaning 4 is still left to be run. At 1, I checked again that which other process arrived. So check again: P1 is already here because it ran only 1, but P2 also came in the ready queue because P2 arrived at 1. Now here you have to check burst time. P1's burst time is 4 left, but P2's burst time is 3. Now you have to select P2 and pre-empt P1, meaning send P1 again in the ready queue and execute P2. 
+
+This is a little bit complex algorithm because after every step it checks if some smaller process arrived in the ready queue. But if you would run it continuously from 0 to 2, then your question would get wrong right here, because at 1, P2 came and it's smaller than P1 in terms of burst time. So in this case, we'll run P2 at 1 for one time quantum only, meaning we ran it from 1 to 2 and changed it to 2, meaning it got reduced by 1 because we ran up to 1 burst time, then 2 left. 
+
+Now at 2, check again that which processes arrived. So we checked again: P1 is already arrived, it's already in the ready queue; P2 has also already arrived; P3 also arrived and came in the ready queue. Now compare these all three. When we compared all three, then out of all three, which has the lowest burst time? P2 has the lowest. So it means P2 will run again. You can run it up to 2 steps continuously also, but don't do this. When you'll be done with practicing many such questions, in that case you can do this. But for now, just run it 1 by 1, meaning we ran from 2 to 3 for one time unit, then reduce it even more, and the time left is one, meaning it's just one time quantum left. 
+
+Now at 3, we'll check again which are in ready state. If we checked at 3, then P1 is already in ready state because its time 4 is left and it has arrived at 0. P2 and P3 are also in ready state already. But P4 will come at 4, meaning that same three processes are in ready queue. Now out of three, check again which has the lowest burst time updated. Because it's updating, that's why the smaller one—don't compare with 3 again, otherwise it'll get wrong. 
+
+So we compared all three, so out of 4, 1, 4, P2 has the lowest burst time. So P2 will run again and will get complete on 4, because when you ran it from 3 to 4, it got end. So P2 got completed, then you can cross it that it has left from here. 
+
+Now at 4, we'll check again which processes have arrived. We checked at 4: P1 was already there, P2 got terminated, P3 was already there, and P4 also arrived. At time 4, P4 has also arrived in the ready queue. Now you'll compare again that which has the lowest burst time out of all. So out of 4, 4, 1, which has lowest burst time? Obviously, P4's burst time is lowest, so we'll run P4 for one time only. But its burst time is already 1 time only, so obviously it got completed, terminated, and left. 
+
+After that, we are at 5. So check at 5 that which process is left. P1 and P3 are left. So P1 and P3 are both left. Out of these two, we'll run the one with lowest burst time. P1 and P3, both burst times are 4. Now in this case, it gets conflict which one to select first because both burst times are the same. So I told you already in the video before, whenever you get confusion in burst time, you can move to arrival time; check whose arrival time is low. So out of these two, P1's arrival time is low because it came earlier. So we'll give it priority here and will run P1. 
+
+Now you can run P1 whole in one go, but for now just run it up to one time quantum, meaning we ran it up to 1 unit only, so here it's just 3 left. Now we saw at 6 which has arrived, but there's no new process anymore. Just two left, i.e., P3 and P1. And P1's time is 3 and its time is left 4. So obviously P1 is smaller, so we ran P1 again up to 7. We ran it again and it's just two left. Still, P1 is smaller, so we ran P1 again up to 8. So now P1 will get complete... sorry, 1 is still left. So we ran P1 again up to 9. 
+
+Here you can run P1 in one go also up to 4. There's no problem in it, but just to make it a little easy, I'm telling you the whole method. And this question has already appeared in GATE 2004. Even I've done some changes in it so I can get all variations covered for you. So this is the toughest numerical of SRTF that I've selected, so if you'd solve the toughest, then you'll definitely do the easy ones. 
+
+After that, at 9, P1 passed and got completed. Only P3 is left now, so there's no need to run P3 one by one. You can completely execute P3. So you can write P3 again if you want, there's no problem. But there's no one in competition, so just execute P3 in one go. Meaning P3 will get completed at 13. So this is how we have to solve this. 
+
+Now first, write the completion time. Check when P2 got completed. Now keep in mind here, there's no problem in the case of non-pre-emptive, but in the pre-emptive case, many times students write the wrong completion time. But where did the last P1 arrive? We have to check on its right-hand side. So here P1 got completed at 9. Don't take any of these other values, otherwise it's wrong. In the last, P1 is here; now on its right-hand side, there's 9 in its subscript. So P1 got completed at 9. 
+
+P2 came all of here, so this is the last according to the time. So there's 4 on its right-hand side. So it got completed on 4. 
+
+Now P3. P3 came here directly at 13 and got completed. 
+
+P4 came right here and got completed at 5. 
+
+Sorry, I wrote it turnaround time... this is actually completion time. So 9, 4, 13, 5. So this is the completion time, not the turnaround time. For turnaround time, we'll use a simple formula: Turnaround Time (TAT) = Completion Time - Arrival Time. 
+So 9 - 0 = 9. 
+4 - 1 = 3. 
+13 - 2 = 11. 
+5 - 4 = 1. 
+So this is the turnaround time. 
+
+Let's calculate waiting time now. Waiting time means Turnaround Time - Burst Time. So calculate burst time carefully; we've crossed here. The original burst time which was given before, we have to subtract from it. 
+So 9 - 5 = 4. 
+3 - 3 = 0. 
+11 - 4 = 7. 
+1 - 1 = 0. 
+So this is how we've to calculate the waiting time. 
+
+And last is the response time. Response time is important in this case because response time will come in the case of pre-emptive. But in the case of non-pre-emptive, waiting time is the same as response time, so no need to calculate. Here I've written the formula of response time: that when CPU met first time and what was the arrival time, subtract them. 
+
+Check where is P1 written first time? It's here in the Gantt chart, so check on its left-hand side that when it got the CPU: at 0. And it arrived at 0 also, so 0 - 0 = 0. 
+
+Now we have to check where is P2 first time. P2 is here with 1 in its left-hand side. Meaning P2 got CPU first time at 1, and it arrived at 1 also. So 1 - 1 = 0. 
+
+So nothing came in this case, but yeah, it will come in P3's case definitely. First time P3 is here, so in its left-hand side it's 9. So when did P3 get CPU first time? But when did P3 come? It came at 2. So 9 - 2 = 7. So this value will come here. 
+
+P4 came at 4, but P4 got CPU first time at 4. So 4 - 4 = 0. 
+
+So it's different from waiting time because it'll come different in the case of pre-emptive. 
+
+We have to find average. So to calculate average, total TAT first. It'll be 24, and divide by the number of processes, i.e., 4. So finally it came 6. 
+
+Now calculate average waiting time: just do the total of it, and it'll be 2.75. 
+
+And if they've asked average response time also, then simply total it, and it'll be 1.75. 
+
+So this is how we can calculate all the questions, meaning we've covered all the questions. They can't ask anything more than this. At most they can ask average TAT, and we've done all already. And if they'd ask when all the processes got completed, like the time at which all the processes got completed, then you can simply answer 13, because all 4 processes got completed at 13. 
+
+Meaning whatever the question they'll ask, it'll be from all this; nothing will come out of this. This is all about SRTF. Thank you!

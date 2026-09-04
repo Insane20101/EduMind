@@ -1,0 +1,33 @@
+Hello everyone. The next example on DFA designing is designing a DFA which accepts all strings over 0 and 1 in which the second symbol must be 0 and the fourth symbol must be 1. 
+
+Whenever you are given a DFA design question, the very first step is to find out the minimum string. What will be the length of the minimum string? The length will be 4. Can the length be less than 4? No. Can it be more than 4? Yes, it can be, but the minimum length must be 4. 
+
+Now, in a string of length 4, the first letter can be 0 or 1, the second letter must be 0, the third letter can be 0 or 1, and the fourth letter must be 1. Notice here that the first letter has a choice: it can be 0 or 1. We have multiple options. For the second position, it is fixed: it must be 0. For the third position, it can be 0 or 1; we have a choice. For the fourth position, it is fixed: it must be 1. 
+
+If you try to make a loop for the first position to repeat 0s, you will not reach the fourth symbol correctly. So, the first position is fixed as a variable (0 or 1), the second position is fixed as 0, the third position is a variable (0 or 1), and the fourth position is fixed as 1. 
+
+Let's start designing the DFA. Whenever this type of question appears in an exam where a specific length is given or a DFA has to be designed to accept strings like 0011, 0000, 0101, etc., keep a point in your mind: what will be the number of minimum states in the DFA? The formula is $n + 1$. Keep this point in your mind. Here, $n$ is the length of the minimum string. 
+
+In this question, what is the length of the minimum string? It is 4. So how many states come at a minimum? $4 + 1$, which is 5 states. 
+
+Let us start with state $Q_0$ as our starting state. At $Q_0$, we have a choice: on input 0 or 1, where do we go? We can define a transition here. But if you make a loop here to invite multiple 0s or multiple 1s, that will not work because our first symbol has a fixed structure. If 0 comes, the transition goes to $Q_1$. If 1 comes, where does the transition go? It should also go to $Q_1$, because the first symbol can be either 0 or 1. 
+
+Next, from $Q_1$, for the second symbol, our fixed symbol is 0. So if 0 comes, we move to $Q_2$. What if 1 comes at the second position? If 1 comes, it violates our condition that the second symbol must be 0. So we need a trap state, let's call it $Q_5$, to trap it. 
+
+From $Q_2$, we reach the third position, which can be either 0 or 1. So on input 0 or 1, we move to state $Q_3$. 
+
+From $Q_3$, for the fourth position, the fixed symbol is 1. So if 1 comes, we move to $Q_4$, which is our final state. What if 0 comes at the fourth position? If 0 comes, it violates the condition, so we need to trap it and send it to the trap state $Q_5$. 
+
+Let's check the transitions for each state to make the DFA complete. A DFA is complete when every state has a complete set of input transitions for all input symbols. 
+
+At $Q_0$, we have transitions for 0 and 1 going to $Q_1$. At $Q_1$, if 0 comes, it goes to $Q_2$; if 1 comes, it goes to the trap state $Q_5$. At $Q_2$, for both 0 and 1, it goes to $Q_3$. At $Q_3$, if 1 comes, it goes to $Q_4$ (the final state); if 0 comes, it violates the condition, so it must go to the trap state $Q_5$. 
+
+Now, what about the final state $Q_4$? After the fourth symbol, any number of 0s or 1s can come because our conditions for the second symbol (0) and fourth symbol (1) are already fulfilled. So at $Q_4$, we can put a self-loop for both 0 and 1. 
+
+For the trap state $Q_5$, once a string enters the trap state, it should stay there for any subsequent input of 0 or 1. So at $Q_5$, we put a self-loop for both 0 and 1. 
+
+Let us count the number of states. We have states $Q_0, Q_1, Q_2, Q_3, Q_4$, and the trap state $Q_5$. That is a total of 6 states. 
+
+Earlier, we discussed that the minimum number of states is $n + 1$, but in a DFA, we sometimes need an extra state, which is the trap state. If we do not include the trap state, the minimum number of states is $n + 1$ ($4 + 1 = 5$). When we include the trap state, the number of states becomes $n + 2$ ($4 + 2 = 6$). 
+
+Can there be multiple trap states? We don't need multiple trap states. Having a single trap state is enough; any invalid transition from any state can simply be directed to that single trap state.

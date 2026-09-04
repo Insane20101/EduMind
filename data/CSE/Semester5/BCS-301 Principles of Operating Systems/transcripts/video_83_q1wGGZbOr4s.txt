@@ -1,0 +1,55 @@
+Hello friends, welcome to Gate Smashers. In this video, I am going to explain attributes of the file and operations on the file. In the last video, we have discussed the introduction to the file system. 
+
+Whenever we talk about a file system, first of all, it is necessary to know more about the file which we are creating on a daily basis. Any file you are creating—PDF, PPT, MP3, MP4—what may be the attributes of that file? Or what operations are possible on that file? Because there are these types of questions. Although this topic is of a simple level, many times questions on this topic come in a way that we don't even know that we had read it or seen it, but actually, we have not solved questions on it. So in this video, you will get to know all the points related to this topic. 
+
+So guys, quickly like this video and subscribe to the channel if you have not done so till now, and please press the bell button so that you get all the notifications. 
+
+### What is a File?
+
+Before the file system, you should know about the file. So what is a file? A file is a collection of data, or you can say a file is a collection of information. 
+
+What do we do inside a file? Suppose I made a doc file. In the doc file, I opened Microsoft Office, and in that, I opened Word, and in Word, I created a file. So in the file, I am just entering data only. I am putting any important information or anything; that is a collection of data or information. 
+
+### Operations on Files
+
+If we talk about what all operations we can do on that file, or you can say what operations the file system allow—whether we talk about Windows or Unix or Linux—operations are all the same, but how to do them, the way to execute them, are different. 
+
+Windows is purely GUI-based (graphical user interface), but in Linux, generally we work on a terminal where it is command-based, although there are now many variations available over that where you will get a graphical interface also, but generally we work on terminals. 
+
+First of all, what can we do? We can create the file. What we do in Windows, we do right-click, simply an option comes for new, we can make a new folder, inside the folder we can make multiple files. We also have multiple applications—Office, in Office there is PPT or doc file or Excel file—all these we can create, and further we can save it. So during saving, we give it a name or give a location where to keep it, like C drive, D drive, E drive. So obviously, based on a particular location, you can create that file.
+
+### File Attributes and Metadata
+
+As you created the file, by creating, some attributes are generated. What are attributes? Attributes are metadata. Metadata means data about data. What does it mean? We created a file. In the file, I made notes on the operating system. The notes I am making on the operating system are the original data. But when I saved that file, as the file was saved, what I did? Some attributes were added with it automatically. Why do you do it? When you create some file, you right-click in Windows and go to properties. What opens in actual when properties open? Attributes. That is called metadata, which means data related to data. 
+
+* **File Name:** You give a name to a file; that name will get saved somewhere. That is the metadata, which is called attributes.
+* **Extension / File Type:** May be PPT, doc, Excel file, or MP3, MP4, JPG, any file. Why do we use this actually? Because in today's time, even if you do not give an extension, then also you can save, but earlier it was necessary to give an extension—meaning to save the file `.doc` or `.pdf`, you had to give it necessarily. Now what happens? When we open a file, during opening, a file it intimates us through which application we can open that file. On that basis, we can open it. So the type of file is what is actually an extension.
+* **Identifier:** Identifier is not from the point of view of the user; it is from the point of view of the operating system. The name you give to any file. So in identity, corresponding to that name, it is like that: I have taken admission in a university, in a college, so I have a name, father's name, mother's name, marks, and everything else. But what did the university give to me? A roll number is given, a registration number is given in order to identify me. So that is the identifier. Therefore, a number is given to every file, because for the operating system, everything is a file. Everything is a file for the operating system. Even that keyboard, mouse is also managed like a file. Each and everything is a file for the operating system. So in order to identify them, it provides them with a unique name/number.
+* **Location:** We obviously like C colon has. Whatever location we give to a file, wherever the file is saved, its proper location is given. Similarly, in Unix and Linux, location matters a lot, because when we fetch a file, we should know its proper location—like from a root directory to which directory we had to go, then where to go in that directory, then where we have stored the file. Giving a proper path is very necessary so that we can access the file properly.
+* **Size:** Size of a file. Can be in kilobytes, megabytes, or gigabytes. So size also matters much.
+* **Modified Date / Created Date:** When it was created, when it was modified, when we made changes to it—all that information.
+* **Permission / Protection:** What does permission mean? Who can access the file? Users, or groups, or others? What's different in Windows? In Linux, we have groups and others. In Windows, we have guest users or admin. Who can access it, and over that, what is the permission? We can read the data, we can write it, or execute it. We are having full control or not. So all this information related to control or permission is actually information or protection. When you right-click and open the properties, there you will get all the information—general information, security. Along with security, there is some advanced thing, that is encryption, compression.
+* **Encryption:** Encryption means, have we encrypted the file? So we can implement security to it. Anyone can't read it; any data on which security or a hash function is applied.
+* **Compression:** Or have I compressed the file? What is the meaning of compressing a file? That we are decreasing its size and removing its unwanted space.
+
+So all this information is stored in attributes or metadata. So what happens because of this? Let's say if you have a hard disk and the hard disk size is one terabyte. The full one terabyte is never used 100% completely in storing data. Some information, some space is kept by the file system to store metadata. If there is no metadata, it would be difficult to access or fetch a file. Therefore, we also store metadata permanently inside the disk. Although it takes very less space, whatever space it takes, we have to store that data in the hard disk.
+
+### File Operations
+
+* **Reading the File:** Reading the file means simply we have to check the data. We can't write, meaning we can't make any changes in that. Like we open a file in read-only mode, we can only read the file but can't make any changes to it.
+* **Writing:** But if we talk about write, we are obviously making some changes in the data.
+* **Deleting vs. Truncating:** Then, if we talk about deleting, what is the meaning of deleting? Deleting means to delete a file. Deleting a file and truncating are both very important. It is even asked in exams: What is the meaning of deletion? 
+  Let's say you have a file, you made a doc file in Microsoft Office. So in the file, you have written an introduction to the operating system. Now, if you perform a delete operation, the whole file will be deleted along with the attributes—these attributes here, all these attributes will be deleted, meaning metadata also will be deleted, and all the data within the file will also be deleted. 
+  But if you applied truncate: so in case of truncate, what will happen? You have written paragraphs inside the file, anything you have written, all that data will be deleted, but attributes—meaning file name, size, file identifier—will not be deleted and will remain as it is. And when you open that file, there you will find nothing; the file is completely empty. And yes, you can put there some other information. 
+  So to truncate means simply we have deleted the data, but not deleted the attributes. But deleting a file means deleting the file completely, whether it be the data in the file or the attributes, everything will be deleted. These are the differences between delete and truncate.
+* **Repositioning:** What is the meaning of repositioning? Means our read/write head. We have put any content inside the file: A, B, C, D, E, 1, 2, 3, 4, any content. And by default, the read/write head points out on the first data. Read/write head means from where we have to fetch data. Now, what we do sometimes, we want to skip some data—it could be A, B, C, D, E, meaning I want to skip this data, the pointer went to one, or you want the pointer to go to the last. So this is actually repositioning of the read/write head. In Unix, we do this with the `lseek` command. In the `lseek` command, using offsets, what we can do, we can do repositioning.
+
+### System Calls and Commands
+
+Whose functionality is this actually? You have operations inside the file system, inside the file, which are allowed to the user by the file system to manage all these things. 
+
+Although inside this, especially in Linux—because Windows is GUI-based, there is no command, but in Linux, to create there is `touch` command, we create with `cat` command, read is a system file, there is a system call in it, there is write system call, `lseek` as I have told, to delete `rm`. To make any folder, any directory, you have `mkdir`, and if you want to delete, there are various commands available. These commands can also be asked in exams. 
+
+So on these commands which are important, I have made videos on them. Their link you will find in the description box. 
+
+So this is all about the operations and file attributes. Thank you.

@@ -1,0 +1,125 @@
+Welcome to Gate Smashers! In this video, we are going to discuss an SQL query: how to find the $N^{\text{th}}$ highest salary. Over here, the value of $N$ can be taken as $1, 2, 3$, up to $N$. 
+
+If we talk from a placement point of view, or if we talk from a competitive exam point of view, SQL is one of the most important topics. Specially from the point of placement, it is very important; it is a top priority that we are asked some queries from SQL. Now, obviously, in SQL, there are a lot of queries. But even within those, if we talk about finding the highest salary—the first highest means if we want to find the top, or the 2nd highest, 3rd highest, 4th highest—this is a very frequently asked question where one table is given to you and you must write a query to find the 5th highest or 10th highest. 
+
+How do you have to do this type of query? Because many students get confused with a single query. Let's say I am given any table. Let's say we have an `Emp` table. In the `Emp` table, let's say there is an `Eid` and an employee salary. I am taking just two columns because we mainly need to find out the salary, so I am taking `Id` and `Salary` as two columns. You can take a name, or anything else like address or phone number; you can take anything else. 
+
+Let's say:
+* `Id` is 1, `Salary` is 10000
+* `Id` is 2, `Salary` is 20000
+* `Id` is 3, `Salary` is also 20000
+* `Id` is 4, `Salary` is 30000
+* `Id` is 5, `Salary` is 40000
+* `Id` is 6, `Salary` is 50000
+
+I have taken over here 6 employees' data: 10000, 20000, 20000, 30000, 40000, 50000. I have taken these salaries. Over here, I have repeated the salary because many times what happens is that we have to take all types of data in the table. It is not so that you take a fixed type of data and write a query on it. If you get the answer, it is not necessary that if that answer is tested on some other data, it will be wrong. So you have to take this type of data where all the cases are covered. This means you have to write a query in such a way that no matter whatever the data is, your query will give the exact answer over there. 
+
+So I have taken this employee table. Now, in this employee table, if I want to find out the highest salary, then there is a simple funda with us:
+`Select max(salary)`
+We have an aggregate function:
+`Select max(salary) from Emp`
+Let's say the table name is `Emp`. So I have done `select max(salary) from Emp`. Over here, you will get 50000 as the answer because `max` will by default find the maximum value. 
+
+But if I want to find the second highest, then what will I do?
+`Select max(salary) from Emp where salary Not In (select max(salary) from Emp)`
+
+What does this mean? Over here, we have written a nested query, and in this nested query, internally `select max(salary) from Emp` will work. What is `select max(salary) from Emp`? 50000 is the answer. Over here, the answer is 50000. Now, what is there in the outer query? `Select max(salary) from employee where salary Not In (...)`. What is the meaning of `Not In`? That 50000 will not be there. So which are the salaries left? 10000, 20000, 20000, 30000, 40000. Now from this also, what do I have to find? `max(salary)`. So obviously, my answer will be 40000. Over here, I have got the second highest. 
+
+Now after this, the third highest, 4th highest, 5th highest—over here, students get confused. So over here, I am bringing a query and I am giving you multiple methods, but this method is absolutely foolproof and you will always remember it. 
+
+The method is very simple:
+```sql
+Select id, salary 
+From emp e1 
+Where N-1 = (
+    Select count(distinct salary) 
+    From emp e2 
+    Where e2.salary > e1.salary
+);
+```
+
+What is $N$ over here? $N^{\text{th}}$ is the highest salary that you have to find. Let's say you have to find the 5th highest, then put 5 over here ($5-1 = 4$). 
+
+`= select count(distinct salary)`
+We have to find the count over here of distinct salaries from `emp e2`. We have made one more alias, `e2`, where `e2.salary > e1.salary`. 
+
+So over here, we have written a correlated nested query. How do we recognize a correlated nested query? Where some value of the outer query is used in the inner query. See the employee table in the outer query: we have made an alias `e1`, and `e1` is used internally in this query. We call it a correlated nested query, and I have already made a video regarding correlated nested queries and its link I have given in the description box. In that, I have told in detail what a correlated nested query is with examples. So one time, you should definitely watch that video. Over here, our main focus is on the $N^{\text{th}}$ highest salary. 
+
+Now, let's say I want to execute this query. Now we have to see how to run this query; that is more important. Many times, what do students do? They cram. There is no benefit in cramming. You understand its logic. If once the logic is clear, then you can write any query—this is my guarantee. 
+
+So over here, we have made two aliases of the `emp` table. This is my alias `e1` (dummy name) and one we have made `e2`. So `e2` is that only, but let's say we are copying it one more time. Let's list the salary and copy it as it is:
+* `1, 10000`
+* `2, 20000`
+* `3, 20000` (sorry, Id 3)
+* `4, 30000`
+* `5, 40000`
+* `6, 50000`
+
+So why do we basically use aliases? Because we have used employee two times—one over here and one over here. And if you will not create `e1` and `e2`, then over here what will you write? `Where emp.salary > emp.salary`. The compiler will be confused and won't know how to compile this query. What is this `emp.salary > emp.salary`? Which employee's salary is greater than which employee? So it is better that we have made aliases over here: `e1` and `e2`. 
+
+Now over here, we will see how to evaluate this query. How does a correlated nested query get evaluated? The outer query is top to down. First, 1 line of the outer query. Which is the outer query? `Select id, salary from Emp e1`. Where is `e1`? It is here. So its first row—the very first row—is to be compared with all the rows, with all the inner rows. And in the inner query, which table do I have? `e2`. 
+
+Now we have to compare `e2` with this row. So what is the comparison? `Where e2.salary > e1.salary`. See over here: `e2.salary`. This is the `e2` salary. `e2.salary > e1.salary`. Where is `e1.salary`? See here, it is 10000. The first row is to be compared with all. So this is the first row. 
+
+Let's say:
+* `10000 > 10000`? No
+* `20000 > 10000`? Yes
+* `20000 > 10000`? Yes
+* `30000 > 10000`? Yes
+* `40000 > 10000`? Yes
+* `50000 > 10000`? Yes
+
+See this, I have compared with all. Now over here, we have to find: it is greater than how many values? We have to find its count. But remember `distinct` with `count` because over here I have taken some duplicate salaries. If you take unique, then this is best; it will go normally. But even if the salary is duplicate, then also this query will run exactly. What you have to do is count them. 
+
+What is to be counted?
+* Is `10000 > 10000`? No, it is not.
+* Is `20000 > 10000`? Yes, so what is the count? 1.
+* Is `20000 > 10000`? Yes. But wait, how much is the count? 1 only! Because we have taken `distinct salary`. So distinct salary in `e2` means it is to be counted once only. 
+* Is `30000 > 10000`? Yes (count becomes 2).
+* Is `40000 > 10000`? Yes (count becomes 3).
+* Is `50000 > 10000`? Yes (count becomes 4).
+
+So in this way, you have to count. We counted this; 0 came for the first, meaning this is false. The rest are true, but you have to count distinct values only. Because we have taken `distinct salary`, 20000 is distinct, so it will be counted once internally. So the counts are: 1, 2, 3, 4. So you can say over here, in 4 cases, your count is following this property, following this condition. 
+
+Now, what do we have to do? Our question is, let's say, that I have to find the 4th highest. We have to find the 4th highest. Now let's say we have to find the 4th highest. What do I have to put over here? The value of $N$ as 4. 
+
+So what is the query over here?
+`Select id, salary from emp e1 where 3 = ...`
+Why 3? Because you have to find the 4th highest, and $N-1 = 4-1 = 3$. This is my question: find the 4th highest salary. So what is $4-1$? `Where 3 = (select count(distinct salary) from emp e2 where e2.salary > e1.salary)`. 
+
+When we compare the 1st row, then the count was 4. That means this is not to be printed. If it would have been 3 (matching our condition), then we would have printed this and finished! What is your answer? Finished. But no, now come on to the next row. 
+
+What is the next row? `2, 20000`. Now compare `2, 20000` with all. Means what is over here? Instead of 10000, what is there at all places? 20000. So write over here 20000:
+* `10000 > 20000`? False
+* `20000 > 20000`? False 
+* `20000 > 20000`? False (I told earlier only, it is distinct, so count it once only)
+* `30000 > 20000`? True (1)
+* `40000 > 20000`? True (2)
+* `50000 > 20000`? True (3)
+
+So what will this return? What is the count according to 20000? 3. Over here, you have to count. So what is the count? 3. Now see: `Where 3 = ...`. Is $3 = 3$ over here? Yes, $3 = 3$ because the internal query has given a count of 3. As $3 = 3$, it means it is true. As this is true, which line had you selected? The 2nd one. What is to be printed? `id, salary`. So see what you have got: `2, 20000` will come in your output, where 2 is the id and the salary is 20000. 
+
+So you see, in the whole database, this is the highest, this is the second highest, this is the 3rd highest, and the 4th highest is 20000. 
+
+Let's find one more. Let's say you have to find the 3rd highest. To find the 3rd highest, you note $N$ values. To find the 3rd highest, what $N$ value did you put? 3. Whatever $N^{\text{th}}$ you want to find is the value of $N$. $3-1$, what will come? 2. Over here, 2 came. 
+
+Now come on. According to the first row, 4 had come, but you don't have to evaluate again. According to 20000, your count was 3, so there is no need to calculate more. Come on the next row: `3, 20000`. So see, according to `3, 20000`, what will your count be? It will come to 3 only, so there is no need to count it again. 
+
+Next, come on `4, 30000`. Over here, what will it come? Let's check against `30000`:
+* `10000 > 30000`? False
+* `20000 > 30000`? False
+* `20000 > 30000`? False
+* `30000 > 30000`? False
+* `40000 > 30000`? True (1)
+* `50000 > 30000`? True (2)
+
+The value is 2. So in this case, what is your count? 2. So $2 = 2$ matched! It matched. So which line was it? The 4th one. What came in the output? `4, 30000`. 
+
+So see which is your 3rd highest:
+* 50000 is 1st
+* 40000 is 2nd
+* 30000 is 3rd
+
+In this way, the 30000 salary means your 3rd highest will be printed. So 3rd, 4th, 10th, 20th—at present, I have just added 6 rows in the database. Let's say even if there were 6000 rows also, then the 100th, 200th, or any highest salary you can find out. 
+
+So this is basically the funda: how do we find out the $N^{\text{th}}$ highest salary? Be careful, we have done this with a correlated query. I believe there are multiple methods, but the best method which you should always remember is this method. So you will benefit a lot from that, specially in placements and in competitive exams. Thank you!

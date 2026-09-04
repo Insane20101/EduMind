@@ -1,0 +1,134 @@
+Hello, go and watch my video on regulation, plus also watch all the older videos on linear algebra. Let me tell you that I have just started a new YouTube channel for General Aptitude for CSIR NET Mathematics, Physics, Life Science, Chemistry. If you are preparing for CSIR NET with any subject, my General Aptitude videos are very helpful; you can check them out there as well.
+
+In this, see here: Show that the following matrix $A$ is diagonalizable, where $A$ is given to you as $\begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix}$, right? So whenever such a question is formed, what you have to do here is, first of all, we will find $A - \lambda I$ here, and you will find its characteristic equation, right? So this will come out as $\begin{vmatrix} 4 - \lambda & 2 \\ 3 & 3 - \lambda \end{vmatrix} = 0$. When you find the determinant, how much will this be? $(4 - \lambda)(3 - \lambda) - (3)(2) = 0$. When you simplify this, you will get $\lambda^2 - 7\lambda + 12 - 6$, which is $+6$, clear? The value you get here when we put this equal to zero, we will get the factors: $(\lambda - 6)(\lambda - 1) = 0$. So the eigenvalues we will get are $1$ and $6$. You are seeing, students, that $\lambda_1 = 1$ and $\lambda_2 = 6$. Whenever distinct eigenvalues come, we know that in such cases, our matrix is always diagonalizable. But you have to do it with the process of how we will diagonalize here. So see, students, here what we will do whenever such a question comes: we will now have to find its eigenvectors, right?
+
+Now, how do we find eigenvectors? First, to find the eigenvectors, let me tell you the matrix: $A = \begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix}$, right? We have the eigenvalues placed right here, right? So students, we will find the eigenvectors, right? Eigenvectors. Eigenvectors for $\lambda_1 = 1$, we will see, right? The matrix given to us is—let's check the matrix given to us: $\begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix}$, right? For this, we will find it right here, right?
+
+So see here, students, the matrix given to us—let me write it down here: $A = \begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix}$. And here, $A - \lambda I$, minus, now we put $\lambda = 1$. The concept when finding eigenvectors is what, students? $(A - \lambda I)X = 0$, right? So $A - \lambda I$, you will see here: $\begin{pmatrix} 4 - 1 & 2 \\ 3 & 3 - 1 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. Let me put $\lambda = 1$ directly: $4 - 1 = 3$, this is $2$, and this is $3$, and $3 - 1 = 2$, then $\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. You are seeing that for this, both rows are the same, so the equation we will form—we can apply a row transformation: $R_2 \to R_2 - R_1$. Then students, this will become $\begin{pmatrix} 3 & 2 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. So the equation we get is $3x_1 + 2x_2 = 0$. Now, what should you do when you do this? Let $x_2 = 3k$. I take $x_2 = 3k$ so that this $3$ can be factored out and canceled. If I put $3k$ here, $3x_1 + 2(3k) = 0 \implies 3x_1 = -6k$, so $x_1 = -2k$, clear?
+
+So we will write the eigenvector $\begin{pmatrix} x_1 \\ x_2 \end{pmatrix}$ here: it will be $\begin{pmatrix} -2k \\ 3k \end{pmatrix}$. Take $k$ outside: $k \begin{pmatrix} -2 \\ 3 \end{pmatrix}$. Let's absorb the negative sign into a new constant $k'$, so it comes out as $\begin{pmatrix} 2 \\ -3 \end{pmatrix}$ (or keeping the negative, $\begin{pmatrix} -2 \\ 3 \end{pmatrix}$). So the eigenvector will be $\begin{pmatrix} -2 \\ 3 \end{pmatrix}$, right?
+
+Now similarly, we will talk about for $\lambda_2 = 6$. We will check what the vector will be where $\lambda = 6$. Let's put $6$ in $A - \lambda I$: $\begin{pmatrix} 4 - 6 & 2 \\ 3 & 3 - 6 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$, which gives $\begin{pmatrix} -2 & 2 \\ 3 & -3 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. You are seeing, students, that both lines are proportional, so by transformation it becomes zero. I will write directly: $-2x_1 + 2x_2 = 0$. What do you do now? Let $x_2 = k$. When you take $x_2 = k$, then students, $x_1$ will also be equal to $k$. So the eigenvector $\begin{pmatrix} x_1 \\ x_2 \end{pmatrix}$ will be $k \begin{pmatrix} 1 \\ 1 \end{pmatrix}$, right?
+
+So we got the eigenvectors. Two eigenvectors we have got: one eigenvector is this, and the other eigenvector we got from here. From these, we will construct the $P$ matrix, right? So we make the $P$ matrix. You are seeing that the $P$ matrix will be formed by combining both eigenvectors: $\begin{pmatrix} -2 & 1 \\ 3 & 1 \end{pmatrix}$ (let's check the order: for $\lambda=1$, vector was $\begin{pmatrix} -2 \\ 3 \end{pmatrix}$ or $\begin{pmatrix} 2 \\ -3 \end{pmatrix}$; let's use $\begin{pmatrix} 2 \\ -3 \end{pmatrix}$ and $\begin{pmatrix} 1 \\ 1 \end{pmatrix}$, so $P = \begin{pmatrix} 2 & 1 \\ -3 & 1 \end{pmatrix}$). 
+
+Now what do we need to find? We need to find $P^{-1}AP$, right? So we have to find $P^{-1}$. The value of $P$ is given, so we will find its inverse. How to find the inverse? You can check my short trick video on the channel: interchange these two (so $1$ and $2$ swap places to become $\begin{pmatrix} 1 & -1 \\ 3 & 2 \end{pmatrix}$? Wait: for $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$, inverse is $\frac{1}{ad-bc} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$). Here $P = \begin{pmatrix} 2 & 1 \\ -3 & 1 \end{pmatrix}$, so determinant is $(2)(1) - (1)(-3) = 2 + 3 = 5$. And adjugate: interchange main diagonal elements ($1$ and $2$) and change signs of off-diagonal elements ($-1$ and $3$). So $P^{-1} = \frac{1}{5} \begin{pmatrix} 1 & -1 \\ 3 & 2 \end{pmatrix}$.
+
+Now $P^{-1}AP = \frac{1}{5} \begin{pmatrix} 1 & -1 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ -3 & 1 \end{pmatrix}$. Let's multiply and simplify this. Let's keep the first matrix as it is and multiply the last two matrices: $\begin{pmatrix} 4 & 2 \\ 3 & 3 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ -3 & 1 \end{pmatrix}$. Let's calculate:
+Row 1 $\times$ Col 1: $(4)(2) + (2)(-3) = 8 - 6 = 2$.
+Row 1 $\times$ Col 2: $(4)(1) + (2)(1) = 4 + 2 = 6$.
+Row 2 $\times$ Col 1: $(3)(2) + (3)(-3) = 6 - 9 = -3$.
+Row 2 $\times$ Col 2: $(3)(1) + (3)(1) = 3 + 3 = 6$.
+So the product is $\begin{pmatrix} 2 & 6 \\ -3 & 6 \end{pmatrix}$.
+
+Now multiply this with the first matrix $\frac{1}{5} \begin{pmatrix} 1 & -1 \\ 3 & 2 \end{pmatrix}$:
+$\frac{1}{5} \begin{pmatrix} 1 & -1 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 2 & 6 \\ -3 & 6 \end{pmatrix}$:
+Row 1 $\times$ Col 1: $(1)(2) + (-1)(-3) = 2 + 3 = 5$.
+Row 1 $\times$ Col 2: $(1)(6) + (-1)(6) = 6 - 6 = 0$.
+Row 2 $\times$ Col 1: $(3)(2) + (2)(-3) = 6 - 6 = 0$.
+Row 2 $\times$ Col 2: $(3)(6) + (2)(6) = 18 + 12 = 30$.
+So we get $\frac{1}{5} \begin{pmatrix} 5 & 0 \\ 0 & 30 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 6 \end{pmatrix}$.
+
+You are seeing that the eigenvalues came here: $\lambda_1$ is here, $0$, $0$, and $\lambda_2$ is here. So in this way, this matrix is diagonalizable, right? So whenever matrix diagonalization is asked, this is the process you have to use, right? So in this way, we solve this question.
+
+Now see the next question, students. Look at what the next question is saying: Show that the following matrix is diagonalizable. You are asked whether the matrix is diagonalizable. What will you do? Whenever such a question is asked, we will set up $A - \lambda I = 0$, right? So $A - \lambda I$ will be: matrix $A$ is given as $\begin{pmatrix} 1 & -1 & 4 \\ 3 & 2 & -1 \\ 2 & 1 & -1 \end{pmatrix}$ (let's check: $\begin{pmatrix} 1 & -1 & 4 \\ 3 & 2 & -1 \\ 2 & 1 & -1 \end{pmatrix}$). We subtract $\lambda I$, so $\begin{vmatrix} 1 - \lambda & -1 & 4 \\ 3 & 2 - \lambda & -1 \\ 2 & 1 & -1 - \lambda \end{vmatrix} = 0$. When you find its characteristic equation, the characteristic equation that comes when you solve it will be $(\lambda - 1)(\lambda + 2)(\lambda - 3) = 0$. I have made YouTube videos on finding characteristic equations, you can go and watch them. So when you find these values, we get these values. The values of $\lambda$ we get are $1, -2, 3$. These are our eigenvalues.
+
+Now, what will we do here? We will find the eigenvectors, right? To find the eigenvectors, what do you need to do? For the given matrix, we will find the eigenvectors:
+First, for $\lambda_1 = 1$.
+Second, for $\lambda_2 = -2$.
+Third, for $\lambda_3 = 3$.
+We will find eigenvectors for all three, clear?
+
+First, talking about for $\lambda_1 = 1$: wherever there is $\lambda$, we put $1$. Here, putting $1$ gives $\begin{pmatrix} 0 & -1 & 4 \\ 3 & 1 & -1 \\ 2 & 1 & -2 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$. We apply row transformations, and after finding the eigenvector using the method I have already taught on the channel, the eigenvector for $\lambda_1 = 1$ comes out as $\begin{pmatrix} -1 \\ 4 \\ 1 \end{pmatrix}$, clear?
+
+Next, for $\lambda_2 = -2$, we consider $A - (-2)I = A + 2I$. The matrix will be: putting $-2$ in place of $\lambda$, we get $\begin{pmatrix} 3 & -1 & 4 \\ 3 & 4 & -1 \\ 2 & 1 & 1 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$. When we simplify this, the eigenvector for $\lambda = -2$ comes out as $\begin{pmatrix} 1 \\ -1 \\ 1 \end{pmatrix}$, clear?
+
+Now for $\lambda_3 = 3$: wherever there is $\lambda$, put $3$. The matrix becomes $\begin{pmatrix} -2 & -1 & 4 \\ 3 & -1 & -1 \\ 2 & 1 & -4 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$. When we simplify this and find the eigenvector using the method I already explained, the eigenvector comes out as $\begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix}$, right? These are our three eigenvectors.
+
+Now using these three eigenvectors, we will construct the $P$ matrix, clear? Since we need to find the value of $P^{-1}AP$, the $P$ matrix will be formed by placing the eigenvectors as columns: $\begin{pmatrix} -1 & 1 & 1 \\ 4 & -1 & 2 \\ 1 & 1 & 1 \end{pmatrix}$, right?
+
+Now whenever the $P$ matrix is given, you need to find its inverse. I have also explained short tricks for finding inverses on the channel, you can go and check. The inverse of this $P$ matrix comes out as:
+$P^{-1} = -\frac{1}{6} \begin{pmatrix} 1 & -2 & -3 \\ -2 & -2 & 0 \\ 3 & 6 & -3 \end{pmatrix}$ (or with the negative sign distributed inside).
+
+Now we will find $P^{-1}AP$. As I just showed you how to calculate, we will multiply these three matrices:
+$P^{-1} = -\frac{1}{6} \begin{pmatrix} 1 & -2 & -3 \\ -2 & -2 & 0 \\ 3 & 6 & -3 \end{pmatrix}$,
+Matrix $A = \begin{pmatrix} 1 & -1 & 4 \\ 3 & 2 & -1 \\ 2 & 1 & -1 \end{pmatrix}$,
+Matrix $P = \begin{pmatrix} -1 & 1 & 1 \\ 4 & -1 & 2 \\ 1 & 1 & 1 \end{pmatrix}$ (or matching the eigenvectors used earlier: $\begin{pmatrix} -1 & 1 & 1 \\ 4 & -1 & 2 \\ 1 & 1 & 1 \end{pmatrix}$).
+This is a slightly lengthy question because sometimes such questions turn out to be heavy, and when we simplify this, you will check that the resulting matrix is: when you multiply these, the value you get is $\begin{pmatrix} 1 & 0 & 0 \\ 0 & -2 & 0 \\ 0 & 0 & 3 \end{pmatrix}$.
+This matrix can also be written as $\text{diag}(1, -2, 3)$, right? It is sometimes written in this way as well. So this is how we solve this question, students.
+
+Now understand one more question, because sometimes such questions are also asked. I'll take this as the last question. Look at this question: you are asked to show that the matrix is diagonalizable. So in the previous question, all three eigenvalues were distinct, so we quickly solved and showed that the matrix is diagonalizable. But students, for this matrix, we will find eigenvalues, and there might be repeated eigenvalues! In that case, you need to use the concept of Geometric Multiplicity and Algebraic Multiplicity that I taught you, or there are other ways as well which I will teach you on how to proceed.
+
+So see how to do this question, students. Show that the matrix is diagonalizable. Whenever such a question is asked, what do we do? We find $A - \lambda I$, right? We find $A - \lambda I$:
+$\begin{vmatrix} 3 - \lambda & 2 & 4 \\ 2 & 0 - \lambda & -1 \\ 4 & 2 & 3 - \lambda \end{vmatrix} = 0$.
+We find its determinant, right? When we find its determinant, the characteristic equation that comes, students, will be: when you solve it, you get $-\lambda^3 + \text{trace}(A)\lambda^2 \dots$ wait, the characteristic equation comes out to be $(\lambda + 1)^2(\lambda - 8) = 0$ (let's verify: when you simplify, it gives $(\lambda + 1)^2(\lambda - 8) = 0$). When we put this equal to zero, the eigenvalues we get are $-1, -1, 8$. These are repeated eigenvalues! And whenever repeated eigenvalues come, in that case, what do we do? We apply the concept of algebraic and geometric multiplicity.
+
+So now what will you do? First of all, for this eigenvalue $\lambda = 8$, you find its eigenvector, right? First, we talk about the eigenvector for $\lambda_1 = 8$. We know our matrix $A$ is given; we need to substitute $\lambda = 8$ wherever $\lambda$ is in $A - \lambda I$ and simplify. The matrix we get—let me tell you directly: when you simplify, you get $\begin{pmatrix} 3 - 8 & 2 & 4 \\ 2 & -8 & -1 \\ 4 & 2 & 3 - 8 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$, which is $\begin{pmatrix} -5 & 2 & 4 \\ 2 & -8 & -1 \\ 4 & 2 & -5 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$.
+When you solve this using the eigenvector method (I have already explained the full concept on the channel of how we find it), the eigenvector comes out as $\begin{pmatrix} 2 \\ 1 \\ 2 \end{pmatrix}$, clear? So this is our eigenvector. Now we will check for $\lambda_2 = \lambda_3 = 1$ (or $-1$).
+
+ना वन के लिए आपको यहां चेक करने की उसके क्रॉस मॉर्निंग, मैं तो -1 के लिए बात करेंगे ना, क्योंकि जो हमारी वह हमारे पास क्या है -1 राइट -1 है ना।
+तो -1 के लिए हम यहां पे इसका आइगन वेक्टर चेक करेंगे।
+क्लियर है क्या?
+आइगन वेक्टर क्या आ रहा है?
+ओके।
+तो इसमें हम क्या करेंगे?
+तो हमारे पास जो वैल्यू आएगी वो कितनी आएगी हमारे पास 212 आएगा, 212 आएगा राइट।
+अब चेक करेंगे 000 हो जाएंगे तो हमारे पास बचेगा सिर्फ 424 बचेगा, बाकी ये तीनों हमारे पास ट्रांसमिशन से क्या हो जाएगा जीरो हो जाएगा।
+क्योंकि दोनों लाइन सेम है तो यह आएगा $x_1, x_2, x_3 = 0, 0$ इसलिए हमारे पास जो इक्वेशन आएगी, वही आएगी $4x_1 + 2x_2 + 4x_3 = 0$ राइट।
+इस = 0 यहां पे दो कॉन्सेप्ट लेते हैं हम लोग।
+हम क्या करते हैं $x_2 = 0$ और $x_3 = k$ ले लेते हैं है ना और यहां पे क्या करते हैं $x_2 = k$, $2k$ ले लेते हैं और $x_3 = 0$ ले लेते हैं।
+क्लियर है?
+
+अब देखो बाइसिकल क्या होता है अगर $x_1, x_2, x_3$ में अगर सिर्फ $x_1, x_2$ होता है, तो फिर हमारे लिए प्रॉब्लम हो जाती है, दो आइगन वेक्टर, दो डिफरेंट आइगन... तो एक को जीरो, दूसरे को क्या मान लेंगे उसमें, दूसरे को जीरो, एक को $k$ मान लेंगे राइट।
+तो जब इसको जीरो मानेंगे और इसको $k$ मानेंगे, तो इस दुनिया में हमारे पास $x_1$ की वैल्यू भी क्या आ जाएगी?
+हमें देखो, यह $4x_1$ आएगा यहां पे और यह तो जीरो हो गया और यह हो गया तो यह प्लस $4k$ हो जाएगा इस = 0, तो $x_1$ की वैल्यू हमारे पास कितनी आएगी?
+माइनस का $k$ आ जाएगा।
+तो हमारे पास जो आइगन वेक्टर आएगा $x_1, x_2, x_3$, तो आप देख रहे हो, यहां से $k$ कॉमन निकाल दीजिए आप, तो यह हमारे पास आइगन वैल्यू, आइगन वेक्टर क्या आएगा?
+-1, 0 और 1 आ जाएगा राइट।
+तो फर्स्ट आइगन वेक्टर तो हमारे पास यह आ गया।
+
+इसी टाइप से हम क्या करेंगे?
+रखा, ताकि $4k$ हो जाएगा ना, तो फटाफट का आपके भी ले सकते हैं ना, देयर इज नो इशू राइट।
+तो हम क्या करेंगे, $4x_1$ आ जाएगा + $4k$ आ जाएगा राइट और यह तो जीरो हो गया, तो इसमें यहां पे $x_1$ की वैल्यू हमारे पास कितनी आ गई है?
+माइनस का $k$ आ गई।
+तो आप चेक करेंगे $x_1, x_2$ और $x_3$ राइट, $k$ बाहर निकलेंगे, तो आप देख रहे हैं यहां पे यह आएगा -1 और यहां पे आ जाएगा क्योंकि यह वन लिया और यह क्या हो गया जीरो?
+तो दोनों जो आइगन वेक्टर आ रहे हैं, वो हमारे पास क्या है?
+लीनियरली इंडिपेंडेंट आ रहे हैं।
+तो हमारी यहां पे यह जो मैट्रिक्स होगी, यह क्या होगी?
+डायगोनलाइजेबल होगी राइट।
+तो डायगोनलाइजेबल होगी, हम क्या करेंगे $P$ मैट्रिक्स निकालेंगे राइट।
+
+इसकी जो $P$ मैट्रिक्स आएगी, वो क्या आएगी?
+वो चेक कर लेते हैं दोस्तों।
+इसकी जो $P$ मैट्रिक्स आएगी, वो मैं बता देता हूं आपको कि इसकी जो $P$ मैट्रिक्स आएगी वो क्या आएगी?
+इसकी जो $P$ मैट्रिक्स आएगी, वो आएगी हमारे पास 212 आएगी, देन यहां पे हमारे पास आएगा वो वैल्यू आ रही है हमारे पास -1 और -1, 0, 1 आ रहा है राइट, तो -1, 0 और 1 आ रहा है यहां पे।
+तो हम ले लेंगे इसको -1, 0 और 1 और वहां से आएगा -1 और 0 आ जाएगा।
+
+फिर हम यहां निकालेंगे स्टूडेंट $P^{-1} AP$ की वैल्यू और जैसे $P^{-1} AP$ की वैल्यू निकालेंगे, तो आपके पास जो आइगन वेक्टर आ रहा है, वो हमारे पास आ जाएगा तो यहां पे आएगा यह $8, 0, 0, -1, 0, 8, 0, 0, -1$ आएगा।
+तो इस तरीके से यहां पे इस टाइप के क्वेश्चंस को हम यहां पे सॉल्व करते हैं।
+तो जब भी क्वेश्चन आपके पास डायगोनाइजेशन का पूछा जाता है, तो इस तरीके से अब हम सॉल्व करते हैं।
+सो स्टूडेंट, इस तरीके से इस टाइप के क्वेश्चंस को हम सॉल्व करते हैं एग्जाम में।
+अगर आपको ऐसा कोई भी क्वेश्चन एग्जाम में पूछ लिया जाए कि कैसे मैट्रिक्स को डायगोनाइज करना है, तो आपको सबसे पहले कोई मैट्रिक्स दे रखी, उसकी आइगन वैल्यूज निकालेंगे, उनके कॉरेस्पोंडेंस आइगन वेक्टर निकालेंगे, फिर $P$ मैट्रिक्स निकालेंगे, फिर उसका इन्वर्स निकाल के $P^{-1} AP$ निकालते हैं, देन जो भी आइगन वैल्यूज वो क्या आ जानी चाहिए आपके डायगोनल में आ जाना चाहिए।
+
+पर एक बार ध्यान देने की जरूरत है कि जितनी भी आइगन वैल्यूज हैं, उनके कॉरस्पॉडिंग वेक्टर आने चाहिए, वो क्या आने चाहिए?
+इंडिपेंडेंट।
+और एक और तरीका है कि जो अलजेब्रिक मल्टीपलीसिटी है, वो ज्यामितीय मल्टीपलीसिटी के बराबर आना चाहिए, तभी मैट्रिक्स हमारे पास डायगोनाइजएबल होती है स्टूडेंट।
+अगर आइगन वैल्यूज डिस्टिंक्ट आ रही है, मतलब डिफरेंट आ रही है, तो टेंशन लेने की जरूरत नहीं है।
+पर जब आइगन वैल्यूज डिफरेंट आ रही होती है, सॉरी से आ रही है, रिपीट कर रही होती है, तब थोड़ा सा आपको समझ के क्वेश्चन को करना पड़ेगा, तो आपको कहीं तकलीफ का सामना नहीं करना पड़ेगा।
+
+तो जब भी क्वेश्चन ऐसा है जिसमें आइगन वैल्यू रिपीट कर रही है, तो आप हमेशा ज्यामितीय मल्टीपलीसिटी दिखा चुका है, वो जरूर अप्लाई कर दीजिएगा, तो आपका क्वेश्चन इज़ीली सॉल्व हो जाएगा।
+और वैसे मैंने आपको बताया यहां पे कि जब भी आइगन वैल्यू रिपीट करती है, तो मैंने आपको बताया था यहां पे कि आइगन वैल्यू जब रिपीट करें, तो हमारे पास जो कॉन्सेप्ट आना चाहिए, वो इस टाइप का आना चाहिए।
+मैंने आपको बताया था यहां पे कि अगर आइगन वैल्यू रिपीट करेगी, सॉरी है ना, आइगन वैल्यू रिपीट करेंगे, तो हमारे पास क्या आ रहा था?
+अभी मैंने आपको बताया था कि जब भी आइगन वैल्यू रिपीट करें, तो उस वाले केस में हमारे पास यह कॉन्सेप्ट आना चाहिए कि $x_1 + 2x_2 + 4x_3$ अगर यहां पे यह चारों में, तीनों में से कोई एक जीरो होता, तो फिर प्रॉब्लम हो सकती थी, क्योंकि फिर हम किसी एक को जीरो मानते हैं, तो हमारे पास जो आइगन वेक्टर आता है, वो एक ही आइगन वेक्टर मिलता, हमें दो डिफरेंट वेक्टर नहीं मिलते से आइगन वैल्यू के लिए ना।
+तो दो सेम आइगन वैल्यू के लिए दो डिफरेंट इंडिपेंडेंट वेक्टर मिलने चाहिए।
+तो यह हमारा क्वेश्चन यहां पे सॉल्व हो गया इस तरीके से राइट, मतलब तभी मैट्रिक्स हमारी यहां पे डायगोनाइजएबल होगी।
+
+सो आप सभी का बहुत-बहुत धन्यवाद और मुझे लगता है कि मैं जो पढ़ा रहा हूं, यह कॉन्सेप्ट आपको समझ में आ रहा होगा और समझ में आ रहा है, तो आप कमेंट करके जरूर बताइए।
+और स्टूडेंट, मैं आपको एक और चीज बताना चाहता हूं कि अगर आपको लगता है कि मेरा कंटेंट आपके लिए हेल्पफुल है, तो आप मेरे चैनल को लाइक करिए, शेयर करिए और चैनल को जरूर सब्सक्राइब करके रखिए।
+और स्टूडेंट, लास्ट में मेरी वीडियो है यह मेरे जनरल एप्टीट्यूड की प्लेलिस्ट से जहां पर मैं CSIR NET के जितने भी एप्टीट्यूड की वीडियो है वो अपलोड कर रहा हूँ।
+यह मेरे यहां पर जनरल एप्टीट्यूड की जो प्लेलिस्ट है, प्लस मैं जो वेक्टर स्पेस के जितने भी लाइन वगैरह के वीडियो अपलोड की, वो भी आप यहां जाके देख सकते हैं।
+यह मेरा दोनों चैनल, यह मेरा नया चैनल है, जिसमें मैं आपके यूट्यूब की वीडियो अपलोड कर रहा हूँ इसलिए, मैंने पुराना चैनल जिसमें हायर मैथमेटिक्स की वीडियो पढ़ाता हूँ।
+
+सो थैंक यू सो मच फॉर वाचिंग मी।
+लाइक करिए, शेयर करिए और चैनल को जरूर सब्सक्राइब करिए।
+मैंने यह मेरे साथ बहुत ही अच्छे कंटेंट के लिए धन्यवाद।

@@ -1,0 +1,77 @@
+In CSS, there is a very important property called `position`. Suppose you want to move an element from its previous position; you can use `position: relative` to create a `top` of 3 pixels, and that 3 pixels will move the element down. Similarly, by using the `position` property and `z-index`, you can stack elements on top of each other. How all these things are done in CSS will be explained in this video. 
+
+Do write "Sigma Batch OP" in the comment section below. Let's keep this high energy! Now, let's go to the computer screen and roll the intro.
+
+In CSS, the `position` property is very important. I will create a folder named `video28`. After that, you will understand how important the `position` property is and what can be done with it. As always, I will make a boilerplate template here. After creating the boilerplate template, I will simply write "CSS position" and put a style tag here so that I can style the elements. I will create four boxes: `box1`, `box2`, `box3`, and `box4`, and I will give a common class `box` to all of them. This way, if I want to apply styles to all the boxes, I can do it using `.box`.
+
+Here, by using `.box`, I will set a border of 2 pixels solid black. I will also use the universal selector to reset CSS by setting `margin: 0` and `padding: 0`. You must know this if you know me a little bit; this is my habit. I select the universal selector and set `margin: 0` and `padding: 0`. 
+
+Now, if I check this, I don't see anything. The reason is that we didn't give height and width to every box. Let's give them a height of 133 pixels and a width of 80vw. Now that we know how our sizing units work, I would like to give padding to all the boxes. I will give padding of 3 pixels from all sides and also give margin of 3 pixels from all sides. With this, the boxes will look like this.
+
+Now, I will be able to target `box1`, `box2`, `box3`, and `box4` individually. But first, I will make you access a playlist or click and ask for a book or click and save, which you will do right now. Along with that, I want you to open it in the browser. 
+
+As you have seen here, our browser has prepared all our boxes by applying margin, padding, and all. If you want, you can also write styles for `box1` and `box2`, but I think that's fine; let's leave it like this for now. Now, I will write `.box1` and add some CSS. I will set a background color for `box1` and similarly set background colors for `box2`, `box3`, and `box4` with random colors.
+
+Now, what is by default? The position of all the boxes is static. The `position` property in CSS is by default static, which means that the top, bottom, left, right, and z-index cannot be applied. If I try to set `top: 2px`, Chrome will tell me that the static position prevents `top` from having an effect. If you keep any position other than static, then you can enjoy this property. 
+
+So, how do we enjoy this property? If I don't use the `position` property, by default, its position will be static. The behavior of the static position is that the first box will come, then the second box, then the third box, and finally the last box. This is the typical CSS behavior that I expect. 
+
+Let's say I set the position of `box2` to absolute. This is the static position, and I hope you understood what it is. The static position means that it will stay where it was; no effect will be there. 
+
+Now, after this, there is an absolute position and a relative position. Before discussing absolute, I will explain relative positioning. Assume that I say `box2` should have `position: relative`. Relative means that it will move from its own place. If I want it to go up and to the left, I can say `left: 34px`, and it will move 34 pixels to the left. I can increase it as much as I want. 
+
+Now, suppose for some reason you want the Aqua box to be on top and the other box to be behind it. We can set the value of `z-index`. If I set the value of `z-index` here, it will not make any difference unless I set `position: relative`. Once I give it `position: relative`, I can set its `z-index`. If I give it a value of 1, it should not be 0; it should be 1. If it has a higher `z-index`, it will come up.
+
+The reason we set `position: relative` is that whenever you want to use `z-index`, you have to remove the static from the position property and give it some position. This is the rule to set `z-index`. Here, we have not used `top` or `bottom`, so it will not make any difference; just its position will be set. 
+
+If I reload it, nothing will happen because all the CSS we were writing here goes away after refreshing. So here, I will quickly write `top: 34px` and `left: 56px`. You will see that I have given `top` and `left`. 
+
+If I want to set the `z-index` of other boxes, I have to set `position` in them. But for now, I will leave it as it is. You can see that the box came on top. 
+
+Now, I want to explain what happens when we use `position: absolute`. First of all, I will give a parent to all the boxes, so all of them will come under a parent div. I will give a class `parent` to this div and write some styles for it. I will give it some padding, margin, and a border. 
+
+Now, I will give `box1` a position of absolute. What happens when you give `position: absolute`? It seems that this element is not in the normal document flow. As soon as I set `position: absolute` and `top: 0px`, it will move to the top of the viewport. 
+
+When I give `position: absolute`, it will try to find its parent and check if it is a positioned element. If the parent is static, it will look for the nearest positioned ancestor. If it finds one, it will position itself relative to that ancestor. 
+
+If I increase the `top` value, it will move down relative to the nearest positioned ancestor. If I set the parent to `position: absolute`, then `box1` will be positioned relative to the parent instead of the HTML document.
+
+Now, let's discuss `position: fixed`. If I want to fix the position of `box3`, I will write `position: fixed` and set `top: 0px` and `left: 25vw`. This means that `box3` will remain fixed in that position even when scrolling the page. 
+
+To demonstrate this, I will increase the height of the box to 433 pixels. Now, when I scroll the page, `box3` remains fixed in its position. 
+
+Finally, I will explain `position: sticky`. I will comment out the `position` for `box3` and make `box1` sticky by setting `position: sticky` and `top: 0`. As soon as I do this, you will see how it behaves. 
+
+This concludes the explanation of the `position` property in CSS. If you have any questions or need further clarification, feel free to ask!
+
+I will make the top 0 pixels as soon as I do this. You can see it is stuck, and when it comes into use, I will tell you. Suppose our box is a navbar, and its height is 111 pixels, its width is 100%, and its margin and padding are both 0. By making padding 0 and margin 0, it looks like this. It is in my parent, obviously, but as soon as I scroll, everything scrolls above it. 
+
+Let’s say this is my navbar for this website. I know this is not a very good navbar, and we are going to make a better website than this. This is just a start. Many people have commented asking when we will make good websites. Let's finish all the properties first, and then we will make a website that you will also say looks good. We have raised it a lot, and this is the target. I have taught you to make impressive websites, but I want to cover some basics first.
+
+You see here this box; we have given it a position of sticky. Sticky means something that sticks. The thing that sticks will stick to the wall. As soon as I scroll, it sticks, and if I come here, it will stay against the wall. Now, as soon as I scroll, it will stick. If I come here, it will stay like this until you scroll to this point. It will not stick until you scroll beyond it. Until you scroll beyond it, it behaves like a static position. 
+
+As soon as you scroll beyond it, you can see here that by using position sticky, it sticks to the wall. There is a lot of difference between fixed and sticky. I don't understand why people say there is confusion between fixed and sticky. According to me, fixed is different, and sticky is different. This is a frequently asked question. If you go to Stack Overflow, you will see that people are confused between fixed and sticky. However, I don't think there should be much confusion. 
+
+Fixed means it is fixed in one place. It is like taking four pages and pasting the box here on your screen; it is not moving from here. Fixed means it is stuck to the wall. Sticky means that until you scroll above it, it will remain static. As soon as you scroll above it, it will stick to the wall, as you can see. This is our sticky position. 
+
+Now, I hope you understood all four properties. I want to make a comment about position absolute. Before making that comment, I will remove the position sticky and top, and after removing all this, I will revert it to position absolute. When you see box 1, its position is absolute, and this is relative to our HTML. As I mentioned, box 1 will check its parent first. If it has a position set, then it will be relative to its parent. 
+
+As you can see, HTML or body is not set here. It will check the parent first. If the parent has a position, then it will set itself relative to the parent. If I fix the position of it, it will also be considered as having a position. You can see here that it will set the relative of it. If I make the position of the parent sticky and the position of the child absolute, then the child will position itself relative to its parent. 
+
+In the case of box 1, we have set top 0 and left 3. So, top 0 and left 3 will be relative to the parent because the parent is positioned. Whether it is positioned with position fixed, position sticky, position absolute, or relative, it will still be relative to its parent. However, there is one exception to this, which can introduce some weird bugs in your code. 
+
+The transform, filter, or perspective properties can also make an element appear as positioned. If I set the perspective property on transform filter, then it will also be considered as positioned. What does this mean? Suppose I have not positioned it. If I have not set position relative in its child, and its position is absolute, listen carefully. If you are not careful, you will not understand. 
+
+If I give position relative to this, and suppose I have not put position relative in this, there is an absolute position in its child. If you are not paying attention, you will not understand. I guarantee this. If you want, watch the video again. Here, I said that I have not used any kind of positioning in this. It will set itself as body relative or you can say HTML relative. The thing is the same. It will go to the top of the document according to the body relative or HTML relative. 
+
+It will automatically go to the top of the document and follow top 0 and left 3 pixels. But if I put position relative here, then it will be parent relative. However, there is one more exception. When it will be parent relative, if I put the transform property on it, about which I have not told you yet, I know that I have not told you about the transform property. 
+
+What I will do is make it translate 0. I will explain the translate transform property in the coming videos, but for now, assume that this is a property. If this property is there, then it will also show the relative position of my parent. Here are these three properties that very few people tell, and I have not seen this anywhere. I discovered this myself when a bug appeared in my code. After that, I looked around, and I did not get the answer on Stack Overflow. I got a comment that helped me understand this a long time ago.
+
+If the filter property is also applied, like a filter property, for example, filter and invert, if I put an invert filter, you will see that by putting filter invert, the color is inverted. If I put invert 0 here, then nothing happens. By putting filter invert 0, this box is positioned relative to its parent. If we didn't know that these three properties can also represent a positioned element, we could have been misled. Interviewers also ask this question: if you put an invert filter on your parent or any other filter, they will ask you whose position will this box take—topmost HTML or this parent? If you don't know this, it is possible that it will position itself relative to HTML because it doesn't have a position, but it has a filter.
+
+I hope this is clear, and you understand. The same goes for the perspective property. If I set the perspective property here, I have set perspective 0, and you can see this is the relative position of the parent. This means these three properties can also make it appear as a positioned element. I hope that makes sense. For now, I will remove it, but you need to keep these three properties in mind. I will note this as an exception; it is very important.
+
+With this, our position property is over. I hope you enjoyed it, and you must have found it fun to learn about all these properties. By using position and z-index, you can make your element appear anywhere. If you want one particular element to come to the top, increase its z-index. If you want one particular element to be below one and above another, set the values of z-index accordingly. The element with the highest z-index value will come to the top, while the one with the least value will be at the bottom. 
+
+Play around with z-index, and I hope you enjoyed this course. If you haven't accessed it yet, check the playlist. I am updating the source code daily. Here, by doing 01, you can see how beautiful it is. Do you agree with me? Tell me in the comment section below. That's it for now, guys. Access the playlist, like the video, and make sure you have subscribed to the channel. If you haven't named your village and uncle's land yet, send it in his papers. Thank you so much for watching this video, and I will see you next time.

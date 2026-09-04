@@ -1,0 +1,89 @@
+I gave you the exercise. Many of you solved it. In today's video, I will give you the solution, and then we will give a shoutout to those who solved it. Like this video and write "JavaScript cap" in the comment section. Let's go to the computer screen. Let's roll the intro.
+
+Alright guys, the time has come to give you the solution to the question I gave you. It was very straightforward, yet some people wrote that this question was difficult. But I say that the level is different for everyone, and it will take a little time for you to build your level. Not a problem at all.
+
+So, what did I say in exercise 12? I said that you have to create color boxes. Here, you see that we have to generate random colors. This question was to create 5 boxes and assign a random color and a random background to each box using DOM concepts. Now, there are many ways to do this. I will show you how to generate random numbers.
+
+Now, see how to generate random colors. There are many ways to generate random colors, but what will be a very layman way? I will see how many boxes are there. In fact, it would be better if I bring the file of video number 70. 
+
+So, if I copy the file of video number 70, I have brought the file of video number 70. If I copy this index.html—by the way, you can drag and drop it in VS Code if you don't know—so if I bring this file, it will be better. Ctrl A, Ctrl V. I did this. Now, what I am doing here is saying that I have to assign these boxes randomly in color. 
+
+First of all, I will put a script here. See, it is very important to organize things because we are not going to make these small projects always. We will make big projects. So, when we make big projects, we have to create a lot of files, like script.js, and assemble things. Otherwise, things will get lost, and we don't want that. 
+
+It's important to organize things, and I always write my script like this. When you are a beginner, at least write it so that you will know that your script is working. First of all, I will take all the boxes. There are many ways; either I take all the elements of the container or I target them from this class. There are many ways. I will target from this class or I will tell you the counterintuitive method. 
+
+See, document.getElementsByClassName. I will say let boxes = document.getElementsByClassName('box'); and hit enter. Do it like this: let boxes = document.getElementsByClassName('box'); and hit enter. Then I will write console.log(boxes). If I show you by running index.html, then you will see that when you inspect the element, you will see here you have got all the 5 boxes: 0, 1, 2, 3, 4. You can see you have got all the boxes, and you can iterate them. 
+
+You can say Array.from(boxes). Array.from(boxes) means make an array from boxes because by default this is an HTML collection, and in an HTML collection, there is no forEach method. So, you have to understand this thing. I will write an arrow function like this, and I will write console.log(e). 
+
+Now, another way to do this is to use document.querySelector. I will say querySelector('.container'). So, I've taken the container here. Then I'll write .children. What will happen if I write .children? It will give me the same 5 boxes. Reload. Why? Because all the children of the container, i.e., child elements or all the box class elements are the same. 
+
+Now, if the class is not equal to 'box' in all of them, then this method would have been useful for you. Let me do word wrap so that you can see it clearly. Here, I will not do console.log, but I will make a function. What will that function be? I will name it getRandomColor. 
+
+GetRandomColor is a function that generates a random color for me. If I put a CSS in the box, color red, let's say I put color red. If I want to convert it to a number, I can take the values of RGB. This is a color, and this value goes from 0 to 255. 
+
+Let's do this: val1 = 244, val2 = 233, val3 = 111. I can say return this, but not this. Return exactly, put it here: put val1, put val2. I have told you about template literals. Don't say, "What are you doing?" Otherwise, I will show you again in the playlist. 
+
+Okay, I will come to your home and show you all the videos of this playlist. Here, you see this random color will be returned. Now, I will do a simple thing: I will say e.style.backgroundColor = getRandomColor(). 
+
+Now, how will I get a random color? I will call the getRandomColor function and see if it is working or not. Yes, it is working. I will remove the color I have put red. I have put it just like this, so I have generated a random color. What is that random color? This value, color is coming with it. I have not generated a random color yet, but my function is working. 
+
+I will do the same thing for color. Whenever this function runs, it will bring a random color. That's why I will do the same for color. I will use Math.random, and I want to show you what Math.random does. 
+
+Now, see, I don't want to be mathematical and I don't want to bore you, but I will tell you a simple concept. If you want to generate a random number between a and b, then you write a + Math.random() * (b - a). Here, you'll write r. It's a random number between 0 and 1. If r value is 0, then you'll get a. If r value is 1, then you'll get b. If r value is between 0 and 1, then you will get a random number that lies between a and b, including a and b.
+
+With that said, what we will do is use this formula. In this formula, a is 0 and b is 255. 255 - 0 will be 255, so it will always generate random numbers from 0 to 255. But I want it to give me an integer. So, I will say Math.ceil, and it will give me an integer. 
+
+Now, see what does Math.ceil mean? If I change it to 4.22, it will give me the next integer of this. I am doing the same here. My random color is generated. Is it equal or not? Tell me in the comments. Everyone write that it is equal in the comments. If someone got more math, then do some hard work and learn it. This much math is required in programming.
+
+I told you very soon. Let me see if anyone told me on Google about generating a random number between two numbers. Did anyone explain this? Yes, people have explained it. See here in Stack Overflow; they have also used this. What I have done is max - min + 1 + min. 
+
+These formulas are exactly as I have explained to you. You can watch that video again. See what they have done here: min + (max - min) * Math.random(). They have done exactly what I have told you. All these things should come to you, and if they don't come, I will say that yes, it is not simple. 
+
+See, it has come in random colors. I had to do the same thing with e.style.color, so that is also done. Okay, see here you are getting different colors. Now, if I reload, then the colors will change. See, every time this reloads, the color keeps changing. 
+
+So, here it is changing like disco lights. That's it. I hope you guys liked this method. There is one more method: you can generate a hexadecimal number with the help of a hex color generator. But I want to see what you guys have done and your solution, how and on what basis. 
+
+I want to see this. First of all, shoutout to Amish Iqbal. Then after this, shoutout to S. Prince. Shoutout to Mr. KaloraOfficial. Shoutout to Coding Ninja. Shoutout to MJD Gaming. Shoutout to Code with Ayush. Then shoutout to MJD Gaming again. Shoutout to DRP. Shoutout to Priya. Shoutout to Patel Manan. 
+
+Now, shoutout to Amne. Shoutout to Priya, Patel Manan, Abhi, Amne, RKS Bhatt, Virus Baba Technica. Comment below, like the video, share it. Shoutout to Wahid Dost Aman, Lakshraj Das, Use Nothing, Vyvan Yadav, Ashish, Krivan, Awais Mughal, Dilip, Shivam, Rishabh, Teerth, Rohan. 
+
+Here, the first solution of Rohan Das has come. What a thing! This name is sounding familiar, but I would like to see this solution too. Let's see if this solution can create some fun or not. 
+
+Okay, what I do is comment out my solution for once and check if it is working or not. Hmm. This is not working. Let me see what the problem is. Here, boxes is equal to... okay, so I have written boxes here. Yes, it is working, and the color is also coming. 
+
+They have created chaos on a different level. Let me tell you the background of this solution: this value from 0 to here, if you generate a value and after this you use the toString method and convert it to hexadecimal. If you guys take your mouse here, then you will know that in the toString method, you can give an argument radix. If you take your mouse here, you will find that in the toString method, you can give an argument which, if you give 16, it will convert into hexadecimal, and you can generate random color. 
+
+So, this is a good way to generate random color. 16777215 is white in decimal, and there are different colors from 0 to here. You can convert them into hexadecimal, which is great. There are many colors, and these are colors with different values. They have shown the code of these colors. Great, awesome! I liked the solution; it was fun.
+
+Now, I will look at the next solution. I will shoutout Shorray, William, Dev Jyoti, LearnCB. Shoutout to coding wala jadu. Here comes Naveen Gupta. He could have given only JavaScript, but no problem. I am not happy with this. When I see too much code, I by default get angry or unhappy because there is no point in writing too much code. What was the need to write so much? 
+
+What are you doing? You are generating numbers from 0 to 20 and dividing it by 5 and putting the remainder. No, this is not a good solution. I have seen what you did there, but you have used red, blue, green, yellow, aqua—only these colors. What about the rest of the colors? I have to generate random colors from all the colors. 
+
+So, nice try. By the way, nice try. Their solution should work, and it is working, just generating with limited colors. I really appreciate your solution. First of all, it is better than doing nothing, but still, you see my solution. Maybe you didn't understand the question properly, Navneet Gupta, but a big shoutout to you because you solved it, wrote such a big code, and accepted the challenge. 
+
+You also wrote "sigma batch op." Big shoutout! Then, coding magic and Prateek Sharma and Kasim Ali official. We will also see the solution of ItsMihir. 
+
+What is happening in ItsMihir's solution? What Rohan has done, and why is the code looking the same line by line? But it is possible that both of their thoughts are matching, and exactly the same thing has been solved. Great, awesome! I love your solution. It is the same solution. I will run this solution, and this is looking very similar to Rohan's solution. But nice, okay, great, great, you have done it.
+
+I will keep bringing such unique questions and will keep giving you fun. Here is another one: Abdul Shamat Khan, Abu Shah Khan. Okay, so what have they done here? 1, 2, 3, 4, A, B, C, D, E. What have they done? I want to understand this. 
+
+I think I am not able to understand this, but I will try to understand this and I will tell you what they have done. First, let's see if it is working or not because if it is not working, then what is the use? See, it is generating some colors and not others, and it is doing this in 3 boxes. Why? 
+
+So, they have made a function with a name and from 1 to F. They have given letters and they have tried to make a random color with these letters. Do you know what is the problem? The problem is that you have given style to some boxes. Why? Why didn't all boxes get style? 
+
+You did i = 0, i < 6, and color = this. Return color a1, a0 should not be taken. A0 is also taken. Dot style dot background color c. You made it small; you had to capitalize. A1, A2, A3. But according to me, the colors you are generating randomly are not valid colors, because of which what is happening is that your colors are not valid, and they are not getting set. 
+
+See, this is white. So, yeah, not a good solution, but nice try. Sometimes a color is getting made, but not always, which is fine. You need to understand a little more, and you'll be great. Big shoutout to Abu Shahid Khan. 
+
+Then shoutout to Anuja, Kunal, Mishri, Kodvidy developer. Shoutout to Yadish. Shoutout to Jai. Shoutout to Lakshay. Shoutout to Android Kingdom. Shoutout to Webdev. Shoutout to YouTubeAI. Shoutout to Devilraj. 
+
+And here he is saying that after becoming a millionaire, he will give 1 million dollars. Brother, send it! What did you say? I will not say. Ubaid Khan, shoutout to Cody Anderson, Raza Ranjesh Aftab. Challenge accepted, Hari bhai. We have to solve it. 
+
+Let's see the solution of Cody Anderson. He is saying that currently this guy has 50 lakh plus subs. Yes, I know this calculation. Many people, the corporates, they think that I don't calculate this. They tell me that if you had sold this much, you would have got this much money. 
+
+Initially, I had planned to keep it paid, but a lot of DMs came. People said that I will not be able to learn web development from you. So instead of teaching some people, teach as many people as possible. With this motive, I kept it free. 
+
+I hope everyone is enjoying it, and everyone accessed this course. Around 2 million people are going to access it. So, 20 lakh people have already accessed the playlist. 17 lakh people have already accessed it, and very soon I hope that many more people will access it. When it is completed, then you will get to know about its other powers and what all things are there in the course. 
+
+I hope you are enjoying this course. That's all for now in this video, guys. Thank you so much for watching this video, and I will see you next time.

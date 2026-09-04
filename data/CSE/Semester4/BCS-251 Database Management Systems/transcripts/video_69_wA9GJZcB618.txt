@@ -1,0 +1,77 @@
+Welcome, friends! The topic is `EXISTS` and `NOT EXISTS` in SQL. These keywords are used in a correlated nested query. We use both of these keywords, `EXISTS` and `NOT EXISTS`, in a correlated nested query. 
+
+Why do we use them? I have already explained nested queries. Over there, what did we talk about? What is a nested query? There is one outer query and one inner query. An outer query is there and an inner query is there. To relate the outer and inner query, to join them, we need some keywords—either `IN`, `NOT IN`, `ANY`, `ALL`, or different keywords like equality operators. We can use different operators and different keywords to relate the outer and inner queries. But other than that, there is one more method which we call `EXISTS` and `NOT EXISTS`. 
+
+`EXISTS` and `NOT EXISTS` are generally used in a correlated nested query. What is a correlated nested query? It is a special query, but its way of working is different from a standard nested query. In a standard nested query, we do it through `IN` and `NOT IN`. But in a correlated nested query, we use `EXISTS` and `NOT EXISTS`, and it executes in a different way. How it is executed, I will tell you with an example over here. 
+
+First of all, you have to learn why we are using the word "correlated" in a correlated nested query. Why are we saying the word "correlated"? For that, first of all, I will take an example. On the basis of that example, we will write a query where we will use `EXISTS` and `NOT EXISTS`. Then it will be easily clear to you why we are calling them correlated. 
+
+So the query is: Find the details of employees who are working on at least one project. Meaning, we have to find the details of that employee who is working on at least one project. Over here, I have an `Emp` table and a `Project` table. In the `Project` table, I have kept `Eid` common. I have kept this `Eid` common over here, which is acting as a foreign key taking reference from a primary key. And in this table, the primary key is `Pid`. So this is the schema with us—two tables schema. 
+
+Now, we are writing a query by using `EXISTS`. What do we have to do? 
+`SELECT * FROM Emp` because what is the question? Find the details of the employee who is working on at least one project. 
+So, `SELECT * FROM Emp`, what will this give? It will give details of the employee `WHERE`, what is common? `Eid`. 
+`WHERE Eid EXISTS (SELECT Eid FROM Project WHERE Emp.Eid = Project.Eid)`
+
+This is the important point. What have we done over here? We have used `EXISTS` first of all. And whenever we use `EXISTS`, we use it in a correlated nested query. 
+
+Correlated—correlated means in a normal nested query, the outer query and inner query work differently. Meaning, first the inner query is executed, as I had told you in the `IN` and `NOT IN` video. Check that video once, then you will come to know how `IN` and `NOT IN` work. In the `IN` and `NOT IN` case, the inner query is executed first. Whatever output it gives, we compare that with the outer query. 
+
+But over here, how do `EXISTS` and `NOT EXISTS` work? We will take one value from the outer query—one row of the outer query—and we will compare that with the second table's row. Meaning, we will check that for one row of the `Emp` table, according to that, is there any value existing in the `Project` table? 
+
+This is a very important point. This is a top-down approach. Top-down means from the top one, we will pick one row from the outer query one by one. We have to pick all the rows. First, we picked a row. We will see, corresponding to it, is there any value existing? Is there any value, according to the top, existing in the inner query or in the inner table where this condition lies? 
+
+What is the condition? `Emp.Eid = Project.Eid`. 
+
+So if I execute this, then how will it be done? First of all, from the outer table, pick the first row. Which is the outer table? `Emp`. So from the `Emp` table, we picked the first row: `1, Ravi, Chandigarh`. 
+
+So corresponding to `1, Ravi, Chandigarh`, in the inner query, which table is there? `Project`. And what condition do we have to check? `Eid = Pid`. Is `Eid = Pid`? What, over here, corresponding to `Eid 1`, over here, is there a `1` over here? Yes. So what will this return? `True`. 
+
+`EXISTS` and `NOT EXISTS` always return `True` or `False` from the inner table. In the inner query, the table is there, the condition is there. After checking that condition, what will this return? `True` and `False`. That, according to this row, according to this condition, does any row exist? If it is there, then `true`; if it is not there, then `false`. 
+
+So you see it once again. `SELECT * FROM employee`. Pick the first row and check, corresponding to that, in the second table, is any row existing where this condition is matching? We will check: `1, Ravi, Chandigarh`. Does `1` exist over here anywhere? Yes, `1` `Eid` does exist because `Eid = Project.Eid`, and in `Emp.Eid` there is `1`. Yes. So corresponding to the outer first row, in the inner table, a row does exist. So what will this return? It will return `true`. 
+
+As this will return `true`, then `SELECT *`, the corresponding value to it: `1, Ravi, Chandigarh`. This value—as we are using `*`, then `1, Ravi, Chandigarh`—we will print in the output. 
+
+But you have to check for all the rows. You have to check for all the rows of the outer table. So you see the second line in the outer row: `2, Varun, Delhi`. Is there any row in `Project` corresponding to `2`? Which is the table in the inner query? `Project`. Is there any row in `Project` corresponding to `2`? It is not there. This condition will be false. So what is to be returned in this? Just `false`. 
+
+But in a nested query—the normal nested query that we had done where `IN` and `NOT IN` and `ANY` and `ALL` were used—its execution way is different. We can do the same question with `IN` and `NOT IN` also, and I have already done that. But its execution is totally different from this execution. 
+
+How is it different? Over there, the inner query will be executed one time—one time only—and then we will compare its output with the outer one. But over here, the inner query will be executed multiple times. According to the outer query, we will check this condition in the inner query multiple times. If it is true, then we will give output corresponding to it. If it is false, then we will not give output. 
+
+As for this, for `2, Varun`, does `2` exist over here? Exist? No. So what will it return? `False`. So there is no execution corresponding to this, no row is found. So what will it return? `False`. So when it will return `false`, in our output it won't print. 
+
+So the third row: `3, Nitin`. Is any row over here corresponding to `3`? Corresponding to `3`? Yes, this is found—`true`. As this will return `true`, then that row—the row which is there in the outer table, `3, Nitin, Pune`—this will be printed in the output. 
+
+Then `4, Robin`. One by one, each row is to be checked. `4, Robin`. Is there any row corresponding to `4` over here where this condition is matching? `EXISTS (SELECT Eid FROM Project WHERE Emp.Eid = Project.Eid)`. Does it exist corresponding to `4`? Yes, it exists. So what will this return? `True`. As this will return `true`, we will get the output `4, Robin, Bangalore`. So this output will be printed. 
+
+Then `5, Ammey`. Does `5` exist over here? `5`? Yes, `5` does exist. So as `5` exists, what will it return? `True`. So corresponding to that, `Amey, Chandigarh` will be printed in the output. So the name of the employee and location or address is Chandigarh. In this way, my output will come in front. 
+
+But over here, what learning you have to take away is how `EXISTS` and `NOT EXISTS` actually work. How do `EXISTS` and `NOT EXISTS` work? Corresponding to the outer query—the table that is in the outer query—pick one row from that table. And in the inner table, in the inner query, the table that is written, check in that: does it exist or not? 
+
+So in the outer table, in employee, pick the first row. And in the inner table—which is the inner table? `Project`—check in project: does it exist or not? If it exists, then it will return `true`. As this will return `true`, this whole thing—this whole thing—will return `true`. As it will return `true`, then `SELECT *` means we will print its details in the output. 
+
+If it does not exist—like for `2`, it did not exist—then `2`: `SELECT * FROM employee WHERE Eid`—what is the Eid? `2`. Does `2` exist in the inner table, in the project table? Does `2` exist anywhere? No. So what will this complete expression return? `False`. So as this will return `false`, we will not print it in the output. 
+
+So this is how we have to learn how `EXISTS` and `NOT EXISTS` work. 
+
+Now we have seen the `EXISTS` case. What about the `NOT EXISTS` case? We use `NOT EXISTS` over here:
+`SELECT * FROM Emp WHERE NOT EXISTS (SELECT Eid FROM Project WHERE Emp.Eid = Project.Eid)`
+
+The way to write a correlated query is also very different. We are using the inner table inside, and which is the outer table? `Emp`. We are using its value inside also. But in a nested query, where we had used `IN` and `ALL`, over here the inner query works differently and we used to compare the outer query. But over here, the outer table is there, which we are using over here also. 
+
+Again, in the `NOT EXISTS` case, it is going to return `true` and `false` only. `SELECT * FROM Emp WHERE Eid NOT EXISTS (...)`. 
+
+So see: `1`. `1 NOT EXISTS`. `Eid = Eid`. Is `1` matching over here with any row? Is there any row corresponding to `1`? We have got a row corresponding to `1`. So `NOT EXISTS` is `false` because it *does* exist. As `NOT EXISTS` is `false`, in the output, `1` will not come. 
+
+Then after that, `2`. `2 NOT EXISTS`. `2 NOT EXISTS` is `true`. Why? Because over here, `2 NOT EXISTS` became `true`. Then the value with `2`—`2, Varun, Delhi`—this will be printed in the output because we have to print output from this, from `Emp`. 
+
+`3`. `3 NOT EXISTS`. No, `3` exists, so it is `false`. 
+`4`. `4 NOT EXISTS`. No, `4` is also existing, so it is `false`. 
+`5`. `5 NOT EXISTS`. No, `5` also exists, so it is `false`. 
+
+Only corresponding to `2` is `NOT EXISTS` `true`. As this will return `true`, then corresponding to that, from the outer table, we will print the output. 
+
+So `NOT EXISTS` and `EXISTS` always work corresponding to `true` and `false`, but corresponding to the outer row: Does any row exist in the inner table, or does it not? If it exists, then `true` will be returned, and we will give the output. If it does not exist, then `false` will be returned, and we will not print anything in the output. 
+
+Thank you!

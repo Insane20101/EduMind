@@ -1,0 +1,80 @@
+Welcome to Gate Smashers. Today, the topic is natural join in DBMS. In this video, we are going to talk about natural join. Before discussing natural join, let me remind you that in the previous video, I talked about the types of joins and discussed a scenario using tables to explain where and in which scenarios we use joins. I am expecting that you have watched that video so that you know how and in which scenarios we use joins, and what their types are. 
+
+One of those types is the natural join. Natural join is a very important topic because out of all types of joins, the most important is the natural join, as a large number of questions come from it. Secondly, in short, anyone who does not understand natural join cannot truly understand joins. So, our first priority is to understand natural join. In this video, we are going to discuss natural join, its syntax, and work through examples using real-life tables so that you get complete knowledge of the concept.
+
+Before diving into natural join, let us talk about joins in general. Always remember that a join is essentially a cross product plus some condition. Any condition can happen, but you must always remember this: join is always a cross product plus some condition. This means whenever you work with a join, by default, assume that there will be a cross product. Let us discuss how the cross product works with an example.
+
+First, let me set up the scenario. Here, I have taken two tables: one Employee table and one Department table. In the Employee table, we have Employee Number, Employee Name, Address, and Department Number. In the Department table, we have Department Number, Department Name, and Employee Number. I have inserted three or four rows of data into these tables.
+
+Now, suppose I want to ask a simple question: How do we print the name of employees who belong to Delhi? Whenever you encounter a query, you will generally get two types of questions. Either you will be given a query and have to find the result, or you will be given the result and have to write the query. You do not need to worry about writing queries for objective-type questions yet, but I want to learn how to frame queries first, so we are going to do that here.
+
+If you get a question asking you to print the employee name of someone who belongs to Delhi, how do you solve it? First, you have to check which table contains the answer. You find the name of the table from where you will get the output. To print the name of an employee who belongs to Delhi, "Delhi" refers to the address of the employee, and their name refers to the employee name. Therefore, we can get the output using only the Employee table. 
+
+How do we write this query? Simply by using the `SELECT` command. With `SELECT`, we specify what we want to be printed and displayed in the output. Here, we want the employee's name because the question asks us to print the employee name of those who belong to Delhi. So, the query is:
+`SELECT employee_name FROM employee WHERE address = 'Delhi'`. 
+This is a simple command. The purpose of showing this is to demonstrate that whenever a question comes, you first find the table that provides the output.
+
+Now let us move to a more important question: Find the employee name of employees who are working in a department. Using the same scenario and tables, we need to write the output or query. Let us clear the previous query since it is no longer needed.
+
+For the question "Find the employee name who is working in a department," the output should display the names of employees working in any department. First, find out what tables are required. The Employee table is obviously needed because that is where the employee names are stored. But who tells us whether that employee is further working in any department? The Department table. 
+
+Let us look at the data: Employee 1 is working in Department 1. This 1 shows that employee 1 works in department 1. Employee 2 is in department 2. Employee 4 is in department 3. Corresponding to them, we have three names: Ram, Varun, and Amrit. Ravi is an employee who has not been allocated any department yet. By looking at the tables, we can see that the final output should be Ram, Varun, and Amrit. 
+
+How do we write and solve this query with the help of a natural join? By default, a natural join can be applied here. Although there are many joins and we could also use a subquery, we will use a natural join.
+
+First, what is a natural join? Whenever you need to equate common attributes between two tables—for example, look at both tables, they share a common attribute like employee number (named `employee_no` in both)—the values of these common attributes must be kept equal, and the corresponding values printed in the final result. So, whenever you want to equalize the value of common attributes, we always use a natural join.
+
+We start by writing the query with `SELECT`, because we want to show the employee name in the final output:
+`SELECT employee_name FROM ...`
+
+I have already explained that joining is a cross product plus some condition. So, first, we perform a cross product using the table names we need: Employee and Department. We write:
+`FROM employee, department`
+
+What is the meaning of writing `employee, department`? It means a cross product, where you cross-multiply the rows of the employee and department tables by default. As I mentioned earlier, a join is a cross product plus some condition; whenever you apply a condition, there will always be a cross product first. Without it, a join is not possible.
+
+When we cross-product Employee and Department, what is the output? To save time, I have already prepared the output. What does a cross product mean? You pick one row from the first table and multiply it with all the rows of the second table—the first row with all three rows of the second table, the second row with all three, and so on. If one table has $m$ rows and the other has $n$ rows, the total number of rows in the cross product will be $m \times n$. 
+
+I have written the resulting table here. I picked Employee Number and Employee Name from the Employee table, and Department Number and Employee Number from the Department table. You can write all attributes if you want, but due to space constraints, I picked two attributes from each. You can write 3 or 6 attributes; it does not matter. What matters is the number of rows. Here, the number of rows is $4 \times 3 = 12$, so I have written all 12 rows.
+
+Now, what is a natural join? As I already told you, you must keep the common attributes between the two tables equal. The common attribute in both tables is the employee number. So, we add a `WHERE` clause:
+`WHERE employee.employee_no = department.employee_no`
+
+Look at what this does: the employee number inside the Employee table is set equal to the employee number inside the Department table. I am repeating this again and again: whatever attributes are common, you have to keep them equal by putting an equals sign in between. These conditions are also the conditions of an Equi-join (we write Equi-joins like this), but right now we are talking about natural joins, so I will focus on that.
+
+When you perform the cross product from `emp, dept`, you get 12 rows. Over these 12 rows, the condition `emp.employee_no = dept.employee_no` is applied. Let us check row by row:
+- Is `emp.employee_no` equal to `dept.employee_no`? 
+- 1 equals 1? Yes, select this row.
+- 1 equals 2? No, reject this row.
+- 1 equals 4? No, reject.
+- 2 equals 1? No, reject.
+- 2 equals 2? Yes, select this row.
+- 2 equals 4? No, reject.
+- 3 equals 1? No, reject.
+- 3 equals 2? No, reject.
+- 3 equals 4? No, reject.
+- 4 equals 1? No, reject.
+- 4 equals 2? No, reject.
+- 4 equals 4? Yes, select this row.
+
+How many rows got selected? Three rows. The rest of the rows are rejected and removed. Finally, we are left with these three rows:
+- Ram (Employee 1, Department 1)
+- Varun (Employee 2, Department 2)
+- Amrit (Employee 4, Department 3)
+
+The rest of the rows are rejected. From this filtered output, what do we want to print? The employee name. So, we extract the employee names: Ram, Varun, and Amrit. 
+
+If you look carefully, this output makes complete sense. Ram (employee number 1) is working in a department. Varun (employee number 2) is working in a department. Amrit (employee number 4) is working in a department. Who got rejected? Ravi, because Ravi has not been allocated any department yet. 
+
+I discussed a very simple example, but it will help you a lot. In any situation, common attributes (attributes that are the same in both tables) must be kept the same, which is what we call a natural join.
+
+Now, the final point: how do we actually write this query in SQL? Instead of writing out the cross product and the `WHERE` clause manually, we write it like this:
+`SELECT employee_name FROM employee NATURAL JOIN department;`
+That is it! This is the actual way of writing it. However, if I had shown you this first, it would not have been clear what the natural join was doing under the hood. 
+
+For a natural join to work this way by default, the common attributes inside the two tables must have the exact same name. It cannot be `employee_no` in one table and `E_no` or some different column name in the other. The column names must match for a natural join to be applied directly; otherwise, you would have to write it out using the explicit condition. 
+
+If you want to write a natural join, you can write it directly using the `NATURAL JOIN` keyword. But if you look at both forms, the expanded `WHERE` clause query and the `NATURAL JOIN` query are equivalent. I explained the expanded version first so you could understand how a natural join works.
+
+To summarize: when two tables have common attributes with the same name, and we keep those common attributes equal, it is called a natural join. This covers the function of a natural join and how we use it in real-life scenarios using Structured Query Language (SQL) syntax. 
+
+Thank you! If you liked this video, please like it, share it, and subscribe to my channel. Thank you.

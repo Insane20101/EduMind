@@ -1,0 +1,103 @@
+We have seen a lot of DOM manipulation in JavaScript. In today's video, I will tell you how you can insert elements in JavaScript and how you can remove elements from your DOM. This is very useful when you want to make single-page applications or do it without reloading the page. You must like this video and write "Sigma Batch OP" in the comment section below. 
+
+Let's go to the computer screen. Let's roll the intro.
+
+**Intro**
+
+So guys, I have come to my computer screen. I will make video number 71 and make it so fast that you won't even know when I made index.html. Here, I will put the exclamation mark. When I made index.html, you will not even know, so here I will put an exclamation mark and my boilerplate template. Today, we are going to talk about some functions which I have enumerated in notes. The benefit of giving notes you will know from this video; there are so many functions that are used the most in the industry. I have written them here in the notes.
+
+Suppose I have a div here, and there is a container in it whose spelling I have written wrong. No problem. I will make a div.box. I will make only one this time, div.box. I have written, "Hey, I am a box." After right-clicking, I will inspect, and in the console, I will write `document.querySelector`. You can see here I will do something like this: `document.querySelector`, but I will write `document.querySelector` to select the first box. The first box will come here, and I can say `innerHTML`. By doing this, I will get the HTML inside it. If I do this with the container, then I will get the HTML inside it. 
+
+I will zoom in a little bit. Now you can see here that if I do it, I will get the box's inner HTML, whatever HTML is inside it. Then there is the inner text method, which shows the HTML inside it as text. If I do this with the container, you will see this because text is only this. If I put two boxes here, and then I show the inner text of it, you can see the text of both boxes. Sometimes we have to find the text of an element, so we can use this.
+
+Now I will tell you how you can use the other methods. InnerHTML is done, and I will tell you about outerHTML. OuterHTML is the property of fullHTML, which is innerHTML plus the element itself. If I do outerHTML, you can see what I got. I got that container and the HTML inside it. What happens in innerHTML is that the HTML inside that container is found. So, innerHTML and outerHTML have this difference which you just saw. 
+
+After this, we have tag name or node name, which I will tell you quickly. If I say, "Tell me the tag name of this," then someone will tell you that this is a div because the container is a div. The element I have selected is a div. Sometimes you need to find out in JavaScript which element it is, and there is a property called node name. If I write something like this, `nodeName`, then also div will come. 
+
+Now, what is the difference between node name and tag name? Tag name is applicable only for elements, and node name is applicable for any type of node like comment nodes, text nodes. This thing will be very clear to you by reading the notes I have shown you. 
+
+After this, there is a text content which provides access to the text inside the element, only text minus all the tags. If you do `textContent` here, then you will get the text content inside it. I hope it is clear how these things work for you. 
+
+Now, see here that you can put an attribute in the div of hidden name, which I have told you. If you put hidden here, then this element will hide. You can do `element.hidden = true`. If I do this with the container and I say `.hidden`, is this hidden? No, false. But I can do this: `hidden = true`, and it is now hidden. What it will do is put the hidden attribute in my container. By doing this, the element is hidden.
+
+Now I have told you this thing. I want to tell you one more thing: I can change the inner HTML of any element. I will say, "Hey, I am Harry." If I do this, I want to tell you that I can change the inner HTML of any element. When I say `document.querySelector('.box').innerHTML`, it will change to "Hey, I am Harry." If I reload the page, the thing which is missing comes back. If I enter here, then see, "Hey, I am Harry," the content of this has changed. 
+
+When I say `document.querySelector('.box').innerHTML`, what will it do? `document.querySelector` will select the first element in which class box is there. This thing should be clear to you. I have here `innerHTML = "Hey, I am Harry."` It has changed. It can look a little boring because of all these methods, but it is written in notes. Don't worry about remembering because you have notes. Download them at codewithari.com.
+
+Now, here are some methods of attributes. For any element, if I put `.hasAttribute` in it and want to check whether it has this attribute or not, then it will tell me. For example, if I say that in this box, "Has attribute, is there an attribute style?" No, there is no style. But if I put the style attribute in it, I will say `style = "display: flex;"` because if I do `display: none`, then it will hide. 
+
+If I do this, `.style`, then it will be true. It will say yes, the box is selected, and it has a style attribute. Then, to get an attribute, you will say `getAttribute`, "Show me what is the style attribute," so you will get that this is in style. Then, to set an attribute, you will say `setAttribute`, "This is style, no, I want to inline the display." You will say `setAttribute`, "Do the style, what do you do? Display: inline." It will be set to `display: inline`. 
+
+Now you see here, its style is set to display inline. These are some methods which you should know. I won't say that you need to keep them, but you should know. Then, to remove an attribute, you can do `lm.removeAttribute`, and all attributes will come. People don't even know that we can get all the attributes, so knowing this will be a big thing for you. 
+
+Now, if you are doing anything, you don't know that you can get all the attributes of an element like this. You will never think about it. But whenever you are making a project, you will say that yes, Harry bhai told me in some video that it is like this. Let's take the notes and see how it happens. 
+
+This thing is very useful in itself. That's why I am telling you one by one. Otherwise, I would have said that read the notes and go. It is also necessary to do it. Now here, I can remove any attribute. I will write `removeAttribute` and say remove the style. This style is now removed. If I reload, it will come back because whatever JavaScript we write here is temporary. It is only applicable until you refresh the page. 
+
+You can change Google, Facebook, Microsoft, or any website temporarily in your browser. You can also edit things. You can write here in the browser. You can write `document.designMode = "on"`, and if you have done this, then you can change any page. I can change any website in this world. If I write "TechCrunch" here and let's say I write "JavaScript" and I say I want `document.designMode = "on"`, I have turned on design mode. 
+
+Now I can edit anything on this website by pressing backspace until I am not redirecting. I can change it here; I can do anything. That's why it is said that you don't trust screenshots. Especially if you are a web developer, then you should know this. Ninety percent of you will know this, but again, some things are very big, and it is important to tell them. 
+
+Now, you can use all these methods. There are data attributes which you can add as custom attributes. Suppose I want that my box has an attribute in which I can store which element this is for some reason. Suppose I want to store who has made this element. It is a very weird attribute, but I want to do `data-created-by = "Harry"`. 
+
+I have put a data attribute here and written `data-created-by = "Harry"`. This data attribute allows you to put custom attributes without error. You can store information on any element. If you want to access them, then you can say `document.querySelector('.box').dataset`, and you can see it is telling `createdBy: "Harry"`. 
+
+Why is it telling `createdBy: "Harry"`? Because the data-dash properties of any element are available as key-value pairs. Whenever you set a dot data in any element, all this I have written in notes for you. To be honest, I forget myself sometimes. Even after so much experience, I forget that this is stored in `.dataset`. 
+
+I got to know by seeing. I have put efforts into notes once. I have made it in such a way that if you are not downloading, then I am saying it to your face that it is a big loss. I have made these notes freely available. But I am saying that even if it was paid, if you would have taken it, it would have been beneficial for you.
+
+Let's talk about insertion methods, which was the topic of this video. Whenever you want to create an element with the help of JavaScript, you can say. I will put the script tag here. I will write here `let div = document.createElement("div")`. I can create a new element. I can say create a div. Then I can say that in the div, what should I do? I can set an attribute, put a class in it. I can put a class like this and create it. 
+
+Now, I want to insert it into the container. I will write `document.querySelector(".container")`, which means the first element with class `.container`. I will say what I want to do in this. I want to insert it. When I type `insert`, I get a lot of methods which I have explained here. 
+
+You can do it by using `innerHTML`, and you can also do it by using `document.body.append`. First of all, I will tell you a very simple method: `.append`. We have appended the div by using `.append`. Now you see how your page looks like. 
+
+I will reload it. I didn't put content in it, by the way. I can say `div.innerHTML = "I have been inserted by Harry"`, and I will put a bold tag to show you that this HTML is working. Whenever you use `.append`, then you will see that element at the end in which you have appended it. 
+
+Great! This `.append` is the simplest method to append. You can append in the document directly; you can append in the body, which I have done here in notes: `document.body.append(div)`. This will be appended, so you can dynamically generate from JavaScript. When do you have to do this? When data is coming from somewhere, and you want to update the DOM without reloading the page, then you can do this. 
+
+This is very useful. Now, `.append` is a function, `.prepend` is a function, `.before` is a function, `.after` is a function, and `.replaceWith` is a function. It will replace this element with this node. Try all these methods yourself. I will show you `.before` and `.after`. If I do `.before` and show you HTML, you can see my body; it inserted before the container. If I do `.after`, then it will insert it after that. If I do `.append`, then it will insert it at the end. If I do `.prepend`, then it will insert it first. 
+
+Try it out yourself. If you have any questions, if you write in the comments, "How to tell again in prepend?" No, bro, do it yourself. You have all the code words; everything is available on GitHub. The link is there; access it. I know it's getting cold, but use your hands. If it's getting hot, use your hands; anything is possible. 
+
+Now you can see the rest of the methods. After this, there is one more method: `insertAdjacentHTML`. We have talked about nodes that you had a node, you made a node, or you brought an element from somewhere else. You can insert it, and whatever you want to do, you can do that. But what if you have HTML, meaning HTML is a string, and you want to insert it? Then how will you do it? There is a method called `insertAdjacentHTML`. I will show you an example. 
+
+So, what I told you about dynamically creating an element is a very good thing, but I can say `let cont = "This is my container."` I can say `cont`.
+
+**Insert Adjacent HTML**
+
+I will discuss the `insertAdjacentHTML` method, which is also applicable for elements. You can use `insertAdjacentElement` as well. Here, I am using `insertAdjacentHTML`. If I use "before begin," then the HTML will be inserted immediately before the element. If I use "after begin," it will be inserted immediately at the beginning. "Before end" will insert at the end, and "after end" will insert after the element. The method name indicates where the insertion will occur, so you can try it out to understand it easily.
+
+The first argument is the reference point, and the second is the HTML string. Let me show you how it works. As soon as I put double quotes, it prompts me to choose from these four options: "after end." Now, what do I want to insert? I will write, "I am under the water. Please help me. It is raining too much." I have written this string, and I would like to close the bold tag. 
+
+Now, let's see where it will be inserted. If I show you here, it created an HTML element and inserted it after the container. In the case of "after end," it will insert after that element. If I want to do it "after begin," it will be inserted inside, right after it starts. If I do "before begin," it will be inserted before it begins. 
+
+To summarize, "before begin" means before it starts, and "after end" means after this element ends. You can insert HTML, text, or elements using the `insertAdjacentHTML` function for HTML, the `insertAdjacentText` function for text, and the `insertAdjacentElement` function for elements. You should try all these functions from the notes; if you don't try them, you won't understand.
+
+**Node Removal**
+
+Next, let's discuss node removal. If you remove the dot here, this node will be removed from the DOM. You can do this for any element. For example, if I say my container or my first element with the class `.box`, if I remove it, it will be gone. If I run it again, it will select the first element with the class `.box`. If I remove it, it will be removed. You can see the DOM is updating. Watch the video if you haven't seen it.
+
+**Class Name and Class List**
+
+Now, I want to talk about class names and class lists because they are very important. Suppose I have this container, and I have given it the class "red" and one "bg green." I am not writing their styles, obviously; I have just assigned the classes. If I want to get all its classes, I will refer to my `.container` element. 
+
+I can select it in other ways as well. I have chosen the method of `querySelector` to select this element, but I could have also used `document.getElementsByClassName('container')[0]` to select it. It is my choice how to select this element. When I say `.classList`, I will get a list of classes present. If I say `.className`, it will give me the value equal to the class attribute, which will return "container red bg green." 
+
+If you want, you can add methods to add a class using `.classList.add()`. If you want to remove a class, you can use `.classList.remove()`. This is very useful. For example, if I want to add a class named "harry" to the class list, you will see "harry" will be added. If I want to remove the class named "harry," I can use the `.remove()` function. 
+
+If I want to remove the "red" class, I will write `.remove('red')`, and you can see the "red" class is removed. If I want to insert, I will add `.add('red')`, which will add "red." If I run it again, it will only be added once because it is already there. This is useful when I want an element to rotate sometimes. I will create a class for the rotation animation and toggle that class.
+
+**Toggle Method**
+
+The toggle method is another important concept. The `.classList.toggle()` method means if the class is present, it will be removed; if it is not present, it will be added. For example, if I say "toggle the light switch," if it is open, it will close, and if it is closed, it will open. 
+
+Let me show you an example. I will add a style to clarify my point. I will set the color to red. Now, as soon as I toggle this, the red class will be removed from the container. If I toggle again, the red class will be back. This way, whenever I want, I can change the CSS by toggling the class. 
+
+**Conclusion**
+
+You will use these concepts in projects, so keep practicing. Good projects are coming, and all of this will be useful. I have included the toggle class in the notes. Many people have not accessed the notes, and I will say this repeatedly. Download the notes to your computer; it will help you a lot. Trust me, it will be beneficial. 
+
+After reading the notes, you will be able to understand JavaScript thoroughly. Keep a hard copy as it is very helpful. You can open it on your iPad or phone, but having a hard copy is different. When you are working on projects, you will remember the page number and which side of the book it was on. 
+
+If you have not accessed this playlist yet, please do so. Bookmark it and save it. If you want to make me happy, go to the first video and leave a review of this course. Can anyone become a full-stack developer after learning HTML, CSS, JavaScript, and projects? If you think this course is good, please leave a review. Thank you so much for watching this video, and I will see you next time.

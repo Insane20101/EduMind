@@ -1,0 +1,40 @@
+Hello friends, welcome to Gate's mission last-minute preparation video. In this video, we will discuss TOC (Theory of Computation), and specifically, we are going to choose a topic: closure properties. 
+
+Closure properties are very important because questions about whether a language is closed under certain operations appear in almost all competitive exams. Let's start this topic by understanding what "closure" actually means. What is the meaning of closure? 
+
+The closure means that if we take integers—for example, if we take the set of integers from minus infinity to plus infinity—and if we take any two integers from this set of integers and add them together, the answer we get is also an integer. That means if you take two values from the set and add them, the answer belongs to the exact same domain. In other words, two integers are closed under addition. 
+
+Now, what if we take two integers and divide them? Is it closed? Let's say we take $5$ and $8$, or let's take $5$ and $2$. If we divide $5$ by $2$, the answer is $2.5$, and $2.5$ is not an integer; it is a real number. That means the result does not belong to this domain. Therefore, you can say that integers are *not* closed under division, but they *are* closed under addition. This is the meaning of closure.
+
+Here, we have languages: regular, deterministic context-free (DCFL), context-free (CFL), context-sensitive (CSL), recursive, and recursively enumerable. The operations we have are: union, intersection, complement, concatenation, star (*), and plus (+) (Kleene star and plus). You need to know whether languages are closed under these operations or not. You must have a table for this, and generally, as soon as an exam starts, the very first thing you should do on your rough sheet is draw this table. If you have this table, you can definitely solve any language question quickly and easily. 
+
+Now, coming to the second point: why are competitive exams so important? In this video, I am assuming that you already know about the properties of these languages, because I am not explaining them in complete depth. This is a last-minute preparation video, so I am just telling you the main points. 
+
+First, let's talk about regular grammars. Guys, in regular grammars, you must remember that *any* operation is always closed for regular grammars. Why? Let's look at an example. Suppose we have a regular grammar for $a^n b^n$. Wait, $a^n b^n$ is context-free. For a regular grammar, think of $a^n$. What is a regular grammar? It is a grammar that can be accepted by a finite automaton. Finite automata have limited memory, so they cannot compare $n$ values (like comparing the number of $a$'s and $b$'s). Therefore, regular grammars are closed under union, intersection, complement, or any operation you perform.
+
+Next, let's talk about DCFL (Deterministic Context-Free Language). Context-free languages are mathematically split into deterministic and non-deterministic. "Deterministic" means it can be accepted by a deterministic pushdown automaton ($DPDA$), while non-deterministic means it is accepted by a non-deterministic pushdown automaton ($NPDA$). There is a difference between the powers of both. The $DPDA$ languages are called DCFLs, and $NPDA$ languages are called CFLs. 
+
+A very important point regarding operations on DCFLs: DCFL is *not* closed under complement. Wait, let me correct that—DCFL *is* closed under complement! Let's look at a simple example. Suppose we have $a^n b^n \cup a^n b^{2n}$. This is a DCFL. Why? Here, $n \ge 0$. The number of $a$'s and the number of $b$'s are equal, meaning for every $a$, there is a $b$. So, easily, a $DPDA$ can accept this. 
+
+Now, what about $a^n b^{2n}$? For every $a$, there are two $b$'s. If we talk about this individually, it is also a DCFL because you can easily accept it deterministically using a stack (push one $a$, pop for every two $b$'s). 
+
+However, if we take the union of these two—$a^n b^n \cup a^n b^{2n}$—what happens? A string can either have an equal number of $a$'s and $b$'s, or the number of $b$'s can be twice the number of $a$'s. Here, we have a choice. Whenever we have a choice, a deterministic machine ($DPDA$) does not have a path to handle it; it cannot guess correctly. Thus, the grammar becomes a CFL (Context-Free Grammar), which is accepted by an $NPDA$ (non-deterministic pushdown automaton). 
+
+Therefore, in the case of union, DCFL union DCFL is *not* closed (it results in a CFL). You don't need to prove all these theorems from scratch in an objective exam. Just look at the values in your table and find out if it is closed or not. 
+
+Similarly, regarding intersection: DCFL is *not* closed under intersection. Let's see why. Suppose we take two DCFLs and find their intersection: $a^n b^n c^m$ (where $n$ and $m$ can be compared separately) intersected with $a^m b^n c^n$. 
+Here, for the first language, the number of $a$'s and $b$'s are equal, followed by any number of $c$'s. For the second language, any number of $a$'s are followed by an equal number of $b$'s and $c$'s. When you take the intersection of these two, the result is that the number of $a$'s, $b$'s, and $c$'s must all be equal ($a^n b^n c^n$). 
+
+Think about this: to check that $a$, $b$, and $c$ are all equal, you need to compare $a$ with $b$, and then $b$ with $c$. But a pushdown automaton (PDA) has a single stack, so it can only do one comparison at a time. It cannot compare three variables simultaneously. Therefore, this intersected language is *not* a CFL; it is a CSL (Context-Sensitive Language), accepted by a Linear Bounded Automaton (LBA) or Turing Machine. 
+
+This is why the intersection of two DCFLs is not necessarily a DCFL—it falls out of the class. Similarly, CFLs are also *not* closed under intersection. 
+
+Moving on to complement: DCFL is closed under complement, but CFL is *not* closed under complement. 
+
+For concatenation: DCFL is *not* closed under concatenation. Let's take an example: $a^n b^n$ and $b^m c^m$. Here, the first part compares $a$ and $b$, and the second part compares $b$ and $c$. If you concatenate them, you get $a^n b^n b^m c^m$, which simplifies to comparing $n$ and $m$, but the middle $b$'s get mixed up. This does not result in a DCFL; it results in a CSL. That is why concatenation is not closed for DCFL. 
+
+Similarly, for Kleene star (*) and plus (+): DCFL is *not* closed under these operations either. 
+
+When preparing for TOC, you must know the properties of every language and which automata/machines accept them. In addition to this, there are other operations that I will explain in future videos, but the operations covered here are the ones you must definitely revise before going into the exam. 
+
+This is all about the basic closure properties of all the grammars. Thank you!

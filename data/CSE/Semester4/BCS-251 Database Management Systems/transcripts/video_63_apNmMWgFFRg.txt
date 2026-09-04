@@ -1,0 +1,53 @@
+Hello friends! Welcome to Gate Smashers. 
+
+The next query is: write a query to display all the department names along with the number of employees working in that department. Meaning, in this table, what I have to find out is that in each department how many numbers of employees are working. We are talking about the department column. Employee table department column—if you look carefully, then HR, Marketing, HR, Marketing, IT. At present I have just added 5 rows. Assume it has 40,000 or 50,000 numbers of employees data over here. So there are many departments. 
+
+So what I have to find out is that, see, in HR, according to this table, in HR 2 people are working: Ram and Ravi. In marketing also 2 people are working: Amrit and Nitin. In IT there is one: Varun. That means over here, the output is this. This should be displayed in the output. I have made the output over here so that it is clear to you what we actually want to display: HR 2, Marketing 2, IT 1. Department name: HR, number of employees: 2. Department name: Marketing, number of employees: 2. Department name: IT, number of employees: 1. 
+
+Where can you actually use this scenario? There can be one more example. If I talk about a student table, if I talk about any university or college, there are any branches: Chemical, electrical, mechanical, CSE, IT. If I ask a simple query that branch-wise we have to find the number of students in each branch—how many students are there? How many in CSE? How many in mechanical? How many in IT? How many in electrical? How many in electronics? The same scenario we have to find out. 
+
+But how can we do this? What is its logic? First it will come to your mind that we can use a WHERE clause. Over here, a WHERE clause will not be used because multiple conditions are going on. Department value is not 1. We don't have to just find out what is to be done in HR or what is in IT. Department-wise, we don't know what the values are in the department. Over here we can see just 3, but there can be many values. It is possible that 1 company has 50 departments. So you cannot write a WHERE clause 50 times. And even after applying WHERE, I still have to count how many people are in each department. 
+
+So over here, there is a special function of SQL, or we can also call it a clause. It is called `GROUP BY`. Over here it will be used: `GROUP BY`. With the name `GROUP BY` only we come to know that "group" means I have to solve by the groups. We will make groups, which means if we make groups of departments—like there will be 1 group of HR, Marketing will be one group, IT group will be one. If I talk about the same student example, there will be one table of CSE, one group will be formed, one group of mechanical is formed. 
+
+So over here we have to make groups so that after creating the groups I can count in that—how many people are there in each group? If I made HR—HR group; Marketing—Marketing group; IT—IT group. I have made them as groups are made. You can visualize it like this: HR are on one side, Marketing are on one side, IT are on one side. So now from this group we will find out they are 2, these also are 2, and this is 1. So I want to find out this thing, and for that I have to take `GROUP BY` clause help. 
+
+So how do we write the `GROUP BY` clause? 
+`SELECT` (we will see afterwards what is to be selected), `FROM`—from where we have to do? From employee table. 
+
+This is the important part: when a SQL query is executed, first of all, from—we have to start executing first from `FROM` because first of all, table. From table name, `GROUP BY` department. I want to make groups according to which condition? According to department. Because I have to find out, in each department, how many employees are there? If I talk about the student table example, then `GROUP BY` branch, or `GROUP BY` trade you can do. So `GROUP BY`. 
+
+`SELECT`—what is to be selected? That we will see afterwards. 
+`FROM` employee 
+`GROUP BY` department 
+Simple. 
+
+So what we have to do: `GROUP BY` department, which I had just made. This will make groups according to the department. So HR's own group: HR, HR, HR will come together. Marketing: Marketing, Marketing will come together. IT: IT, IT will come together. In this way, groups will be made. 
+
+Now I want to find out something from that group. But over here, it is important: what can we write with `SELECT`? What with `SELECT`? Eid, employee name, salary, or department—what can we write? So this is the condition of `GROUP BY`, the most important condition of `GROUP BY`: that attribute name—this is the attribute, department column—the attribute name you are using with `GROUP BY`, only that attribute you can write with `SELECT`. This is the first condition. 
+
+Now there is one more condition. But what is the first condition? You can write only the department. You cannot write employee ID over here, nor you can write employee name over here, nor you can write salary over here. Yes, I will definitely tell you in some other way, but at present, if with `GROUP BY` you have written department, then you can just write department over here. This is the important part. If other than department—other than the `GROUP BY`—if I want to use some attribute other than this value, then I have to use the aggregate function. I will have to use an aggregate function. 
+
+So I have already told about aggregate functions in a video: max, minimum, sum, average, count. These are the 5 aggregate functions. Yes, now with that aggregate function you can use some attribute. But if you want to use directly, then direct only that attribute will be there which is written over here. 
+
+So what is the output of this if I check just the output of this? 
+`SELECT department FROM employee GROUP BY department` 
+What is made? Simple. In this, department HR, HR on one side, Marketing, Marketing on one side—we made it together, IT one together. But if you will execute this in Oracle or on SQL Server, then it is possible that Marketing is seen at top, HR is seen below, IT is seen up. We are not talking about order. We are not talking about simple alphabetical order. We are talking HR together, Marketing all on one side. This is the output. 
+
+So my this work is done: HR, Marketing, and IT is done. But how many employees are there in each department? For that, what I have to apply over here? The `COUNT` function. What we have to apply after comma? The `COUNT` function. 
+
+How? 
+`SELECT department, COUNT(*)` 
+`SELECT department`, `COUNT(*)`—you can use this also. `*` means in each one, in each value, how many HR are there? How many Marketing are there? How many IT? That you can. 
+`SELECT department, COUNT(department)`—over here you can also write department. There is no problem. 
+
+So: 
+`SELECT department, COUNT(*) FROM employee GROUP BY department` 
+
+As you will execute this, then department—which is the first department? Let's say HR. Count department, count—how many counts are there in that department? How many count is there? 2. 
+Next department: Marketing. Don't go on order, that in order first Marketing will come or HR. That depends on how the compiler executes. But the main point is the output—this only will be the output. Marketing, count(*) or count(department)—how much is the count? 2. 
+Done. Next department is IT. Count(*) or count(department)—what is the count? 1. 
+
+So this is the output, and this output I want, so this output will be printed when we execute this command. 
+
+So we have done a very basic command using `GROUP BY`. By using `GROUP BY`. Now further we will use `GROUP BY` in internal subqueries. This is all about the `GROUP BY` function. Thank you!

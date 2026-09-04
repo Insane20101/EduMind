@@ -1,0 +1,57 @@
+Hello, students! I'm Dr. Gajendra Purohit, and you're watching my YouTube channel where I upload videos on Engineering Mathematics and BSc topics. If you're preparing for any competitive exam where higher mathematics is asked, then my YouTube channel will be very helpful. Click on the 'i' tab to watch my previous videos. I've uploaded videos on eigenvalues and eigenvectors. Today, I'll be discussing more concepts on eigenvalues and eigenvectors. This modified content will help you a lot.
+
+### Characteristic Equation and Eigenvalues
+
+The matrix formed has a determinant in the form of an equation, which is called the characteristic equation. Upon solving the characteristic equation, we get the value of lambda, which represents the eigenvalue.
+
+Let's look at an example. When we multiply lambda inside, we get lambda in the places of 1, so we directly subtract lambda from the diagonal elements of the matrix. The determinant will be calculated. This is the characteristic polynomial, and when we equate it to zero, it becomes the characteristic equation. Now, we solve it, and the values of lambda will be the eigenvalues.
+
+### Homogeneous Equations and Eigenvectors
+
+For concepts related to homogeneous equations, click on the 'i' tab. Homogeneous equations are always consistent, which means that the solution is either trivial (zero) or non-trivial (non-zero).
+
+Given a matrix, we subtract lambda from its diagonal values. Using the determinant, we obtain the characteristic polynomial. We equate the polynomial to zero and calculate the values of lambda. These values are the eigenvalues. If you form the equation incorrectly, then both the eigenvalues and eigenvectors will be incorrect.
+
+There is a short trick to check this. Click on the 'i' tab to watch the video where I've explained how to calculate the eigenvalues and characteristic polynomial using a short trick.
+
+### Calculating Eigenvectors
+
+Upon solving the equation, we get the value of X, which is the corresponding eigenvector. This is my first class on eigenvalues and eigenvectors, in which I'll be discussing the theory, concepts, and fundamentals. In the next class, I'll be solving a lot of examples and questions.
+
+We calculate the determinant, which gives us the characteristic polynomial for a 2x2 matrix. Click on the 'i' tab to watch the video for a 3x3 matrix.
+
+To check if the eigenvalues are correct, the sum of the eigenvalues (or roots) should be equal to the sum of the diagonal elements of the matrix (the trace).
+
+Now, let's learn to calculate the eigenvectors. Let's see how to calculate the eigenvectors for lambda = 1. We substitute lambda = 1 into the characteristic equation.
+
+Consider a matrix where both its eigenvalues are non-zero, and its rank is 2. For example, if we substitute 1 into the matrix, one row might become zero, and another non-zero, effectively reducing the rank by 1. The number of non-zero rows will then correspond to the rank. Whenever the rank is 1, this type of equation is a homogeneous equation, and since the rank is less than the number of variables, the solution will be a non-zero solution, or an infinite solution. This infinite solution represents the eigenvector.
+
+If we take x1 = k, then x2 will be equal to -3k. This infinite solution represents the eigenvectors corresponding to that specific lambda value.
+
+### Linear Independence, Multiplicity, and Related Concepts
+
+When three eigenvalues are distinct, for example 1, 2, and 3, their corresponding eigenvectors will be linearly independent. I'll explain this with an example in the next video. If two eigenvalues are the same, their corresponding eigenvectors might be linearly independent or linearly dependent. This concept falls under another topic called diagonalization, which we will discuss in the next class.
+
+Eigenvalues are also known as characteristic values, eigen roots, characteristic roots, or latent roots. The set of eigenvalues is called the spectrum of matrix A, and the largest eigenvalue is called the spectral radius of A. These concepts lead us to another topic: diagonalization. In the next class, we'll discuss it with an example.
+
+For example, if the eigenvalues of a matrix are 1, 2, and 3, these values are repeating only once, so the algebraic multiplicity of each of these values will be 1. Now, if we have eigenvalues 1, 1, 3, since 1 is repeating twice, its algebraic multiplicity will be 2, and the algebraic multiplicity of 3 will be 1. When we write this in equation form, we get the same form. So, algebraic multiplicity refers to the power of the root in the characteristic equation.
+
+Geometric multiplicity is related to eigenvectors; it is the number of linearly independent eigenvectors corresponding to a particular eigenvalue. The algebraic multiplicity is always greater than or equal to the geometric multiplicity.
+
+### Properties of Eigenvalues: Determinant and Trace
+
+For a 3x3 matrix with eigenvalues lambda 1, lambda 2, and lambda 3, the determinant will be equal to the product of its eigenvalues. The trace of the matrix is the sum of its diagonal elements. Therefore, the trace is equal to the sum of the eigenvalues. For example, if the trace is 7, it will be equal to the sum of the eigenvalues.
+
+**Question 1:**
+Consider a matrix where the eigenvalues are 1 and 6.
+*   The sum of the eigenvalues is 1 + 6 = 7. This should be equal to the sum of the diagonal elements (trace) of the given matrix.
+*   The product of the eigenvalues is 1 * 6 = 6. This should be equal to the determinant of the given matrix.
+
+In the next class, I'll be solving a lot of questions and examples on these topics.
+
+### Channel Information
+
+*   This is my playlist on CSIR NET General Aptitude.
+*   This is my playlist on Real Algebra.
+*   This is my new channel that I'm working on.
+*   This is my old channel on Higher Mathematics.

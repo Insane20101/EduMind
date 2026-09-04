@@ -1,0 +1,57 @@
+Hello friends, welcome to Gate Smashers. In this video, we are going to discuss Dependency Preserving Decomposition, and we are going to discuss all the important points related to it, which will be very beneficial for your competitive exams, even your college and university level exams. 
+
+Please like the video immediately, subscribe to the channel if you haven't done yet, and press the bell button so that you will get all the latest notifications. Let's start.
+
+First, let me tell you the definition of Dependency Preserving Decomposition and what it is. Then we will discuss it with examples. In this example, I have taken a question from GATE, so we will discuss it with a question from GATE. 
+
+First, let's see what we are given in the database. A relation or a table—what we call a table—is given, and in that table, we have multiple attributes. Attributes can be anything like A, B, C, D, username, ID, roll number, etc. And what else do we have? Functional dependencies are given, like A goes to B, B goes to C; in this way, some dependency is given to us. What do we do? We find out the closure, and by finding out the closure, what do we do? We find out the candidate keys and those hidden dependencies. In what way are they hidden? A goes to B is direct, and B goes to C is also direct, but with transitive properties, we can also write A goes to C, because both B and C will come in one closure. So we can say that A is also determining C. When we find out the closure, whatever is hidden or whichever is transitively present, we can find out that too.
+
+Now, in normalization, we have discussed what we use: decomposition. Whenever the table is not in the normal form, we decompose it. Decompose means to break it into multiple parts. Now let's see: I have broken the R table into two parts, R1 and R2. Now R is not there anywhere; two tables have been created, namely R1 and R2. Some attributes have come in R1, and some attributes came in R2. Here, if you total the attributes of R1 and R2, or if you union them, it should be equal to the number of attributes in R. None of the attributes should be less; attributes should be as they are.
+
+Now what happens is that what we had was the original functional dependency. What will happen to it? It will be divided. Like, some functional dependencies, such as the FD1 set, will come in it, and the FD2 set will come in it. This means some of my dependencies have come in R1, and some of the dependencies have come in R2. The dependencies which were the original got divided into some parts. 
+
+Now what do we have to do? Now we have to check whether the dependencies should be preserved. It does not mean that I have lost some of my dependencies. No, what I have to do is preserve it; this is my aim. But you have to check somewhere in the question which you have been given whether the dependency is preserved or not. How do you check? What happens? We will discuss this in this video with an example.
+
+So what is the meaning of Dependency Preserving? If I pick up FD1 and also pick FD2—the dependencies that came inside R1 and the dependencies that came inside R2—if you take their union, what should they be equivalent to? It should be equal to FD, which were my original functional dependencies. It should be equal to the union of these two. So how does the union come about? If it comes, then the dependencies are preserved; if not, then those dependencies are not preserved.
+
+Here we will discuss with an example how to check. Here I have table R, where A, B, C, D are four attributes inside it, and functional dependencies I have are 1, 2, 3, 4. What have we done now? Decomposed R into 3 tables: R1, R2, and R3. 
+
+So look inside R1: A and B are there. Inside R2 come B and C. And inside R3 come B and D. 
+
+So the first point is to check that if you take the union of the attributes of these three tables, then what will be formed? A, B, C, D. So look at the original table: it has four attributes. So if you union them, then 4 attributes will come. There must not be any loss of attributes, otherwise all the mess will be created if you just left out some attribute. So the attributes we have are equal.
+
+What is it doing now? R1, R2, and R3 which we divided—let's check whether the dependencies are preserved or not. How to check now? 
+
+You first look inside R1. How many attributes are there inside R1? Two. What are they? A and B. Focus only on R1. There are two attributes inside R1, A and B. So what kind of dependencies can be created? One dependency can be created: A is determining A. Leave the original, nothing right now; just look at this table. If A and B are two attributes, what are the possible dependencies? A is determining A, B is determining B, A is determining B, B is determining A. In this way, we can create some or the other dependencies. 
+
+But remember the first point here: do not take trivial dependencies. What is meant by trivial? If you take the intersection of the left-hand side and the right-hand side, and there is a common element between them, that is called trivial. This means that in the left and right, both are equal, or you can also say that AB determines A. What is this too? Trivial. This means if you take their intersection in both the left and right side, it should not be equal to $\phi$. If you take the intersection of AB and A, then it is not coming equal to $\phi$; A is coming. Similarly, A goes to A: if you take the intersection of both, then A will come. 
+
+So we don't have to take the trivial, because trivial by default is true. It is like a self-loop, that A is determining A—yes, meaning I will determine myself; any attribute will determine itself. So we don't have to take the trivial; do not take any trivial, just take non-trivial. 
+
+So what will become non-trivial? Only two will be formed: A goes to B, and B goes to A. Just talk about this table, the R1 table. So which ones? These two. 
+
+Now you have to check whether A goes to B is true or not—meaning, will it come in it or not, is it possible or can't it be? How will you check? Come to the original table. We have divided the original table only into A and B. So look in the original table: B is coming in A's closure. B will come in A's closure, and A goes to B is already there. So you can say that it is possible—meaning A goes to B is possible in it. 
+
+Now check B goes to A. How will you check B goes to A? Now take the closure of B here. So if I take the closure of B, let's check if A is coming. B will come in the closure of B; from B, C is coming; from C, D is coming; from D, B is coming (it is already written). A is not coming—look, A is not coming. A is not coming in B's closure, meaning this one is not possible. Which is possible? A goes to B is possible in this table. 
+
+Similarly, we will write in R2. In R2, only non-trivial we have to write. Only non-trivial; we don’t have to write trivial ones. Therefore, I have told you before what the reason is: trivial is always true, it is not needed to be checked, it is always valid. So see non-trivial: B goes to C, and C goes to B. Two will be formed: B goes to C, C goes to B. 
+
+Now check whether B goes to C is in the original. Yes, meaning this one is possible here. Check C goes to B: if we take the closure of C here, if we take the closure of C in the original, then C came from C; from C, D came; and from D came B. So in the closure of C, we got B, meaning this is also possible. If you decompose this, after decomposing this, this also can be formed and this also can be formed; both of these are possible. 
+
+Then come to the last: write non-trivial in the last. B goes to D, and D goes to B. Now let's check whether B goes to D is there in the original. B goes to D is directly not in the original, but if you take the closure of B, then B will come in the closure of B (this we have already taken). B came in the closure of B, from B we determine C, from C we get D. This means B is determining D, meaning this one is also possible. 
+
+Then D goes to B: D goes to B is obviously written directly, meaning this is also possible. Write directly which is written directly; which is not written directly, take its closure. Then you will know if that attribute is coming in it. If it is coming, then it is possible; if it is not coming—as it is not coming in the closure of B, so it is not possible. Rest of all are possible. 
+
+Now, all three that I have decomposed: which ones are possible? All these are possible. So we will write their union. See here, we have written: take the union of FD1, FD2, FD3. Now there were 3 tables, so in these three, if we take their union, what will be formed? A goes to B, B goes to C, C goes to B, B goes to D, and D goes to B. So here, next, I have the last one which we have taken, that is D goes to B. 
+
+So all these I have now. I have a union here of all these five. Now what do we have to check? Now we have to check: are all these possible through this? Now we are checking the opposite way. First, we have checked through them; now we will check: are all these coming possible through these? Meaning, we will take the closure here and check this one. 
+
+So see: A goes to B—is A goes to B present here? Yes. 
+B goes to C—is it there? Yes, it is, it is direct, so write directly. 
+C goes to D—C goes to D, is it here? No, C goes to D is not direct, but it is here in the original. So what do we do? We will take the closure of C by seeing what? Seeing this initially. We have taken its closure, now we will take the closure of C, take it by looking at this. So in the closure of C: C came from C, I will have D, and from D I will get B. So D came in the closure of C. We have to see by looking at this. So if D came in the closure of C, then this is also preserved. 
+This is also preserved, this is also preserved. 
+Next, D goes to B—is it there? Yes, it is direct, so this is also preserved. 
+
+So see, all of my dependencies are preserved. What does it mean? If you divide an original table R into 3 parts and keep attributes in them—AB, BC, and BD—will dependencies be preserved? Yes, dependencies will be preserved always. 
+
+So this is how we check dependency preserving decomposition. In the next video, we will check one more question so that you will have a more clear idea of how to check dependency preserving decomposition. Thank you.

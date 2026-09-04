@@ -1,0 +1,21 @@
+Hello friends. Welcome to Gate Smashers. The topic is C-SCAN algorithm in disk scheduling. Let's understand this with the questions. 
+
+Suppose I have 200 tracks, 0 to 199, and I have a request queue. In actual, what is there in the request queue? Different track numbers are given. What is there in these tracks? Data are lying in these tracks, and I have to pick those data. In order to pick those data, I have to make movement in the tracks. So who does movement in the tracks? Read-write head. The read-write head in actual holds the platter like this and makes movement like this, back and forth it moves. So I have to read the tracks here, and what algorithm I have to use? C-SCAN, C-SCAN means circular scan. 
+
+Let's start here with the question. Current position is 50, and direction is important. Without direction, you will not know in which direction you have to move, towards 199 or towards zero. So direction is already given here; we have to move towards larger value. 
+
+From 50, what is the larger value than 50? 82 means first of all we will cover 82. After 82, we covered 140. After 140, we covered 170. And after 170, we covered 190. Means we are going in the increasing order, and here direction we are going towards larger value, and we will cover all the values till the last, that is 190. But C-SCAN, normally in C-SCAN what are we doing? We were going up to 199. So here also we have to go up to the last value, meaning the direction in which you are going, you have to go up to the last value. Means you go to 199. After 199, come back; you come directly to value 0. 
+
+The direction in which you moved till the last, that is 199, and what all values that came in between, cover all the track numbers that came in between. And now you have to come back to 0 from 199. When we are coming to 0 from 199, at that time we don't have to fulfill any request; we have to cover only up to 0. After coming to 0, you know that you have requests remaining. What are they? 16, 24, 43. 
+
+Now moving from zero, now which will come first? 16, so first we covered 16. After 16, 24, so cover 24. And after 24, the last that is 43, so covered 43. 
+
+In this way, we move in C-SCAN. You calculate read-write head movement, so how will you do it? We moved from 50 to 199, so what is the movement? 199 - 50. Then we moved from 199 to 0, so what is the movement? 199 - 0. And we have moved from 0 to 43. We moved from 0 to 43, meaning we will calculate 43 - 0, otherwise value will come in minus, that's why we kept the larger value first. Now when we calculate all this, the answer you will get is 391. 
+
+Here in C-SCAN and what we have in C-LOOK, there is a lot of confusion: that the value when we come from 199 to here, this value, do we have to calculate it or not? So in C-LOOK, you have to do it, it's sure, because there was a question in GATE regarding this and there they have calculated this value—you can check that video. We will calculate this here in C-SCAN as well. 
+
+The reason is the track numbers you have seen, the platter. What is the view of platter? This is the view of platter, meaning like the CD you have, its view is like the CD. When you see a CD, you will see many circular lines; these are the tracks. In the innermost, there is track number zero, and let's say in outer, there is track number 199. When we have moved from 50 to 199, I have reached 199. Now the read-write head moves only back and forth. If this track number is zero and this track number is 199, so I have reached on 199. I am moving from 199 to 0, meaning from 199 I am going to 0, so it will move back and forth, meaning it will go on zero. So when it will go to zero, means when we moved from 199 to 0, why don't we calculate this value? Obviously, this is also a movement, this value is also a movement. The read-write head is moving from 199 to 0, so that's why we have to calculate this value in the total calculation. 
+
+So when you are calculating, don't skip this, calculate this also in C-LOOK and C-SCAN. But you will get many videos, many materials where their value is not calculated, but you have to calculate this value. 
+
+Thank you.

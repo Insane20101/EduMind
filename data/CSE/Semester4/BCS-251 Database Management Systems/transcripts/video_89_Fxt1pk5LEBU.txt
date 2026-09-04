@@ -1,0 +1,73 @@
+Hello friends! Welcome to Gate Smashers. In today's video, we are going to discuss cascading schedules versus cascadeless schedules. We had discussed in the last video what the difference is between an irrecoverable and a recoverable schedule, and this is very important from the point of view of competitive exams. Because in these questions, a schedule will already be given in which there are multiple transactions, and over there you have to recognize: Is this recoverable? Is it irrecoverable? Is it cascadeless? Or is it a cascading schedule? 
+
+In recoverability, these four things are very important: that is, recoverable, irrecoverable, cascadeless, cascading schedule, and strict recoverable (making five things in total). So over here, we are going to discuss cascading versus cascadeless schedules.
+
+### Cascading Schedule
+
+What is the meaning of cascading? If we see the basic meaning of cascading, cascading means that due to the occurrence of one event, multiple events are automatically occurring. How? Let's say that we have transactions T1, T2, T3, and T4. That means we have a schedule, and in the schedule, we have multiple transactions: T1, T2, T3, and T4. 
+
+T1 came first, and in that, what is to be done? Read(A) and write(A) are performed. And this is our timeline. You obviously know what the meaning of timeline is—that time is increasing in this way. T1 came first, and in that, read(A) reads just one value from the database. Write is to be done. In the database value whatever it has read, whatever changes (plus, minus) you want to do, perform those changes. 
+
+Now, let's say this transaction is going on. T2 came and it did read(A). Now, it will read which value? It will read the one which this has changed—means the one which T1 has just changed. Still, it is not changed in the database, but that change T2 has read. Or let's say T3 came; T3 also performed read(A), so what value will this read? The changes that it has done. 
+
+If in the database the value is 100, so first T1 read the value of A as 100. Suppose it performed $A = A - 50$ and did write(A). So as write(A) was done, what is the value of A? It became 50. Now that 50 is read by this T2. This T3 also read 50. Let's say T4 came and it also read, and that also got 50. 
+
+Now these transactions are going on, and let's say at this point in time—when all three read—what happens to T1? It failed. And if T1 (any transaction) failed, then according to the ACID property, what does the atomicity property say? Either all operations should be performed, or none of the operations should be performed. 
+
+So what will we do? We will rollback this. And if we will rollback this, then what will be the value in the database of A? The one which was the initial value. What is the initial value? 100. That means in the database, the value will be 100. 
+
+So T2 is working on which value? 50. T3? 50. T4? 50. Where is the 50 value? The 50 value is nowhere! That means these three are working on dirty data. That is called a write-read problem. 
+
+To remove this problem automatically, what will we do? We will tell T2 to get aborted. We will tell T3 also to abort. We will tell T4 also to abort. That means we will automatically rollback them. That is called cascading. 
+
+T1 had failed due to some outage, some problem occurred (there is a problem with the server, hardware), and it automatically failed. But we forcefully updated these three because if I let these three work—if let's say I allow them—then all three are working at value 50 of A. But 50 is nowhere, because in the database the value is 100 and all these operations are rolled back. So obviously, I will not let them work on the wrong value. 
+
+Now what will I do? I will rollback them. As I did rollback, what happened to all these three transactions? They were automatically rolled back. Which means these four transactions failed. 
+
+So due to that, what is the disadvantage? If asked generally, then if you are asked what the disadvantage is: the disadvantage is performance and utilization of the CPU. You are using the CPU over here, but due to the failure of T1, you failed these three also. So CPU utilization that you have done properly over here—your system's performance will obviously degrade because your CPU cycle is wasted. The work that the CPU has done is automatically wasted. That is called a cascading schedule.
+
+If we understand with a simple example: let's say there are these four people. All four are students. Let's say all four are giving some exam, and T1 is intelligent. Now T1 wrote anything in the paper. Wrote anything means he is writing something. T2 read it. T3 also read it. T4 also read it. That means these three read it. They do not know anything about it; they are just blindly copying it. 
+
+Now let's say that T1 thought after some time, "No, I have calculated the wrong answer." So what did he do? He rubbed everything. So obviously, what will happen? Will T2 say, "No problem, he has rubbed it, but I will still do it"? No! What will he do? He will also automatically rub it. T3 will also rub it, and T4 will also rub it. 
+
+That means the efforts of all three—all three had worked hard in copying—have failed. So now what will all three do? Obviously, they will wait for the future. Now when again he will read and write, then again they will check. But at present, if we talk about it, my CPU utilization is wasted over here, and performance is automatically degraded. This is called a cascading schedule.
+
+### Cascadeless Schedule
+
+Next is cascadeless. Cascadeless means obviously we will want that the system should be cascadeless—meaning we will try to remove this thing. 
+
+So what is the method to remove it? What do you think, what method will we use? It is a simple method. Where is the problem occurring? The change that T1 has done is read by T2, is read by T3, is read by T4. If I don't let them read, then what will happen? Obviously, it will be cascadeless. 
+
+What do I mean to say? That if T1—let's say T2, let's say T3—performs read(A), write(A), and T2 is telling that "I want to do read(A)" or T3 is telling that "I want to do read(A)", I will not allow it. I will not allow yes, if any other operation is to be performed (like read(B), write(C), read(D), whatever he wants), he can work, but it cannot read the value of A. It cannot read the value of A. T4 or T5, no one can read until this transaction T1 is committed or it is aborted. 
+
+Either it will fail due to some reason—due to any reason—or if this will commit successfully. After committing, this can read. So after committing, there is no issue. Because after getting committed in a database—if we talk about this example, if T1 is doing the value 100, write(A) is done as 50, and if this commits successfully, then what is the meaning of commit? That in the database, change the value successfully. So we did 50 in the database. Now if T2 will read after commit, then what will it read? 50. From where? From the database. There is no problem. What will it read? 50. From where? The database. There is no problem. 
+
+But over here, there was a problem because in the database it is 100, and we did it 100 after rollback. So T2 was working on the wrong value. So there is a simple funda to stop this: that we will not let it read. Don't allow read. 
+
+So now what is this automatically? Cascadeless. 
+
+So there is a simple meaning to identify this: that if any transaction is doing read(A) and write(A), and if a second one comes and does read(A)—if it is written like this—then you tell it that it is a cascading schedule, because it has read. And if it is written like this—let's see, if it is written with "commit", after commit if it is written, let's say read(A)—so from that you will come to know this is an example of cascadeless. So you note these both points.
+
+### Write-Write Problem in Cascadeless Schedules
+
+I will say one more last point in cascadeless. In cascadeless, one problem still occurs. That is the write-write problem. 
+
+What is the meaning of the write-write problem? We have only said that let's suppose read(A) is doing and a transaction is doing write(A), then we can say that another transaction cannot read. This is okay. But another transaction can write! Yes. 
+
+So if we talk about this, let's say this is a simple example. We did not talk anything about write. So let's say if T1 started, it did read(A). T2 started, it also did read(A). It is doing before write. Let's say in the database the value of A is 100. T1 read 100. What will T2 read? 100. 
+
+See carefully: I have written this read before write. So if read is before write, there is no problem. After write, read should not be done. This is the story, actually. 
+
+So let's say if over here I do write(A). Write after write, this no one is telling. This is simply saying that after write, read cannot be done on the same data until a commit is done. But if I am doing write after write, on this nothing is told. It has not told anything on this. So we are doing write after write. 
+
+So due to that, what problem can be created? Obviously, this is cascadeless. There is no problem in this. After write, read is not there. But still, there is one problem. What is that problem? 
+
+Let's say if this transaction fails, then what will I do? I will rollback. As I will rollback this, what will be in the database? The initial value, whatever it is. That will be as it is: 100. But the work that T2 has done, that will be automatically lost! That is called a write-write problem, or a lost update problem. So this is lost; the work which T2 has done is automatically lost. 
+
+Let's say the value of A was 100. T1 read 100. T2 also read 100. Let's say T1 performed $A = A - 10$. So what is written? 90. Let's say T2 performed $A = A - 20$. So what is written? 80. Not in the database, but in local memory it has 80 and 90. 
+
+Let's say this transaction T1 failed in the future. As this failed, what do we have to do? We have to keep the value in the database as 100. Means what T1 has performed, that will automatically be lost. So what T2 has performed, that also is automatically lost! Because this value 80, that will not be reflected anywhere. Because if T2 commits—after getting commit also—we will make the database value as 100. So still, the write-write problem is occurring. 
+
+And why is that write-write problem (lost update problem) occurring? Its reason is simple: that cascadeless says that if anyone is writing, after write, read cannot be done until commit is done. But it does not say anything about write. Because about write, the next schedule—strict recoverable—that actually says that yes, you cannot write also, which we will see in the next video. 
+
+So this is all about the cascading and cascadeless schedules. Thank you!

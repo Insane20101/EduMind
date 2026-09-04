@@ -1,0 +1,48 @@
+Hello friends, welcome to Gate Smashers. The topic is FCFS: First-Come, First-Served scheduling algorithm. Let's understand it with a numerical example.
+
+In a numerical, first of all, we are given the process numbers P1, P2, P3, and P4—meaning four processes are here—along with arrival time, which means which process arrived at what time, and burst time. You can call it execution time also; this is the time duration, meaning every process told how much time it will take to get executed. There is no importance of its dimensions here, whether it's 2 minutes, seconds, or hours; it can be any value. 
+
+Our main motive here is to see how FCFS works. FCFS's working criteria is arrival time, meaning it checks the arrival time, and we'll serve the one which came first. The mode is non-preemptive, meaning if a process arrived and I gave it to the CPU—meaning the CPU started to execute that process—it won't stop in between. It will get completely executed, and after execution, it will get terminated. 
+
+Let's see how we'll solve this numerical. First, we'll check the arrival time of all the processes, i.e., 0, 1, 5, 6. 
+
+Now, here I have to use a Gantt chart. This chart will help you in solving the numerical in the easiest way. Here, time starts from 0. Now at 0, first you have to check which process has arrived, meaning which process arrived at 0 from all of these. So you can see clearly here, P1 arrived at 0. There is no other process left; other than P1, there is no process which came at 0. So simply just bring it here. 
+
+Bringing P1 here means we started executing P1 on the CPU. P1 says it'll take 2 units of time to execute properly, so we'll run it for complete 2 units without any break. Non-preemptive means that we'll not stop the process in between. Now P1 got executed up to 2, and after that, P1 left from here. Means you can say that P1 got executed at time 2. 
+
+Now we are at time 2—let's say the time is 2 o'clock. Now check again which process has already arrived. Let's say if you see P2, then P2 has arrived at 1. 1 must have occurred between 0 and 2, meaning P2 has already arrived in the ready queue. Has P3 arrived? No, P3 will arrive at 5, but we are still at 2, meaning P3 and P4 haven't arrived. But P2 has arrived and is sitting in the ready queue. Now take out P2 from the ready queue and bring it here, meaning execute it over the CPU. For how much time? It said already that it'll take 2 units of time, so we'll execute it here for up to 2 units of time. So here my time became 4, and P2 also got executed from here. 
+
+Now check my time here. First, we have to check the time here, i.e., 4 o'clock. Now at 4 o'clock, check which process has arrived. P3 will arrive at 5 and P4 will arrive at 6, and there is no process other than these two. So the important point here is that you can't do anything at 4. It means for one unit of time, i.e., 4 to 5, the CPU is idle. Idle means the CPU doesn't have any process to execute. So simply, we made the CPU idle from 4 to 5. 
+
+Now P3 arrived at 5 o'clock, so we'll start executing P3. We executed P3 here for up to 3 time units, i.e., up to 8. Now P3 also left from here, and now the time is 8. P4 arrived at 6, and 6 has already passed, meaning P4 has already arrived in the ready queue. So take out P4 from the ready queue and execute it. 
+
+Here, it is simple: the process which came first, we have to take it out of the ready queue. So P4's time is 4, so 8 + 4, i.e., 12. So at time 12, all the processes got executed: P1, P2, P3, P4. All four have been executed. Many times they ask what is the time at which they all got executed, so you can write 12. 
+
+Now we have to write the completion time (CT) of all the processes. Here, check when P1 got executed; we have to check its right-hand side. At 2, so P1 got completed at 2. P2 at 4, P3 at 8. You have to check below on the right-hand side. P4 got executed at 12. So simply write here; this is the time at which P1, P2, P3, and P4 got executed. 
+
+Now we have to find out TAT, i.e., Turnaround Time. TAT is how much time a process stayed in the system. It means when it got completed and when it arrived, that's the turnaround time, i.e., $\text{TAT} = \text{CT} - \text{AT}$. You can find it easily: 
+* $2 - 0 = 2$
+* $4 - 1 = 3$
+* $8 - 5 = 3$
+* $12 - 6 = 6$
+So this is the turnaround time. 
+
+Now it's WT, i.e., Waiting Time. WT is how much was the useful time and how much time it had spent there. Now, TAT means 2, meaning P1 stayed for 2 units of time. And how to know how much time it was supposed to stay? Through burst time. Useful time is the burst time, but for how much time it stayed, that's turnaround time. So $\text{TAT} - \text{BT}$ will be the waiting time. 
+* Waiting time for P1: $2 - 2 = 0$
+* Waiting time for P2: $3 - 2 = 1$
+* Waiting time for P3: $3 - 3 = 0$
+* Waiting time for P4: $6 - 4 = 2$
+
+This is the waiting time. Meaning P1 stayed in the system for 2 unit times and it was supposed to stay for 2 time units, then obviously the waiting time arrived at 0. But if you see in the case of P2, why did 1 arrive? P2 stayed for 3 time units, but it was supposed to stay for 2 time units only. So if you see carefully, then P2 arrived at 1, but it got its turn at 2. That's why it had to wait for its 1 unit of time there. 
+
+The next question they can ask from here is response time. Response time = time at which the process got the CPU first time - arrival time. 
+Now, when did P1 get the CPU the first time? Now check in the Gantt chart when P1 got the CPU first, because you can find out everything easily through the Gantt chart. So P1 got the CPU at 0. Now we have to check the left side. So P1 got the CPU at 0 and it arrived at 0, so $0 - 0 = 0$. 
+Next is P2. P2 got the CPU the first time at 2, and P2 arrived at 1, so $2 - 1 = 1$. 
+P3 got the CPU the first time at 5, and P3 came at 5 first, so $5 - 5 = 0$. 
+P4 got the CPU the first time at 8, but it arrived at 6, so $8 - 6 = 2$. 
+
+Let me tell you a point here: in the case of non-preemptive—because FCFS is non-preemptive—there is no benefit of calculating the response time in this case, because the response time will always come out equal to the waiting time. This question of response time will come more in the case of Round Robin, in SJF, meaning in the preemptive case more. But still, we solved it here. No one will ask you more than this about different times. 
+
+Yeah, but next they can ask what is the average turnaround time. So you can calculate average turnaround time, i.e., 14 divided by the total number of processes, 4. And how to calculate average waiting time? How would you calculate average waiting time? Just add all of that, 3 divided by the number of processes, i.e., 4. So it comes out to be 0.75, and the average turnaround time comes out to be 3.5. 
+
+So this is the average turnaround time and waiting time. This is all about the FCFS. Thank you!

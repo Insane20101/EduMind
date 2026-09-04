@@ -1,0 +1,51 @@
+In this video, I will explain what IDs and classes are. The concepts of IDs and classes are often confused. In fact, when I was learning HTML, I was very confused in my early days. 
+
+ID means Unique Identifier. If you give an ID to an element, you will not assign that ID to another element. In contrast, a class allows you to give a property to multiple elements. For example, you can assign a class named "Red" to both a div and a form. Similarly, you can assign a class named "BGRed" to an article tag and a header tag.
+
+Now, let's move to the computer screen to see these concepts more closely. 
+
+If you haven't accessed the Sigma Web Development course yet, please check the playlist. The source code is also being uploaded on GitHub. I will create a folder for video number 9 and name it "video 9." After creating the folder, I will right-click while holding Shift and open it with Visual Studio Code. Here, I will create an "index.html" file and enter the basic HTML structure.
+
+To understand IDs and classes in HTML, think of an ID as an identity card. For example, everyone has an Aadhar card, which serves as a unique identifier. Whenever you go somewhere, you may need to show your ID to prove your identity. 
+
+Let’s illustrate this with a story. This is John, and this is Harry. They are very good friends but do not share their lunch. John and Harry have their own unique IDs. For instance, John’s Aadhar number looks like this, and my Aadhar number looks like that. These numbers can never be the same. 
+
+If we assume that our friend is Tanya and John's friend is Shruti, their Aadhar numbers will also be different. None of these four numbers are the same. If I mention any of these Aadhar numbers, you would understand which person it belongs to. This uniquely identifies Tanya, Harry, Shruti, and John. No one else will have these IDs.
+
+John and Harry spent their childhood together and were in the same class, which we can call "10th grade." Suppose Shruti and Tanya are in "9th grade." In this case, both Shruti and Tanya are in the same class, which is 9th grade. 
+
+Now, can one person belong to multiple classes? Yes, for example, Harry is in 10th grade and also attends a tuition class labeled "10A." Therefore, a person can belong to multiple classes. 
+
+Let’s return to the code. Suppose I create a div and assign it a class called "red." I can also create a span and assign it the same class "red." The classes I have given can be assigned to different elements. However, if I want to assign an ID to any element, I must ensure that it is unique. 
+
+If I create a second div, I cannot assign the same ID as the first div. Each ID must be unique, just like Aadhar numbers. If I try to assign the same ID to another div, I must use a different one.
+
+The concept of IDs and classes took me a while to understand when I was learning web development. No one explained to me that an ID uniquely identifies an element, while a class can be assigned to multiple elements. For example, if I give an element a "red" class, I can also give it a "bg-yellow" class. 
+
+If I want to assign multiple classes to an element, I can do so by separating them with a space, like this: "red bg-yellow." 
+
+Can I assign multiple IDs to the same element? No, just as a person cannot have two Aadhar cards. An Aadhar number is unique to one person, and different people cannot share the same Aadhar numbers. However, classes can be shared among multiple elements. 
+
+Now, let’s write some CSS. I will create a "style.css" file. In CSS, to target a class, I use a dot (.) before the class name. For example, ".red" means the red class, and "#firstDiv" means an ID. If I want to set the background color of the first div to red, I can do that using CSS selectors. 
+
+I will write the following in my CSS file:
+
+```css
+.red {
+    background-color: red;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+```
+
+This way, you can use IDs and classes in CSS. Remember, IDs and classes are attributes of an element. The ID attribute uniquely identifies an element, while the class attribute can classify multiple elements.
+
+There is another use of IDs that I want to mention. If I go to Wikipedia and search for coding, I can inspect the page and find its ID. If I copy this ID and use it in a link with a hashtag, it will take me directly to that specific section of the page. 
+
+For example, if I enter the URL with the hashtag followed by the ID, it will scroll to that section. This is a useful feature of IDs for linking. 
+
+To summarize, an ID uniquely identifies an element, while a class can be assigned to multiple elements. One element can have multiple classes, and different elements can share the same class. 
+
+Thank you for watching this video! Please access the playlist, check out the GitHub repository, like the video, and leave a comment with the hashtag #SigmaBatchOp. I will see you next time!

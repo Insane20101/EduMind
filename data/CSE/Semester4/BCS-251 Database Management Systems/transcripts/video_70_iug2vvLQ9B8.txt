@@ -1,0 +1,56 @@
+Hello friends, welcome to Gate Smashers. In this video, I'm going to explain the LIKE command in SQL. To explain this here, I've taken a table of employee in which I've taken only two columns: ID and Name, and I've entered six entries in this. On the basis of this only, we'll see how we use the LIKE command and why we use it in SQL.
+
+The LIKE command is generally used to search data. But if I get specifically any query, like here I've made five cases. 
+
+### First Case: Find employee details whose name starts with A
+If I have a question here that find out the name of those students or employees whose name is Varun, or those who have "arun" in their name, for that we use simply the WHERE clause. Like, `select * from` if I want to get all details, I'll write `* from emp`, table name is `emp`, `where name = 'varun'`. So what output this query will give to me? `where name = 'varun'` means it will show you all details of Varun. 
+
+But I didn't ask where name is equal to Varun, or where name is equal to Varun, Arun, or Karuna—nothing. I've asked whose name contains A in the first position, means the first letter should be A. So here, if `name =`, how will you find out? You can't write only A or V. For this type of question, we use the LIKE command. 
+
+So here, how will we use it? `where name like`. Here I don't have to mention the whole name; I only need to find out the first letter A. So we'll use `where name like`. Here we're using the LIKE command, and I'll tell you whatever query I'm writing here, all these queries are written with the purpose of Oracle software. If you're working on any Oracle software, Oracle server like 99, 10G, 12C, 16, then this query will work as it is, because in MySQL and SQL Server there can be little difference in syntax, but the logic remains the same. 
+
+So here, `where name like`. My first letter should be A. If my first letter needs to be A, what should be 2nd, 3rd, 4th, 5th, 6th? How many characters should be there in a name? Nothing is asked related to this. So here, what will you use? `%`. When do we use `%`? When you have to work on multiple data. But here we've already told that the first letter should be A. The rest can be anything, and the total length can also be anything—meaning the name can be anything, it can be small or big, but the first letter should be A, and you write this in single quotes. 
+
+When you will execute this whole command: `select * from employee where name like 'A%'`. Now what will `A%` give you? See here, it will search the first character in the whole name. First character A—see here, it is A, means Arun will be in your output. K—no. A—yes, your answer comes: Amrit. Next is R, so it will not come. And next is Ajeet—yes, Ajeet will come in your output. Means three will come in your output: Arun, Amrit, and Ajeet. So you have to work in this way.
+
+---
+
+### Second Case: Find employee details whose name ends with N
+Just as starting was asked, now the end is asked from you, meaning the last character should be n, before that anything. In anything, we use `%`. Whenever it comes that before that there is any condition, there is no issue, so you have to do the same: `select * from employee where name like`. You can write it as it is: `where name like '%n'`. The last letter should be n. If the last letter is N, what will be before n? Before n, there can be anything, and I've already told you that for anything we use `%`. Before this, there can be any number of characters or letters—there is no issue, it can be anything from A–Z, it can be n also, and it can come a lot more times also, but the last letter should be N. 
+
+So see what output will come here. First is Varun, and then Arun. It will check only the last letter: n, n. Not is not there? No, it is not there. So you have two outputs in the second question, that is Varun and Arun. So like this, you have to do this second question.
+
+---
+
+### Third Case: Find the employee name or find employee details whose name contains "ee"
+This type of question can also come, that in the name there should be "ee". It can be anywhere in the name—it can be in the starting, or middle, or at last, no issues, only it should contain "ee". When this kind of question comes to you, means there is a simple concept that "ee" is compulsory, but what should be there before "ee"? How many letters should it have? There can be any number of letters or anything, and for anything, what do we use? I've told you earlier that `%` is used. What should be after "ee"? Anything, whether there is 0 character or 1, from A to Z it can be any character. Anything means `%`. 
+
+So at starting also anything, and at end also anything, and in the middle, there should be "ee". It is okay if it is at starting only, but there should be "ee". So see here what output will come. Here one output will be Ranjeet, and the second is Ajeet. 
+
+Now, let's suppose in the name at starting there is "ee", "ea", anything—this will also come in the output, whether it is at starting or, let's suppose, at last also "ee" is present. Anywhere continuous "ee" is coming, that will give you an output, because before "ee" there could be anything, and in anything, there can be 0 characters or 1000 or a lakh, any number. Before that also, there could be anything, or at last also there could be anything, but only "ee" should be in the name. So like this, you can do the third question.
+
+---
+
+### Fourth Case: Where name contains A in the second place
+Here the question is changed a little. Now what is there in the question? That in the name there should be A, but the second letter should be A—means in your name anything can be there, but the second letter should be A. 
+
+Now see, if here I'm writing like `A%`, what does it mean? First letter A, after that anything. So the question obviously is wrong here, means the second letter should be A, means I've to fix the second letter. If I write this, let's suppose `%A`—still wrong, before A there can be anything, before A any number of characters can come that I can't fix. Whenever you want to fix a character, or whenever you want to fix a place that this should be the second letter, or third letter, or last, or middle letter should be this or anything, so you use underscore (`_`). 
+
+Yes, underscore means the first letter can be anything, but it should be one letter only; it cannot be more than one. You used underscore, and the second letter is given to you in the question, that whose name contains A in the second place, means you said the second place as A. So what can be in the 3rd place, or 4th place, or 5th place, and 6th? It can be anything, but you have to simply apply `%` here. 
+
+The simple point is here: you have to fix the second letter, means whatever your name is, it should be in this way, there can be many characters—there are many characters in that name, but there should be a second letter A. So for making the second character second, we have to fix the first letter. So for fixing the first letter, I used underscore (`_`). In this, I didn't say that the first letter should be a; it can be anything from A–Z, any value can come, but there will be only one value because we've used underscore here. Now, after the 2nd letter, there is no condition for the 3rd, 4th, and 5th letters. Means after this, anything or any number of characters can come, so you can use `%` later. 
+
+So for this second question, answer of this: second letter A is coming in Varun, it is in Karuna, and the second letter A is coming in Ranjeet. So here this will give you three outputs.
+
+---
+
+### Fifth Case: Name contains A in the second place AND total length is 5 characters
+We just did it, and along with this there is one more condition: that the name should contain a total of 5 characters, it should not be more than 5. 
+
+So if we fix the 2nd character that it should be A, before A there will be only 1 character—we used underscore (`_`). But after A, only 3 characters can come. Those three can be anything from A–Z, but the number of characters is only 3. So for fixing 3, use underscore for 3 times. So simply `_a___`—that's it. 
+
+So whenever any question—it can be related to any character at first or last, `%`. But if you have to fix place also, means it should be 2nd or 4th letter or 5th letter, so you can use underscore here. 
+
+So in this case, your answer will be one. Because in Karuna also 'a' is there as the second letter, but the total character count is 6—6 characters are there, so it is not the right one. Ranjeet also has the second letter 'a', but the total letters are 8, so total is 8, so this is also not the correct output. But in Varun, the second letter is 'a' and the total characters are 5—5 characters and 2nd letter is 'a'. 
+
+So like this, questions can be asked from you. Apart from this, nothing will be asked in this topic from you. From these only, it can be salary related, address, or name, anything. So these kinds of questions are generally asked in competitive exams or in your college or university level exams also. Thank you.

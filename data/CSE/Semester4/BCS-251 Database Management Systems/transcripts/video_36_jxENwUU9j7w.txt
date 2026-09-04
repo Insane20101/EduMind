@@ -1,0 +1,47 @@
+Hello friends, welcome to Gate Smashers. In this video, we are going to discuss the second example of dependency-preserving decomposition. We have discussed example one in the last video, where I discussed in the introduction what dependency-preserving decomposition is and explained it with an example from GATE. If you have not checked that video, do check it so that you can know the introduction. 
+
+Otherwise, in the next question, what we are given is a relation $R$ where there are four attributes $A$, $B$, $C$, and $D$. In the original table, I have two functional dependencies: $AB \rightarrow CD$ and $D \rightarrow A$. We have decomposed this table into two tables: one is $R_1$, which has two attributes $A$ and $D$, and one is $R_2$, which has three attributes $B$, $C$, and $D$. 
+
+First of all, you have to check that if I make a union of these tables, if I make a union of the attributes of these two tables, will I achieve the original table? So, if you do a union of $AD$ and $BCD$, then what answer will come? $ABCD$. This means you have got all four attributes, meaning there should not be any loss of attributes. 
+
+Now, we will talk about dependency preserving. If I divide this table into $R_1$, so what do we write in $R_1$? Non-trivial functional dependencies which are possible. Only non-trivial. Trivial, I have already discussed; it is already valid, so it is not required to check it, as it is always valid. 
+
+So here in non-trivial, we have $A \rightarrow D$ and $D \rightarrow A$. Only two will be formed: $A$ is determining $D$, and $D$ is determining $A$. But out of this, which one is possible? How will you check that? You have to see in the original table: is it anywhere in the original table? 
+
+If you take the closure of $A$, what will come in $A$'s closure? $A$ will come, that's it. Only $A$ will come. Is $A$ determining $D$? No, this is not possible. 
+
+Next, $D \rightarrow A$. So, take the closure of $D$. $D$ comes in the closure of $D$, and from $D$, $A$ also came. So yes, $D \rightarrow A$ is possible, so this is possible here. 
+
+Now, we will talk about $R_2$ ($B, C, & D$). So here I have to write all non-trivial. In non-trivial, on the left-hand side, first of all, we write one attribute. One on the left-hand side means from the left I have written $B$, so obviously $C$ and $D$ came here. Next, I wrote $C$, then $B$ and $D$ will come here. Next, suppose I wrote $D$, then $C$ and $B$ will come here. Writing $BC$ or $CB$ is the same thing. So we wrote one attribute each on the left-hand side, so it is all non-trivial. 
+
+Now, if we write two on the left-hand side, let's say we wrote $B$ and $C$, so here $D$ will come. Let's suppose if we write $B$ and $D$, $C$ will come here. Next, suppose we have $C$ and $D$, then $B$ will come here. So two are complete. 
+
+Now, if we write 3, let's say $BCD$, I told you already, so what will you write here? You will write $B$ or write $CD$, then it will become trivial. If you take the union of both the left-hand and right-hand sides, then it will come not equal to $\phi$, which is a trivial dependency. So we don't have to take trivial, only non-trivial. 
+
+Now we see which of these are valid by looking at the original dependencies. 
+
+See the closure of $B$ here. What will come in the closure of $B$? Only $B$ came in the closure of $B$, nothing else would come. Only $B$ came in the closure of $B$ means $B$ is determining $C$ and $D$? No, it is not possible. 
+
+Now we take the closure of $C$. See what came in the closure of $C$. $C$ came in the closure of $C$. $C$ will obviously come because it is trivial. Next, no one has come, so $C$ is determining $B$ and $D$? Not possible. 
+
+Next, $D$. See what came in the closure of $D$. $D$ came in the closure of $D$, and $A$ came in the closure of $D$. $D$ and $A$ came. So is $D$ determining $C$ and $B$? No, $D$ is only determining $A$ and not determining anyone, so this is also not possible. 
+
+Next, $BC \rightarrow D$. Closure of $BC$ is to be taken. By looking here, $B$ and $C$ will come in the closure of $BC$. It is trivial. Next, in the closure of $B$ and $C$, nothing else will come, meaning it is not determining $D$. This is not possible. 
+
+Next, $BD$. In the closure of $BD$, $B$ and $D$ came. From $D$, I got $A$, and from $AB$, I got $C$. So in the closure of $BD$, I will get $B$ and $D$. From $D$ I got $A$, yes, and from $A$ and $B$ I got $C$. All have come. $BD$ were candidates of this table, so you can say all attributes have come. So $BD$ is determining $C$? Yes, it is possible. Keep in mind, this one is possible. 
+
+Next, $CD$. Take the closure of $CD$. Seeing this, $CD$ will come. From $CD$, $A$ came (from $D \rightarrow A$). That's it, $D$ is not coming. In the closure of $CD$, $CD$ will come, and from $D$ came $A$. Yes, but $B$ is not coming, that's it. So here, $B$ came in the closure of $CD$? No, it didn't. 
+
+Which one is possible between these two? Take the union of these two. If you take the union, then this one was possible ($D \rightarrow A$), and this one was formed ($BD \rightarrow C$). So this is the union of these two. 
+
+Now what do you have to check? First, we looked at possibility here by looking here. Now you have to check the possibility of this looking at this—meaning take the closure of $AB$. We will take the closure of $AB$, but now not by looking at this; we will take the closure of $AB$ by looking at this, and check whether $CD$ came. 
+
+Meaning check this: whether it is coming by seeing this. If we take the closure of $AB$ here, $AB$ will come obviously from $AB$, and what else do I have? See what else will come from $AB$. From $AB$, nothing is coming from $AB$, $AB$ is coming, no other attribute will come. I write $AB$ came from $AB$, and from $D$, $A$ will come (we don't have that here), and for $B$, $BD$ are combined, nothing is coming. 
+
+This means this is not preserved. $AB$ are saying that "I am determining $CD$," but here $AB$ is saying that "I am not determining anyone." This means when we decomposed, I had these two possible, but because of these two possible, am I achieving the original? I can't achieve the original, but others are being achieved. $D \rightarrow A$—look, it is directly written, so $D \rightarrow A$ is being achieved. But from $AB$, I want to determine $CD$. But from $AB$, am I determining $CD$? If you write these two dependencies, these two unions, then am I able to determine it? No, I cannot. 
+
+So that means it was not preserved with me. This means when we divided this table into two parts, keep these two attributes. Because of these two attributes, I have both these dependencies possible with me, but because of these two dependencies, I am not able to achieve back the original one. I am able to achieve only one: $D \rightarrow A$. $AB \rightarrow CD$ I couldn't achieve because of these two. 
+
+So here you can say that dependency is not preserved. This is an example we discussed here where dependency is not preserved. In the last video, we discussed—its link is given in the description box—where we have preserved the dependency. We have discussed one example on this. 
+
+Thank you.

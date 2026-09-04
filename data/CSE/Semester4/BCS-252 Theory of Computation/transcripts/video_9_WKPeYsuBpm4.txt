@@ -1,0 +1,131 @@
+Hello, today we are discussing map C, and our next example on DFA redesigning is that we have to design a DFA for the language $L$. For language, sorry, strings, concept, okay, let me correct that string—like in consistent all strings which have an even number of $a$'s and an even number of $b$'s. 
+
+Here we have a combination of two conditions: even number of $a$'s and even number of $b$'s. Apart from this, we can also have other combinations, such as:
+1. Even number of $a$'s and odd number of $b$'s
+2. Odd number of $a$'s and even number of $b$'s
+3. Odd number of $a$'s and odd number of $b$'s
+
+This question is very important from the point of view of competitive exams, college exams, and university-level exams, as this question is repeated many times. So guys, for this point, I am going to explain this to you. Please like the video, subscribe to the channel, click on the bell icon, and please press the bell icon so you can get all the latest notifications. 
+
+Let's start. Subsequently, we focus on an even number of $a$'s and an even number of $b$'s in between, which means both conditions should be true, and in this case, both are true. That means both conditions should be true. So, to fulfill the $AND$ condition, let's first write the language. 
+
+Language is a collection of strings. So what can be the very minimum string that can come? The very minimum string can be $\epsilon$ (epsilon), which means zero number of $a$'s and zero number of $b$'s, and both are even numbers. So, $\epsilon$ is the very minimum string that can come. 
+
+What else can come? 
+- Two $a$'s and zero $b$'s (number of $a$'s = 2, which is even; number of $b$'s = 0, which is even).
+- Zero $a$'s and two $b$'s (number of $a$'s = 0, which is even; number of $b$'s = 2, which is even).
+- One $a$ and one $b$—no, one $a$ means number of $a$'s = 1 (which is odd) and number of $b$'s = 1 (which is odd). So, this $AB$ scenario will not come.
+- What about $AABB$? Yes, number of $a$'s = 2 (even), number of $b$'s = 2 (even).
+- $BBAA$? Yes, number of $a$'s = 2 (even), number of $b$'s = 2 (even).
+- $ABAB$? Let's check: $A$ is 1 (odd), $B$ is 1 (odd)—no.
+- $ABBA$? Let's check.
+- $BAAB$? Let's check.
+- $BABA$? Let's check.
+
+Like this, a lot of strings can be there. 
+
+Now, how to design a DFA for this? First of all, let's make our start state. Let's call the start state $q_0$. The start state is also the ending state (final state) for $\epsilon$ because the very minimum string is $\epsilon$, so the start state itself accepts $\epsilon$. 
+
+What are our input symbols? The alphabet for us is $\Sigma = \{a, b\}$. 
+
+Now, let's trace for $a$. If we give input $a$ from $q_0$, it goes to the next state, let's name this state $q_1$. At $q_1$, we have received the first $a$. Receiving the first $a$ means the count is 1 (which is odd). So, we put this in state $q_1$. 
+
+If a second $a$ comes, we want it to go back to the final state because two $a$'s mean the count is even. So, the second $a$ goes back to $q_0$. Then a third $a$ comes, it goes to $q_1$; a fourth $a$ goes to $q_0$; a fifth $a$ goes to $q_1$; a sixth $a$ goes to $q_0$; a seventh $a$ goes to $q_1$, and an eighth $a$ goes to $q_0$. In this way, we have designed it for $a$.
+
+Similarly, let's do it for $b$. Let's suppose for $b$, we take it to a new state, let's call this state $q_2$. At state $q_2$, we receive the first $b$. Since receiving one $b$ means the count is odd, we keep this as a normal state, named simply $q_2$. 
+
+If a second $b$ comes, we want it to go back to the final state because two $b$'s mean the count is even. So, the second $b$ goes back to $q_0$. Then a third $b$ goes to $q_2$, a fourth $b$ goes to $q_0$, a fifth $b$ goes to $q_2$, a sixth $b$ goes to $q_0$, and so on. In this way, we design it for $b$.
+
+Now, what about strings like $AABB$, $BAAB$, $BBAA$, $ABBA$, $BABA$, and many other such strings? To complete this DFA, we need to define transitions for every state for both $a$ and $b$.
+
+Let's look at state $q_1$:
+- If $q_1$ gets an $a$, it goes to $q_0$ (making two $a$'s, which is even).
+- What if $q_1$ gets a $b$? Can we put a self-loop on $q_1$ for $b$? If we put a self-loop on $q_1$ for $b$, then a string like $ABB$ would be accepted (since $A$ takes us to $q_1$, and then $BB$ loops on $q_1$). Does $ABB$ have an even number of $a$'s and $b$'s? No, it has one $a$ (odd) and two $b$'s (even). So, putting a self-loop on $q_1$ for $b$ is incorrect because it would accept strings with an odd number of $a$'s.
+
+Instead, from $q_1$, on receiving a $b$, we should transition to a new state. Let's call this state $q_3$. 
+- At $q_3$, we receive a mix of $a$ and $b$ (for example, after the first $a$, we get a $b$, or after the first $b$, we get an $a$).
+- Let's trace carefully: If we get a first $a$ (going to $q_1$) followed by a first $b$ (going to $q_3$), we are at $q_3$. If we then get a second $b$, where should it go? A second $b$ after an $a$ and a first $b$ (like $ABB$) is still not even-$a$, even-$b$. But what about a string like $AABB$? 
+  - Let's trace $A$: $q_0 \to q_1$ (one $a$).
+  - Second $A$: $q_1 \to q_0$ (two $a$'s, even).
+  - First $B$: from $q_0$, on $B$, it goes to $q_2$.
+  - Second $B$: from $q_2$, on $B$, it goes back to $q_0$ (two $b$'s, even). 
+  So $AABB$ is accepted at $q_0$.
+
+What about $BBAA$? 
+- First $B$: $q_0 \to q_2$.
+- Second $B$: $q_2 \to q_0$.
+- First $A$: $q_0 \to q_1$.
+- Second $A$: $q_1 \to q_0$. 
+So $BBAA$ is also accepted at $q_0$.
+
+What about strings like $ABBA$? 
+- First $A$: $q_0 \to q_1$.
+- First $B$: from $q_1$, on $B$, it goes to $q_3$.
+- Second $B$: from $q_3$, on $B$, where should it go? It should go back to $q_1$, because we have had one $a$ (odd) and two $b$'s (even). Then the final $A$ takes us from $q_1$ back to $q_0$ (two $a$'s, two $b$'s, which is even-even!). Yes! So from $q_3$, on input $b$, it goes back to $q_1$.
+
+Similarly, let's complete all transitions for $q_2$ and $q_3$:
+- From state $q_2$ (where we have received an odd number of $b$'s):
+  - On $b$, it goes to $q_0$ (even $b$'s).
+  - On $a$, it goes to state $q_3$.
+- From state $q_3$:
+  - On $a$, it goes to $q_2$.
+  - On $b$, it goes to $q_1$.
+
+Let's double-check with an example, say $ABBA$:
+- $A$: $q_0 \to q_1$
+- $B$: $q_1 \to q_3$
+- $B$: $q_3 \to q_1$
+- $A$: $q_1 \to q_0$
+Since $q_0$ is the final state, $ABBA$ is accepted.
+
+What about $AABB$?
+- $A$: $q_0 \to q_1$
+- $A$: $q_1 \to q_0$
+- $B$: $q_0 \to q_2$
+- $B$: $q_2 \to q_0$
+Accepted at $q_0$.
+
+Thus, all states ($q_0, q_1, q_2, q_3$) have proper transitions for both $a$ and $b$, and the DFA is complete.
+
+---
+
+### Alternative Final States for Other Conditions:
+Depending on which condition you want to test, you can change which state is the final state:
+
+1. **Even number of $a$'s and even number of $b$'s:**
+   - Make **$q_0$** the final state.
+
+2. **Odd number of $a$'s and even number of $b$'s:**
+   - Make **$q_1$** the final state.
+
+3. **Even number of $a$'s and odd number of $b$'s:**
+   - Make **$q_2$** the final state.
+   - Let's test this with $ABB$: 
+     - $A$: $q_0 \to q_1$
+     - $B$: $q_1 \to q_3$
+     - $B$: $q_3 \to q_1$ — wait, let's trace $ABB$:
+     - $A$: $q_0 \to q_1$ (one $a$, odd)
+     - $B$: $q_1 \to q_3$ (one $b$)
+     - $B$: $q_3 \to q_1$ — wait, let's trace properly: $A$ ($q_0 \to q_1$), then $B$ ($q_1 \to q_3$), then $B$ ($q_3 \to q_1$). That gives one $a$ and two $b$'s, which lands on $q_1$ (odd $a$, even $b$). If $q_2$ is final, it accepts even $a$ and odd $b$. Let's test $AAB$:
+     - $A$: $q_0 \to q_1$
+     - $A$: $q_1 \to q_0$ (two $a$'s, even)
+     - $B$: $q_0 \to q_2$ (one $b$, odd)
+     - Since it lands on $q_2$, $AAB$ is accepted (even $a$, odd $b$).
+
+4. **Odd number of $a$'s and odd number of $b$'s:**
+   - Make **$q_3$** the final state.
+   - Let's test with $ABB$:
+     - $A$: $q_0 \to q_1$ (one $a$, odd)
+     - $B$: $q_1 \to q_3$ (first $b$, odd)
+     - $B$: $q_3 \to q_1$ — wait, if we have $AB$:
+     - $A$: $q_0 \to q_1$
+     - $B$: $q_1 \to q_3$ (one $a$ (odd), one $b$ (odd)). It lands on $q_3$, so $AB$ is accepted!
+     - What about $ABBB$?
+     - $A$: $q_0 \to q_1$
+     - $B$: $q_1 \to q_3$ (one $a$, one $b$)
+     - $B$: $q_3 \to q_1$ (one $a$, two $b$'s)
+     - $B$: $q_1 \to q_3$ (one $a$, three $b$'s). Lands on $q_3$ (odd $a$, odd $b$), so $ABBB$ is accepted.
+
+So, depending on the question asked in your exam, you can set the corresponding state as the final state. 
+
+Thank you!

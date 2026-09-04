@@ -1,0 +1,73 @@
+Hello friends, welcome to Gate Smashers. In today's video, we're going to discuss Strict 2PL and Rigorous 2PL. Both of these were discussed in the context of basic 2PL in the last video; this is its further extension. 
+
+In basic 2-phase locking, the problems that we discussed are the problem of irrecoverability, cascading rollback problem, deadlock problem, and starvation problem. So, for removing the irrecoverability and cascading rollback problem inside basic 2PL, we did some variation and advancement and named it Strict 2PL and Rigorous 2PL. 
+
+Strict 2PL and Rigorous 2PL are extensions of basic 2PL, meaning they follow the property of basic 2PL with the same growing phase and shrinking phase. But apart from that, they have an extra restriction. Because of that extra restriction, the irrecoverability problem can be removed, along with the cascading rollback problem. Let's see an example of how this works.
+
+### Strict 2PL
+
+If we start with Strict 2PL, it should satisfy basic 2PL, as I said, and all exclusive locks should be held until commit or abort. This means all the exclusive locks that you take have to be held till the transaction gets committed or gets aborted. If it gets committed, after that it will be automatically released, and if it gets aborted, then obviously it will be released. 
+
+Let's understand this with an example. There are two transactions, T1 and T2. T1 wants to perform Read(A) and Write(A). So for Read(A) and Write(A), which lock will it take? An exclusive lock on A, and thus we grant that because it is free. 
+
+Now, let's say T2 wants to perform Read(A). Which lock will it take? A shared lock on A. So we'll ask it to wait, as the exclusive lock is already given. When will it get the lock? When T1 unlocks the exclusive lock, or when the shrinking phase starts. 
+
+Now, let's suppose if we unlock it at this point: right after unlocking it, T2 will get the shared lock and it will read the value of A—which value is this? This is the value changed by T1. That change is read by T2, obviously. 
+
+Now, let's say the same thing happens with T3, and T3 also wants to perform Read on A and demands a shared lock on A. So obviously, if we're unlocking at this point, then T3 will also get a shared lock, because a shared lock can be granted multiple times. So both of these read the value that was changed by T1. And let's suppose if this transaction T1 failed in the future, then what will it do? Rollback. Automatically we have to rollback T2 and T3. This is called cascading rollback. 
+
+To stop this, in basic 2PL there was nothing. But Strict 2PL says: all exclusive locks must be held until commit. This means you release exclusive locks only when you commit, so obviously my problem will get removed. It is a very small point; if you can catch that point, you'll easily understand both locking protocols.
+
+Now, let's say instead of unlocking it here, I'll ask T1 to commit, and after that, the lock gets released. If T1 and T2 want to perform Read(A) and Write(A), an exclusive lock on A is taken. Let's say T2 wants to perform Read(A). Then what I'll say is that you'll get a shared lock only when T1 unlocks. T1 unlocks its exclusive lock when it gets committed. If, after getting committed, I'm doing unlock(A), and then T2 is getting a shared lock on A, then what is this Read(A) doing? This Read(A) is from the database. This is after committing and successfully updating the data. So this is a read from the database, not from T1's uncommitted changes. 
+
+So obviously, my cascading problem will be removed. And if we take T3 and T4, all will read from the database here. Your cascading rollback is removed. So you can say that it will always produce a cascadeless schedule.
+
+### Irrecoverability in Strict 2PL
+
+Next, if we talk about irrecoverability, this is also the same concept. Let's look at T1 and T2. T1 wants to perform Read(A) and Write(A) and demanded an exclusive lock on A. Now let's say T2 wants to perform Read(A) or Write(A), and after this, it wants to perform some operations. 
+
+When does T1 release its lock? Let's say T1 needed to commit here, but before committing, the lock got released. Just after unlocking, T2 got the shared lock. After getting the shared lock, T2 read the value that was changed by T1. T2, after that, by performing any operation, gets committed. Obviously it can. 
+
+Yes, here T1 needed to commit. Let's say 1 millisecond before commit—1 millisecond before commit, if this transaction T1 failed, so what will it do? Rollback. Can we roll back T2? No, we can't. Why? Because T2 is already committed. And what do we call this? Irrecoverable. 
+
+So the same point we are saying here also: you don't unlock the exclusive lock early. It will get unlocked after getting committed. If this unlocks after getting committed, then this exclusive lock will neither get shared nor exclusive till when? Till T1 gets committed. And if, after commit, T2 is getting shared, or after commit another transaction is getting exclusive, then there is no problem, because then this problem of inconsistency won't be created, and this will always form a recoverable schedule. 
+
+So till when do you have to hold exclusive locks? Till it gets committed. Just after commit, you have to unlock the exclusive lock. What will happen because of this? No other transaction can read and write. If they are not able to read and write on the same data—keep the thing in mind that we are talking about the same data, if I'm talking about A, if it is working on B or C then there is no issue, but if we talk about the same variable, then it can neither read nor write. 
+
+What will it produce? A strict recoverable schedule. Strict recoverable schedules are always recoverable as well as cascadeless. So both things we have produced: first, it will be cascadeless, and second, it will be strict recoverable. So here we are getting both advantages, which were not there in basic 2PL.
+
+### Rigorous 2PL
+
+If we talk about Rigorous 2PL, that is also almost the same, but one point is added to this: all shared and exclusive locks—it has become more restricted. This is saying that shared and exclusive locks both will not be released until commit. 
+
+In Strict 2PL, it was still the case that if I have a shared lock, I can release the shared lock early. But Rigorous 2PL is saying that you won't release shared locks as well as exclusive locks until commit. In this, there is no extra advantage; the advantages are the same in both. But you can say that Rigorous 2PL is more restricted. 
+
+Means, if you get a question like this in theory, Rigorous is more restricted, and if we talk about Strict, Strict is above that. And if we talk about basic 2PL, basic 2PL is above all that. You can remember it in this way, because the one with more restriction will be on the inner side. 
+
+So this was the basic concept of Strict 2PL and Rigorous 2PL, so these advantages you have to remember.
+
+### Deadlock and Starvation in Strict and Rigorous 2PL
+
+The problems of deadlock and starvation in basic 2PL are as they are in these protocols, because they are not working on anything related to deadlocks. 
+
+If we talk about this and take the same example. Let's say T1 and T2, and the same example that I've already told you twice. Let's say T1 and T2 want to perform operations. T1 demands an exclusive lock on A; we granted it as it was free. T1 demands an exclusive lock on B; we granted it. Remember this: why are we giving an exclusive lock on B? Because the exclusive lock on A needed to be released after getting committed, but B is vacant, so we will give it for sure. 
+
+Now, T2 demands an exclusive lock on B that we will not grant, and ask it to wait. T1 is asking for an exclusive lock on A, and we'll ask it to wait—same concept, meaning it's not talking about anything related to deadlocks. And both of these are demanding each other's resources; that is called a deadlock stage. 
+
+And that same example here in starvation: if we talk about T1, T2, and T3, and let's say T2 demanded a shared lock on A, we granted it. T1 demanded an exclusive lock on A; obviously, we'll ask it to wait till T2 doesn't release the shared lock. So let's say after the committing of T2 only, T1 will get the shared lock. But just before that, T3 also demanded a shared lock on A. So what will it do? T1 will keep on waiting. T1 demands an exclusive lock on A; it will get the exclusive lock very late. This is finite waiting and this is infinite waiting, and that is called starvation. 
+
+So deadlock is still there, and starvation is still there. But cascadeless and strict recoverable schedules we have achieved with the help of Strict 2PL and Rigorous 2PL.
+
+### Conservative 2PL
+
+So at last, I'll tell you one more point. There is one more protocol: Conservative 2PL. 
+
+Conservative 2PL is not practically possible. Conservative 2PL says that whenever any transaction starts, before starting only, it will take all the locks. This means on A, B, C, or on whatever it wants to take, it will take them before it even starts. So what will happen because of this? T2 won't get any lock, and T3 also won't get any lock. 
+
+So obviously, the deadlock problem will be resolved here, because T1 will take locks on A and B from the start only, from a conservative point of view. It will take locks on A and B. T2 and T3 will keep waiting, meaning giving all resources to T1, so T2 won't get any resource. So this is the basic story of Conservative 2PL. 
+
+But how can you know this prior? If we use any prediction model—because nowadays prediction is getting very famous, as there are predictions and all—you can predict what all locks it requires, then it could be possible. But if we talk about basic DBMS, there is no such thing in that. But yes, if it is asked in any theory, Conservative 2PL removes the problem of deadlocks also, because it says to give all resources to one and zero to another, so the first one doesn't wait for another one, and we'll keep the second one empty. That is called Conservative 2PL. 
+
+Mainly, remember these two points: Strict 2PL and Rigorous 2PL, and their advantages and disadvantages—the two which we've discussed—and the relation between them. 
+
+Thank you.

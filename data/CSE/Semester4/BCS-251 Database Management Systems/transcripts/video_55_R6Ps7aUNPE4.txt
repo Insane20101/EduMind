@@ -1,0 +1,47 @@
+Dear student, welcome to Gate Smashers. In this video, I am going to explain the create table command in SQL, and we will also implement this using Oracle Live. Watch this video till the end so that both your theoretical aspects as well as the practical implementation are covered. 
+
+Please like the video and subscribe to the channel if you haven't yet. If you have already done so, you can subscribe from other devices or share it with your friends and get maximum subscribers for the channel.
+
+So let's start. First, if we talk about the create table command, it is a DDL command. In DDL commands, what is the first command that you have? Create table. Why? Because whenever we talk about RDBMS—about relational database management systems—then here, what is meant by relation? Actually, a table; this relation means a table. And second, what is it? Structured data. What do we do in case of structured data? First, we make a schema; first, we make a structure, then we store the data. But nowadays, if you have heard the name, there are NoSQL databases like MongoDB. What is in this? Structureless, meaning schema-less; in this, you can store data directly. It is document-oriented. Apart from this, if we talk, there are column-oriented and graph-oriented databases, which are a little more advanced topics. But in SQL, we first create a structure, and in that structure, what do we have? A table. Look, in DDL commands, the first thing that comes to us is `create table` followed by the table name.
+
+I have written the syntax here:
+`create table table_name`
+After giving the table name, here we mention the columns. We start with round braces:
+`column 1 name data type`,
+`column 2 name data type`,
+`column 3 name data type`,
+brackets close and semicolon.
+
+Let me tell you a small point: the syntax I am following is from Oracle's point of view. What happens many times is that between Oracle, MySQL, SQL Server, and IBM DB2, there is a minor difference. The logic is the same since it is SQL, but a little difference in syntax may be there. That's why I am following Oracle, and since you will mainly follow this, you can focus on it. 
+
+Look, you have a small point here at last: remember that for the data type which we write in the last, a comma does not come with that. The comma comes before. In those four lines, a comma does not come with the last column because it is necessary to close the braces and write a semicolon, as the semicolon is a part of syntax, so do not write it in the last. 
+
+If you are mentioning the name of a table with multiple words, let's say if you have to mention something like "student detail", if you write it in this way:
+`create table student details`
+What will it give? It will give an error. Either write it as a combined single word, or you can use an underscore. This is part of syntax. When you execute it, then you have more clarity. But still, let me tell you, especially for beginners who are studying SQL from scratch—whether they are school, college, or university students—these small points will help them.
+
+After that, when the table is created, then we can see the structure. We can see the structure, which is called a schema. To see that view, we use `desc`, which stands for describe:
+`desc table_name`
+So if you give the table name, then what will it give? Which attributes do you have, what is the data type of the attribute, what is the size given, and if you have applied a constraint like a primary key or foreign key, everything is shown in the schema. When you practically see it at the end of this video, you will have a better idea. 
+
+For example, I have written here:
+`create table table_name`
+`id is int data type`
+`name varchar2` (in Oracle we use `varchar2`; `varchar` can also be used, but they have reserved `varchar` and we use `varchar2`, although `varchar` will also do, but Oracle will automatically convert it)
+`salary number`
+I have not put a semicolon or a comma here; simply, I closed the braces here and then put a semicolon, followed by `describe table_name`.
+
+Now we will see the execution part. Let's see the execution part. First of all, as I have told you before, I am using Oracle Live here. You simply type "Oracle Live" on Google, and you will have this link open. What do you have to do there simply? You have to log in there. After logging in, you will get a confirmation mail, then your signup will be completed. After that, simply in the worksheet, just start coding there. Otherwise, if you have Oracle 10g, 11g, 12c, or Oracle 19c, you can install that also. Otherwise, if you are a beginner, you simply start with Oracle Live, that will be a good option.
+
+So, `create table emp` (I have given the table name as employee, let's zoom it a bit). 
+`create table emp`
+Then the same brackets start:
+`id int`
+`name varchar2(10)`
+What is `varchar2`? It is a variable kind of data type, and `int` is a fixed data type. If `int` is of 2 bytes, the whole 2 bytes of space is acquired. But `varchar2` is variable; whatever space it has been given, let's say 10 is given, we have to acquire only that much space as needed. So in terms of space, it is more efficient. 
+I put the third column, `salary`, and its data type I gave as `number`. `number` is also what? Variable. If we talk about character types like `char`, they are fixed. 
+We put a semicolon here in the last, select all of them, and run it from here. As we run it, the output below comes: "table created".
+
+Now, what I was showing you: let's say with employee I have to write in this way, `employee details`. What happens? It will give you an error here. What is the reason? You have given a space here. So if you give a space, an error will come. It is better you use an underscore or write it along. So `employee_detail`, this table is also created. 
+
+Let's say we check it: `describe table_name`. I gave the table name. First, we made the employee table `emp`, so we will see that first. Your table is shown like this. This schema—this is called a schema. The table name is `emp`, with columns `id`, `name`, and `salary`. Null means have we put some constraint in it? Null constraint, Not Null constraint, primary key? Right now, the null constraint has nothing to do with the type, which is `number`, `varchar2`, and `number`. And for `id`, if it comes to your mind that we have used `int`, what does it use by default? It uses the `number` data type. For `varchar2` and `salary`, we had given 10, so it will be `10,0`. What is the meaning of this `10,0`? Scale and Precision values. Scale value is ten and Precision value—both we will show here. By default, you can represent the values in this way and create tables.

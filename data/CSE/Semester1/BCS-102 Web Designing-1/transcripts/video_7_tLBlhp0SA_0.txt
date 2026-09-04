@@ -1,0 +1,69 @@
+In this video, we will learn about forms and the input tag within a form. Using a form is a very important element of some websites because it allows you to submit data from the client to the server. These forms can be found on contact pages, Google Forms, or inquiry forms. Details such as the date and time for flight or railway ticket reservations are also submitted through HTML forms.
+
+In the last video, very few people liked it. I request you to like this video with high energy so that we can maintain high energy throughout the course. Now, let's go to the computer screen where we will explore forms, input tags, and some best practices. Let's roll the intro.
+
+I have come to my computer screen and will create a folder named "video 6" since this is the sixth video. I will do this by using Shift + Right Click and selecting "Open with Code." Here, I will create an index.html file. By putting an exclamation mark in it, I will wrap the view word. I will turn on the screen cast mode, and you will see that I will write "Forms: Let's Learn It." I have set the title of this forms page, and by setting the title, it will be visible on our page.
+
+I want to highlight a very important setting for the live preview. Many people have pointed out in the comments that I have to click so many times. Can I do something about it? Yes, you can! Click on the gear icon below, select "Settings," and after clicking on "Settings," simply write "live preview." We can set it up so that whenever we click, it will open in an external browser. Now, I will close everything. As soon as I click here, it will open in the external browser. 
+
+I come to my browser, and the playlist of the Sigma Web Development course is being accessed by clicking here on the star and bookmarking it. I want to tell you that as soon as we click here, it opens. If you want this, then do this. However, sometimes you may prefer a side-by-side view, especially when working on a design using HTML and CSS. This extension was made to allow you to see the preview on the side.
+
+Now, we will learn about forms. What is a form? The name "form" refers to various applications, such as a railway form that we fill out for reservations. We also fill out forms for exams like IIT-JEE or NEET so that our data can reach those who need it. The HTML form tag is used for this purpose. As soon as you write "form" and hit enter, the first question will ask you what the action of your form is: GET or POST.
+
+Let me quickly explain the difference between GET and POST requests. GET requests are simple requests, while POST requests are used when we need to send a lot of data. In most cases, when we submit a form, we will use the POST request. The GET request is a simple request to tell the server something, but if you don't understand this now, that's fine. We will cover this in detail later. 
+
+I wrote "form action = post." Now, I can show some input tags. Input tags define the elements that will appear in your form. You can include fields for a date, name, phone number, age, and other details. The input tag is placed inside the form, and there is also a label tag used to label that input. 
+
+The simplest input tag is "type = text." I will add the input type as "text" here. If I zoom out, you will see the input type as "text," with the name "username" and a placeholder that says "Enter your username." This placeholder will prompt the user to enter their username.
+
+I will write an H1 tag stating, "Assume Form to Apply for TA for Sigma Web Dev Course." We are hiring teaching assistants for the Sigma web development course. If you have not accessed the playlist, please do so. 
+
+I will show you one more thing. The subtitles are quite amusing. For example, if you write "Sigma batch OP" and "give your village land to me," someone who doesn't understand Hindi might be confused. Anyway, I have added the H1 tag as our main heading, and the input tag is labeled with "Enter your username." 
+
+Now, I will write the label for the input field. The label's "for" attribute will be equal to the input's ID, which I will set as "username." The ID uniquely identifies an element, similar to how your Aadhar number is unique to you. 
+
+I wrote the label for "username" and added the input. You can see that the label now displays "Enter your username," prompting the user to enter their username. Additionally, I can ask for the user's gender. I will create a radio button for male and female options. 
+
+Sometimes, we wrap elements in a div. A div is a block element. I have not yet explained inline and block elements, but I will cover that in future videos. For now, understand that I am using a div to create space. 
+
+As soon as I put it in a div, it will appear in a new space. While there is also a BR tag that causes a line break, I do not prefer using the BR tag. You will learn why we avoid bloating our HTML with BR tags in upcoming videos. 
+
+Now, you can see that when I click on "female," the radio button is selected. If I click on "male," it is selected. This behavior occurs because the labels have the same name attribute, which is set to "gender." When both radio buttons share the same name, only one can be selected at a time.
+
+If I mess up the ID in the label and the input tag, you will see that clicking on the second "female" option does not select it. To select it, I would need to click directly on the input. Therefore, it is essential to ensure that the label's "for" attribute matches the input's ID.
+
+Next, I will show you the checkbox input type. If I add an input of type "checkbox," I will wrap it in a div. As soon as I format the document, the formatting and indentation will improve. 
+
+Now, I can add a label for the checkbox, such as "Subscribe to Newsletter." The difference between a radio button and a checkbox is that you can check multiple checkboxes independently. If you want to provide one of the options as male or female, you can select only one of those.
+
+Next, we have the textarea and select tag. The textarea input type is similar to text but has rows and columns attributes to define its size. I will add a placeholder that says "Enter your comment here." Ideally, we will keep it empty, but I will also add a label for it.
+
+The label for the textarea will be set to "comment," and I will ensure that the ID matches. If I write "Enter your comment here," it will prompt the user accordingly. 
+
+You may notice that the styling is not perfect yet. We will style it with CSS later. For now, I will avoid using the BR tag, as I do not recommend it. The BR tag is a line break tag, and while it may seem harmless, I advise against using it frequently.
+
+Now, I will demonstrate the select tag. When I add the select tag, I can provide options such as apple, banana, and cherry. The syntax for the select tag allows you to choose one of the options. 
+
+When we parse this form data, I will explain how to send it to the server in the JavaScript section. There are many aspects of forms that we will cover, so stay tuned for that. 
+
+This video covered the elements of forms, including the select tag. I also explained the action attribute, which specifies where to submit the form. The method can be either GET or POST. I will elaborate on the differences between these two methods in future videos.
+
+The GET request is a simple request, while the POST request is used for larger data submissions. We never send passwords via GET requests; we use POST requests for that purpose. The name attribute in the input tag helps the server identify which key-value pair corresponds to the input.
+
+The placeholder attribute indicates what should be written inside the input field. For example, "Enter your username" will disappear when the user starts typing. The required attribute ensures that the user must fill in the field before submitting the form.
+
+The autofocus attribute automatically focuses the cursor on the input field. I will show you how it works. If I add autofocus to the username input, it will automatically focus when the page loads.
+
+I hope you are understanding these concepts. Additionally, I encourage you to write "Sigma batch OP" in the comment section and please review this course. Many people still ask whether they should take this course or not. It is a free course, yet some people undervalue it simply because it is free.
+
+I would like to address those who have taken a paid course and are wondering what to do next. You should consider cutting your losses and joining the Sigma batch. The quality of this course speaks for itself, and I believe you will find great value in it. 
+
+I want to clarify that I was initially going to sell this course for 10,000 rupees. There is nothing wrong with selling a course; many people do it. However, if you have already purchased another course and still feel that Sigma is a superior option, then I encourage you to join. 
+
+Remember, once you establish your career, these financial decisions will seem insignificant. In the future, you may look back and acknowledge that you took a paid course, followed by a free course that ultimately helped you understand the material better. If you succeed in your career, these choices will not matter as much.
+
+Do what is right for you and make decisions based on your understanding of your rights and wrongs. I hope you are grasping these concepts. 
+
+Please like the video, access the playlist, subscribe to the channel, and comment "Sigma batch OP" along with the name of your village and town. 
+
+That's it for now, guys. Thank you so much for watching this video, and I will see you next time. Thanks for watching!

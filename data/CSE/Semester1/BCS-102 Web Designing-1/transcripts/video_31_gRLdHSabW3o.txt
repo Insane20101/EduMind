@@ -1,0 +1,83 @@
+In JavaScript, the concept of `async` and `await` is very important. If you see any big codebase, you will definitely see the implementation of `async` and `await`. In this video, we will explore why `async` and `await` are essential to learn and how they simplify working with promises. We will also discuss why we prefer `async` and `await` in our projects.
+
+Let's dive into the computer screen. I made a folder here, and I will quickly open it with code and create an `index.html`. 
+
+### Understanding Promises
+
+First, let's understand what a promise is. We have already discussed callbacks, where we pass a function into another function and call it from there. This is a callback. 
+
+A promise, on the other hand, is a promise of code execution. I will toggle word wrap and show you what a promise looks like. I will set up a script tag with `src` pointing to `script.js`. Suppose I have a function called `getData`, which will bring data from the server. However, we don't know how long it will take to retrieve this data. 
+
+For example, I might have a console log that says "loading modules." While my code is running from top to bottom, I need to load data and then process it. But I want to wait for the data to load before processing it. 
+
+To achieve this, we can use a promise. We can say `let data = getData()`. This function will return a promise, which is an object that will eventually contain the data once it is retrieved. The promise can either be fulfilled or rejected due to a network error.
+
+### Simulating a Promise
+
+To simulate a promise, I will return a new promise. I will use `setTimeout` to mimic a delay in data retrieval. For example, I will resolve the promise with a random value after 3 seconds. 
+
+If I run this code and log `data`, you will see that the promise is pending, and the data has not yet arrived. This demonstrates that the promise is still being processed. 
+
+The benefit of asynchronous JavaScript is that while the promise is pending, the code below it continues to run. If I set the timeout to 53 seconds, you will see that everything prints out, but the promise remains pending until it resolves.
+
+### Using `async` and `await`
+
+Now, I want to ensure that my code waits for the data to load before proceeding. One way to do this is to use `data.then()`, which allows us to run a function when the promise is resolved. However, this is a callback-based approach, which can lead to nested code.
+
+`async` and `await` were introduced to provide a cleaner way to handle asynchronous operations. By marking a function as `async`, we can use `await` to pause execution until the promise is resolved. 
+
+I will create an `async` function called `main` and wrap my code inside it. When I call this function, it will run in the background. If I use `await` before the promise, it will wait for the promise to resolve and return its value.
+
+To demonstrate this, I will format the document and run the `main` function. When I reload the page, you will see that the promise is pending, but the code execution continues. 
+
+### Fetch API Example
+
+Next, I will show you how to use the Fetch API, which is built into JavaScript. I will fetch data from a dummy API, JSON Placeholder, which is a free fake REST API. 
+
+The Fetch API returns a promise, and I will use `await` to wait for the response. After that, I will parse the response as JSON, which also returns a promise. 
+
+If I run this code, I will log the data to the console. You will see that the data arrives after a slight pause, demonstrating that the Fetch API works asynchronously. 
+
+If I slow down the network, you will see the data loading in real-time. The Fetch API allows us to make GET and POST requests, and you can refer to the MDN documentation for more details.
+
+### Conclusion
+
+In summary, `async` and `await` provide a special syntax for working with promises. Instead of using `.then()`, we can write cleaner code using `async` and `await`. 
+
+Whenever we create a promise, such as in the `getData` function, we are simulating data retrieval from a server. The promise will resolve after a specified time, allowing us to handle the data once it is available. 
+
+Understanding these concepts is crucial, as they form the foundation of working with asynchronous JavaScript. If you have not accessed the notes yet, please do so, as they provide a clearer explanation of these concepts. Remember, practice is key to mastering these topics.
+
+Overall, this `async` function is returning a promise. Now, what will happen here is that we want to wait for this promise, so we said `await getData()`. Here, you can see it is waiting. Data came from the network, data was parsed as JSON, and after that, it will be given to you. If you await it, you will get the data; if you don't await it, then you will be given a promise indicating that it is being executed. But we need the data, so we will await it. 
+
+We can run a lot of `getData()` calls. I could have taken the URL as an input in `getData()` and made multiple calls to `getData()`, and you would have seen the data one by one. Now, I would like to tell you one thing: if you want to use the POST request of the Fetch API, then you have this much information from MDN. I can shorten it a little more. 
+
+There is a function called `postData()` which uses Fetch. You can give all these additional arguments in Fetch. If you want a simple GET request in Fetch, which is default, then you leave it as it is. For example, if you had written `simple` in Fetch, it would give a GET request. However, if you want to specify a GET, POST, PUT, DELETE, or any other request, you can specify the method here. You can also specify the mode, cache, credentials, headers, and sometimes we have to give a token in the header. 
+
+You can set the redirect and referrer policy, and you can specify how you want to give the body. For example, if the content type is `application/json`, then you would use `JSON.stringify()` to convert your data to JSON format. According to the content type, you can prepare the body, and you will receive a template for your data. 
+
+To send a POST request, I usually search Google for examples and then remove all the comments. I mostly need the method set to POST and the content type. After removing unnecessary comments, I format the document to prepare my code. If I want to send a POST request, I can use the `postData()` function, which is a convenient function to send a POST request to `example.com`. 
+
+I want to show you an example of sending a POST request using JSON Placeholder. There are many examples available for sending a POST request. They provide a guide for usage examples, and you can use these examples to send a POST request to your server. 
+
+When working on production projects, you will need such examples, but for now, I will format the document and write `let x = await postData(...)` so that it looks good. If I reload the page, it shows an error: `x.json is not a function`. This error indicates that I did not await the fetch call. I need to await it because the JSON data is not available in the promise until it resolves. 
+
+Now that I have added `await`, it should work. You can perform PUT requests, DELETE requests, and all these requests. If you don't know what a POST request or a GET request is, let me explain. A GET request is a simple request that you type in the URL and enter. For example, if you are accessing a website like `google.com`, you are making a simple GET request. 
+
+A POST request helps you submit data, such as when you are submitting a form or sending complex data that includes sensitive information. This is because the logs of the URL come to your server, and you don't want to send sensitive information via a GET request. With a POST request, you can submit files to the server, which you cannot do with a GET request directly. 
+
+There are indirect ways to submit small files, but with a POST request, you can send as much data as possible and do it securely. Any complex request, such as login, is typically sent with a POST request. A PUT request is used to update data, while a DELETE request is used to delete something on the server. 
+
+There is also an OPTIONS request, which is used to fetch metadata, but I will not go into that for now. An OPTIONS request is sent to the server to find out what is permitted and what is not. It is a small request that is sent before performing any significant operation on the server to check if the requested action is available. 
+
+I will not go into much complication now. When we make projects, I will explain the actual usage in detail. Just reading theory may not be as enjoyable, but accessing the notes will help you understand better. Yes, I agree that the concept of promises can be difficult to grasp, but I have also learned it, and today I find these concepts easy. 
+
+A promise is simply a promise of code execution that is handled in the background. When it runs, you take the value from that object. It is a reference to the code that is running in the background, indicating whether it has run or not, and whether it was fulfilled. 
+
+You will get the value by executing the code; you won't get it without doing so. Write code as much as you can. If you ask me what will happen if you put `await`, just try it and see. I have written a lot of code; did you write it line by line? If not, then that is the biggest problem. 
+
+Any paid course, book, or teacher cannot explain what a promise is until you write the code yourself. The sooner you understand this, the better. In theory, everyone says to work hard, but the day you realize that you need to write code and practice, you will see improvement. 
+
+I hope I have explained promises well in this video, and you have understood it. I encourage you to write in the comment section that you have understood. The rest is about practice; clarity will come from practice, not just from watching the video, especially on mobile. 
+
+I will move forward without further lecturing. You can access the playlist; I am updating the code, and you can check it on GitHub. That's it for this video. Thank you so much for watching, and I will see you next time!

@@ -1,0 +1,41 @@
+Hello. These great switches make us forget that it's written to explain clearly about how to construct DFA or isolated methyl examples. This video makes it okay for competitive exams, even at college or university level exams. It is really beneficial. So guys, part of this is a vehicle. Like, right now, you should subscribe to get all the updates and please press the bell icon to get all the latest notifications. 
+
+Now, we need to start. Let's construct a DFA which accepts the language of all strings containing 'a'. Question is: during a key, "ending with 'a'", subsequently mapped to Padua DFA Ithaca is q4 money. Already, videos I have explained, or whose link is in my description box. But before you check that, here is a core introduction to DFA pathlogy. Iicky, actual mein DFA hai kya? Kyunki woh point main baar-baar explain karoonga. Toh, yeh hum seedhe start karte hain: containing 'a'. 
+
+Containing 'a' ka matlab aapke ek language ke andar saari strings aisi honi chahiye jiske andar 'a' aana chahiye. Aur pehle start kahan se karo? Minimum se minimum. Matlab kya? Minimum se minimum string honi chahiye, yaani ki shortest. Shortest string kaunsi hogi aapki? 'a'. 
+
+Iske alawa kya ho sakta hai? Let's suppose mere paas... dekho, 'a' given hai, beta. Toh 'a' aana... 'a' iske andar aa raha hai? Yes, containing 'a'. Matlab ki, 'a' bhi aa raha hai, 'b' bhi aa raha hai, 'aba' aa raha hai, 'aab' aa raha hai, 'aabaab' aa raha hai. Issi tarah se 'b' aa raha hai, 'ab' aa raha hai, ki... bahut saari yahan pe possibility hai. Toh yahan pe language ka naam kya hai? Infinite. Infinite ke baad dekho, isko kaise hum DFA banayein? What is a DFA? 
+
+Toh start karte hain. Starting state mere paas kya hai? 'Q naught'. 'Q naught' mein mere paas kya hai? Starting state hai. Isse mein apne DFA design karoonga. Toh beta, dekho sabse pehle minimum string ke liye design karo. Minimum se minimum kaunsi hogi aapki? 'a'. 
+
+Toh 'a' ke liye kya karoge? Let's suppose, 'Q naught' pe aap jab doge, toh aap 'Q1' pe jaoge. Toh 'Q1' ko aap kya karo? Final state bana do. Toh jaise hi single 'a' aaega, starting state se jaise hi 'a' aaega, aap yahan 'Q1' pe pahunch gaye aur yeh accept ho gaya, yaani ki finite automata kaam karna shuru kar dega. 
+
+Filling the blanks... filling the blanks ka matlab kya hai? Ki single 'a' ke liye to kar diya, lekin multiple 'a', 'b', 'aa', 'ab' inka sab ka jo hai woh combination hai, saari cheezein kaise complete karein? Uske liye aapko kya karna hai? DFA mein "filling the blanks." Filling the blanks ka matlab: 'Q naught' pe bacha kya? Yeh pehle chala gaya aur hamare paas jo summation mein alphabet hota hai, woh likh do. 
+
+Toh yahan pe alphabet hai 'a' aur 'b'. Kyunki question mein aapko alphabet 'a' aur 'b' hi diya hota hai. Toh yahan pe paper mein koi bhi symbol ho sakta hai, 'a' and 'b'. Toh 'a' ke liye to yeh chal pada, lekin 'Q naught' 'b' ke liye kahan jayega? Yeh 'b' ke liye kahan jana chahiye? Toh yeh bhi sochna hai. 
+
+Humaare paas yahan pe ek possibility hai: dusri possibility kya hai? Main autoky 'b' ke liye phir se idhar hi aa jaaoon, yeh bhi possibility hai. Teesri possibility kya hai? Main isko trap state mein bhej doon, ye bhi ho sakta hai. 
+
+Toh sabse pehle dekho, trap state mein kyun le ke jayein? Kyunki 'b' agar aap socho, toh kya hai? Mere question ke andar "containing 'a'" hai. Toh 'b' agar aage aa raha hai, toh lekin aur bhi toh 'b' aa sakta hai? 
+
+Toh trap state mein mat dalo, kyunki agar hum isko trap state mein daal denge, toh 'bb' agar aa gaya, toh kya hoga? Let's suppose, maine starting with 'a' ko explain kiya tha. Toh starting with 'a' mein agar aapki definition ko na laga ke 'b' aate hi chala jayega aur woh 'Q2' pe chala jayega, toh woh accept nahi karegi. 
+
+Nahi, toh accept hona chahiye. Toh is concept ko banane ke liye, obviously, mujhe trap state nahi banani hai. Is process ko aapko apply karna hai. 
+
+Dusri, agar main isko is tarah se bhi soch loon ki 'a' ke liye yahin aur 'b' ke liye yahin, aur agar 'b' ke baad bhi agar aana, 'b' aate hi 'b' toh accept single 'a' hi karna chahiye. Fill mein a question toh hoga. Toh containing 'a' toh 'a' yaani 'b' bhi aa sakta hai, toh teesri possibility kya hai? Kyunki self-loop mein toh do, isko self-loop idhar hi daal do. 
+
+Yahan pe, agar 'b' aa gaya, tab bhi yeh accept kar lega. Kyunki 'b', 'b', 'a' aa gaya, toh self-loop jo hai, 'a' accept kar lega. Yeh saari strings aapki accept ho jayengi. 
+
+Next, 'Q1' pe, 'Q1' 'a' aur 'b' ke liye kahan jayega? 'a' aur 'b' ke kahaan jayega? Isko aapko 'a' ke liye idhar, jaise yahin... 'a' ke liye trap state mein bhej sakte ho, ya agar main isko trap state mein bhejun, toh kya hoga? 
+
+Let's suppose, mera string thi, let's suppose, 'ba', toh next 'a' jab aap dekhoge, toh yeh trap state mein chala gaya, 'Q2' trap state mein chala gaya. 'ba' yaani 'b', 'a' aa raha hai, toh containing 'a' toh satisfy ho gaya na. Toh jaise hi 'ba' aa gaya, iska matlab kya hai? Yahan pe aapko trap state mein nahi jaana. Yahan pe aapko self-loop banana hai. Matlab aapki jitni marzi 'a' aaye, kam se kam ek 'a' toh maine bana diya, uske alawa jitni marzi 'a' aaye, ab woh accept kar lega, yaani woh bhi accept ho jayega. 
+
+Toh 'b' ke liye kya banega? 'b' trap state mein bhi ja sakta hai. 'b' trap state mein ja sakta hai? Agar 'b' ke liye trap state mein bhej doge, toh kya hoga? Let's suppose, mere paas string hai 'aab'. 'aab', toh yeh accept hona chahiye. 'aab' toh 'a', 'a', 'b', toh dekho, 'a', 'a', 'b', 'b', iska matlab kya hai? Let's suppose, yeh trap state 'Q2' pe, aur wahan pe, obviously trap state mein jaane ke baad 'b' pe kuch bhi do, 'ab', 'aab', toh yeh toh satisfy ho gaya. 
+
+Lekin, agar 'Q1' pe 'b' ka case aaye, to 'aba', andar 'a' aa raha hai, toh yeh accept hona chahiye, lekin yeh accept ho gayi. Toh is concept ko banane ke liye, 'b' ko trap state mein daalne ki zaroorat nahi hai. Aapko kya karna hai? 'b' ko ya toh idhar pahuncha do, ya 'b' ko is taraf se idhar pahuncha do. 
+
+Toh 'b' ko aap idhar pahuncha doge, toh kya hoga? Let's suppose, agar aapke paas 'a', 'a', 'b', 'b', 'a' bhi aa sakta hai, string mein aur bhi possibility banegi. Nahi, itna logic nahi lagana padega aur yeh is logic mein gana bas aapko do-char aur DFA banani aa gayi, toh aap easily is logic ko laga sakte ho. Jab aapka let's suppose, mere paas string hai 'aba', toh iske andar aa raha hai, all right? 
+
+Toh dekho, 'a', 'b', 'a', 'a', 'b', toh yeh toh accept nahi hua, 'b', 'a', 'b' yahan pe pahuncha diye, 'a', 'b', 'a', 'b', yahan pe pahuncha diya, toh kya hoga? 'Q0', 'Q1', 'Q2', toh yeh string toh meri accept nahi hui. Lekin yeh accept hona chahiye, toh isko accept banane ke liye aapko kya karna padega? 
+
+Idhar banana, 'Q2' pe, ya 'b' ke liye self-loop daal do bottom mein. Jitni marzi 'a' aaye, jitni marzi 'b' aaye, yeh simple sa DFA ban gaya, which is containing 'a'. Toh is tarah se aapka logic jo hai

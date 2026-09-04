@@ -1,0 +1,97 @@
+**Introduction to DC Generators**
+
+Hello everyone, welcome to the Kidney Class 10th Science and Watching Series on Basic Electrical Engineering. Today’s topic is the DC generator, specifically focusing on the series type. In previous sessions, we discussed DC motors in detail, and today we will cover the characteristics, working, and applications of DC generators.
+
+**Characteristics and Working of DC Generators**
+
+A DC generator operates on the principle of electromagnetic induction. The key component is the field winding, which creates a magnetic field. In a series generator, the field winding is connected in series with the armature winding. This configuration allows the generator to produce a higher voltage as the load increases.
+
+The generated voltage is directly related to the current flowing through the field winding. As the load increases, the current increases, which in turn increases the magnetic field strength, resulting in a higher output voltage. We will explore the relationship between the generated voltage and the terminal voltage, often represented in a graphical form.
+
+**Applications of DC Generators**
+
+DC generators are widely used in applications requiring stable voltage and current, particularly in battery charging and electroplating processes. They are also used in various industrial applications where a reliable source of direct current is needed.
+
+**Understanding the Series Connection**
+
+In a series generator, the field winding is connected directly to the armature. This means that the same current flows through both the field and armature windings. The configuration is crucial because it allows the generator to respond effectively to changes in load conditions.
+
+When discussing the characteristics of a series DC generator, it is essential to understand the internal resistance and how it affects the performance. The internal resistance of the generator can lead to voltage drops, which must be accounted for when calculating the output voltage.
+
+**Voltage and Current Relations**
+
+The relationship between the generated voltage and the terminal voltage can be expressed mathematically. The total voltage output can be affected by the internal resistance of the generator. When the load is connected, some voltage is dropped across the internal resistance, which must be considered when determining the effective voltage available to the load.
+
+**Conclusion**
+
+In summary, the series DC generator is an essential device in electrical engineering, providing a reliable source of direct current. Understanding its characteristics, working principles, and applications is crucial for anyone studying electrical engineering. As we move forward, we will delve deeper into the mathematical equations governing these generators and their practical implications in real-world applications. 
+
+Stay connected for more insights and discussions on this topic.
+
+### Current Political Situation
+
+चैप्टर में लेफ्ट करंट पॉलीटिकल सिचुएशन पर चर्चा की जाएगी। यदि आप इस पॉइंट पर ध्यान नहीं देंगे, तो आपको यह समझने में कठिनाई हो सकती है। 
+
+### N2 Payment and RPM Value
+
+हमारी मीटिंग में N2 पेमेंट को कम कर दिया गया है। पहले यह बड़ा था, लेकिन अब यह 100 RPM है। इसकी वैल्यू अब पहले से कम हो गई है। स्पीड कम होने के कारण, यदि आप ऊपर जाते हैं, तो रिड्यूस होने पर इन्वेस्टिगेटेड बिल कम होने लगेंगे। यह बहुत महत्वपूर्ण है। 
+
+### Resistance Values
+
+यहां पर बी, सी, डी और ए, बी, सी, डी की रजिस्टेंस की वैल्यू सिस्टम पर होनी चाहिए। यदि आप सब्सक्राइब नहीं करते हैं, तो आपको वैल्यू में कमी देखने को मिलेगी। 
+
+### VoLTE Support
+
+यदि आप करंट को बढ़ाते हैं, तो VoLTE सपोर्ट होना शुरू हो जाएगा। इसके बाद, कुछ वैल्यू डिसऑनर भी हो सकती है। हम इसे आगे चलकर दूसरे गांव के अंदर पढ़ेंगे। 
+
+### Internal vs External Storage
+
+अब हम इंटरनल स्टोरेज के बारे में बात करते हैं। यह इजी है और हमारे बीच में होता है। इंटरनल और एक्सटर्नल के बीच का जो क्रस्ट है, वह राइट साइड में देखने को मिलेगा। 
+
+### Speed and Support
+
+कोट 10 के लिए सर्टेन स्पीड सपोर्ट कर लेंगे। अगर एसिड और मैग्नीशियम आपको इस नेट तक पहुंचा देते हैं, तो रिसीवर को नाइंथ वैल्यू मिलेगी। 
+
+### Graphical Representation
+
+यहां पर मैंने एक ग्राफिकल रिप्रजेंटेशन किया है। यह स्ट्रैट लाइन को दर्शाता है। 
+
+### Internal Medicine
+
+इसी बीच, हम इंटरनल मेडिसिन के बारे में बात कर रहे हैं। वजीर वर्सेस IL&FS मेघनाद को समझने के लिए आपको क्वेश्चन की जरूरत है। 
+
+### System Show
+
+सिस्टम शो से बाहर निकलने पर, हमें ग्राफ के फॉर्म में समस्या देखने को मिलेगी। 
+
+### Magnetism and Action
+
+यहां पर मैग्नेटिज्म का एक्शन भी महत्वपूर्ण है। यदि लोड करें की वैल्यू को बढ़ाना शुरू कर दें, तो आर्मेचर रिएक्शन भी होगा। 
+
+### Relationship Between Current and Voltage
+
+हम जानते हैं कि I = IL + IS एक रिलेशनशिप है। लोड करें की वैल्यू बढ़ने पर आर्मेचर करंट भी बढ़ने लगेगा। 
+
+### Potential and Voltage Drops
+
+यह ध्यान रखना जरूरी है कि यदि मशीन बिना लाइट के काम कर रही है, तो पोटेंशियल की वैल्यू मीडियम पर बनी रहेगी। 
+
+### External Circuit
+
+अब हम एक्सटर्नल सर्किट के बारे में बात करते हैं। यहां पर एक्शन पोटेंशियल और चैनल करंट IL-10 टर्मिनल का बर्थडे होता है। 
+
+### Voltage Drops
+
+जैसे-जैसे वोल्टेज ड्रॉप होता है, हमें यह समझना होगा कि सिस्टम रिएक्शन के कारण क्या हो रहा है। 
+
+### Conclusion
+
+आखिर में, यह महत्वपूर्ण है कि आप समझें कि लोड होने पर करंट और वोल्टेज के बीच क्या संबंध है। 
+
+### Call to Action
+
+यदि आपको यह जानकारी उपयोगी लगी, तो कृपया हमारे चैनल को सब्सक्राइब करें। 
+
+### Next Steps
+
+हम अगले हफ्ते महत्वपूर्ण डेफिनिशन और जनरेटर के बारे में चर्चा करेंगे। धन्यवाद!

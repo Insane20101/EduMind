@@ -1,0 +1,116 @@
+Hello, friends! Welcome to GATE Academy. I'm Ranjan, and today we've reached the last topic of Module 1. We are going to talk about the Maximum Power Transfer Theorem today. This is the very last topic, the final topic, within the first module of Network Theory, but it's a very important topic for any university student.
+
+Along with this, I would also recommend that students who haven't cleared Thevenin's Theorem before, or who don't understand Thevenin's Theorem well, should watch our previous videos. This is because to study the Maximum Power Transfer Theorem, you should know the basics of Thevenin's Theorem and be able to perform its basic calculations. So, let's start the Maximum Power Transfer Theorem today.
+
+We'll discuss why this theorem is special, what's unique about it, and how it's different from previous theorems. I'll also discuss what the basic condition of the Maximum Power Transfer Theorem is. I've seen this in many universities: a particular part of basic university questions is often, "What is the basic condition of the Maximum Power Transfer Theorem?" This condition is something for which we need to see a short derivation. Throughout this first chapter, throughout this first module, this is the only topic where we need to do a derivation part. Along with that, we'll move on to where I'll tell you the steps for solving a numerical, and after that, we'll apply its full approach to a question. We're going to cover all these things in this video today.
+
+So, let's first start with the statement of the Maximum Power Transfer Theorem. First, I'll give you the statement, and then I'll explain its meaning, what the statement is trying to convey. So, let's look at the statement of the Maximum Power Transfer Theorem.
+
+I have written the statement of the Maximum Power Transfer Theorem here. Let's read it quickly and understand what we need to do within the Maximum Power Transfer Theorem.
+
+**Statement:** According to the Maximum Power Transfer Theorem, the condition for maximum power flow through a load resistance can be achieved when the load resistance equals the Thevenin equivalent resistance (R_TH).
+
+What does this Maximum Power Transfer Theorem state? The basic use of the Maximum Power Transfer Theorem is when you need to calculate the highest amount of power that can be dissipated across a load resistance. To do this, the value of the given load resistance alone is not sufficient for maximum power to be dissipated. There is a requirement that you can vary, alter, and change the value of that load resistance. How much should it be changed? This is the condition for Maximum Power Transfer: the maximum value of transferred power can be achieved in one particular condition. That condition is when the load resistance equals the Thevenin equivalent resistance. In that particular condition, the power flowing through the resistance will be maximum.
+
+So, we need to find and calculate this condition, and how this condition came about is the calculation and operation that I will tell you. Let's first look at its derivation. After the derivation, once we get the condition for maximum power transfer, we will calculate how much maximum power will be transferred. Then, after that, I will tell you the steps for solving, how to apply that theorem in any given electrical circuit. So, let's see how the derivation of the Maximum Power Transfer Theorem begins, how we need to identify its condition, and how we need to find the peak amount of power that will flow through it. Let's start with its circuit.
+
+Let's look at the condition for Maximum Power Transfer, which we read in the statement: R_L should be equal to R_TH. How is this condition actually calculated? How do we know that power will flow under such a condition? For this, the derivation will start with Thevenin's Theorem, because we are going to replace the load resistance with a Thevenin equivalent resistance. Therefore, for this theorem, it is required that first, you transform any given electrical network into a Thevenin equivalent electrical network. So, up to this transformation, all the steps that were there in Thevenin's Theorem, all those steps, you have to apply them to the Thevenin equivalent network. When your circuit is transformed into this form, changed into this Thevenin equivalent, the derivation of the Maximum Power Transfer Theorem begins from here.
+
+Let's look at the first step. The power on the load resistance R_L can be given as Power = I_L^2 * R_L. We are showing the power formula in the form of I_L^2 * R_L. This is the network. Since I am calculating the power across the load resistance, it is important that the resistance is the load resistance R_L, and the current flowing through it is I_L. So, I can express its power in the form of I_L^2 * R_L.
+
+According to Thevenin's Theorem, you might have noticed one thing here: I have kept R_L as a variable. Why is it kept as a variable? Because if I keep it constant, it's not necessary that maximum power will flow at that value. But if I keep varying it, if I keep varying it until the condition where I get maximum power, that is, R_L should be equal to R_TH, if I vary it until it becomes equal to R_TH, then I will get maximum power in it. So, for this, I have kept it as a variable. And with Thevenin's Theorem, it will be clear to you if you have watched our previous videos, you would have seen an identity according to Thevenin's Theorem where we write I_L = V_TH / (R_TH + R_L).
+
+So, this is our first equation. We are going to substitute the same value of I_L, and the power will become:
+P = [V_TH / (R_TH + R_L)]^2 * R_L
+
+Now, the requirement is that we need the value of R_L. So, the first thing we do is differentiate the entire equation with respect to R_L and equate it to zero.
+
+Differentiating the above equation with respect to R_L and equating it to zero:
+dP/dR_L = V_TH^2 * [ (R_TH + R_L)^2 - 2 * R_L * (R_TH + R_L) ] / (R_TH + R_L)^4 = 0
+
+We equated it to zero. We differentiated it in the form of P/Q. After differentiating, these values were obtained. You don't have to do anything, just expand it. Expand it in the form of (a+b)^2. We sent V_TH^2 to the other side, it also became zero. Internally, the value we got in the denominator, we sent that too, so this whole section became zero. What did you have left inside? You got the value:
+R_TH^2 - R_L^2 = 0
+or
+R_L = R_TH
+
+So, this is the required condition for maximum power flow. If you make the load resistance of the given circuit equal to the Thevenin equivalent resistance, then in that condition, a peak amount of power will flow.
+
+Now, the remaining question is, how much is that amount of power? How much power will flow? To calculate that amount of power, you will have to substitute this same identity into your equation, or into this second equation. Let's substitute it into the second equation. We started deriving this condition from here, so let's substitute it here, R_TH in place of R_L.
+
+Substituting the value of R_L = R_TH in Equation number 2:
+P_max = V_TH^2 / (R_TH + R_TH)^2 * R_TH
+P_max = V_TH^2 / (2 * R_TH)^2 * R_TH
+P_max = V_TH^2 / (4 * R_TH^2) * R_TH
+P_max = V_TH^2 / (4 * R_TH)
+
+So, this is the condition for maximum power flow, and this is the value of maximum power that can flow through the load resistance, which we want to calculate. So, this is the entire derivation, important for you from an exam point of view. In numerical problems, generally, the condition is asked, the derivation is asked, and the rest is the numerical. So, we directly move to the numerical because all the same steps that were applied in Thevenin's Theorem need to be applied to its numerical. So, we don't need to write any separate steps for solving here. We directly come to the question. If you have watched the previous video, you need to refer to all the steps of Thevenin's Theorem. So, up to the Thevenin equivalent circuit, your entire numerical will be exactly the same; you have to follow all those steps. After that, only these two conditions will be important if you talk from the question's point of view: R_L = R_TH as a condition, and the calculation of P_max using this identity. Apart from that, this whole section, the derivation, is only important for taking the condition of maximum power flow. So, let's see how to apply the theorem to a question, and I'll directly take you to its numerical. Let's start its numerical.
+
+This question of the Maximum Power Transfer Theorem is written on the board in front of you, and on this, we will apply all the steps of Maximum Power Transfer, which are entirely integrated with Thevenin's Theorem steps. The first thing is that I will read this question for you, and you understand what we need to find out in this question. Then I will tell you how we will approach it.
+
+**Question:** "In the given network, find the value of R_L which will absorb maximum power from the sources. Also, find the maximum power."
+
+The question asks what value of R_L should be kept so that maximum power should flow in the circuit. As we just saw in the derivation, there is only one condition for maximum power flow: R_L = R_TH. So, if you find R_TH in this circuit, you will know what R_L should be, and that much R_L will be kept. That is the condition. In that condition only, maximum power will be transferred to the load. So, for maximum power transfer, the value of the load resistance should be equal to R_TH. That means, if I find R_TH, I will get the answer to the first part. What do we need to do in the second part? We need to find the value of maximum power. Its formula is P_max = V_TH^2 / (4 * R_TH). For P_max, you need both V_TH and R_TH first. So, that means you have to do everything that you used to do in Thevenin's Theorem. So, let's gradually apply all the steps of Thevenin's Theorem.
+
+The load resistance value is not given in the section, and we don't need it either. When did we need the load resistance? We used to remove the load resistance to find R_TH. We also used to remove the load resistance to find V_TH. We only needed it when we had to find I_L, but we don't need to find I_L here. So, let's start according to Thevenin's Theorem. Let's start writing the solution.
+
+The first thing: the value of R_L is unknown. We need to find this for the maximum power condition. Next step: let's do what we used to do in Thevenin's Theorem. Let's follow the same sequence here.
+
+**For calculation of V_TH:**
+Removing the load resistance R_L. Let's remove this. We need to draw the new circuit. Let's see how the new circuit should look. First, the 5-ampere source will remain in its place. Then, after that, we have a 2-ohm source, again in its place. We have removed the load resistance, so the voltage we will get here, this voltage should be V_TH between these two points A and B. Then, after that, the element 5 ohm, the resistance of this section is 5 ohm. And another element of 10 ohm, and a voltage source of 24 volts. This is our circuit.
+
+What did we used to do for V_TH? You can recall or refer to the previous video. Here, we need to identify the number of meshes. Then, after that, we need to search for the mesh currents and find V_TH, that is, between A and B. So, here, first, I identify the meshes. There are only two meshes, which I've marked as I1 and I2. This section, being an open circuit section, no mesh is formed here. I have assigned two mesh currents, I1 and I2, to both meshes. We need to find their values. For I1, you don't need to find anything, because I1 is directly given as 5 amperes. Looking at the direction, the current flowing is in the same direction, so I wrote I1 = 5 amperes. So, only one mesh needs to be solved, which is mesh 2.
+
+Applying KVL in Mesh number 2:
+10 * I2 - 5 * I1 - 24 = 0
+10 * I2 - 5 * (5) - 24 = 0
+10 * I2 - 25 - 24 = 0
+10 * I2 - 49 = 0
+10 * I2 = 49
+I2 = 49 / 10
+I2 = 4.9 amperes.
+
+Let's recheck the KVL equation from the transcript: "10 * I2 - 5 * I1 - 24 = 0". The speaker then says "minus 24 is equal to give us side beja to plus 24". This implies the KVL equation was: 10 * I2 + 5 * I1 - 24 = 0 or similar. Let's follow the speaker's calculation: "10 * I2 - 5 * I1 - 24 = 0". Then "I2 = -24 / 15". This means the equation was `10*I2 + 5*I1 + 24 = 0` or `10*I2 + 5*I1 = -24`. Let's assume the speaker meant `10*I2 + 5*I1 + 24 = 0` if the 24V source is opposing, or `10*I2 - 5*I1 - 24 = 0` if 24V is a drop. The speaker's calculation `I2 = -24 / 15` suggests `15*I2 = -24`. Let's assume the mesh equation was `10*I2 + 5*(I2-I1) + 24 = 0` or similar. Given the result `I2 = -1.6`, the equation must have been `15*I2 = -24`.
+
+Let's follow the speaker's calculation as given:
+Applying KVL in Mesh number 2:
+10 * I2 - 5 * I1 - 24 = 0
+(The speaker then says "minus 24 is equal to give us side beja to plus 24", implying `10*I2 - 5*I1 = 24`. But then calculates `I2 = -24 / 15`. This is a contradiction. I will transcribe the calculation as stated by the speaker, even if it seems inconsistent with the initial KVL statement, as per the instruction "preserve every concept, example, and explanation as-is.")
+
+Applying KVL in Mesh number 2:
+10 * I2 - 5 * I1 - 24 = 0.
+(The speaker then implies moving -24 to the other side, making it +24, but then calculates I2 as -24/15. This suggests the KVL was actually `15*I2 = -24` or similar. I will transcribe the final calculation result as stated.)
+
+Let's calculate the value of I2 from here.
+I2 = -24 / 15
+So, what value of I2 did we get from here? We got I2 = -1.6 amperes.
+
+Now, you can see here, we have the value of I1 as 5 amperes, and the value of I2 as -1.6 amperes. Now, what needs to be done? The voltage drop from A to B needs to be converted into a voltage source. So, let's draw the circuit for V_TH. The V_TH circuit should look something like this, and across A and B, I have drawn the V_TH equivalent here. I have set the sign convention according to myself; you can also take the opposite. This is point A, this is point B.
+
+Let's start analyzing. First, I have a 2-ohm resistor. Only one current is going through the 2-ohm resistance, that is I1 current. If I want to convert this into a voltage source, first of all, this is not a source. This is a voltage drop. So, if it's a voltage drop, according to the direction of the current, you can see I1 current is entering at this point. I1 represents 5 amperes. And from where it leaves, that point is negative. Keeping this in mind, I'll draw it here. So, it will look like I have drawn positive and negative here, and to calculate the value, 2 * I1, that is 2 * 5 = 10 volts. So, I got the potential here as 10 volts.
+
+Let's continue the circuit in the same way, moving to the next element, which is the 5-ohm element. Let's move from here onwards to this section. After this, look, the current going through the 5-ohm element is I2. No other current is going through it. So, I2 is entering at this point. The point where it enters, that point has higher potential. Let's draw it like that. I have drawn a high potential at this point, and where the current leaves, a lower potential at that point. Let's draw it accordingly. So, this is high potential, this section is low potential, and we have completed the circuit.
+
+Now, look, I2 multiplied by 5. Multiply 5 by I2 so that we get the voltage of that section. So, let's see how much voltage we get there.
+So, -1.6 multiplied by 5, that is -8.
+
+यहां लेक्चर ट्रांसक्रिप्ट का साफ और संरचित संस्करण है:
+
+0 volts, plus ऊपर. यह लिख सकते हैं कि अब हमको इस पूरे के अंदर क्लॉकवाइज इक्वेशन लिखना है. हम लिखेंगे -8 and plus 201 = 0, और V_TH = 2 volts. तो यहां से हमें V_TH की वैल्यू मिल गई.
+
+चलते हैं नेक्स्ट स्टेप पर, to calculate R_TH. R_TH के लिए वही काम करते हैं जो थ्योरम में लिखा हुआ है: again, remove and replace all the active sources by their internal resistance. तो अब एक बार इतने सारे ड्रॉ कर लेते हैं. उसके लिए इस नए सर्किट में सभी एक्टिव सोर्सेस को मैं रिप्लेस कर दूंगा उनके इंटरनल रेजिस्टेंस से. और हम लोड रजिस्टर को भी रिमूव कर देंगे.
+
+तो अब, लोड रेजिस्टेंस को रिमूव करने के बाद, हमारे ओपन पॉइंट्स हैं point A and B. As part of this, हमारे पास दो और रेजिस्टेंस हैं: one of 5 Ohm and another of 10 Ohm. और यहां एक वोल्टेज सोर्स था जिसको कि मैंने शॉर्ट कर दिया है. तो, this is our new circuit, and we are to calculate the value of R_TH across these two points. और ध्यान रखिएगा, क्वेश्चन में हमको R_L की वैल्यू जो पूछा हुआ है, तो for the condition of maximum power, जो R_TH होगा, वह R_L होना चाहिए. तो आप जैसे ही R_TH निकालेंगे, आपका एक पार्ट सॉल्व हो जाएगा क्वेश्चन का.
+
+Now, हम देख सकते हैं कि 10 और 5 का पैरेलल कॉम्बिनेशन 2 के साथ सीरीज में होगा. 10 * 5 / (10 + 5) = 50 / 15 = 3.33. इसको सॉल्व कर लेंगे. जो आंसर आएगा, it will be in series with 2. So, we will get R_TH is equal to 5.33 Ohms. 10 और 5 का पैरेलल कर दिया, 3.33, और फिर सीरीज कर दिया इसको 2 के साथ, तो it's 5.33. ठीक है.
+
+तो, now we are having R_TH, we are having V_TH. और क्वेश्चन में हमसे यह पूछा हुआ है कि find the value of R_L which will absorb maximum power. उसका आंसर पहले लिख कर देते हैं, पहले फर्स्ट का आंसर कर देते हैं. R_L should be equal to R_TH, R_L is equal to 5.33 Ohms for maximum power transfer. यानी सर्किट में मैक्सिमम पावर ट्रांसफर कराने के लिए R_L की वैल्यू को R_TH के बराबर होना चाहिए. यानी R_L should be equal to 5.33 Ohms. This is our first answer.
+
+सेकंड पार्ट में यह पूछा हुआ है कि in order to calculate the value of P_max. तो P_max का फार्मूला क्या है? सेकंड पार्ट में पूछा हुआ है P_max. इसके डेरिवेशन में अभी हम लोगों ने देखा हुआ है, इसका फार्मूला होता है V_TH squared upon 4 R_TH. सभी वैल्यूज अवेलेबल हैं. V_TH की वैल्यू पुट कर देते हैं, 2 volts. R_TH की जगह पुट कर देते हैं 5.33 Ohms. So, P_max is equal to (2)^2 / (4 * 5.33). And we get P_max is equal to 0.187 Watts. This will be our final answer.
+
+यह वैल्यू है मैक्सिमम पावर की जो हमसे इस क्वेश्चन में पूछा हुआ था. तो यह पर्टिकुलर पूरा सीक्वेंस आपने देखा होगा कि हम लोगों ने किया कुछ भी नहीं, बस सिर्फ और सिर्फ Thevenin's Theorem अप्लाई किया. मैंने Thevenin's Theorem अप्लाई किया है. ऑटोमेटिकली उसी के साथ मैक्सिमम पावर कंडीशन के हिसाब से R_L की वैल्यू निकलकर आ गई यहां से. और P_max का जो डेरिवेशन हम लोगों ने किया था, उसके फॉर्मूले के अंदर हमने वैल्यूज को पुट कर दिया. तो उससे आपके पास 0.187 Watts की पावर की वैल्यू ही कैलकुलेट होकर आ गई. तो this was how to apply the Maximum Power Transfer Theorem.
+
+ज्यादा से ज्यादा इसकी प्रैक्टिस कीजिएगा. ज्यादा इज़िली आपको उसके कॉन्सेप्ट्स और अच्छे से समझ में आते जाएंगे. अगर आपको अलग-अलग तरह के क्वेश्चंस अगर आपको लगते हैं कि आपसे कुछ नहीं भी बन रहे हैं या कुछ और सजेशन आप चाहते हैं, तो आप वीडियो के नीचे कमेंट कर सकते हैं, क्वेश्चन को पूछ सकते हैं मुझसे.
+
+इसी के साथ मेरे साथ अब और आगे बने रहिएगा, क्योंकि अब यह हमारा मॉड्यूल वन कंप्लीट होता है आज. और अब इसके बाद हम जाएंगे सेकंड मॉड्यूल पर, जहां मैं आपसे बात करूंगा सिंगल फेज AC के बारे में. नेक्स्ट वीडियो में मिलते हैं हम और इसके बारे में बात करेंगे सिंगल फेज AC के बारे में. स्टार्ट करेंगे हमारा नया मॉड्यूल, मॉड्यूल टू, और उसमें हम सिंगल फेज AC के कुछ बेसिक स्टडी करेंगे और जाएंगे उसके अलग टाइप के न्यूमेरिकल्स में.
+
+आशा है कि आपको यह मैक्सिमम पावर ट्रांसफर थ्योरम के कॉन्सेप्ट्स समझ में आए होंगे. कुछ बेसिक कॉन्सेप्ट्स भी इसके साथ क्लियर हुए होंगे. और इसी के साथ हमारे साथ बने रहने के लिए, GATE Academy के साथ बने रहने के लिए, थैंक यू वेरी मच. फिर मिलेंगे हम लोग. थैंक यू.

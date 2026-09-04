@@ -1,0 +1,68 @@
+Hello friends, welcome to DBMS class. In this class, we are going to discuss tuple relational calculus. 
+
+If we talk about the exam, 99.99% chances are there for questions to come from SQL or from relational algebra. But as they have mentioned tuple relational calculus (TRC) in the syllabus, we will do a little discussion on this also. 
+
+First of all, tuple relational calculus is a non-procedural query language. Whose part is it? It is a part of relational calculus. In relational calculus, two types of languages come: tuple relational calculus and domain relational calculus. In tuple relational calculus, its main focus is on tuples, which are our rows. Now, in domain relational calculus, its main focus is on columns, which we call attributes. 
+
+Here, tuple relational calculus is non-procedural. Non-procedural, I have already told you, is where we tell what to do, but how to do we do not mention. If someone asks you what the difference is between relational algebra and tuple relational calculus, the first difference is that tuple relational calculus is non-procedural, and relational algebra is procedural.
+
+In tuple relational calculus, we use first-order logic fundamentals, and every query is written like this: 
+`{ t | P(t) }`
+
+What is the meaning of `t` here? It is the resulting tuple, meaning the final tuples you have as the answer. What will be the answer? We represent it in this way with `t`. 
+
+And what is `P(t)`? It is a predicate. It is a rule, or you can say a range, where we give conditions. Whichever tuple satisfies this `P(t)` will come in the final output. That tuple will come which will satisfy this condition; which will not satisfy will obviously not come in the final result. 
+
+What does this basically do in tuple relational calculus? Let's say if you have a table, what is there in a table? Multiple tuples. What does it do first? This small `t` I am talking about, what is this? This is a variable. This variable starts from tuple 1, then tuple 2, tuple 3, tuple 4. What does it do? It examines all the tuples. 
+
+And on what basis does it examine? That condition, that predicate we give here on the right side. The condition we give in this range, we will give all the conditions in that range. Corresponding to all the conditions, whatever will be true, the tuples which will satisfy will come in the result, and which do not will not come in the result. This is a basic fundamental of tuple relational calculus.
+
+Next, I talk here about operations. Same as we use in relational algebra, the same operations we can use here also, but there the operations are different. Here, if you talk about like `or`, `and`, `not`, apart from that, here we talk about atomic functions. 
+
+What is the meaning of atomic functions? Which work on one tuple. One variable we use in it. Like, let's say a supply table is given to you. From that supply table, all supply IDs are to be found out whose name is Varun. Here, you are giving a single condition, and in a single condition, your final answer is coming. But if you are giving more than one condition, then it does not remain atomic; it becomes a composite formula. 
+
+Apart from this, if we talk about quantifiers, we use two: "there exists" ($\exists$) and "for all" ($\forall$). 
+
+What is the meaning of "there exists"? As we normally discuss in first-order logic, what is the meaning of "there exists"? There exist some tuples, and which tuple belongs to this particular condition, which satisfies this condition in the whole table? There is a row. 
+
+If we talk with a simple example, in the table I have values 10, 20, 30. Now, let's say this is age, this is an age column. Now, if you are asked to tell if there exists any tuple `t` where age is greater than 20 (`age > 20`), what will it do? It will examine all the tuples one by one and check whether there exists any tuple whose age is greater than 20. Yes, here it exists, so you can say its answer will come out true. 
+
+Now, if here in age I make it 40 in place of 20, then what will come in that case? It will examine one by one and give the result as false. 
+
+Now, if we talk about "for all", what is the meaning of "for all"? It is clear from the name itself. "For all" means it will check all the values. After checking all the values, it will give the final answer. The final answer will be made on what basis? For all the conditions. It is not like "there exists", where one will exist and output true will come. 
+
+For all means, let's say I give two values here. I separately give two values: 10, 20. And in another table, I give values, let's say, 30, 10, 50. Clear? Now, if here a question is asked, if you are asked a question: "for all `t` where `t`..." If we talk, let's say, in this table, all the values should be greater than this table. See that not all values are greater; 20 is greater than 10, but if we talk about 10, it is not greater than all values. So for all, it checks all values, it checks for all conditions, then you get the final answer.
+
+Next, here we talk about an unsafe expression. What does unsafe mean? Let's say I have a supplier table. From the supplier table, we write in this way: `supplier(s)`. So here, what did we make? We made a variable `supplier`, and what do we write outside? `supplier.name`. And what do we put here? A `not` function. `not` function means we have to find all the names who do not belong to the supplier. This is called unsafe. 
+
+If you remove this `not`, what is it giving? Print the name of suppliers, whoever suppliers are there, print their names. So it will print and give you. But what is the meaning of putting `not`? All the supplier names who are not in the supplier table. So in this case, what answer will it give? Infinite. Meaning it will get stuck in an infinite loop. Meaning this is an unsafe expression, which is not in relational algebra. 
+
+Therefore, if we talk about tuple relational calculus and relational algebra, are their powers the same? Yes, their powers are the same. In tuple relational calculus, you have to take care of unsafe expressions, meaning unsafe expressions should not be there. So you can say tuple relational calculus and relational algebra both have the same expressive power, meaning the query you can write in relational algebra, the same query you can write in tuple calculus also, and even in domain relational calculus. But the power of SQL is more than them; there we have added some more extra functions.
+
+Now we will discuss with an example the query which we have received before: one with a supplier-part-catalog. 
+
+First of all, write a query to display the `sname` of the supplier. So how to write here? What do we have to find here in the final? To print the name of the supplier. From which table? You have to print from the suppliers table. So what do you have to do? To supplier, what do we say now? Variable `s` inside the supplier. What is this `s` doing? It will check all the tuples of the supplier, and from all those tuples, in this way, let's say there is a supplier table and in the table there are many tuples, what do we put? We put a variable `s`. In this way, it will examine all the tuples one by one, corresponding to that it will use `s.sname`. What is the meaning of `s.sname`? The `s` variable will print all the `sname` in the final output. So in this way, we write its query.
+
+Similarly, if you talk about what are the parts' names whose color is red? Here we have to find out from parts, so I make a variable `p` for parts, which will work on the parts of every tuple. But there we have given a condition, so putting `and p.color`. What do I do with `p.color`? Write in this way: `p.color = 'red'`. And what will you put outside from `p`? What do you have to show in the output? In the final, you have to show the output parts' name. So in this way, you print the parts' name, and your simple query will be ready.
+
+If you talk about the third query: write a query to display the `sid` of suppliers whose name is Varun and address is Chandigarh. So see here, it will be same. First of all, see which table will be used. The table used here will be supplier. Now what you applied on supplier? On that supplier, you put `s` as a variable, which will examine all the tuples one by one. Now what condition do you give along with that? That `s` will check `s.name` means this `s` variable will check the attribute on the table, name should be Varun, and `s.address` – what should be the address? Address should be Chandigarh. So in this way, it will check, and in the final, what will it print? It will print `sid`. So in this way, your simple query will be solved.
+
+Next, we will talk about: write a query to display the `sid` of suppliers who supplied some parts. So again, from where do we have to find the answer? From the catalog table. So what do you have to do? In catalog, we made a variable `c`. In catalog, we made a variable `c` which will examine all the tuples one by one, and there you don't have to give any condition. What do you have to print? Simply, you have to print `sid`. So in this way, you will print `sid`, and your `sid` will be printed.
+
+Next, 5th question: write a query to display the `sname` of suppliers who supplied some parts. So here, two tables are required: suppliers is required, and catalog is required. So how will we write here? From where will we get the final answer? The final answer you will obviously get from the supplier table. So this we call a free variable. 
+
+What is a free variable? Because most of the chances are for theory questions in case if it comes, although SQL and relational algebra are more important than this, but in case if any small point is asked... If you talk about GATE exams, until now no direct question has come on this, but in case you get any question, if you understand you can do it, otherwise you can solve any simple level question over it and even you will have some idea of how we write queries, or if you are given a query then how you can find the output. 
+
+So on supplier, I put a variable `s`, and along with that, now see here there is a requirement of two tables: one is catalog and the other is supplier. So on catalog, we have to put a condition. Now what are we applying here? `there exists`. Why are we applying `there exists`? What is the meaning of applying `there exists`? That supplier and catalog, it will take from two tables and then check: is there any existing row whose existence... that `s.sid = c.sid`, means their supplier and catalog `sid` are equal? Is there any row which is existing? If any row exists, then corresponding to that, it will print `s.sname` (supplier's name). 
+
+This is called `there exists`. What will `there exists` do? One supplier ID, like supplier table here it is S1, S2, S3, and in catalog let's say there is S1, S2. So what will it do? It will pick one S1 and will check: is there any existence in the whole table? Is there any existence similarity S1? Is there any existence? Yes. Similarity S2? Is there any existence? Yes, there is. Similarly S3? Is there any existence? No, so this will become false; S1, S2 become true. So corresponding to that, what do you want? Supplier's name to be printed. 
+
+So this we call a free variable. The `s` is a free variable, and the `c` here is bounded. Why are we calling it bounded? Because with the variable we put `there exists` or `for all`, that is called bounded, and with which we don't put anything, we do not put `there exists` or `for all`, that we call a free variable.
+
+Last query: the last query is being asked here: write a query to display the `sname` of supplier who supplied red color parts. See here, 3 tables are required, but do you know from where the final answer will come? The final answer will come from supplier. From where the answer comes, write it first. On supplier, put a variable `s`. Along with that, put: `there exists` some row in the catalog. On catalog, we put variable `c`. `there exists` some catalog, and `there exists` some parts, meaning on parts you put variable `p`. And what do you put on catalog? `c` variable. And what condition do you put on final? That `s.sid = c.sid` and `p.pid = c.pid` (part id in the catalog, part id inside the part) and `p.color = 'red'` (red color part). We will give this way; we have to write. 
+
+But this portion is a little different. Here, what did we do? Same thing, let's say in supplier there are S1, S2, S3, and in catalog let's say there are S1, S2, and in parts there are P1, P2, P3. Let's say S1 sold to P1 and S2 sold to P2. So what did we do? From supplier, what do we have to print finally? Supplier's name. But what condition did we put? We have given an `s` variable to supplier, catalog we put `c` variable, and we put `p` variable on parts. 
+
+Now what did we do? We checked supplier along with catalog, that is there any existence of variable `c` where S1 = S1? Means S1 and S1 matches here, it is matching. S2 is also matching. S3 is not matching. Now to its corresponding, we put one more: that P1 = P1 and P2 = P2, where `pid` are also matching? Yes, `pid` are also matching. So from here, it is clear that your parts are sold by a supplier and what is the color of that part? Red. And corresponding to that, the supplier's name will be printed. 
+
+So again, if it is asked which is the free variable, `s` is your free variable, and `c` and `p` are your bounded variables. These are the main queries. These types of queries you can be asked, and I will not recommend you to go more deep, but again this query language is very much vast. If you want to do, then you can do, but more than this is not required for this exam. Thank you.

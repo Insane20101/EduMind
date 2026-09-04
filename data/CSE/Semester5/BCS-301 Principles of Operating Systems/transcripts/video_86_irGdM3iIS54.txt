@@ -1,0 +1,51 @@
+Hello friends, welcome to Gate Smashers. In this video, I'm going to explain linked list allocation. In the last video, we discussed the contiguous allocation method, in which we discussed its advantages and disadvantages. In this video, we'll discuss all the important points related to linked list allocation that will be beneficial for your competitive exams and even your college and university exams.
+
+Let's start with linked list allocation. The first important point is that it comes under non-contiguous allocation. In the first method that we discussed—contiguous allocation—we do contiguous allocation of all the blocks of the file, meaning we allocate them contiguously in memory so that it resides continuously in storage. But here, we are talking about linked lists. 
+
+The first important point of non-contiguous allocation in linked lists is: let's say we have a file, file A. Now, what we have to do before we put this file into storage—meaning before putting this file in storage—is break this file into blocks. We have already discussed this. Let's say I divided it into 5 parts, i.e., block 1, block 2, block 3, block 4, block 5. Now, when we bring all these 5 parts into memory—meaning when we bring them into secondary storage/permanent storage—we will allocate them non-contiguously, not contiguously. 
+
+That means block number 1—let's say this is our block number 1—comes on physical location 2. I'm drawing it like this: let's say the first block, B1, I placed it here. That means in the physical memory we have, the physical location is 2. Now for the next block, B2: if it were contiguous, then I would have placed B2 here, B3 here, B4 here, B5 here. But now we're saying it is non-contiguous. In non-contiguous allocation, we can place it like this if it is empty, but obviously the meaning of non-contiguous is: let's say you placed block 1 in location 2, then you will place block 2 in location 7, based on availability. It is based on availability. 
+
+So we placed B2 here. Next, for block 3, let's say we placed block 3 in location 9. Let's say we placed block 4 in location 11. And we have one more block, the 5th block; we placed this 5th block in location 14. 
+
+Getting the point? What we did is we simply divided the file. After dividing the file, what we are doing to the blocks is giving them non-contiguous locations instead of one contiguous location in memory/storage. 
+
+Now, the problem here is: you entered the data at different places in a non-contiguous way. When we fetch data—when the user demands file A—how will we provide file A to the user? The file system obviously should have some mapping for where the next block is. So if we talk about the directory, what we did in the directory is that for a file—let's say the file name was A—we would enter its start block only, meaning where the 1st block is (which is on location 2). After that, how will I know where the 2nd block is? We will use a pointer here, like a linked list. What happens in a linked list? Data and, let's say, a pointer; the pointer points to the next block, then data and a pointer that point to the next one, and so on.
+
+We have to do the same thing here. So the B1 block here has the data—meaning that here on this particular location you'll find data, and along with data, there will be a pointer. What will be the address in that pointer? 7 will be the address in that pointer. What is the reason behind it? Because the next block, B2, we have placed it in location 7. 
+
+Similarly, if we talk about B2, here I'll get data also, and a pointer will be there that will point to 9 because B3 is on 9. Similarly, here will be data and a pointer that will point to B4—that means it will point to the 11th location because we have B5 in 11. Wait, we placed B4 in 11, and B5 in 14. Let's trace it: B1 points to 7 (where B2 is), B2 points to 9 (where B3 is), B3 points to 11 (where B4 is), and the B4 block will have data and a pointer along with that which points to 14. In 14, we have our final block, B5. 
+
+Similarly, in 14, we'll have data and a pointer along with data, but the value in that pointer will be—as our data is over, so it is not pointing further—-1. You will enter -1 there. -1 means it is not pointing any further; this is the last block. 
+
+So it becomes like a linked list. That's why the name is linked list allocation. This is a very important point regarding how we store the data and how we allocate the data in a particular space in storage. 
+
+So this is actually the whole story of linked lists. Now, if we talk about advantages:
+
+The first advantage is **no external fragmentation**. This was a disadvantage in contiguous allocation, where we suffer from external fragmentation. The reason behind that is we have empty blocks, but we cannot enter the data because it is not contiguous. But here, you can utilize all blocks efficiently. The reason behind that is you can enter data anywhere; you just have to make a pointer that will point to that particular data. 
+
+For example, if you make students sit roll-number-wise, obviously the problem is external fragmentation. It may be possible that 2-3 benches are left in the middle—meaning there are students in a class, and it is not necessary to make them sit roll-number-wise if 2-3 benches are left here and 2-3 benches are left at the last. If a group of students comes—say, a group of 6-7 students—you won't be able to make them sit together because 3 chairs are left in the front and 3 chairs are left at the back. That is not a problem here. Here you'll say, "Okay, 3 will sit here and 3 will sit in the last, and we'll make a pointer that will let you know the first 3 are here and the other 3 are there." 
+
+So this is how we are working in the linked list, and external fragmentation is removed.
+
+Second, **file size can increase**. This was also a problem in contiguous allocation, where you had to state beforehand that you needed 5 blocks to store this file, and we allocated 5 blocks contiguously. If the file size increases, if an extra block is required, we cannot grow that. The only situation in which you can give space is if the next contiguous location is empty; otherwise, the chances are low. 
+
+There is no such problem here. File size can increase as much as you want, and you can put it anywhere. Let's say the file size is increased—just for an example—and the next location you used is, let's say, 21. What you have to do is take the pointer which was -1 in the last block, make that 21 by removing -1, and put your last block in 21. Now this pointer will point to 21. That is simple. And for the block in 21, put -1 in the pointer that is in 21. The story of linked list is simple.
+
+Now, if we talk about disadvantages:
+
+The biggest disadvantage is **larger seek time**. What does larger seek time mean? What is seek time? Seek time is the time to reach the desired track. Obviously, it can happen that your first block is lying on track number 1, your second block is lying on track number 2, another block is lying on track number 5, and another is on a different track. 
+
+Obviously, you have to make more movements of the read-write head, which was not the case in contiguous allocation. Because in contiguous allocation, once you reach the desired track, you know all the data is placed continuously, so we rotate the disk once and we get all the data. But here, you have to move the read-write head—sometimes to track number 1, sometimes to track number 4, or track number 5—based on where the data is placed.
+
+Then, regarding **random access**: if we talk about random access, look, we know the first block of every file. The first block obviously will be known from the directory. Let's say there's a file B, and it is starting from 5. So I know that the file is starting—meaning the B file is starting from 5—and the first block is known. 
+
+But let's say I have to access the 4th block of that file. This is the file, and I have to access the 4th block of that file without accessing other blocks. In that case, obviously, you have to go through the whole file. The reason for that is first you'll go to 2, 2 will bring you here, this will bring you here, and this will bring you here. Thereafter, you'll finally get the data. 
+
+So that's why random access, or you can say direct access of a particular block, is complex and difficult as compared to contiguous allocation. In contiguous allocation, the only way is that you reach the first value (index 0). Now you know where the 2nd will be (after 2), where the 10th will be (after 10 values), where the 11th will be (after 11 values), so you know it directly. But here there is no such scenario; here the pointer will take you forward step-by-step.
+
+The last disadvantage is the **overhead of pointers**. What does overhead of pointers mean? In the last method, we had—let's say if there's a block in physical memory, the actual physical block we have in storage—a size of, say, 1 kilobyte, and we are using the whole block to store the data. But here we are placing pointers along with data. We have pointers along with data everywhere. So pointers will obviously take over some memory that pointers will occupy. 
+
+That's why you can say that there is an overhead of pointers in this method. But obviously, you have to do this because linked lists won't work without pointers. 
+
+So these are all the important points related to linked list allocation. Thank you!

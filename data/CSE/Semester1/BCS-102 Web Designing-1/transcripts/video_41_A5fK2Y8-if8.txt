@@ -1,0 +1,19 @@
+I told you about Flexbox, and you understood it very well. Now it's time to check your Flexbox skills. I have prepared an exercise for you based on Flexbox. If you can complete this exercise, then you have understood the concept of Flexbox and are ready to use it in your web development projects. Don't forget to like the video and write "Sigma Patches" in the comment section below. 
+
+Let's go to the computer screen. Let's roll the intro.
+
+The website we are going to create in this exercise is very similar to a real-world website. We will design a navbar for a website that I will provide using Flexbox. You cannot use anything else besides Flexbox. I will give you a link in the description; you have to go to this website and design its navbar. 
+
+You do not need to implement hover functionality at all. Your task is simply to recreate the navbar. You also don't need to create the bottom part of the website. However, if you do create that part, it would be great, but it won't be part of the exercise. Just focus on making the navbar. 
+
+The website I have chosen for you is very simple. It is the website of UltraEdit, which is a heavy-duty text editor. You can download its free trial and try it out. Your task is to design the navbar for this website. I am providing the link in the description, and I want you to design it and let me know how it goes. 
+
+It is simple, in my opinion. Do not use Grid; use Flexbox. It is very straightforward. You can get the icons from the internet or anywhere else. If you choose to create the navbar without icons, that is also fine. You can take screenshots or use the Snipping Tool to capture the icons. However, if you cannot find these icons, that is totally fine as well. 
+
+I want everyone to solve this exercise quickly. It is very easy, and I have already taught you Flexbox thoroughly. I will also provide English subtitles and timestamps, making this course comprehensive. 
+
+I want to mention that the Sigma Web Developer course is an excellent course for web development. I am saying this sincerely, as I have put in a lot of effort. More videos are coming, and you don't need to go anywhere else. I can assure you that we will cover everything here. 
+
+If you have not accessed this playlist yet, please do so. Click here to bookmark it and click here to save it. 
+
+That's all for this video, guys. Thank you so much for watching!

@@ -1,0 +1,87 @@
+**Lecture on Long and Compound DC Motors**
+
+Hello everyone, welcome to Z Plus Niranjan. Thank you for watching. Today, we will discuss the topic of Long and Compound DC Motors. More importantly, we will focus on the Compound Machine. If you have seen my previous videos, I recommend you check out the earlier ones where I talked about Series DC Motors and Shunt DC Motors.
+
+As I mentioned earlier, the classification of DC machines includes three parts: the Series Motor, the Shunt Motor, and the Compound Motor. In this video, we will specifically discuss Compound DC Motors. We will start from the basics and gradually delve into the details, including the working principles and relationships involved.
+
+Before we dive into the Long and Compound DC Motor, it is essential to understand what a Compound Machine is. A Compound Machine is a combination of two different types of windings. You have studied Series DC Motors and Shunt DC Motors. In the Series Motor, I explained that it has two torque characteristics: starting torque and running torque. The starting torque is quite high, but it can regulate its speed effectively. 
+
+When we combine the characteristics of both Series and Shunt Motors, we get the Compound DC Motor. This motor includes both Series and Shunt windings. The classification of Compound Motors can be divided into two types: Long Shunt and Short Shunt. The distinction depends on whether the winding covers the entire machine or just a portion of it.
+
+Now, let’s look at the classification of Compound DC Motors. Before understanding the Long Shunt DC Motor, it's crucial to grasp the significance of what we are studying. The classification of DC machines includes three categories: the Series Machine, the Shunt Machine, and the Compound Machine. 
+
+In the Compound category, we have two types: Long Shunt and Short Shunt. In this lecture, we will focus on Long Shunt DC Motors. It is important to note that these Compound Machines can also be divided into three categories: Differential Compound, Cumulative Compound, and Interpole Compound. 
+
+As we discuss Long Shunt DC Motors, I will provide you with essential points to remember. The combination of Series and Shunt windings allows for a unique operational characteristic. The benefits of this combination provide advantages in various applications.
+
+Now, let’s talk about the working of a Compound DC Motor. The feedback mechanism in a DC Motor is crucial. When you provide input supply, the total current divides into two parts: one goes through the Series winding, and the other goes through the Shunt winding. 
+
+The armature winding experiences a certain resistance, and the interaction between the field and armature plays a significant role in the motor's operation. The Series winding typically has fewer turns of thicker wire to reduce resistance, while the Shunt winding has more turns of thinner wire to increase resistance.
+
+Let’s derive some basic relationships to understand how this works. The total potential across the motor can be expressed as the sum of the voltage drops across the armature and the field windings. 
+
+The relationship can be expressed mathematically as follows:
+\[ V = I_a \cdot R_a + I_f \cdot R_f \]
+where \( V \) is the supply voltage, \( I_a \) is the armature current, \( R_a \) is the armature resistance, \( I_f \) is the field current, and \( R_f \) is the field resistance.
+
+In a Long Shunt DC Motor, the Series winding is connected in parallel with the Shunt winding. This configuration allows for a combination of high starting torque and good speed regulation. 
+
+It is important to note that a pure Series DC Motor provides higher starting torque compared to a Compound DC Motor. However, the Compound DC Motor can regulate its speed better than a Series Motor.
+
+In conclusion, understanding the characteristics and operational principles of Long and Compound DC Motors is crucial for their application in various electrical engineering fields. In the next video, we will discuss Short Shunt DC Motors and their characteristics.
+
+Thank you for your attention, and I look forward to continuing this discussion in our next session.
+
+स्टार्टिंग तो रहता है उसका, लेकिन इसके जितना भी नहीं रहता है। ठीक है, सेम वे में एक प्योर डीसी शंट मोटर जितना अच्छा स्पीड रेगुलेशन देगा, उतना अच्छा स्पीड रेगुलेशन एक कंपाउंड डीसी मोटर कभी नहीं देगा। यह ध्यान रखना, यह जो पॉइंट बहुत इंपोर्टेंट है। 
+
+कंपाउंड डीसी मोटर स्टार्टिंग में और भी अच्छा प्रोवाइड करती है। स्पीड प्रोवाइड करती है, लेकिन एक स्पेसिफिक मोटर से उनके बराबर नहीं प्रोवाइड करती है। उस कंपैरिजन में यह उतना ज्यादा भी नहीं है। 
+
+स्पीड रेगुलेशन क्या होता है, आपको पता है। मैंने इस वीडियो में बताया था कि स्पीड रेगुलेशन मशीन पर, जैसे यह प्लेट डालते हो, तुम अपनी स्पीड को वापस मेंटेन करने के लिए इतनी करंट ले लेता है। सिस्टम अपनी स्पीड को बिना दुगना बनाए रखता है। 
+
+स्टार्टिंग में, जैसे आप मशीन को रन करते हो, शुरूआती स्पीड उसकी अच्छी-खासी मिल जाती है। यह चीज आपको इस लॉन्ग सेंड के ग्रेजुएशन में इन दो पॉइंट के हिसाब से देखने को मिलेगी। 
+
+जैसे सिस्टम की स्पीड बढ़ती है, अमरुद जैसी इसकी स्पीड बढ़ाते हैं, तो इसका बैक हमें भी सेंड पोर्शन में बढ़ता है। जैसी इसकी बैक यहां से बढ़नी शुरू हो जाती है, यह आइए को कम करेगा। यह पूरी की पूरी वैल्यू कम होने लग जाएगी। 
+
+अगर यह पूरी वैल्यू का नेट वोल्टेज कम हो गया, तो आप कॉटेज होगा, वह बिग बॉस जाएगा और आर्मेचर करेंगे। यह ऊपर डिपेंड करता है कि कौन और मिचेल स्टार्क आर्मी चल करंट आपका जैसे ही कम होना। 
+
+आपका 8 मिनट और भी रिड्यूस हो जाएगा और आपकी स्पीड जो है, प्रोफेशनल घटने लगी। गिरने लगी मशीन की स्पीड। ठीक है, स्पीड रेगुलेशन भी प्रोवाइड कर रहा है। हाई स्टार्टिंग भी आपको मिल रहा है। 
+
+आपको स्टार्टिंग कैसे है, यह क्योंकि इन्हें शनि तो बीवी होती नहीं है। ज्यादा समय क्या बोल रहा हूं, इन इंग्लिश आपका मशीन है। ड्रेस कंडीशन पर है, तो व्यक्ति में तो बन ही नहीं सकता। 
+
+क्योंकि वे केवल तब बनेगा जब मैं इंपोर्टेड कर रही है। तो इनिशियली जब मैसेज भेजो, शुरू करते हो, बैक यह मैं एकदम निप्पल के आस-पास होता है। 
+
+नाइट VoLTE सिस्टम का टोटल सप्लाई वोल्टेज के लगभग बराबर पहुंच जाता है। तो उस केस में आई एक ही वैल्यू अच्छी खासी ही रहती है। अगर हाई है, तो उस केस में डू एक ही वैलिडेशन मिनट और तो ही मिलना है। 
+
+तो आपको शुरूआती अच्छा खास अर्थ और भी देखने को मिलता है। वहां पर यह मशीन 2 मिनट से एकजुट करती है। इस मशीन के अंदर आपको दोनों ही प्रॉपर्टी मिलती है, एक सीरीज डीसी मोटर की तरफ। 
+
+रिसेंट कभी चैप्टर से जो है, वह आपको इसके अंदर देखने को मिलता। क्योंकि आपको एक जनरल आइडिया मिल गया होगा कि मशीन का वर्किंग स्टाइल कैसे भर करती है। 
+
+अगर आप लोग स्क्रीनशॉट नहीं लिया, तो यह काम जल्दी से कर लो। ठीक है, आप लोगों ने अगर स्क्रीनशॉट नहीं लिया है, तो यह वाला काम जल्दी से कंप्लीट कर लो। फिर मैं इसको हटा देता हूं। 
+
+यह इसका चार्ट से निवेदन है। कोई बहुत ज्यादा कुछ नहीं है और ऐसा कुछ याद रखने वाला भी चीज नहीं है। आप लोग बहुत आसानी से इसको खुद बना सकते हो। 
+
+वापस लेकर चलता हूं मैं आपको वोट पर है। यह तो क्लियर है, इसका रिजर्वेशन बिल को शॉट मैं आपको समझ चुके हैं। लॉन्ग सेंड मशीन कैसे काम करता है, वह भी समझ चुके हैं। 
+
+इसका कहां यूज होता है, उसके बारे में भी बात करेंगे। लेकिन इंपॉर्टेंट पॉइंट्स में एक बार समरी के फॉर्म में आपको दो पॉइंट्स मैं जल्दी से बताऊंगा। 
+
+पहला, मशीन सर फॉर्म वैलिडेशन ऑफ सीरीज एंड फील्ड माइनिंग। ऑफिसर कनेक्टिड टू धार्मिक जब वाइंडिंग। यह सब जो मशीन होती है, जो कंप्यूटर मशीनें होती हैं, डीलर नथिंग बट डेफिनेशन ऑफ सीरीज। 
+
+मतलब कांबिनेशन आफ थ्री एंड फिल्ड विद सेंटर की बिल्डिंग का एडमिशन है, जो कि से जुड़ी होती है आर्मेचर वाइंडिंग के साथ। ठीक है, और नेक्स्ट इंपोर्टेंट है, इट प्रोवाइड से बेनिफिट रेगुलेशन। 
+
+जैसा कि मैंने बताया, सेंट की खासियत 20 के अंदर होती है स्पीड रेगुलेशन की। हार्वेस्टिंग टॉक लाइक सीरीज मोटर्स, यह खासियत भी देखने को मिलती आपको इसके अंदर। 
+
+एप्लीकेशन फॉर्म्स एंड कंपनी डीसी मोटर लेकर आते हैं बोर्ड पर। पहला एप्लीकेशन, तो यह डिवाइस पहचान में आ रही है कि आपके कौन से डिवाइस चाहिए। 
+
+10 टाइपिंग मशीन डिस्टेंस लगाते हैं, हम लोग मैसेज जगह पर हम इसको यूज कर सकते हैं। स्टार्टिंग और अगर चाहिए आपको कांस्टेंट स्पीड भी चाहिए, तो वह दोनों चीज आप इससे प्रोवाइड करवा सकते हो। 
+
+अगला इसका क्या एप्लीकेशन है? तो देखती था, तब प्रिंटिंग प्रेस जो यूजुअली जो बुध जो पब्लिश होती है, जो प्रिंट है। जहां पर यह बहुत सारी चीजों से एक प्रिंटर घृत और बहुत ज्यादा होता है। 
+
+यह जो इंडस्ट्री में यूज करके भेजने के लिए ऊपर ऊपर लगाया जाता है और फिर एक दूसरे को लेकर जा सकते हैं। 
+
+यह बिल्कुल ऑल द बेस्ट एक बार एक अलार्म सेट कंपाउंड ऐसी मशीन जी अंदर क्या-क्या चीजें होनी चाहिए। क्या-क्या चीजें आपको इसके बारे में जानना चाहिए, वह सारा कुछ इस वीडियो के अंदर मैंने कुछ कहा कि मैं कवर करूं और आप तक पहुंचा हूं। 
+
+आपको समझ में है वहीं तो है। उस फ्लैट से आपको इस वीडियो से चीज समझ में आई होंगी। पहले एक हमारे साथ जल्दी मिलेंगे अगले वीडियो में और बात करेंगे ऑप्शन कंपनी डीसी मोटर्स की। 
+
+उस पॉइंट के बाद हम लोग डीसी मोटर्स को कंप्लीट कर चुके होंगे और जाएंगे ईयर्स लेटर बाक्स के अंदर। जो योग कि आज का वीडियो आपको समझ में आया होगा। चीज आपको अच्छी लगी होंगी। 
+
+तो स्टे कनेक्टेड स्टूडेंट्स एंड विल हैव ग्रेट अटेंशन एंड फ्यूचर एस वेल। चलो, इस वीडियो को यहीं पर खत्म करते हुए जल्दी मिलते हैं नेक्स्ट वीडियो में। थैंक यू।

@@ -1,0 +1,36 @@
+Hello students! I'm Dr. Gajendra Purohit and you're watching my YouTube channel where I upload videos on engineering mathematics and BSc. If you're preparing for any competitive exam where higher mathematics is asked, then my YouTube channel will be very helpful. 
+
+Today I'll be starting a new topic that is vector spaces, which is a series of linear algebra. I'll be discussing all these topics. Also, I have another channel where I've started a new series on CSIR NET. If you're attempting for life sciences, physics, mathematics, etc., then you can watch my videos to strengthen your Part A, i.e., general aptitude. Click on the 'i' tab to watch my videos.
+
+Vector spaces is an important concept of linear algebra; linear algebra is based on vector spaces. And before learning this, you must be well aware of the topic Group Theory with concepts of Group, Ring, and Field. I've uploaded many videos on the same, so click on the 'i' tab to watch my playlist on group theory for better understanding.
+
+Internal and external composition are two very important concepts here. Let $V$ be any set. Only one set is involved in internal composition. When an operation is applied between two vector elements, then it should return another vector. For example, here when we take an operation on two elements, it returns back a vector. Normally we talk about vector addition here. 
+
+Here $V$ and $F$ are two sets where $F$ is the field and $V$ is the vector. The mapping goes from $F \times V \longrightarrow V$. We take an element from the field and an element from the vector, and the product is a vector element. $V$ will be a vector space over field $F$. These are some properties that need to be satisfied: the internal composition in $V$ should be abelian under plus. 
+
+The first property is that it should be closed. 
+The second property is that it should be abelian. 
+The third property is that it should be associative. 
+The fourth property is that the identity should be $0$. 
+The fifth property is that it should be invertible. 
+All the properties of an abelian group are applied here. 
+
+The product of an element of $F$ and $V$ should give a vector. The set $V$ should be closed with respect to scalar multiplication. For example, $Q(Z)$ is never a vector space, which will be proved using this property. The first property is about abelian, which is about addition. The next property was on vector multiplication. In this property, multiplication and addition are clubbed. 
+
+We know that $C(R)$ will be a vector space; we know that $R$ is the subfield of $C$. Here $C(Q)$ will be a vector space, and $R(Q)$ will be a vector space. But here $Q(Z)$ will never be a vector space. Why is $Q(Z)$ not a vector space? Here $Z$ should be a field, and it's not a field, that is why it is not a vector space. Also, the multiplicative inverse does not exist here.
+
+To prove in a question if it is a vector space or not, we use some simple tricks. We take the points that satisfy the equation. As both are vectors, the addition should be closed. The sum of the vectors should be a vector. We take the sum and we get $-36$, which is a vector and should satisfy the equation. But $-36$ is not equal to $0$, so it is not a vector space because the additive vector does not belong to $V$. The points satisfy the equation, but this sum does not satisfy the equation, so it is not a vector space. 
+
+This question is usually asked in the exams. Here we need to prove that the $n$-tuples of the elements of any field $F$ is a vector space over field $F$. Here we need to prove that $(V, +)$ will be an abelian group. Then we need to satisfy the scalar multiplication property, and then we need to check the common properties of scalar multiplication and vector addition. So this is how we'll prove it. 
+
+$n$-tuple elements are $(a_1, a_2, a_3 \dots a_n)$. The $n$-tuple is denoted by $V_n(F)$ or $V_n$. Here $\alpha + \beta$ will be added element-wise. First we'll check if $V_n(F)$ is an abelian group or not. We take three $n$-tuples here and add them. This property can easily be proven and will be associative. For the next property, we take two $n$-tuples for commutative addition. We add $\alpha + \beta$ or $\beta + \alpha$, it'll be the same, and hence it is commutative. 
+
+The additive identity will be $0 = (0, 0, \dots, 0)$, and if we add this to our $n$-tuples, it'll give the same. And when we take the inverse of this $n$-tuple, which will be $(-a_1, -a_2, -a_3 \dots -a_n)$, and when this is added to the $n$-tuple, it'll give the identity, that is $0 = (0, 0, 0 \dots, 0)$. So the inverse element also exists here. 
+
+We take $\alpha$ and $\beta$ as vectors and $a$ as a scalar. First we add $\alpha$ and $\beta$, and then multiply the scalar $a$. So we take $a$ as common and we get $a\alpha + a\beta$. We have $\alpha$; we'll prove that $a\alpha + b\alpha = (a+b)\alpha$. We have $(ab)\alpha$, so $ab$ gets multiplied inside the bracket. We take $b$ out and we get $a(b\alpha)$. 
+
+The element $1$ needs to be the unit element of the field, and for a field, we know that it will satisfy the multiplicative identity. So we'll always get $1 \cdot \alpha = \alpha$. So we have proved everything here, that is abelian group, scalar multiplication, and distributive property. 
+
+First we apply this operation. Now we add these and these values are equal to $0$. The values we get should be the same, but it's not the same here, so the property cannot be satisfied, and hence it'll not be a vector space. If it would have been $(a+c, b+d)$, then it could be a vector space. 
+
+I'll soon be uploading many such videos on vector space about subspaces and their properties.

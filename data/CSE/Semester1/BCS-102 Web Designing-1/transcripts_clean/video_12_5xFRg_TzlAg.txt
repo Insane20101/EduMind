@@ -1,0 +1,13 @@
+In today's video, I will give you an exercise, and whoever solves this exercise, I will give a shoutout to all of them. Write "Challenge Accepted" in the comment section. If you accept my challenge, I will give you a question, and you have to solve it. It will be based on the concepts we have studied so far in the Sigma Web Development course. I am very excited to give you a question; I hope you are equally excited. Let's roll the intro.
+
+I am on my computer screen. As you can see, if you have not accessed the playlist yet, you can click here and bookmark this playlist, or click here and save it. If you haven't accessed the code, it is also updated on GitHub till video 11, and I will keep updating it as the videos move forward.
+
+Now, for the question I want to give you, I will first make a folder. I will name it "video 12". I will click Shift + Right-click and open with Code. I hope everyone accepts this challenge. If you do, I will genuinely appreciate your participation.
+
+I will make `index.html` here. The question is: You are given 12 files – 6 audio files and 6 video files. Design a website using HTML only that shows these 12 files. (Let me toggle word wrap so you can see it clearly.) The files are named: `1.mp3`, `2.mp3`, all the way to `6.mp3` (these are your MP3 files), and `1.mp4`, `2.mp4`, all the way to `6.mp4`. You need to show these 12 files by previewing them on the website.
+
+I hope this can be done; it's a very simple question. Please comment "Challenge Accepted". If you accept this challenge, write "Challenge Accepted" in the comments. Whoever provides their code will receive a shoutout. Those who write "Challenge Accepted" and submit their code will definitely get a shoutout. Please tell me in the comment section if you complete this. I know many people will say it's a very simple problem. One more thing I expect from you is to try and use as many concepts as possible that I have taught you to solve this question.
+
+This was our question for today. I hope you enjoyed it. I will select this and press `Ctrl + /`. What happens when you press `Ctrl + /` is that you can uncomment or comment code. If I press `Ctrl + /`, it uncomments; if I press `Ctrl + /` again, it comments.
+
+You have to complete this website; it's a very simple, straightforward problem that everyone must solve. That's it for this video. Thank you so much for watching, and I will see you next time. Thanks for watching!

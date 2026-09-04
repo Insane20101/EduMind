@@ -1,0 +1,51 @@
+MRU, that is most recently used. In the most recently used method, we replace the page which is used recently, that is, recently used pages in the past—meaning the page which was demanded just now, that page itself we will replace firstly with the fresh page. How? Let's solve it with a question. 
+
+The reference string is given, and the number of frames are 4. Now, whenever the page number 7 comes, that is called a page fault because initially, this frame is empty. All frames are empty, so this is a page fault. What did we do to 7? We called it from the hard disk; that is called the page service. 
+
+Then 0 comes, that is again called a page fault. Then 1 comes, that is again called a page fault because this was also absent. After that 2 comes, so 2 was also absent, what will we call this too? A page fault. 
+
+Next comes page number 0. Is page number 0 present? Yes, it is already present; that is called a hit. 
+
+Now page number 3. Is page number 3 present? No, here page number 3 is not present. So what we have to do according to the most recently used method? First thing you always remember is that it works in the past. LRU and MRU both work in the past; optimal works on the future. 
+
+So we have to check in the past, what we have to check? Among all these four—among 2, 1, 0, 7—which one is recently used, meaning nearest to the page which we have to replace? Just near to that, just before that, which page is there? If that page is present, obviously that will be present, so we have to replace that page. 
+
+So which page is there just before 3? 2, 0. So we will replace 0 with the page number 3, and rest all write as it is. That is called a page fault. 
+
+Page number 0. Is page number 0 present? No, page number 0 is not present. Now what will we do? Just before this, whatever the page was there, we will replace that. So which page was there before this? 3. So we again replaced 3 with 0, that is again called a page fault. 
+
+Next is page number 4. Is page number 4 present? No. So will we bring page number 4 into the main memory and will service the page, and will replace 0 from here because that is the most recently used—that is 0? So we replace 0 with 4, and that is called again a page fault. 
+
+Next comes page number 2. Is page number 2 present? Yes, it is already present; that is called a page hit. 
+
+Next page number 3. Is page number 3 present? No, page number 3 is absent. If page number 3 is absent, we will check in the past which one was used recently. Meaning, the MRU method, actually if we see its principle, its logic, the logic is it replaces that page which the CPU just now, or the page which had such a byte which was called by a CPU just now. So according to this, the page which was called just now, its demand may not be there, or it will sometime in the future. So what it does? The page which just now the CPU used, it simply replaces that page with the fresh page. 
+
+So, over here, to put 3, we will replace 2 because that is nearest, it was the most recently used page. So what is this also? A fault. 
+
+Then 0. Is 0 present? No, so again we will replace 3 with 0, and that is called a fault. 
+
+Then again, what is next? 3. Is 3 present? No, 3 is again absent. So which was used before 3? 0. So again I replaced 0. That is called a page fault. 
+
+Now next is page number 2. Is page number 2 present? No, page number 2 is not present, so we will replace page number 3, and there we will put 2. That is again called a page fault. 
+
+Then page number 1. Is page number 1 present? Yes, it is already present, so what we can call this? A page hit. 
+
+Next page number 2. Is page number 2 present? Yes, page number 2 is already present. That is again called a hit. 
+
+Next page number 0. Is page number 0 present? No, so what we have to replace? 2, which was the most recently used page. So we replaced this with 0, rest copied as it is. That is again called a page fault. 
+
+Next. Is page number 1 present? Yes, it is already present, so what we will call this? A page hit. 
+
+Next page number 7. Here page number 7 is absent, so I will have to service 1, which is most recently used. After removing that, I am putting 7 and... sorry, here 7 is already present, so there is no need to put 7. That is a page hit because 7 is already present. Just copy here as it is 0, this we write it as it is. That is called a hit. 
+
+Next is page number 0. Is page number 0 present? Yes, it is already present. That is again called a page hit. 
+
+Next is page number 1, that is the last page. Is it present? Yes, it is again already present. So this also, what we will call? A page hit. 
+
+So this is how the most recently used method works: whichever page was demanded recently, whichever page the CPU called just now, we will replace with that page. 
+
+So we will count: one, two, three, four, five, six, seven... nine, ten, eleven, twelve. So how many page faults are there? I have 12 page faults. And page hits... I think there must be 8: one, two, three, four, five, six, seven, eight. Yes, page faults are 12, and page hits are 8. 
+
+So this is how the most recently used method works. You can try it with the number of frames that is 3—meaning here we have taken 4 number of frames, so you can try this with the number of frames that is 3. 
+
+So this is all about the MRU. Thank you.

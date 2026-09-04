@@ -1,42 +1,76 @@
 from typing import Optional, List, Dict, Any
-from .vector_store import get_chroma_client, get_langchain_vectorstore
+from qdrant_client.http import models
+from .vector_store import get_qdrant_client
+from .embedder import generate_embeddings
 
 def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6) -> List[Dict[str, Any]]:
     """
-    Embeds query and retrieves matching document chunks from the strictly subject_id-scoped Chroma collection using LangChain.
+    Embeds query using OpenAI text-embedding-3-small and retrieves matching document chunks
+    from the strictly subject_id-scoped Qdrant Cloud collection.
     """
-    client = get_chroma_client()
+    if not subject_id or not query or not query.strip():
+        return []
+
+    subject_id = subject_id.strip().upper()
+    client = get_qdrant_client()
+
+    if not client.collection_exists(subject_id):
+        return []
+
     try:
-        collection = client.get_collection(name=subject_id)
-        if collection.count() == 0:
+        # 1. Generate 1536-dimensional query embedding via OpenAI
+        query_embeddings = generate_embeddings([query])
+        if not query_embeddings or not query_embeddings[0]:
             return []
-    except Exception:
-        return []
+        query_vector = query_embeddings[0]
 
-    try:
-        vector_store = get_langchain_vectorstore(subject_id)
-        where = {"unit": unit_id} if unit_id else None
-        
-        results_with_score = vector_store.similarity_search_with_score(
-            query=query,
-            k=top_k,
-            filter=where
+        # 2. Metadata Filter: Unit scoping if specified
+        query_filter = None
+        if unit_id and unit_id.strip() and unit_id.strip().lower() != "all":
+            query_filter = models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key="unit",
+                        match=models.MatchValue(value=unit_id.strip())
+                    )
+                ]
+            )
+
+        # 3. Vector Similarity Search in Qdrant Cloud
+        search_result = client.search(
+            collection_name=subject_id,
+            query_vector=query_vector,
+            query_filter=query_filter,
+            limit=top_k
         )
+
+        chunks = []
+        for point in search_result:
+            payload = point.payload or {}
+            text = payload.get("text") or payload.get("page_content") or ""
+            chunk_id = payload.get("chunk_id") or str(point.id)
+            chunks.append({
+                "chunk_id": chunk_id,
+                "similarity": float(point.score),
+                "text": text,
+                "metadata": payload
+            })
+
+        chunks.sort(key=lambda x: x["similarity"], reverse=True)
+        return chunks
     except Exception as e:
-        print(f"  LangChain retrieval error: {e}")
+        print(f"Qdrant retrieval notice for '{subject_id}': {e}")
         return []
 
-    chunks = []
-    for doc, dist in results_with_score:
-        sim = 1.0 - (dist / 2.0)
-        chunk_id = doc.metadata.get("chunk_id") or f"{doc.metadata.get('source_file')}_{doc.metadata.get('chunk_index')}"
-        chunks.append({
-            "chunk_id": chunk_id,
-            "similarity": sim,
-            "text": doc.page_content,
-            "metadata": doc.metadata
-        })
-        
-    chunks.sort(key=lambda x: x["similarity"], reverse=True)
-    return chunks
+def retrieve_context(query: str, subject_id: str, unit: Optional[str] = None, top_k: int = 6) -> List[Dict[str, Any]]:
+    """
+    Alias wrapper for retrieve() to support kwarg parameter ordering (query, subject_id, unit, top_k).
+    """
+    return retrieve(subject_id=subject_id, unit_id=unit, query=query, top_k=top_k)
+
+def query_vector_store(query: str, subject_id: str, top_k: int = 6) -> List[Dict[str, Any]]:
+    """
+    Alias wrapper for general query vector store calls without unit filtering.
+    """
+    return retrieve(subject_id=subject_id, unit_id=None, query=query, top_k=top_k)
 

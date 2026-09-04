@@ -1,0 +1,31 @@
+Hello friends, welcome to Gate Smashers. The topic today is asymmetric key cryptography, which we can also call public key cryptography. 
+
+There is a major difference between symmetric and asymmetric keys. Symmetric means using the same key; we encrypt with the same key and we decrypt with that same key. This is the biggest challenge in symmetric cryptography: if the same key is used for both encryption and decryption, how will the sender securely share it with the receiver? They have to find a way to share the key among themselves. In asymmetric cryptography, however, we use two different keys: one public key and one private key. 
+
+In a network, all the participants will generate two keys: one public and one private. For example, if we have two people, A and B, A will generate his own public key and private key, and B will generate his own public key and private key. Similarly, everyone in the network will first generate their public and private keys. 
+
+How are these public and private keys related to each other? If you encrypt a message with a person's public key, then it can only be decrypted with that same person's private key. Conversely, if you encrypt a message with a private key, it can be decrypted with the corresponding public key. These two keys are mathematically related: if you apply a lock with the public key, it opens with the corresponding private key, and if you apply a lock with the private key, it opens with the corresponding public key.
+
+What do "public" and "private" mean in this context? A public key is known to everyone. I can either broadcast my public key to the entire network, or register it with an authorized, certified third party. Anyone who wants to communicate with me can obtain my public key from that trusted third party. On the other hand, a private key must be kept secret and never shared with anyone.
+
+Let us look at how communication and encryption work when A and B want to communicate. We have four possible cases based on the keys we can use. Let us say A wants to send a message to B.
+
+*   **Case 1:** A encrypts the message with A's own public key and sends it. Think about what happens here: if A encrypts the message with A's public key, how will it be decrypted? As established, if a message is encrypted with a public key, it must be decrypted with the corresponding private key. Once A puts this lock on the message and sends it, no one can open it—not even B—because it requires A's private key, which only A possesses. Therefore, we cannot use this case.
+*   **Case 2:** A encrypts the message with B's private key and sends it. This case is invalid because A does not have access to B's private key; only B has B's private key. Thus, we cannot use this method.
+*   **Case 3:** A encrypts the message using A's own private key and sends it. When B receives this message, B can open it using A's public key. However, we must be careful: B is not the only one who has A's public key. Other users like C, D, and E also have it. This means anyone on the network can intercept and decrypt the message. Because of this, confidentiality is not achieved, making this case invalid for secure encryption.
+*   **Case 4:** A encrypts the message using B's public key (the receiver's public key) and sends it. To do this, A gets B's public key, which is either broadcasted or retrieved from a certified third party. A encrypts the message with B's public key and sends it. How will B open it? B will decrypt it using B's private key. Since only B possesses B's private key, even if unauthorized parties like C, D, or E intercept the message on the way, they cannot open it. 
+
+Therefore, Case 4 is the correct and most important method used for encryption. From an encryption standpoint, the rule is to always use the receiver's public key to encrypt the message, and the receiver will decrypt the message using their own private key. This is the core concept of asymmetric key cryptography.
+
+In real-life applications, we use RSA, which is one of the most important asymmetric algorithms. It is named after the three scientists who created it: Rivest, Shamir, and Adleman. It is a highly secure asymmetric algorithm, and questions about it frequently appear in GATE and UGC NET exams.
+
+Let us also look at a key calculation point. In symmetric-key cryptography, if $N$ devices are connected to each other, the number of keys required is calculated using the formula:
+$$\text{Number of keys} = \frac{N(N-1)}{2} \text{ (or } nC_2\text{)}$$
+
+In asymmetric cryptography, the formula to find the total number of keys is:
+$$\text{Number of keys} = 2N$$
+where $N$ is the number of nodes or devices. 
+
+For example, if we have four devices (A, B, C, and D) maximally connected in a complete graph, each device will generate two keys (one public and one private). A will have two, B will have two, C will have two, and D will have two. This results in a total of 8 keys ($2 \times 4 = 8$). This is an important formula to remember, as it has appeared in UGC NET and is highly relevant for upcoming exams.
+
+This covers the basics of asymmetric key cryptography. If you like this video, please like it, share it, and subscribe to my channel. Thank you!

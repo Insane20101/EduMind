@@ -1,0 +1,66 @@
+**Introduction to DC Machines**
+
+Hello everyone, welcome to the Kidney Plus third engine and basic electrical engineering module. In this first lecture, we will discuss DC machines. If you haven't seen my introductory video on this topic, I recommend you check it out. In that video, I provide an overview of what we will cover in this series, including the content and steps involved. 
+
+Let's start with the introduction to DC machines. It's essential to understand the basics before diving into the specifics. Many students tend to skip the foundational concepts and jump directly into the working of machines, which can lead to confusion. Therefore, I want to emphasize the importance of grasping the elementary level of these concepts to better understand the higher-level topics.
+
+The subject I have chosen, basic electrical engineering, is crucial because I want you to have a solid foundational knowledge. I believe that if you stay with me throughout this video, you will develop a strong connectivity that will enhance your understanding beyond imagination. 
+
+**What is a Machine?**
+
+Let's begin by defining what a machine is. In general terms, a machine is a device that reduces our effort and takes on some of the workload. For example, a washing machine or a dishwashing machine performs tasks that would otherwise require manual effort. 
+
+From an electrical engineering perspective, machines can be classified based on their working principles. We can categorize them into static machines, which remain stationary (like transformers), and rotating electrical machines, which are the focus of this module. 
+
+**Classification of Machines**
+
+Rotating electrical machines can be further divided into two main categories: motors and generators. 
+
+1. **Motors**: These are devices that convert electrical energy into mechanical energy. For instance, a DC motor converts electrical energy into rotational mechanical energy.
+  
+2. **Generators**: Conversely, generators convert mechanical energy into electrical energy. 
+
+Both motors and generators operate on the principle of electromechanical energy conversion. 
+
+**Types of Rotating Electrical Machines**
+
+Rotating electrical machines can be classified based on their power supply type into AC (Alternating Current) and DC (Direct Current) machines. 
+
+- **AC Machines**: These machines operate on alternating current and include various types of motors and generators.
+  
+- **DC Machines**: These machines operate on direct current and can be further classified based on their winding types. 
+
+**DC Machines Classification**
+
+In the context of DC machines, we can categorize them based on their winding types:
+
+1. **Separately Excited Machines**: These require an external power source for excitation.
+  
+2. **Self-Excited Machines**: These generate their own excitation voltage. This category can be further divided into:
+   - **Shunt Wound Machines**: Where the field winding is connected in parallel with the armature.
+   - **Series Wound Machines**: Where the field winding is connected in series with the armature.
+   - **Compound Wound Machines**: A combination of both series and shunt windings.
+
+3. **Permanent Magnet Machines**: These use permanent magnets for field excitation.
+
+**Conclusion**
+
+Understanding the classification and functioning of DC machines is crucial for grasping the concepts of electrical engineering. In our upcoming lectures, we will delve deeper into each type of machine, focusing on their applications, advantages, and operational principles. 
+
+Stay tuned as we explore these topics further, and feel free to take notes or screenshots of the classifications and definitions provided. This foundational knowledge will be vital for your understanding and success in this subject.
+
+मशीनों के बारे में हमने जो देखा, अब हम एडवांटेजेस और एप्लीकेशंस पर बात करते हैं। डीसी मशीनों के संदर्भ में, हमें यह समझना होगा कि ऐसी मशीनें हमारे दैनिक जीवन में कई एप्लीकेशंस में उपयोग होती हैं। हालांकि, डीसी मशीनों के कुछ विशेष एडवांटेज भी हैं।
+
+डीसी मोटर की सबसे बड़ी खासियत यह है कि यह कम स्पीड पर उच्च टॉर्क प्रदान कर सकती है। यह विशेषता इसे कई एप्लीकेशंस में उपयोगी बनाती है। उदाहरण के लिए, जब हम बात करते हैं कि डीसी मोटर का उपयोग कहां किया जा सकता है, तो हमें यह समझना होगा कि इसकी विशेषता इसे विभिन्न क्षेत्रों में उपयोगी बनाती है।
+
+डीसी मोटर का एक महत्वपूर्ण उपयोग मेडिकल उपकरणों में होता है। इसके अलावा, उच्च स्पीड पर काम करने वाले उपकरणों में भी इसका उपयोग होता है। उदाहरण के लिए, टॉर्च लाइट में डीसी मोटर का उपयोग किया जाता है, जहां उच्च स्पीड की आवश्यकता होती है।
+
+डीसी मोटर का एक और उदाहरण है आरसी ड्रोन। इन ड्रोन में ब्रशलेस डीसी मोटर का उपयोग होता है, जो उच्च स्पीड पर काम कर सकती है। इनकी स्पीड लगभग 15,000 RPM तक हो सकती है, जो इन्हें बहुत प्रभावी बनाती है। 
+
+डीसी मोटर का उपयोग एलीवेटर्स में भी होता है। एलीवेटर्स में हमें स्थिर स्पीड की आवश्यकता होती है, और डीसी मोटर इस आवश्यकता को पूरा करती है। इसके अलावा, रोबोटिक सिस्टम में भी डीसी मोटर का उपयोग होता है। 
+
+इलेक्ट्रिक लोकोमोटिव में भी डीसी मोटर का उपयोग होता है। यह स्पीड को नियंत्रित करने में मदद करती है और इसे विभिन्न प्रकार के ट्रेनों में लागू किया जा सकता है। 
+
+डीसी जनरेटर भी महत्वपूर्ण हैं। यह मैकेनिकल एनर्जी को इलेक्ट्रिकल एनर्जी में परिवर्तित करता है। इसका उपयोग इलेक्ट्रोप्लेटिंग और इलेक्ट्रिक वेल्डिंग में होता है। 
+
+इस वीडियो में, हमने डीसी मोटर और जनरेटर के एडवांटेजेस और एप्लीकेशंस पर चर्चा की है। अगले वीडियो में, हम डीसी मशीनों के कंस्ट्रक्शन और वर्किंग के बारे में विस्तार से बात करेंगे। धन्यवाद!

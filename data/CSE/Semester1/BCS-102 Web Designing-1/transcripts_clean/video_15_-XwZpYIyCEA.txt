@@ -1,0 +1,51 @@
+In this video, we will see how to add CSS to an HTML page. There are three ways to add CSS to HTML:
+
+1.  **Inline CSS:** This is used as a `style` attribute and added directly to HTML elements.
+2.  **Internal CSS:** This involves putting a `<style>` tag within the `<head>` section of an HTML page and placing the CSS rules inside it.
+3.  **External CSS:** This is the most commonly used method, where you create a separate `.css` file and link it to your HTML page.
+
+I will tell you very closely what the difference between the three is, when to use each, and when to avoid them. I am very excited. Do like this video, and in the comment section below, don't forget to write "Sigma Batch Op." Let's go to the computer screen.
+
+I told you there are three ways to add CSS to any HTML page. Here, the first thing I will do quickly is make a folder named "video15." I will open it by right-clicking and then open it with VS Code. Inside, I will create an `index.html` file and add a boilerplate template. If you haven't accessed the playlist yet, please do; accessing the playlist is very important.
+
+Now I will come back to my `video15` HTML code. Let's say we have a basic HTML structure. I have written "I am a good boy" and after that, I have put an `h1` here, writing "About Me." I have also put "I am a good boy" in a `div`. Suppose I have also added a paragraph: "Everyone is good in some way or another." I will click on "View" and then "Toggle Word Wrap." I will go to the Command Palette and toggle screencast mode.
+
+Now listen to me carefully. If I have to style this here, there is a very shortcut method, which I also call the "desi method" – a very quick and dirty way. I will put a `style` tag here. First of all, let's preview it and see how it looks. This is how it looks. I have zoomed in to show you, but you will see it like this, which is fine. But I am zooming in so you can see it clearly.
+
+Now, suppose I want to make the background yellow and the font red for the "About Me" heading. So, in a very quick and dirty way, I will put a `style` attribute here. After this, I will write `color: yellow;` and you see VS Code is helping me completely; it is supporting me in writing. Whatever I am thinking, it is giving me an auto-complete. That's one of the reasons we are using VS Code. If you go to Replit or any online IDE, you get this kind of support. This is the reason we don't do coding in Notepad. In the beginning, many people asked me why we don't do it in Notepad and why we do it in this environment – what's in this that isn't in Notepad? So, this is fine.
+
+Now, let's say I want to add one more property. First, I will show that this property has been applied. You see its color has become yellow. Now, let's say I want to make its background red. I will add `background-color: red;`. So, whatever I want to do with the help of CSS for individual elements, I can do that using this method.
+
+However, this is not considered a good practice. Why is it not considered good? I will tell you in a while. But first, I will tell you two more ways of adding CSS to a webpage. I will write the title of this as "Three ways to add CSS to HTML."
+
+Okay, so our first way, which I have written, I will use a `div` here and an ordered list. I will write another list item, and the first method is Inline CSS. I have told you about inline CSS. This is called inline CSS: to grab any element and, using the `style` attribute, write your CSS directly within that element. The CSS will then be applied to that specific element. So, until now, we have learned about inline CSS as the first method.
+
+Now I will tell you the second method. Here I will write `li`: The second method is Internal CSS.
+
+The second method says, "Don't do it like this." I will replicate this and remove this `style` attribute. Instead, it says, "Don't do it like this; write a `<style>` tag." Listen carefully. Put a `<style>` tag in the `<head>` section, and write your selector and declaration there. So, our selector is `h1`. I will say, "For all the `h1` elements on this page, make the `background` yellow and the `color` red." I think I made the color yellow earlier, so I will make the `color` yellow and `background` red again. The effect will be the same as before.
+
+But how is this different from inline CSS? With inline CSS, I have to add `style` to every element individually. Do you understand? Here, if I have 100 `h1`s on my page, I can style them all automatically with internal CSS. But with inline CSS, I would have to write `style="..."` again and again for each `h1`. I don't want to do that repeatedly.
+
+Okay, let's say I did it again and again; I have put `style="..."` in every element. Now, let's say I have to change it. For some reason, my boss told me that in our production website, the background color should be maroon, not red. So, what will I do? Will I go to every element and change "red" to "maroon" one by one? No. I want to bulk edit. If I am using internal CSS and not inline CSS, then I can bulk edit. I just have to change "red" to "maroon" in one place, and all the `h1` elements on my page will become maroon. But if I have written `style="..."` individually in every element, then I will have to find all those elements first, and then I will have to change them individually. That's why inline CSS is not used as much. But you should know what inline CSS is, why it exists, and how you can use it.
+
+You will typically use internal CSS, or the most widely used method is external CSS. I will tell you about that now. The idea of external CSS is that if you are writing internal CSS, your `<style>` tag will grow very large. Suppose I am writing a lot of CSS here; your HTML file will keep on growing. So, why not write that CSS in a separate file? This is the idea of external CSS: whatever you are writing here, don't write it here; write it in a file.
+
+So, we will use a `link` tag. You can type `link:css`, and this shortcut will appear. I am saying that I have written my CSS in `style.css`. Go and see there. I have done something like this.
+
+Here, I will show you that I can write `style.css` like this. As soon as I write `style.css` here and put these styles into it, I will show you that the styles are removed from my page – by the way, there is no background red, nothing yellow. But as soon as I add the link here, this `style.css` is linked. So, what does the `link` tag do? It says, "Link `style.css` as a stylesheet." What will happen then? This CSS will be added to my page. It's as simple as that. I hope you have all understood this very clearly – what the difference is between inline CSS, internal CSS, and external CSS.
+
+Now I will tell you all when you have to use which one.
+
+*   **Inline CSS:** You should try not to use inline CSS in ideal scenarios. While inline CSS can sometimes be automatically generated (I will tell you about this later, so don't get confused now), as a beginner, you should understand that you should avoid using inline CSS.
+*   **Internal CSS:** You will use internal CSS when your webpage is small and you want to write CSS very lightly. I will tell you a very good use case for internal CSS: when I used to write websites in Bootstrap, all the styling on my website was done by Bootstrap, but sometimes I had to do tweaks. Then I used internal CSS.
+*   **External CSS:** You will use external CSS when you are making a big, production-grade website. In most cases, if you're working on a serious project and making a production-grade website, you will want to use best practices. Using an external stylesheet is considered a good practice. Why? Because you can detach a stylesheet from an HTML file; you can also attach it. You can tell your colleagues to work on the stylesheet while you work on the HTML. You can write styles, and I will work on HTML, so you can collaborate very well. Such things become very easy if you use an external stylesheet. In most production-grade projects and big websites that have been written, whether it is Netflix, YouTube, Quora, Facebook, Instagram, or WhatsApp Web, in most cases, you will find external stylesheets.
+
+Let me give you a quick revision:
+
+*   **Inline CSS** means you have put the `style` attribute in the element itself and wrote CSS there.
+*   **Internal CSS** means you have put a `<style>` tag in the `<head>` and wrote CSS within it.
+*   **External CSS** means you have made a `style.css` (or any name `.css`) file and linked it to your HTML file.
+
+I hope you have understood the difference between the three. I know that I am going a little slower because many people are beginners in this course. I am telling you again that we are going to raise the bar like anything. We are going to make very dangerous production-grade websites in the coming videos. So, whether you guys will be excited or not, do tell me in the comment section below. Now, if you have not accessed this playlist, do access it. I will keep updating everything in the source code; don't worry about it.
+
+That's all for now in this video, guys. Thank you so much for watching this video. And I will see you next time!

@@ -1,0 +1,51 @@
+Hello friends, welcome you to Gate Smashers. In this video, I am going to explain the difference between Delete, Drop, and Truncate, which is an important topic of SQL. This is important from the point of view of competitive exams, your college or university level exams, and the placement point of view. Over there also it is very important because maximum companies always focus on the DBMS, and the most important topic in DBMS is SQL. So in SQL, we are discussing over here the difference between delete, drop, and truncate. 
+
+We will start, first of all, with delete. Now, what actually delete is? Delete is a DML command, which means it comes in Data Manipulation Language, where we have select, delete, update, and insert commands. So it comes under DML. 
+
+Whereas drop, that comes in DDL, that is Data Definition Language. When we create a schema or table, then creation is there. Alter, drop, this generally comes in DDL, i.e., Data Definition Language. And the truncate, that also comes under DDL command, i.e., Data Definition Language. So these both are part of DDL, but delete is DML. But the most important point is what is their functionality? What do they do? 
+
+So first of all, we will start from delete. What do we do in delete? In delete, we delete the table. Let's suppose we have a table `Student`, and in the student table, let's suppose we have `Id` and we have `student name`. I am taking only two columns; you can take as many columns as required. So over here, there is `Id` and `name`. Let's say we have two tuples: `1, A` and `2, B`. In this way, we have a table `Student`, in which we have two attributes: `Id` and `Name`. And let's say we have three tuples: `1, A`, `2, B`, and `3, C`. 
+
+Now, if over here we talk about delete, then what is the functionality of delete? If I want to delete rows of this table, means if I want to delete tuples of this table, then what will I use? Delete command. Which means, let's suppose I want to delete this complete row, or I want to delete this complete row, or if I want to delete this complete row, then what will I do? I will use the delete command. And what command will we write? `Delete from table name`. Which means, in this, if we are taking the example of student, then what will you write? `Delete from student`. 
+
+Now, all the commands that I am writing over here, all the programming that I am writing over here, that I am writing corresponding to Oracle. Oracle 9i, Oracle 10g, 12c, any Oracle version you are using. So in that, all these commands will run as it is. In MySQL and SQL Server, there is a bit difference of syntax, but the logic is as it is same. 
+
+So if you will do `delete from table name`, then what will happen? Whole table's all the rows will be deleted. All the rows. This also will be deleted, this also, and this also. So what will be the output over here if you will do `delete from student`? `3 rows deleted`, because all three rows will be deleted. 
+
+Next, we will come to drop. What is the significance of drop? What do we do in drop? `Drop table table name`. Let's say `drop table table name`. I have taken it as `student`, so you take `drop table student`. 
+
+Now, what will happen from drop? With drop, whole schema, whole structure will be deleted. Which means the whole structure only will be over. In delete, just rows were deleted. This row, this row, and this row were deleted. So if after deleting, you describe, which means if you want to see table structure, then if you will do `desc student`, then what will you get? You will get `Id`, `name`. You will not get any row, but you will get columns that it is `Id` and `name` in this table, and datatype of `Id` and `name` will be shown. 
+
+But if you drop, then after you have to consider that nothing is left. Means table's structure is also gone. Now over here, there is no student, no `Id`, no `name`, no data, nothing. Now nothing exists. 
+
+So drop is quite a dangerous command. Dangerous in the sense of that's why it is a DDL command. Its authorization is generally only with DBA, that is Database Admin. Because if you will delete the table, then rows will be automatically deleted. But in delete, only rows are getting deleted; your table structure is there as it is. So this difference that we get between delete and drop. 
+
+Now we will come to truncate. So what is the functionality of truncate over here? Truncate also deletes rows. So how is it done? `Truncate table name`. Like over here, I have taken the student table, so I am writing a direct command: `Truncate student`. Which means it is to be truncated. Table is to be deleted. But what will truncate do? Truncate will also delete all the rows. Which means this row, this row, and this row, all the three tuples, your all three rows will be deleted. 
+
+Now over here, many times it comes: what is the difference between delete and truncate? Drop can be understood, that rows will also be deleted, whole table will be deleted, all the attributes will be automatically over, nothing will be left. If after drop you describe student, then you will get an error that there is no student object, because there is no student. 
+
+But if you will truncate, then after truncate if you will describe, then after describing, as it is as you get output of delete—`Id` and `name`—which means columns will be shown to you, but tuples will not be shown. So over here, the question comes that what is the difference between these two? 
+
+The main difference between both is that truncate deletes all the rows in one time only. Which means it will apply a lock on your whole table, then all the rows in that table—1000, 2000, 15000, 20000, all the rows—all will be deleted in one go. But in delete, what is done? In delete, we delete rows one after the other. Which means over here, table will be locked, but if you will do `delete from student`, then all the rows will be deleted. 
+
+But with delete, there is an option of `where` also. How? `Delete from table name`. `Delete from student`, as I have taken the example of student. Let's suppose I just want to delete the first row. Which means that I want to delete just this row. I don't want to delete the remaining two rows. Then this flexibility also should be there. Suppose you are working on a student database, and in the student database, there are 10,000 student records. Then it is not necessary that every time you will delete all the rows. It is possible 2-3 students have left and went. They have left university or college, then you want that their data should be deleted. Now, deleting their data does not mean that you will delete all the rows. No, you will just delete specific rows. 
+
+So to delete a specific row, where is the option? It is in delete. How is it? `Delete from table name student where Id=1`. So if you will do `Id=1`, then what will happen? If you will execute this, then this row will be deleted, but the remaining rows are as it is. So in delete, there is an option that if you will do `delete from student`, then all the rows will be deleted. If you will use `where`, the specific row that you want to delete, that you can delete. Which means you can give the condition over here. There is no condition in truncate. 
+
+So what happens with that? So you can say that delete is somewhere slower. Why it is slower, and why is this faster? I will tell you the reason for that also. Because truncate, it deletes all the rows in one go. It locks the whole table, and all the rows delete in one time. 
+
+Now, if you will rollback, let's suppose you did rollback before commit. If you want to rollback the student table, then it is not possible. This is not possible. What is the reason? That over here, no log is made. What is the meaning of log? That no such file is made that temporarily stores what you have deleted or what you have removed. We can bring that back. 
+
+But in delete, we have that option that if you delete, and then if you want to rollback, let's suppose you rollback. There is no need to write student. If you do rollback directly, then also work will be done. But remember, rollback should be before commit. Because if it is committed, then everything is permanently saved in the database. So if before commit you do rollback, then your this row will come back again. Which means its log is created. 
+
+What actually log is? That whatever is your history, whatever you are working in the browser, in the history, its log is being made. So what happens with that log? You can recover the data. You have the option to recover. So somewhere, it will put data in log, and then it will delete it from the table. So over here, the procedure is a bit slow. Because over here, first I am putting it in log, and then I am deleting. In truncate, without seeing anything, I am directly deleting. 
+
+So, as in your table, if we talk about your computer, so if you do `Shift + Delete`, then `Shift + Delete` means you are doing truncate. You have permanently removed it; it has not gone in the recycle bin. If you delete it, then what does that mean? That it is still in the recycle bin. So you can recover it, you can restore it. 
+
+So this procedure is somewhere flexible, but due to that, it becomes slower. I have told you the reason: that first, it will put it into the log, and then it will delete it, so that I can do rollback, I can recover. So due to that, it is slower. But this is faster: it will delete all the rows in one go only. 
+
+We cannot put any `where` condition with truncate. 
+
+And if we talk about drop, then drop I have told you earlier, that whole table only will be removed. Can you rollback? No. Over here, no rollback is allowed. Your whole table will be removed. 
+
+So this is basically the difference between delete, drop, and truncate. Thank you.

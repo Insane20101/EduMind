@@ -1,0 +1,45 @@
+Hello. Today, we wish to map out, as it were, with doechigi, explained conditional Perla. What is init operation, and second, how the regular languages are closed under init operation? 
+
+To start the video subsequently, init operation kya hota hai? Init matlab initial, ya fir prefix. Aur usko hum define kaise karte hain? It is the set of all prefixes of $w$. Matlab, jitne bhi hamare paas string hogi, aur woh string belong karegi language $L$ mein. Ab us language ke andar jitne bhi strings hai, un sabhi strings ke andar jo bhi prefixes hai, starting se lekar andar tak, woh sare prefixes likhna, that is what the init operation is. 
+
+Let's for some example, language. Language finite, infinite, kaise bhi di ja sakti hai, but obviously agar infinite dengi, toh usmein number of strings jo hai woh infinite, toh humko kahin na kahin koi aisi condition deni padegi, jiske according aap final answer nikal sake. Lekin agar language finite hai, finite ka matlab hai, jaise main yahan pe example liya, language $L$ given by the two strings, $AB$ aur $BA$. 
+
+Toh yahan pe hamare paas kya hai? Set of all prefixes of $w$. Toh yahan pe $w$ kya hai? Do $A, B$ aur $BA$ belongs to $L$. Toh dekho, yeh dono jo hai, woh language ko belong kar rahe hain. Ab inke corresponding prefixes likhna hai, that is what the meaning of init operation. 
+
+Toh dekho, prefixes ko likhenge, agar $AB$ ka prefix likhna ho, toh kya likhoge? Sabse pehle prefix mein aayega $\epsilon$ (epsilon), matlab kuch nahi. Fir pehla alphabet aayega, $A$. Fir doosra aayega, $AB$. 
+
+Kyunki agar aapko string do, string ke agar aapko prefix likhna hai, toh simple sa matlab hai, pehle epsilon prefix ke liye likhoge, ya fir pehla doosra, fir teesra. Is tarike se aapko yeh saare likhte jana hai. 
+
+Toh yahan pe mere paas $AB$ mein teen aate hai, $\epsilon$, $A$, $AB$. Ishi tarike se agar main $BA$ ka nikaalun, toh $BA$ mein kya aayega? $\epsilon$, $B$, $BA$. 
+
+Ab yeh dono ka union likh do. Matlab jo common hai, jo duplicate hai, ek baar likh do, otherwise, jo hai woh as it is likh do. Toh yahan pe agar iska jo hai init operation, toh iska answer kya aayega? $\epsilon$, $A$, $AB$, $B$, $BA$. 
+
+Main likh raha hu, order matter nahi karta, but aapko yeh pata hona chahiye ki number of jo hai final answer aa gaya. Jaise one, two, three, four, five. Toh yahan pe paanch strings aa rahi hai. Is tarike se init operation nikalte hain. 
+
+Next, yeh hai, important hai ki whether regular languages are closed under init? Yes, regular languages are closed under init. Kaise prove karte hain isko? Let's, hum isi language ka example lete hain. Is language ke liye obviously, language jo hai woh ek regular language hai, kyunki humne padha tha iske bare mein. 
+
+Closed ka matlab kya hai? Ki humne regular language set liya, uska init nikala, aur check kara ki kya init bhi regular language hai ya nahi? So dekho, hamare paas jo language thi, woh thi $AB$ or $BA$. 
+
+Toh iske liye DFA design kar lo. DFA design karna toh bahut hi easy hai. $A$ aur $B$ ke liye hum design karenge. Pehle $A$ aur $A$ ke baad mein $B$. Isko humne final state automaton aur isko naam de diya, let's say, Q0, Q1, Q2. Kisi ka bhi naam de sakte hain. 
+
+Then, hum kar sakte hain yahan pe ek state banate hain, let's suppose ek aur $A$, aur $A$ ke baad mein yeh. 
+
+Toh, dekhoge, $AB$ select ho raha hai. Matlab $AB$ final state pe ja raha hai, toh $AB$ select ho jayega. $BA$ doosra hai, toh $BA$ ja raha hai, toh $BA$ mera kya ho jayega, yahan pe accept ho jayega. 
+
+Toh, $AB$ accept hoga, $BA$ accept hoga. DFA mein aapko last up karna filling the blanks. Filling the blanks, sabse log, jaise maine previous videos mein bhi explain kiya hai ki DFA kaise design karte hain. Woh video agar aapko dekhna hai, toh aapko description box mein uska link mil jayega. Aap please woh check kar lijiye. 
+
+Filling the blanks bol diya, ek aur yahan pe dikha dijiye, chaliye. Hamare paas doon alphabet hain, input alphabet hain $A$ and $B$, toh dono ke liye design karna hai. $AB$ ke liye chal raha hai, $A$ ke liye chal raha hai, $B$ ke liye chal raha hai, $A$ ke liye, $A$ ke baad aapko kya karna hai, ek trap state jo banana padega, $A$ ke liye, woh jo hai aapka trap state mein chale jana. 
+
+Then, yahan pe dekho, $A$ ke liye toh idhar gaya, $B$ ke liye agar hum denge isko trap state mein, yeh bhi is state pe chale jayega. Toh $AB$, $BA$ ke alawa jitni bhi bachi hui string hai, woh sab accept nahi hoga, aur woh sab kahan jayegi? Final state pe. 
+
+A $AB$ mein agar $A$ aa raha hai, is tarike se, toh maine trap state jo hai woh bana diya. Toh is tarike se DFA aap simply design kar sakte ho. 
+
+Toh DFA agar $AB$ aur $BA$ ke liye lekin agar aapko init ke liye design karna hai, toh kaise? Init ke liye agar aapko check karna hai, init ke liye agar aapko DFA banana hai, toh aapko kya karna padega? Jitni bhi non-final states hain, sabko final, trap ke alawa jitni bhi non-final states hain, unko kya do, final bana do. 
+
+Toh yeh non-final hai, isko final bana do. Yeh non-final hai, isko final bana do. Yeh toh already final hai, isko final rehne do. 
+
+Toh isko bhi bana lo, isko bhi bana lo. Jo state unreachable hain, dekho final state se unreachable hai, iske upar se koi aa rahi hai, jo saari iske taraf aa rahi hai, matlab yahin se aap jitni accept ho raha hai, that is a trap state. Iske liye kuch nahi karna, isko hum kya karenge hum, humne yahan pe banana hai isko. 
+
+Yeah, saari final states mein bana di. Ab dekho, $\epsilon$, yeh se $\epsilon$ select ho rahi hai, $A$ ke liye yahin se $A$ ke liye idhar aa sakti hai, $AB$, $AB$ toh final accept hoga hi, $B$ ke liye yahin se $B$ aa sakti hai, $BA$ toh dekho, $B$ aur $A$ yeh state yahin se accept kar sakti hai. 
+
+So, this is how you have to design the DFA. Toh init ke liye, jab aap DFA bana do, toh aap keh sakte ho ki, yes, regular languages are closed under init operation. Thank you.

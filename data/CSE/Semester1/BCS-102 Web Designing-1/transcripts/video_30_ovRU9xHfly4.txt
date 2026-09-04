@@ -1,0 +1,57 @@
+Sometimes when you make templates, you want to put some variables in them. For example, suppose you have made a website whose theme is a little blackish. Now you want to convert it into a red color theme or a blue color theme. You can do this by changing the value of just one variable. This is possible through CSS variables. 
+
+What are variables? Why do we use them? How do we use them? I will explain this in this video. With high energy, like this video and write "sigma batch op" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+If you have not yet accessed the IGMO web development course, then do it. Today we are going to learn about CSS variables. If you do programming, then you must have heard a lot about variables in programming languages, and the role of variables here is almost the same.
+
+Let's make a folder called "video 30." Here, I will create a folder called "video 30," and we are going to open VS Code in it. The first thing I am going to do is put a boilerplate template here, and I will write "CSS variables." I will definitely include a style tag here. 
+
+I am writing inline CSS; however, you should try not to write inline CSS. Make external stylesheets whenever you are making production websites. But worry not, I will show you how to make production websites, and from there, you will get a better idea of how to create websites.
+
+Let's say I have a div, and let's say it's a navbar. I will put a `<ul>` in it, and inside that, I will add `<li>` elements. I will write "Home" here, and then I will write "About" and "Contact." I will not waste time making a beautiful website because I have come here to tell you one thing. I will write "lorem 45" here, and you will tell me in the comment section below why I wrote "lorem 45." What was the logic? Was it my Albert Einstein's mind that I wrote "lorem 45"?
+
+Now, I will click here and open it in the browser. You will not be shocked at all by seeing that it is coming like this. No problem, let's put the background here. I will say that if our div is the first child, then change the background to red. It looks weird; you can choose something else. If I do `class="nav"`, I don't have to do first child; I can target it directly with `.nav`. 
+
+Here, I want to keep its color green. Let's say I want to keep it green. I can target it using `.nav`, and I want my container's color to be slightly different from this. It should not be too different; it should be slightly different. If it is green, then it should be light green. 
+
+Now, let's say I do one more thing here. I will write `* { margin: 0; padding: 0; }` so that the padding will also be 0. When I have done this much, I will do one more thing. I will say that the `list-style-type` of the `li` inside the `ul` is none. Make the list style none. Along with that, make the `ul` display flex. 
+
+I know I have not told you what display flex does, but I just want to make it horizontal. If I want, I can also inline it, but that's not a good idea, so I am not doing it. For now, understand that where the items were falling down, I have put them horizontally. 
+
+Now, I have done `ul { display: flex; }` and in `li`, I will also give padding and margin. I know you must be thinking, "Stop styling it and tell me the point." Let me tell you the point: I can declare variables in CSS. I can say that I have some global variables. 
+
+You will not write global variables like in JavaScript or C language, where `a = 2; a = 3;`. No, CSS is not a programming language. You first declare the root scope. You say here, in `:root`, `--color: blue;`. I made the color blue like this, and I made `--secondary-color` a light blue. 
+
+Now, I want to use it. I want my color theme to be here, so I will use the `var()` function and say `var(--color)`. I will use `var(--secondary-color)` here. As soon as I do this, you will see that this variable will take effect. 
+
+What I can do here is change the colors. Suppose I want the primary color to be this and the secondary color to be that. Wherever my primary and secondary colors are used in the whole website, they will change. By changing only two variables, I can change the colors of my entire website. 
+
+This color can be used 50 times in the whole website, and this color can be used in 2-5 places. In total, the work that I have to do individually for different elements, I have done that work easily. I have made a global variable. In `:root`, we make global variables. Whatever is there in `:root` is a global variable.
+
+Now, if I want just for this `ul`, or if the first child of `ul` is the first child of `li`, and I want to change its background color for some reason, I can make a local variable. When I make a local variable here, this color will be used. If I have declared a global variable here, then wherever I use this color variable, the global variable will be used. However, because I have overwritten my color variable in this block, I will make it orange. You will see that the background of the first child of `li` has become orange.
+
+If I want to change the color of this or change the secondary color, I can do that too. Suppose I want the color of `li` to be equal to the secondary color. In this block, wherever I refer to the color, the value I have overwritten will be used. 
+
+This was our global variable, and this was our local variable. In total, this is the concept of CSS variables. Why do we use them? If a color is being used 50 times in your entire website, will you change it one by one? No, you will change the color theme by changing just one variable. This is the concept of variables in CSS; there is no big rocket science.
+
+Now, another question is: what will happen if the variable is not found? If the variable is not found, you can give a fallback variable. Suppose there is no value of the color name anywhere. I will remove it here and say, "Find a variable of color name. If you don't get a variable of color name, then use blue." You will see that blue will be used in my website because the variable of color will be used. 
+
+If I want to see my border color, I will make the background color of my `nav` red or I will add the secondary color. Now, see the border of the secondary color is here. 
+
+CSS variables are not necessary to hold only colors; they can hold other properties as well. For example, if I show that `--defpad` means default padding, suppose I want to give 23px. Instead of giving padding, I can use `var(--defpad)`. 
+
+If I show you, the padding is `--defpad`, and you can see how much padding there is. You can use pixels or other units of length, and you can use that here. For example, I want to say that the opacity of this should be 0.3. 
+
+Let’s say I want the opacity of `li` to be 0.3. You can see how much it has faded. I can save this opacity and make a `--defop` and say `--defop: 0.2;`. Here, I will use `var(--defop)`, and you can see that the opacity is 0.2. 
+
+If I want this default opacity to change everywhere, I will make it 0.4. Wherever I am using 0.4, it will be 0.4. If you want to decode what value will be default, you can click on it, and you can see 0.4 here.
+
+In total, you can use CSS variables like this. That's pretty much about CSS variables. It’s not necessary that they only hold colors. It is asked in interviews whether CSS variables can only hold colors. You have to say no; they can hold any kind of values. 
+
+You can hold background URLs, strings, numbers, and all these things. The things you will find yourself changing in your website in 10 places or even in 50 places, you can make it a variable and change it in one place. 
+
+Whenever we make websites, we will use CSS variables very cleverly. We will change it in one place and make a color with the name of "theme." If someone wants the same website in a purple theme or any other color theme, they can choose their color. 
+
+I hope this is clear to you. If you are enjoying this course, and if you have not accessed the playlist, then click here to bookmark and save. I hope you have accessed the GitHub code which I have provided. Are you enjoying it or not? Tell me in the comment section below.
+
+That's it for now, guys. Do name your village and uncle's land. Thank you so much for watching this video, and I will see you next time.

@@ -1,0 +1,63 @@
+Let's solve one question on first-in-first-out, in which we have a number of frames 3 and there is a reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. This is how the pages are actually demanded by the CPU. First of all, the CPU is demanding page number 1 of a particular process, let's say process P1. This is the request of the pages. And we are given three frames, meaning frame number 1, 2, and 3 are given. Meaning there are three frames in main memory where these pages can come.
+
+Let's see according to first-in-first-out how to enter. First, page number 1 came. Is page number 1 already present? Not there. If page number 1 is not already present, then we will service the page and bring page number 1 to main memory. If we bring it to the main memory, we call it a page fault, because the page was not already present. 
+
+After that, we brought page number 2. When we bring page number 2, because page number 2 is not there, we don't need to replace to get page number 2 because already we have a vacant slot. So we put page number 2 in frame number 2. And what is this? A page fault. Initially you assume it because all the frames are empty, so you must have initial page faults. 
+
+Then page number 3. Page number 3 is also not present. So I serviced page number 3, and page number 3 was taken inside my main memory. So this is also a page fault. 
+
+Now, page number 4. When page number 4 came, we have to check: is page number 4 already present? Not there. So we have to replace, because we don't have an empty slot left. So where will we replace? We will start with frame number 1. Meaning, first-in-first-out: the frame in which we have put first, empty that frame. As we have put a value in frame 1 first, so in empty frame 1 we will replace 1 with 4, and rest as it is. And what is this? Page fault, because 4 is absent here. 
+
+After that came page number 1. Is page number 1 present here? No, we have replaced that. There is again a request for page number 1. Page number 1 is not here, so we have to replace. After frame 1, which frame we have filled? That is 2. So here we will replace 2 with 1. So now I have my page number 1. And what is this also? Page fault. Because 1 was not present, it was absent. 
+
+After that here came page number 2. Is page number 2 present here? No, it is not. Page number 2 is absent. So in order to bring page number 2, we have to empty frame number 3, because the 3rd frame we had filled was F3. So we emptied frame number 3 and brought 2 there, and others as it is. So this is also a page fault. 
+
+Now, page number 5. Check whether it is present? No, it is not there. So with what do we have to replace? Having done till frame 3, now we are back at frame 1, because frame 1, 2, 3, then again go to frame 1. So we replaced 4 with 5 and rest copied as it is. And what is this here? Page fault, because page number 5 was not present in the main memory. 
+
+Next, page number 1. Is page number 1 present? Yes, it is already present. So when the page number is present, copy it as it is, and this we call a hit. Copy as it is and write hit. 
+
+Now, page number 2 comes. There is demand for page number 2 after page number 1. Is page number 2 present? We have to see this one, we have to check the latest one. Yes, page number 2 is available here. So again there is one more hit. In hit I copy it as it is and also write here hit. 
+
+Now the demand is page number 3. Is page number 3 present? No, page number 3 is not present. So what will we replace? We will replace 1. Why? First we have replaced frame 1, now it's the turn of 2. So we will replace frame 2. We brought page number 3, others we write as it is, and this is also a fault. So what is this? Fault, because page number 3 was not there. 
+
+After that came page number 4. Is page number 4 present? Not present, so I will have to replace. With what? With frame 3, because you have to go sequence-wise. So we replaced 2 with 4, and rest we write as it is. And this is also a page fault. 
+
+Last is 5, that is page number 5. Is page number 5 present? Yes, page number 5 is already present. When the page is present, just copy earlier values as it is and write below "hit". 
+
+So if we check this, how many hits am I having in total? Number of hits are 3, and number of page faults: one, two, three, four, five, six, seven, eight, nine—so nine number of page faults.
+
+Now repeating the same question again. The same question we are solving again, but now we have increased the frames—increased the number of frames. What is the meaning of increasing the number of frames? That we have given that process four number of frames, so that more and more pages can come. Meaning, first I was having three locations, meaning all the pages could come in only three locations. Now we have given four spaces so that it doesn't matter, take one more frame so that you can have more and more pages. So first we will solve this again and then we will analyze it. 
+
+First, page number 1. Initially, everything is empty. So we first checked page number 1. Page number 1 is absent, so we placed page number 1 here and called it a miss. So here is one page fault. 
+
+After this, 2 came, so we placed 2 here. That is again called a miss, a page fault. 
+
+Now, 3 came, so we placed it in frame number 3. That is also a miss. 
+
+Then came page number 4, so we put 1, 2, 3, 4. That is also called a miss. 
+
+Now, demand again came for page number 1. Is page number 1 present? Yes, page number 1 is already present. So when it is present, copy the previous frame as it is and write below it "hit". 
+
+Next comes 2. Is page number 2 present? See here: is page number 2 present? Yes, page number 2 is already present. So copy it as it is and write below it "hit", because the page you are having demand for, the page you are searching, that page is already lying in the frame of the main memory. 
+
+Next came page number 5. Is page number 5 present? No, page number 5 is not present here. So what will we replace? That frame which we have filled first. Which frame we have filled first? F1, then F2, 3, 4. So first we emptied F1 and placed 5 there, and below that give a sign for page fault. 
+
+Then came page number 1. Is page number 1 present? No, we just replaced it. So again we have to replace. First we have replaced frame 1, now we will replace frame 2. So here we placed 1. And what do we call this? Page fault. 
+
+Next came page number 2. Is page number 2 present? No. So again we have to replace. With what will we replace? With frame 3, because we have already replaced with frame 1 and 2. Now it's the turn of frame 3. So replaced it with frame 3, and what did we put here? 2. And what is this? Page fault, because you were looking for page number 2 and it is not there. Now we placed it after servicing. 
+
+Next, page number 3. Is page number 3 present? No, page number 3 is also not present. Then clear frame 4 and there place page number 3, and rest as it is. And what is this? Page fault. 
+
+After that came page number 4. Is page number 4 present? No, page number 4 is not present. So we have replaced frame 1, 2, 3, 4 one by one. Now again the turn of frame 1 has come. So we emptied frame 1 again and replaced it with 4. And this is also what? Page fault, because we were searching page number 4 and it was not present. 
+
+Now, last, that is here: page number 5. Is page number 5 present here? No. What frame numbers do I have? 4, 1, 2, and 3. Meaning page numbers 4, 1, 2, 3 are lying; page number 5 is not there. So we have to do replacement. First we have replaced with frame number 1, now replace with 2. What did we put there? Page number 5. And what is it? Miss. 
+
+So now we are calculating again: hits and page faults. How many hits? 1, 2. And how many page faults? 1, 2, 3, 4, 5, 6, 7, 8, 9, 10—so 10 number of page faults occur.
+
+Now, if you analyze it carefully, what did we actually do? The same string, the same reference string, we solved with two different frame numbers. First, the number of frames were three, then we increased it by one. 
+
+Now, if you think carefully here, if we increase the number of frames here—meaning we have allocated more space so that pages of more processes can come at once—the page fault should have decreased, because we have increased the space so that as many pages as possible are lying already in my main memory. So when many pages are lying in main memory, then the number of hits should have increased. But my number of hits have decreased as compared to the previous, and the number of page faults has increased. As I have increased the number of frames, my number of page faults should have decreased, but here the page faults have increased. By increasing the number of frames, page faults increased. 
+
+This is called Belady's anomaly. Belady's anomaly. This is the name of the scientist, Belady. So he generated one problem: if this string comes—and if the number of [frames changes], not only this string, but it is possible for others also—this problem comes in FIFO (first-in-first-out), that if I increase the number of frames, then according to the logic, the number of page faults should decrease by increasing the number of frames because we are allocating more space. But here the opposite is happening: in spite of giving more number of frames, by increasing the number of frames, my page faults also increased. 
+
+So this is called Belady's anomaly, and FIFO is suffering from Belady's anomaly. So this is all about the concept of Belady's anomaly, and this is how you can solve the questions in the GATE also and other competitive exams. Thank you.

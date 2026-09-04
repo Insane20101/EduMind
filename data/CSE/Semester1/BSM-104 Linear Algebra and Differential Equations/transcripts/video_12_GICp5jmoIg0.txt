@@ -1,0 +1,58 @@
+Here's the cleaned and structured transcript:
+
+The matrix is:
+```
+-6  2
+-6  7
+-4  2
+-4  3
+```
+The characteristic matrix is:
+```
+-6          2
+-6          7 - Lambda
+-4          2
+-4          3 - Lambda
+```
+To find the characteristic equation, we calculate the determinant.
+This involves `(7 - Lambda) * (3 - Lambda)`.
+Then, for the next part of the determinant: `(-6) * (3 - Lambda)` minus `(2) * (-4)`. This simplifies to `(-18 + 6 Lambda) - (-8)`, which is `-18 + 6 Lambda + 8`.
+For the next component: `(-2) * (7 - Lambda)`.
+The characteristic equation is `Lambda^2 - 10 Lambda + 21 - 16`. This simplifies to `Lambda^2 - 10 Lambda + 5 = 0`.
+We also have `2 * (10 - Lambda) + 2 Lambda`.
+The equation is `5 Lambda + 40 Lambda^2 = 0`.
+
+For eigenvectors, we are looking for corresponding different eigenvectors that are linearly independent solutions.
+
+When Lambda is equal to 0, we find the components of the eigenvector.
+`X2` is equal to `-10`. The `10`s cancel out, leaving `X2 = 10`.
+`X3` is equal to `X2 / 2` and `X3 / 2`.
+We are looking for `X1`, `X2`, `X3` when Lambda is 0.
+
+Let's consider the matrix components: `3 - Lambda`, and `1`, `2`, `2 - Lambda`.
+
+There was a correction to the characteristic equation. The correct equation is `Lambda^2 - 6 Lambda + 5 = 0`.
+This can be factored as `(Lambda - 1) * (Lambda - 5) = 0`.
+So, the eigenvalues are `Lambda_1 = 1` and `Lambda_2 = 5`.
+
+For `Lambda = 5`, we use the equation `(A - 5I) * X = 0`.
+The matrix becomes:
+```
+-6 - 5   2
+-6       7 - 5
+-4       2
+-4       3 - 5
+```
+Which simplifies to:
+```
+-11   2
+-6    2
+-4    2
+-4   -2
+```
+From this, we can derive the components of the eigenvector `X1`, `X2`, `X3`. For example, `-3X1 + 2X2 + X3 = 0`.
+
+For `Lambda_2` and `Lambda_1`, we set up the homogeneous system of linear equations, which results in `0 = 0`.
+For example, `2X2 + X3 = 0` and `X1 + 2K + 0 = 0`.
+
+The objective is to find the eigenvalues and eigenvectors (also known as roots and characteristic vectors) of the matrix. Thank you.

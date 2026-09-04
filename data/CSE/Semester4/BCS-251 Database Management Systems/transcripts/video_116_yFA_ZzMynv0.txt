@@ -1,0 +1,43 @@
+Dear students, welcome to Gate Smashers. In the PL-SQL session, next we are going to talk about for loop and while loop. What is the syntax of for loop and while loop, and how we use that in a program? That I will also tell you with an example, and the execution of this you will also get at the last of this video. I'll show its execution on Oracle Live also. 
+
+So guys, before starting the video, again there is a demand and request that do subscribe if you haven't done yet, and those who have done, please do it from other devices also. Subscription is very important, rest like and share will keep going.
+
+So, start with for loop. As you know, in normal programming, for loop and while loop are very important concepts of looping. 
+
+Here, declare `a` number. Here, the data type is taken as number, and with number, we've mentioned the size of this also. You can take int, number, or character. Char, varchar, we can use different-different data types here. 
+
+Begin:
+`for a` — see, here syntax is very important. For `a`, as we there write `for i=0`, `i less than this`, `i++`, so here we write `for a in 0 .. 10`. Meaning of this is, `for a in` means equal to `0` from there it will work, till `..` these two dots. These two dots are by default showing that it will start from `0` and will go till `10`, and its increment will be whether 1-1 or 2-2, that we here don't need to mention. It is by default. `..` means that it will do 1-1 increment by default, meaning how it will work means it will work like 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10. It will work like this. 
+
+Writing the `loop` word is very important. Then again, `dbms_output.put_line`. This line is very big, but there is no substitute or shortcut of this. I also face problems in writing this again and again. And print `a`, so from 0-10 it will print. 
+
+`end loop` is very important, note this point.
+
+Then, while loop. If we talk about while loop, so here `declare`, `a` and `b`. 
+
+`begin`
+`a = 0`
+`b =` from user I've taken this value. 
+`while a < b`. In actual, what we are doing, we are printing the value of `a` up to `b`. `b` is taken from user, and if we don't want to take it, then we can add `10` here. So it will print from 0-9 because we have taken `<`. We've taken less, not equal to, so less than `b`. 
+`loop`
+`a = a + 1`. You want an increment of 1, 2, 3, that you can use accordingly here. 
+Then, same we print `a` here. 
+`end loop` and end of the statement. 
+
+So this is the basic functionality of how a for loop works and how a while loop works. Rest, there are some small variations, and in a program how to use it—if the syntax is clear to you, you'll definitely learn to use it. You have to do practice.
+
+Next, we'll use its execution. Let's start with the execution. In that, first we'll talk about for loop. So for loop program we've discussed, so I'll copy and paste that only. 
+
+I've already written here. Here I'll tell you one small point. You can see one command, `set server output on`. This `set server output on` — I'm not using it here, when you use your system, sometimes what happens, Oracle 10 and 11 you execute, but you don't get output, so just to activate the output we use this here. In Live we don't need it because in Live it is activated by default, so we just copy-paste it here. 
+
+So after copy-pasting, I will run it. So after run, this printed from 0-10. So like this we use for loop. 
+
+And here, if we talk about while loop, I will show you while loop also by execution. So I picked the while loop from here, we pasted it. Then here again `&`, so `&b` is here, so I'll remove it from here. This `b:` that will create a problem, that's why we add `10` here because in Oracle Live `&` doesn't support. So execute this, and when we run this, so what is its value? Its output is from `0`—not from the `0`, your first value is `0` less than `10`. Here, why `0` is not coming? Because it increments it, `0` less than `10` is true, if true then it will go in the loop, and we did `0+1` and we're printing after that, so because of that, the incremented value is getting printed. So it will print from 1 to 10. 
+
+If you do this above, so obviously it will print according to that. If you remove this line from here, first I'll show you output of this, so see from 1 to—this is not A1 and A2, here is actual with A add `=`, then it will show you properly like this is not A1 and A2, it is like this `A=1` and `B=`, `A=2, 3, 4, 5`. 
+
+Okay, if we pick it from here, and after this if we write—then see what output is coming. Then my output is coming from `0`. Okay, so you got that why it is coming from 0-9? Because here first it is printing and then incrementing. But if you keep it down, then it will first increment and then print. Here it is first print and then increment, this is the difference here. Now it will be from 0-9, otherwise 1-10. 
+
+And if you remove it from here after `end loop` and write outside the loop, so as you know, whatever will be the last value, so the last value will print in such a way. 
+
+So this is how for loop and while loop actually works. Thank you.

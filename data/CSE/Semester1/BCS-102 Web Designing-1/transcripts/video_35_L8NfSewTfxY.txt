@@ -1,0 +1,57 @@
+We talked about selectors in CSS. In today's video, we will look at selectors more closely, and I will tell you some important things about selectors that we will use when we build websites. With high energy, please like this video and write "Sigma Batch OP" in the comment section below. Let's go to the computer screen. Let's roll the intro.
+
+I have made a folder named "video 35," and I am writing here "CSS: More on Selectors." Let's make it more on CSS selectors; that will be better. Now, I will tell you some more things about selectors that are important. Here, I will write style and let's start. 
+
+I will write `div.boxes`, and after this, I will write `div.boxes`, and then I will write `div.box`. Here, I have a box. Let's say I want to replicate it. After that, I want to see how it will look, so I will open it in the browser, and it will look like this. 
+
+If I want to select the first element, I can select the first element by using the `first-child` selector. If I write here `.boxes` and then `first-child`, I can select the first child here and make the background color red. I have to do `.box` here. What happens is that if `.box` is the first child of your parent, then the background color will be red. Now, see it will be on the first one. When I wrote `.boxes` first, it applied to the whole `.boxes` because `.boxes` is the first child of the body. Many people get confused about this, but I hope you have understood.
+
+Next, I can select the first letter of `.box`. In fact, I can select the first line if `.box` has a lot of text in it. I can say to color it yellow. I will comment this one out and maybe I will put a big lorem text here, like "Lorem 455." I know it's a lot of text. Now, see the first line of it came in yellow color, and the rest of the lines are in default black color. I can also select the first line in CSS. 
+
+Now, I will make it smaller. The first line that is being rendered on the device does not mean anything else. It's not that the first line has so many words or characters; it refers to the first line of your device. I will make it black, and see it changed to black. I will make it red, and you can see it is changing to red. 
+
+If I come back, we talked about element selectors, class selectors, and ID selectors, which were very simple. We talked about the element selector, class selector, ID selector, child selector, and descendant selector related to the universal selector. If I want to control all the boxes, I will make the text a little smaller. I will comment this out for now and say that inside the boxes, all the elements should be colored blue. 
+
+What will happen is that `.box *` means it will be applied to all the elements inside the boxes. I will say `border: 2px solid black;`. You see here it will be applied, and the border will be 2px solid black. To select the elements in the boxes, you can start with `.boxes` and select them. 
+
+If I talk about selectors, I can mention many selectors, but I just want to teach you the ones that are important. I will choose only those selectors that will be of maximum use when we make our real-world websites. Now, I will tell you about an attribute selector. I mentioned it in the course, but let's say I put here in `div` a `data-color` attribute equal to "primary." 
+
+Now, I want that where `data-color` is primary, a margin-top should be applied. I can use the attribute selector like this: `[data-color="primary"]`. I can say `margin-top: 45px;`. Where `data-color` is primary, a margin-top is applied. You can see here that for every element where `data-color` is primary, there will be a margin-top. 
+
+You can do this for any attribute; it is not necessary to do it for data attributes. You can do it for classes, IDs, or any attribute in the HTML element. You can also group selectors. For example, if I want to apply styles to all paragraphs, all anchor tags, all box classes, and all `data-color` primary elements, I can do this grouping. 
+
+Now, I want to show you something. I will comment this out; I don't want you to be confused with its effect. I will write the link in the description. I will say that the boxes or the box should have an `nth-child` selector. If the `nth-child` is even, then make the background color blue. This count starts from 1: 1, 2, 3; 2 is even, so make the background color blue. 
+
+You can write odd or even directly. This was our `nth-child` selector. You can put a number in `.box:nth-child(1)`, `(2)`, `(3)`, `(4)`, and `nth-last-child`. Let's say I do 1, and after that, I write `background-color: red;`. You will see that the first one from below will be red. If you do 2 here, then the second one from below will be red. 
+
+This means counting from the bottom. People used to say when we were in school, "top is done, but from below." You can do this kind of work. As you write `nth`, you will see many more pseudo-selectors like this. We have to explore them. 
+
+As you take arrow keys in them, it is written that this property is experimental; do not use it. Some properties are experimental, and I would like you to stay away from them. These are the `nth-child` properties that you can use. I don't want to make the video too bloated with less useful properties. 
+
+I want to keep this video focused. I want to make a 10-20 minute video in which I talk about the topic instead of everything. I don't want to make a documentation video. I want to tell you about `::before` and `::after`. If I write here `.boxes::before`, you see that I can put content here and say `content: "Harry is good";`. 
+
+What is the point of putting content like this? The `::before` element inserts content before the main content of the boxes. When I inspect it here, you will see that it has inserted a `::before` element that puts "Harry is good" before the main content. 
+
+In this way, elements can be dynamically inserted through CSS. This is done with the help of `::before` and `::after`. This is a very important point. Is it used? Yes, it is used a lot. What will `::before` do? It inserts content before the main content. What will `::after` do? I will show you. 
+
+If I had done this with `::after`, can both be used at once? Yes, both can be done. I will write `content: "Sigma course is also good";`. I can style it; for example, I can change its color to red or blue. I can do all that. 
+
+Now you will see that `::before` will be inserted here, and `::after` will be inserted here, with the main content in between. Sometimes you need to put content dynamically; then `::before` and `::after` are used. They are called pseudo-elements, not selectors, and you can write CSS in them. 
+
+Now, I told you about list markers. I will tell you about selection. If I say something like this, `.boxes::selection`, that if someone selects text, I want the color to be aqua. I will write it like this, and it will work for the selection of all pages. I will show you. 
+
+Now, when I select, you will see the color has become aqua. I can also add a background if I want. I can say, "Make the background black." Now, when you select, you will see it will be selected like this. 
+
+Now I will tell you about the first letter. If I want that my `.box` and in that first letter, the color should be, suppose, purple. I will show you. The color of our first letter is purple here. You can do all those things like transform, uppercase, etc. 
+
+Now, I will tell you about an input element. If I write here, suppose I have a form, I will write `input type="text"` and suppose I write `placeholder="Type your name here."` Now, I can target the input and say that I want to target the placeholder and make the placeholder color blue. 
+
+I can change the size of the placeholder; I can do a lot of things inside its placeholder. If I want to increase its font size, I will say I want 56 pixels, which is a ridiculously large font size. You will see it will overflow and look like this. 
+
+Sometimes you need this kind of effect. Let's fix the input placeholder. I am making it blue. Let's show it well so that it looks like there are some websites being made, not just a demo. I know you are waiting for beautiful websites; they are coming very soon. 
+
+I hope this is clear to you. These were some selectors, pseudo-selectors, and pseudo-elements that I wanted to tell you. In my opinion, this is enough. If anything else is needed, I will tell you whenever we make projects. I just hope everyone is enjoying. Please write something in the comment section below if you are enjoying. 
+
+If you have not accessed the playlist of Sigma web development yet, then click here to bookmark it. I am also putting the GitHub code; you will get all the GitHub code. I hope you are enjoying it. 
+
+That's all for this video, guys. Thank you so much for watching, and I will see you next time.

@@ -1,0 +1,23 @@
+Hello students, I'm Gajendra Purohit, and you are watching my YouTube channel, where I upload videos for engineering mathematics and BSc. If you are preparing for any competitive exam where higher mathematics is asked, my YouTube channel is very helpful for you. Here you can watch my previous videos; the link is given in the description. 
+
+Today I'm going to discuss part 2 of the permutation matrix. I have already uploaded a video on the permutation matrix where I teach you how to write a matrix from a permutation, how to write a permutation from the matrix, the trace of a permutation matrix, and many more concepts I discussed. Some short tricks were also told, so you can watch them here, as it helps you better understand. 
+
+Today I am discussing the determinant of a permutation matrix, the characteristic polynomial, and the eigenvalues of the permutation matrix. And I will tell you the short tricks on how you can get the determinant, characteristic polynomial, and eigenvalues in these concepts. 
+
+If we are given a permutation matrix, how can we get the determinant? For that, you have to first convert the permutation matrix into a permutation. Then you have to find out how many transpositions it has. This is the formula. For example, assume we are given a matrix and you are asked what its determinant is. You have to convert this into a permutation. This is the permutation. If you want to find its determinant, then the determinant of this matrix is... so this way you can easily find the determinant of the matrix. 
+
+We have a permutation matrix, which is an orthogonal matrix. The determinant we would have will be either +1 or -1. For example, if you are given this and you are asked what the determinant of this is, first you have to find its permutation. So this way we can easily solve these types of questions. These types of questions are asked in exams, especially IIT. How to find its determinant? You have to use short tricks at that time. Now write its permutation; you have to only find its position, at which number this element is. If anybody is confused, you can watch permutation part 1, and the link is given in the description. Now write its transposition. The determinant of this matrix is... so this way we can easily solve these questions. 
+
+Let's talk about the characteristic polynomial. How to write the characteristic polynomial? If we are given any matrix and we have to find its characteristic polynomial, first you have to write the permutation of its matrix. Whatever the order of its permutation is, just write it in $x$ power, and you will get an answer. For example, I'll take the previous example so you will understand easily. And you have to find the characteristic polynomial of this whole matrix, but you can do it very easily. So this is the characteristic polynomial. 
+
+If you have to find its eigenvalues, here are some rules for this. Now we are going to talk about this matrix. This way we can easily find its eigenvalues. Next question: if you have been asked what the characteristic polynomial of this question is... so this is an eigenvalue. This way we can easily solve these types of questions. 
+
+Sometimes in the question, you are asked that in a permutation matrix, what value of $n$ will it be equal to the identity? So this is also an easy concept; you can easily find it here. We have to find the order, whatever matrix is given to us. Find the order and raise it to the power of the order, and you will get the answer. For example, we are given this matrix and we write its permutation. This is the power, so you can easily solve it. 
+
+Example 2: For which value of $n$, if you are given this matrix, and it is bigger than this? You can do it easily if this is a permutation matrix. First, you convert this into sigma. This is the identity. Here is the answer. So this way you can easily solve it. 
+
+Example 3: And you have been asked for which power of $A$ is this the identity? So again, we have to find a permutation, and if you have to find its determinant... so this way we can easily solve these types of questions. 
+
+This is the question for the comment box: you have to find the determinant of this matrix. Tell me the answer in the comment box and how much time you take to solve this question by using the short tricks. 
+
+Thank you so much for watching me. Here you can watch my short tricks and permutation part 1, so it will be easy for you to understand. Here I am uploading many videos of short tricks, so you can watch them. Here you can subscribe to my new channel. Here you can follow me on Instagram. Tell me in the comment box how much time you take.

@@ -1,0 +1,58 @@
+Hello friends, and welcome to Gate Smashers. In today's video, we are going to discuss three questions, all of which are related to computer networks. These will help you in competitive exams. Please like and subscribe to my channel, and press the bell button so that you can get notifications. Let's start with question number one.
+
+### Question 1: IP Addressing and Subnetting
+**Which of the following characteristics accurately reflect the correct IP/subnet mask?**
+* Here, the IP address is given as `194.122.14.15` and the mask is given as `255.255.255.0`.
+
+First of all, if no slash notation is given—although sometimes it is mentioned in the question whether it is classful or classless addressing—by default, understand that this is classful. If you are given slash notation, like `/20` or `/30`, then you can say it is classless. Here, we are talking about classful addressing, which includes Class A, B, and C.
+
+By looking at the first octet, 194, we can determine which class it belongs to. 194 comes under Class C because the range of Class C starts from 192 and goes up to 223. In Class C, we have three octets for the network ID and one octet for the host ID. This means the first three octets represent the network, and the last octet represents the host.
+
+You can also visualize this as a network containing a certain number of hosts. The whole network is represented as `194.122.14.0` because the network ID always contains '0' in the host bits. The whole world knows this network by the IP address `194.122.14.0`. Within this network, multiple users can create multiple hosts.
+
+Based on this, let's look at Statement 1: **"Host ID is 14.5"**. As I told you, in Class C, only the last octet can represent the host ID. For example, if we talk about `.5`, it means we are talking about the 5th host in this network. Because `.0` represents the whole network, `.1` is the first host, `.2` is the second host, and `.5` is the fifth host. Therefore, 14 cannot be part of the host ID because 14 is part of the network ID. This option is wrong. If it were just `.5`, you could say it is correct, but here `14.5` is incorrect.
+
+Statement 2: **"Network ID is 194.122.14.0"**. This is a right option. By default, you know that `194.122.14.0` represents the network ID, so this is true.
+
+Statement 3: **"0.0.0.100 may be the host of this network"**. This is also true. What is the meaning of the host ID? In the network ID part, we can put zeros, and the '100' represents the 100th host in this entire network. This is also true.
+
+How many hosts can you have in Class C? The last octet represents the host. An octet has 8 bits, meaning $2^8 = 256$ possible host IDs. However, we do not use two of these addresses, so we can configure exactly 254 hosts. Why don't we use two? Because the starting address (`.0`) is the network ID, and the last address (`.255`) is the broadcast ID. Therefore, we do not use these two addresses, leaving us with $2^8 - 2 = 254$ usable host addresses. 
+
+As a side note, I have already explained Class A, B, C, D, and E, as well as classless addressing, in detail in other videos. The links are available in the description box. You should surely check them out to understand every single detail.
+
+Statement 4: **"Network consists of $2^8 - 2$ hosts at zero subnet"**. Here, we have not talked about subnetting; it is a whole network. You can convert it further into subnets, but since we are not subnetting here, the network consists of $2^8 - 2$ (which is $256 - 2 = 254$) hosts. This is also true.
+
+Statement 5: **"One bit is borrowed from the host ID"**. No, we only borrow bits from the host ID when we create subnets. The network bits are never disturbed; they always remain as they are. From the host octet, we reserve 1 bit, 2 bits, or 3 bits depending on how many subnets we need. For example, if I want 8 subnets, I need to reserve 3 bits ($2^3 = 8$). We borrow bits from the host part only when creating subnets. Here, there is no subnetting involved; we are using the direct network, so no bits are borrowed. If you borrow even one bit, you alter the subnet structure. I have already explained this with full examples in another video, which you should check out because IP addressing is a highly important concept. You will frequently see questions on this topic.
+
+Therefore, statements 2, 3, and 4 are correct, making **Option B** the right answer.
+
+---
+
+### Question 2: Matching Application Layer Protocols
+**Connect the following: HTTP, FTP, DNS, SMTP, POP.**
+
+We have five application layer protocols listed here: Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Domain Name System (DNS), Simple Mail Transfer Protocol (SMTP), and Post Office Protocol (POP).
+
+To match them, you must know their properties, how each protocol works in the application layer, and their related port numbers. I have made a video on this as well, and the link is in the description box. You must check it because these types of questions come up frequently. This question is simple, but do not always focus only on tough or complex questions in competitive exams. Competitive exams contain a mix of questions, including simple ones. Problems often arise when students get overconfident and get these simple questions wrong. This is a medium-level question that is frequently asked, especially in the NET exam.
+
+Let's match them:
+* **POP (Post Office Protocol)**: This is used to retrieve mail. We use SMTP to send mail and POP to receive mail.
+* **HTTP**: The correct match is the **trace method (loopback request message)**. We use many methods in HTTP, such as POST, DELETE, CONNECT, and TRACE. The TRACE method is generally used for loopback debugging or as an echo message. If I send a TRACE message from a browser, the server responds with its details. It acts as a debugging tool where the server replies with its information. So, HTTP matches with the trace method.
+* **FTP**: This is used with **two port numbers: 20 and 21**. It uses one port for sending data and the other for sending commands. So, FTP matches with the use of two port numbers.
+* **DNS**: This matches with **using both TCP and UDP**. While using UDP is often better because it is connectionless, DNS can use both Transmission Control Protocol (TCP) and User Datagram Protocol (UDP).
+* **SMTP**: This is used alongside **MIME** to deal with non-ASCII data. SMTP was originally designed to send text or normal ASCII data. In modern times, we send multimedia data like videos and photographs along with our mail. The MIME protocol helps with this. Thus, SMTP matches with MIME.
+
+According to these matches, 1 matches with 5, 2 matches with 2, 3 matches with 1, and so on. Therefore, **Option D** is your answer.
+
+---
+
+### Question 3: RSA Algorithm
+**In the RSA algorithm, the $p$ value is 17 and the $q$ value is 11. The public key $e$ is given as 7, and $n$ is 187. Find the secret key $d$.**
+
+The RSA algorithm is a part of cryptography. Cryptography and network security have become very popular topics recently in both GATE and NET exams, as well as other competitive exams. You will get many questions on public-key cryptography, symmetric cryptography (which includes DES, etc.), and asymmetric cryptography (which includes RSA and Diffie-Hellman).
+
+I am not solving this step-by-step here because I have already explained how to find the secret key in detail in another video using a similar question with different values. I have provided the link in the description box, so please check it out for all the details. That video covers some calculations that can be difficult to do normally, and I have explained them very well there. Checking that video will give you a clear idea of how to solve this. 
+
+For this question, the answer is **D, which is 23**. 
+
+Thank you.

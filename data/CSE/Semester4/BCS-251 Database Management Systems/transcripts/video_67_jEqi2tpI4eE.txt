@@ -1,0 +1,48 @@
+Hello friends! Welcome to Gate Smashers. Today we are going to discuss about the `IN` and `NOT IN` keywords in SQL. `IN` and `NOT IN` are used very much. We use them in normal queries as well as in subqueries. 
+
+If you come to know what the function of `IN` and `NOT IN` is, then in any query wherever you have to use `IN` and `NOT IN`, you can easily use this. But first of all, I will tell you the example that I am going to take. That is from these two tables. 
+
+First of all, this is an `Emp` table. I have 3 columns in the `Emp` table: Employee ID, Employee Name, and Employee Address, and I have inserted some data over here. And the second table I have taken is `Project`, where I have project ID, project name, and location. I have taken these 3 columns, but you can also consider a 4th column over here (`Eid`). 
+
+Actually, what it is: whenever between both the tables we perform some operation where both the tables are related with each other, both tables will be related with each other if there is a common attribute between them. So either you can keep `Pid` common over here, or—this table's primary key I have not shown over here, but you can assume this—`Eid` over here is acting like a primary key, and over here `Pid` is the primary key. 
+
+So what did I do? `Eid`, this table's primary key, I have made this a foreign key over here. This `Eid` is working as a foreign key which is taking reference from this employee so that my referential integrity is maintained. Now, you can keep `Pid` common; that is not an issue.
+
+Now, we are seeing the first query on `IN` and `NOT IN`. Let's say that query is we have to find the detail of the employee. We have to find the detail of the employee whose address is either, let's say, Delhi, or Chandigarh, or Pune. Means I have to find the detail of such people who belong to Delhi, or Pune, or Chandigarh. Means over here, for comparison, I have kept 3 values. 
+
+Even though I have discussed a simple query: `SELECT * FROM Emp`. Whenever SQL is started, from where does its execution start? With `FROM`. So first of all, it is important over here from which table you want to get the details. So over here I have mentioned "Detail of the employee", so from `Emp` table we are taking details here. `FROM Emp SELECT *`. What is the meaning of `*`? All the attributes I want to show. So `SELECT * FROM Emp WHERE...` We are using ` WHERE` condition over here: `WHERE address`. 
+
+If the question over here comes that I want to find the detail of those people who belong to Delhi, so what can I write over here? `WHERE address = 'delhi'`. It would have finished: `WHERE address = 'delhi'`. But what is asked in the query? Who belong to Delhi, or Chandigarh, or Pune. 
+
+So whenever we have 2 or more than 2 values for comparison, at that time I cannot use `=`. How? If I say `1 = 1`, true. `1 = 1`, because over here we are comparing 1 with 1. If I say `1 = 2`, then false. Over here, what is important? That `1 = 1` is not important. Over here it is that... will this give a result? `1 = 1` will give a result? It will definitely give. That is true. Will `1 = 2` give a result? Yes, it will give. What? False. 
+
+But what is important over here? That if I write `1 = 2, 3, 4, 5`, will this give a result? This will not give a result only. True or false is the matter of afterwards. This will not give a result only; it will not give output. Because we are comparing 1 value with multiple values. You can even write `1 =` if you feel over here 1 is not there. You add 1 also: `1, 2, 3, 4, 5`. Will this give a result? No, this will not give a result, because you are comparing 1 value with multiple values. 
+
+So where will we use `IN`? Where we compare with more than 1 value. So over here my query there was just Delhi, then `address = 'delhi'`. No, but over here what is the query? Either Delhi, or Chandigarh, or Pune. This type of many questions can come. So over here we will use `IN`. 
+
+So over here I am using the `IN` operator, so I will rub this from here: `IN`. Over here we are using `IN`. `address IN`. `SELECT * FROM employee WHERE address IN`—which is the address?—`('Delhi', 'Chandigarh', 'Pune')`. This is the query: `SELECT * FROM Emp WHERE address IN ('Delhi', 'Chandigarh', 'Pune')`. 
+
+So this will give the result of those values only where my address is one from these 3. So `WHERE address`. You see what is the address. Chandigarh—Chandigarh is the first address, check it because one by one it will compare all the rows one by one with this. 
+
+So what is the first row? Chandigarh. Is Chandigarh `IN`—you can say `IN` as include, in a way it is like include—is Chandigarh included in these values? Is it equal to anything? Yes, Chandigarh is equal. So Chandigarh will come in the output. So the `*` corresponding to Chandigarh... If I find the whole value, then what will be the output? `1, Ravi, Chandigarh`. 
+
+Other than this, next row: Delhi. Is Delhi `IN`? Is it there? Yes, Delhi is there. So this `IN` means include. Is Delhi included in these values? It is there; it is included in these values. So Delhi will also come in the output. So `2, Varun, Delhi`. And this row of Delhi will come. 
+
+Then Pune. Is Pune included in this? Pune... is Pune equal to anyone in this? Yes, it is there. So over here I will get the output: `3, Nitin, Pune`. 
+
+Next, Bangalore. Is Bangalore included over here? No. So I will not get the Bangalore output. 
+
+Then next is Chandigarh. Is Chandigarh included in this? Yes. Then in output: `5, Ammy, Chandigarh`. 
+
+So I have written this normally, but when you will execute this in any Oracle or SQL Server, then it will be an as-is table where `Eid`, `Ename`, and `Address` will be printed. This is how `IN` actually works. 
+
+So instead of `IN`, if over here I do `NOT IN`. `NOT IN` means not included, not included. 
+
+So if we check over there: is Chandigarh not included? No, Chandigarh is included. So in that case, this will be rejected. 
+Delhi not included? No, Delhi is also included. So rejected. 
+Pune not included? No, Pune is included, Pune is there in this. 
+Bangalore not included? Yes. Then the Bangalore one will be true, because it is not in this (true). So this will return true. So in that case, what is my output? `4, Robin, Bangalore`. 
+
+So this will be the output for `NOT IN`. 
+
+So we have seen `IN` and `NOT IN` in a very simple case. We saw it in a simple query, in a simple SQL query. In the next video, we will see this in a subquery: how can we use `IN` and `NOT IN`. Thank you!

@@ -1,0 +1,17 @@
+Hello friends. Welcome to Gate Smashers. The topic is types of indexes. Before starting the video, I want to request all viewers: please subscribe to my channel, do share it with your friends and family, whosoever is preparing for GATE, UGC-Net, or for any exams where you are doing preparation for university exams and specially in interviews. All these people, do subscribe to my channel, and in this video, I am going to tell you the types of indexes because this is a very important point here—means what are the types of indexes and where, at what point, we use which index. This video will really help you because on this topic only, many times questions were asked in GATE, UGC-Net, and in many PSU exams. 
+
+So what are the types of indexes? Primary, clustered, and secondary. Generally, we have three types: primary, clustered, and secondary. And this table—you should definitely learn this table when you are going for an exam. Here, what we have made is ordered, unordered, key, and non-key. Ordered means that if your data is sorted. Ordered means your data is sorted. If your data is in such a way: 1, 2, 3, 4, 5, 6, like this, data is sorted. This can also be like 10, 9, 8, 7, 6. It can be ascending or descending, but it is ordered, meaning sorted. Non-ordered means data is in such a manner: 10, 4, 6, 12, 15, 2, 1, in such a way. 
+
+And key means in your data there is a key value—a uniqueness—and non-key means that in that, there is no such attribute which is unique, meaning values are repeating. 
+
+If we take the combination of both: key and ordered file. If in your data there is a key and your data is ordered also—meaning in such a way: 1, 2, 3, 4, 5, 6, 7, meaning neither 1, 2, 3 is repeating anywhere and it will be ordered always—in this case, which index is used? Primary index. So by default, a primary index will be used here. Even if you work on Oracle or SQL Server, there, if in a table you applied a primary key, by applying the primary key, a primary index will form automatically. You don't even have to create it; it will create automatically if your data is ordered. 
+
+But non-key, meaning in such a way: 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 5. Data is ordered, but there is no key value in this. In that case, we don't use a primary index; we use a clustered index, because data is ordered and non-key. So which index will be used? Clustered index. What it is, I will tell you further. Right now, you can only note in which case we use it, because maybe you can get a question on this table only, on indexes. There can be a chance of numerical questions; I have already shot a video of that, and the link of that I will definitely share with you. You will get the link of that in the description box. 
+
+And if your data is unordered—meaning it is unordered and non-sorted—but a key is there—meaning in such a way: 7, 6, 2, 1, 9, 3, like that, meaning data is not in order, but yes, no value is repeating—in that case, we use a secondary index. 
+
+Last case: unordered and non-key, meaning data is 2, 5, 2, 3, 9, 8, 2, 5, 6, 7—meaning it is the worst case, neither there is an order, nor is it sorted, and they don't even have a key value. In that case also, we use a secondary index. 
+
+So in your book, the index that is at the start is called a primary index, and the index at the last of the book, that is called a secondary index. What are they, and how are we making that, will be discussed in further videos. Here, what are the types of indexes is what you can study here. 
+
+Thank you.

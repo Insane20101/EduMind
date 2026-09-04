@@ -1,0 +1,96 @@
+**Introduction**
+
+Hello everyone, welcome to Class 10. I am Ranjan, and again we are discussing the basics of electrical engineering. Today, the topic for this video is the function of three-phase AC, specifically in delta type connections. In previous videos, we discussed the definition of balanced AC in star connections. In that video, we explored how to express a balanced system in star connections. Today, we will express the relationship between line and phase quantities in a balanced three-phase AC system.
+
+**Delta Connection Overview**
+
+Let's start by discussing what happens in a delta connection and what type of markings we use for delta connections. I will provide a statement regarding the connection of a three-phase balanced system. 
+
+In a delta connection, all the coils are connected in a back-to-back arrangement. This means when you have three different sets of conductors and three different types of loads, or if we express it in terms of a generator, the coils of the windings are arranged back-to-back. 
+
+In a balanced three-phase delta-connected system, we can visualize how the circuit connections look. We have three sets of conductors arranged back-to-back. This means that where one set of conductors ends, the next set begins, and this continues in a circular manner.
+
+**Voltage and Current Relationships**
+
+Now, let’s look at the voltage relationships in a delta connection. If I write the voltage sequence, V12 will be the voltage between points 1 and 2, V23 will be the voltage between points 2 and 3, and V31 will be the voltage between points 3 and 1. 
+
+If we consider the currents, I1 will be the current in phase 1, I2 in phase 2, and I3 in phase 3. The line currents can be expressed in terms of the phase currents. The relationship between line and phase quantities in a delta connection is crucial.
+
+**Balanced System Characteristics**
+
+In a balanced system, all line currents are equal, and all phase currents are also equal. The line voltages will also be equal to each other. This means:
+
+- All line voltages (V_L) are equal.
+- All phase voltages (V_F) are equal.
+- All line currents (I_L) are equal.
+- All phase currents (I_F) are equal.
+
+This balance is essential for the stability and efficiency of the electrical system.
+
+**Establishing Relationships**
+
+Now, we will establish the relationship between line voltages and phase voltages for a balanced three-phase delta-connected system. The relationship can be expressed as:
+
+\[ V_L = \sqrt{3} \times V_F \]
+
+This means that the line voltage is equal to the square root of three times the phase voltage. 
+
+Next, we will look at the relationship between line currents and phase currents. In a balanced delta connection, the relationship can be expressed as:
+
+\[ I_L = \frac{I_F}{\sqrt{3}} \]
+
+This indicates that the line current is equal to the phase current divided by the square root of three.
+
+**Conclusion**
+
+In summary, we have discussed the delta connection in a three-phase balanced system, the relationships between line and phase voltages, and the relationships between line and phase currents. Understanding these relationships is crucial for analyzing and designing electrical systems. Thank you for your attention, and I look forward to our next discussion on this topic.
+
+22 कैंसिल हो गया। तो अंदर बच रहा है अंडर रूट MP3 लो आईपीएच स्क्वायर। 
+
+फाइनली, वे कैन राइट: ऑयल इज इक्वल टू ए रूट फ्रील आईपीएच। यह रिलेशन आ गया फाइनल फॉर थ्री फेस बैलेंस डेल्टा कनेक्टेड सिस्टम। बिटवीन लाइन करंट एंड प्रेस करें, तो लाइन करंट जरूर थ्री टाइम्स ऑफ करें। इससे इंपोर्टेंट रिलेशन तो यह थी। मेरी फेस पर अप्लाई होगा। अगर आपका सिस्टम सिमिट्रिकल है, तो आप चाहे तो इसको नोट कर सकते हैं। स्वेटर रिलेशन को या तो आप चाहे तो इसका स्क्रीनशॉट ले सकते हैं। फिर से रिमूव करके देख सकते हैं। 
+
+ध्यान बस इतना रखना है कि आपको हिमाचल बनाने की पॉइंट ऑफ व्यू से पता होना चाहिए कि डेल्टा कनेक्शन में लाइन करंट बॉक्स में जरूर थ्री टाइम्स ऑफ हिस करंट। वेदर आईएस फॉर द सेम कंस्ट्रक्शन लाइन वोल्टेज एंड फेसबुक स्टेट्स विल मीन इक्वल। यह ध्यान रखने वाली बात है। 
+
+अब मैं इसका फैसला कम कैसे रोका ना, वह आपको बता देता हूं। इक्वेशन पूरा यह रहेगा। बस्यौ करूंगा और इसकी जगह आपको पिछड़ा कमेंट करके बताऊंगा। सेंस रूट्स रिलेशन आपको करंट से भी शामिल है। जो पैसा हम लोग बनाएंगे, वह भी करंट के फॉर्म में ही बनाएंगे। 
+
+ठीक है, तो आइए देखते हैं कि यह कैसे करना है। चूंकि यह बहुत क्लियर है, आप यह तीनों इक्वेशंस को देख लीजिएगा। रिक्वेस्ट नंबर वन टू पूजा एक्सप्रेस कर रहे हैं लाइन करंट को फेस करंट के फॉर्म में। 
+
+अब जैसे कि रिजल्टेंट आफ थिस टू फेस करें, तो कभी ब्रिटेन को इलेक्ट्रॉनिक करते हैं। हमें सबसे पहले तो कंपलेंड टो ट्रेस करना होता है। कंप्लेंट के फॉर्म में अगर आप फेस सीक्वेंस के हिसाब से लिखें, तो आई वांट टू सबसे पहली फेस करंट होगी। आई टू थ्री सेकंड फेस करंट होनी चाहिए सीक्वेंस के हिसाब से और आई3 वन लास्ट प्रेस करंट होगी अपने फेस सिक्वेंस के हिसाब से। 
+
+तो उसके अकॉर्डिंग, उसे सबसे पहले यहां पर ग्राफ में ड्रा करना चाहिए। पहली फेस करंट आई वांट टू है और 123 फेज शिफ्ट इससे होना चाहिए। आई टू थ्री लें और इससे 128 आए श्रीवंश चिकन के बीच का फेस डिफरेंट एंगल भी नोट कर लेते हैं। यहां पर 120 डिग्रीस इन दोनों के बीच में है। 
+
+इन दोनों के बीच भी 123 अपॉजिट सेक्शन में अगर देखें, तो फिर उसके बाद अब देखिए, यह जितनी भी क्वेश्चन लिखी हुई है, सभी में तीनों नेगेटिव फीचर्स अवेलेबल हैं - आई वांट टू, आई टू थ्री लाइंस 631। तो मतलब जो पॉजिटिव फ्रेंड्स आप लोगों ने गौर किया होगा, अब उनको नेगेटिवली एक्सटेंड करना भी जरूरी है। 
+
+नेक्स्ट, इसमें उसको असिस्टेंट करना पड़ेगा। तो अगर पॉजिटिव आई वांट टू यहां पर है इस डाइरैक्शन में, तो नेगेटिव आई वांट टू सी द क्वेश्चन होना चाहिए। वैसे ही पॉजिटिव आई टू थ्री अगर इस आरक्षण में है, तो मैं नेगेटिव आई टू थ्री यहां कहीं पेट्रो करूंगा। 
+
+आई 231 है और से में ड्रा करूंगा - Y31। ठीक है, अब जैसे मैं यह सारे फीचर्स ड्रा किया, तो जगी 123 अपार्ट थे। अब इन दो सेक्शन के बीच का जो डिफ्रेंस होगा, यह इफेक्टिव तरीका यहां पर डिफ्रेंस होगा। 
+
+जिस पर लाल टोपी और सिक्स डिग्री यह सेक्शन पर सिक्सटी डिग्री कि यहां पर शैक्षणिक रिकार्ड डिफरेंस। और ऐसे जितने 123 के डिफरेंस थे, अब यह सब दो हफ्तों में फट गए। ऑल विल बी आफ इक्विटी रिसर्च। 
+
+अब एक बार याद कर लीजिए कि जब डेरिवेशन आफ करवा रहा था, तो मैंने यहां पर बोला हुआ था कि को स्पाई को मैंने थोड़ी देर के लिए सिक्सटी डिग्रियां जमा कर लिया है। इसलिए क्योंकि हम क्या वेरीफाई यूज्ड टो इंडिकेट डेट फ्रॉम डिफरेंट एंगल बिटवीन प्लस आई3s वन एंड - 512। 
+
+ठीक है, प्लस आई3s और - आई वांट टू के बीच का फैसला डिफरेंस पाई है। और फाइव को मैंने लिया सिक्स डिजिट बोलने का मतलब है इन दोनों सेक्शन के बीच का खेल बिछा दीं। प्रेस कर लेते हैं दोनों को प्लस आई3s बॉयज - आई वांट टू 10 प्लस आई3s वंशज - आई वांट टो दो एंड और फिर डिफरेंसेस आफ छह डिग्री। 
+
+यह रिबन था कि वहां पर मैंने डेरिवेशन सैक्रिफाइस किया है। ठीक है, अब करना क्या है कि हम लोगों ने कंप्लेंट खोल बना लिया। अब हमें लाइक करें एंड को प्रेस करना है कि कमेंट में ऑन द बेसिस आफ ऑल थे थ्री क्वेश्चन। 
+
+तो चलिए पहले क्वेश्चन है चलते हैं। पहली लाइन करें: I R इज द रिजल्ट ऑफ I3 वन एंड 2012 - आई वांट टू। तो देख लेते हैं प्लस आई3s यौवन 2 एंड रिजल्टेंट बना लेते हैं। जल्दी से पहले कमला अप्लाई करते हुए झुक यहां से पर लाइन ड्रा किया इस पॉइंट तक पर और यहां पर यह दोनों लाइंस मिलती हैं। 
+
+यहां पर जो रिजल्ट एंड करें, हम लोग ग्रो करेंगे देश करंट एस आई आर में करंट आ यार। ठीक है, इन थे सेम वे थे सेकंड क्वेश्चन के पास पर आई वाई इज इक्वल टू प्लस आई वांट टू और - आईटी थन। 
+
+तो प्लस आई वांट टो दो एंड - 623 कि के लिए भी पहल कंप्लेंट लेते हैं। जल्दी से आ है और इनका जो रिजल्टेंट है, झाल है। उसको आई वाली लिखेंगे। लास्ट क्वेश्चन के हिसाब से आईबी सूट विथ मल्टी प्लस साइड 231 - 831 प्लस आई दो तीन और - आई3 वन पैदल कंप्लेंट इन दोनों का विद्रोह कर लेता है। 
+
+अजय को अच्छा। ठीक है, जहां पर यह दोनों पॉइंट बोलते हैं, वह रोल कर लेते हैं आईजी है। तो यह लाइन कुछ ऐसी बनेगी कि स्कैनिंग कर दिया आईपीआर। 
+
+और यह आपके सामने पूरा फ्री सिस्टम बैलेंस कंडीशन का ग्राफ अवेलेबल है फॉर डेल्टा कनेक्शन, विच आईएस एक्सप्रेसिंग थे रिलेशन बिटवीन लाइन करें इससे एंड प्रेस करें। 
+
+तो इस फॉर्म में एक्सप्रेस करते थे रिलेशन बिटवीन लाइन फंसकर इंच और इसका ओरल ग्राफिकल एक्सप्रेशन होता है। यह फीचर के फॉर्म में हम लोग स्पेस ऐसा किया हुआ है। 
+
+ठीक है, तो आई हॉप कि आपको इन दोनों पार्ट से यह जो यह प्रेजेंट जॉब हम लोग इस वीडियो में देख रहें और इसे प्रीवियस पार्ट जो हम लोग हैं इसके पिछले वीडियो में डिस्कस किया हुआ था स्टार कनेक्शन का है। 
+
+इन दोनों पार्ट साइड है कि आप लोगों का कनेक्शन वाला पार्ट वह क्लियर हो गया होगा। क्योंकि जितने भी आपने नारियल बनाते हैं, सिर्फ ऐसी के उन सभी ने माइकल के लिए आपको यह कनेक्शन वाला पोर्शन क्लियर होना जरूरी है। 
+
+अगर यह कनेक्शन का पाठक नहीं क्लियर है, यह रिलेशंस आपको नहीं क्लियर है, तो आप से निकल नहीं बनेंगे। दिनेश्वर इंपोर्टेंट एंड वेरी क्रुशल पार्ट सौंफ है। दोनों वीडियोस हेल्प से आपका इतना फास्ट क्लियर हो जाएगा। 
+
+और अपने इमीडिएट नेक्स्ट वीडियो में हम लोग बात करेंगे पावर इन थ्री फेज एसी का। और उसके बाद से फिर हम न्यूमेरिकल मैथर्ड इन करना शुरू करेंगे। 
+
+तो बना रहेगा तुम्हारे साथ। इस पर लाल वीडियो को मैं कंपलीट करता हूं। यहां पर नेक्स्ट वीडियो में बहुत जल्दी हम लोग मिलेंगे और थ्री फेज एसी के इंडिविजुअल 3 मराठी के पावर के बारे में बात करेंगे। तब तक के लिए थैंक यू वेरी मच फॉर हुआ है।

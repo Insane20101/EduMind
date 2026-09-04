@@ -1,0 +1,31 @@
+Dear student, welcome to Gate Smashers. In this video, I'm going to explain how aggregate functions work on null values. In a database, when we create tables, sometimes values in tables can be null values. So how to treat them, how aggregate functions treat them, all this with examples I'm going to explain in this video. 
+
+This video is important from an interview point of view; this is important for competitive exams, for college and university exams. So like the video, subscribe to the channel if you haven't done yet, and if you did, you can let it from other devices also. Subscribers are very important. 
+
+So let's start. The first question that comes to mind is: what is a null value? A null value is not 0; 0 is also a value, 0 is a value. So null means the value which is not available, and you can say a value which doesn't exist. 
+
+What is the meaning of not available or not exist, and why does this value come in a database? If we have a problem with this value, then why are we using this? I will give you a simple example. Sometimes we go for shopping, and after shopping when we do billing, the person sitting at the backend of billing asks you: "Sir, what's your name, and your mobile number, your email ID, and all?" Somewhere, what we do is that we ask him to do the billing. Max to max, we give a number to them, let's say anything. What they do is that they demand that at least they get the number, the rest of the information can be left out. But what they do is they fill in your mobile number; the rest of the columns, like email ID or let's say your name, whether the person told that or not, they leave it blank by default because it is a not available value which the customer has not told you. So when he will save the entry, in the table of the database, null will be there corresponding to where there is data that we've filled, and the one which is left blank/empty, there will be null. So this is the reason that null values come in our table.
+
+Now we'll talk about how we treat them. Our aggregate functions are SUM, AVG, COUNT, MIN, MAX. How it works with null values, I'll tell you. For that, I've taken an example. Let's say we have table T1. You can take any name, let's say there is T1, 2 columns A and B. You can see this data: 1-null, 2-null, 3-null, 4-null, null-null. I've entered this data so that I can tell you and explain to you with an example. So the data is in front of you. Null means it is empty; we haven't filled anything in this.
+
+First, we'll come to count. In count, we can use `COUNT(*)`. `Select count(*) from table name`. If I write this and execute, what will the answer be? The answer according to this table will be 5. Then you'll ask, how did 5 come? One whole row is null here. `COUNT(*)` will tell you by counting both. So 1 null is a single row, 2nd null will be 2nd row, 3rd and 4th, but 5th row is both null-null, but `COUNT(*)` will count it. This is a very important point: `COUNT(*)` will count this. So the total number of tuples will be 5. 
+
+So this was the first important point, and I've executed this. If you go to Oracle Live, if you've installed it, do it there. Otherwise, you can do it in online Oracle Live also; you can execute the code of this. In the Notepad file I've mentioned in the description box, you just need to pick the command and execute one by one and check also.
+
+Then `COUNT(A)`: now what I'm doing is `select count(A) from table name`. We are instead of `*`, we will only count the A column. So when we'll count the A column, then your answer will be 4. Meaning, when we only check the values of the A column, how many values are there? There is 1, 2, 3, 4. But it won't count null in an individual column; it won't count null. So note this point. 
+
+Then `COUNT(B)`: when we collectively count both, it was 5, and individually it is 4. Now we'll talk about `COUNT(B)`. Now we only need to count the `COUNT(B)` value, how many values are there in only B. This is a very interesting question when you'll find out the answer to this. So what will be its answer? It will be 0. When you'll do `COUNT(B)`, it won't pick any value here; it will not show null, it will show 0. This is what I've written here: all aggregate functions except `COUNT(*)` ignore nulls. Meaning `COUNT(*)` doesn't ignore, but the rest do. 
+
+The count of null values is defined as 0. When we count null values in total, what will it show? 0. So here the answer of `COUNT(B)` is 0. 
+
+Then we'll move to the next: `SUM(A)`. So next we have `SUM(A)`. When we do `SUM(A)`, so sum the A values, meaning total: 1 + 2 = 3, + 3 = 6, + 4 = 10, + null — it will not count null. So by counting these values, my answer is 10. 
+
+Then `AVG(A)`: AVG is sum / count. Sum / count. So sum of A is 10, and count of A was 4, so 10 / 4, so 2.5 will be your answer. Simple, getting the point? 
+
+Then `MIN(A)`: so in `MIN(A)`, sometimes students use null. Null is used for those where there is 0. Guys, null means not available; this value can be the biggest value or smaller value, we don't know that. So that's why in the entire A column, the smallest value will be 1. Okay, so do note this down. What is the smallest value? 1.
+
+Then if we talk about next, we have MAX. If we talk about MAX, what is `MAX(A)`? So that is clearly 4. 
+
+Then `SUM(B)`, `AVG(B)`, `MIN(B)`, `MAX(B)`: from all the values of this column, we have to find out SUM, AVG, MIN, MAX. So the answer for all of these is null. So this answer is directly null. 
+
+So do note all these points: that except `COUNT(*)`, everyone ignores null, and the count of null values is defined as 0 (it is not defined as null). The count of all null values is 0, and other functions return null. So see what other functions return null. Like this, all points and all aspects will get clear. You won't get stuck anywhere and can easily give answers to everything. Thank you.

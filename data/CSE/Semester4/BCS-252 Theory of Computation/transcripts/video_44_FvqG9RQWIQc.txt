@@ -1,0 +1,41 @@
+Hello, those so great specials, let's forget there, it's free to explain the decidability problem of various languages here. 
+
+Topic guys, TOC, one of the most important topics, a must-know topic. Subset of importance of competitive exams, especially that is closure properties and decidability problems. Whenever you examine, whenever you scan the computer science, wherever TOC course is there, then you are going to get questions. You will definitely get a question, that is the decidability table. 
+
+Avoid decidability tables? Whenever you enter the exam hall, on your rough sheet, at least draw this table because you will get questions from this. And whenever the paper is ending, like, are there questions where you have to state whether it is decidable or undecidable? These types of questions will be asked in your exam, especially if you are talking about university level exams. There also, such related questions can be asked. 
+
+Otherwise, if you like this video, please do subscribe to the channel, and please press the bell button so that you get notifications for all our latest videos. 
+
+So let's start with the decidability problems. Subsequently, here I have mentioned various problems, in which we have the membership problem, that is, whether a particular string belongs to the language or not. Meaning, if you are given a string, does that string belong to a particular language or not? Meaning, is that a member or not? Is this a decidable or undecidable problem? 
+
+Subsequently, what is the meaning of decidable or undecidable? Decidable means, yes, we have a decision, and we have a decision-making machine. What is a decision-making machine? If we ask you a question, can you give a proof? Yes, is there a proof related to this particular problem? That means, in TOC, if it is decidable, then a method or algorithm exists for it. And if that algorithm exists, then you can say it is decidable. If it does not exist, and you are using a hit-and-trial method or a probable method, that is not a valid method. Meaning, that is not decidable. 
+
+So, look, the problems are: membership, finiteness problem (meaning, whether a language is finite or infinite, is this decidable or not?), then we have the emptiness problem (meaning, whether the language is empty, meaning, does it never generate any string, or does it contain anything? Is the language empty or not?), then equality (meaning, are two languages of the same type equal or not?), then, after that, whether a language is ambiguous or not, then completeness (meaning, whether a particular language is having—or you can say that all the possible input strings that you have, does it generate all possible strings? That is called a complete language), then whether two languages of the same type have an intersection equal to Phi or not (that is again an intersection problem), and lastly, the subset problem (that is, whether two languages of the same type are subsets—meaning, whether one language is a subset of another). 
+
+Out of all these problems, the most important are these three problems: subset, membership, finiteness problem, emptiness problem, and equality problem. We have to check these. 
+
+Among the types of languages, we have DCFL (deterministic context-free), CFL (context-free), CSL (context-sensitive), RE (recursive), and finally, RE (recursive enumerable). 
+
+So let's see which ones have a tick and which have a cross. Here, a tick means decidable, and a cross means undecidable. 
+
+First, in the regular case, for all these problems, is there decidability? 
+
+If we talk about membership, for membership we use finite automata. I will explain this in detail in my next video, or in a brief way, we can write whether it is decidable or not. Yes, it is decidable. Why? Because for regular languages, we can check whether a particular string belongs to the regular language or not, because finite automata exist. Meaning, we have a method that proves yes, it is a member of that particular language. 
+
+Second, if we talk about DCFL, is it decidable? Yes, it is. For CFL as well, yes. Why? Because PDA (pushdown automata) and Turing machines exist. So yes, it is decidable. For RE, does any method or algorithm exist? No, it does not. 
+
+For the finiteness problem, in regular languages, we use loops. If there is a loop, obviously it is infinite. So yes, this is decidable. For DCFL and CFL, is it decidable? Yes, it is decidable. 
+
+Then, emptiness problem. Emptiness means, if a language does not contain anything—meaning, does it not even contain an empty string? Here, to check this, we can check whether the final state is reachable or not. Or, if we have any language, and if its final state is not there, or if we cannot reach the final state, is this possible? Yes, in finite automata, we can check this directly. So a method exists here, yes, it exists. In CFL, does a case exist? Yes, it exists. 
+
+Then, equality. Two languages are alike, but we have to check whether they are of the same type or not—meaning, whether two regular languages are equivalent. Do they generate the same type of strings? To check this, again, for finite automata, we use DFA. So, yes, a method exists. Yes, it exists because it is deterministic. So, in the case of deterministic languages, many problems are decidable. But in CFL, no. Why? Because we cannot compare two general CFLs; they do not have a deterministic behavior in all cases. In the case of PDA, deterministic PDA has different behavior, whereas here, it is a non-deterministic kind of behavior. So that is why it is decidable in some problems, but the rest are undecidable. In RE, it is never decidable, so here it is clearly undecidable. 
+
+Then, whether a language is ambiguous or not. Meaning, does a particular string have multiple ways of generating it in a grammar? If a grammar generates a language with ambiguity, can we check this? In the case of regular and DCFL, yes, we can decide whether a language is ambiguous or not. In the rest of the cases, we cannot decide. 
+
+Then, completeness. Meaning, whether a language contains all possible strings in the language. Is it decidable? For regular languages, it is decidable. In the rest of the cases, it is undecidable. 
+
+Then, we come to $L_1$ and $L_2$ of the same type—meaning, whether the intersection of regular languages is Phi, or the intersection of DCFL and DCFL is Phi. In the intersection case, for regular languages, it is decidable. The rest are undecidable. 
+
+And lastly, the subset problem. Meaning, whether two languages are of the same type, and whether one is a subset of the other—for example, whether $L_1$ (a regular language) is a subset of $L_2$ (another regular language). Can you find this out? Whether a regular language is a subset of another regular language? Yes, you can find it out. There is a method for this as well. But in other cases, a method does not exist. 
+
+So this was about decidable and undecidable problems. We will make a detailed video on these in the next video. But this is very important. Thank you so much!

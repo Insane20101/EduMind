@@ -1,0 +1,77 @@
+Hello friends, welcome to Gate Smashers. The topic is Class C in IP addressing. It is a part of Classful addressing where we divide IP addresses into 5 classes: Class A, B, C, D, and E. In this video, we are going to discuss Class C. 
+
+First of all, I will tell you that we are talking about IPv4. The IP address in IPv4 is of 32 bits, and here I have divided 32 bits into 4 octets because we are following the dotted decimal representation, which I had discussed in the last video also.
+
+### Range of Class C
+
+If we talk about the first question or the first point, that is the range. This means if I have been given an IP address, then just by looking at that IP address, how can I find out that it belongs to Class C? For that, first I have to find out the range, and where do we find out the range from? From the first octet. This means just by looking at the value of the first octet, we can find out if it belongs to Class C or not. 
+
+How? Here I have represented 8 bits, which are 8 places. In these 8 places, the first three positions are already fixed. The value of these three positions is 110. I mean to say that you cannot change these values because these values are a prefix. These values are used as a prefix, meaning any IP address, if it is given to you in binary values—because binary representation can be done—by looking at the first three values, you can find out that this IP address belongs to Class C. 
+
+Now, after this, we say that we came to know the first three values are fixed. So how many values remain here? How many places remain? The remaining places are 5. In these 5 places, what values can I put? 00000. This means what can be the minimum value? Five 0s. After that, 00001, 00010, 11, and these values... What can be the last value? What can be the maximum number? 11111, which means five 1s. The minimum value can be five 0s, and the maximum value can be five 1s. 
+
+However, don't forget the three values 110, which are fixed values. So 110 is fixed here because when you convert it into decimal, you have to convert the whole octet. Here 3 values are already there, we will add 5 values, and convert all 8 values into decimal. When we convert this binary number into decimal, what value will it become? 192. Because up to 191 it was in Class B, what starts from 192? Class C. 193, 194, and so on... until the last value, 110 followed by five 1s. If you collectively convert this into decimal, this value will come out to be 223. 
+
+So the answer to the first point or the first question is what? The range is from 192 to 223. The range of 192 to 223 is what we have here. Now, how many IP addresses come in this range? If you see simply, how many IP addresses are there? Near about 32. This means from 192 to 223, how many IP addresses are there? 32. Now, this is not a question, I am just telling you a point. We have the range.
+
+### Number of Addresses and Percentage
+
+What can be the second point here? The number of addresses. The number of IP addresses in Class C. This means how many IP addresses can be in Class C? How do you find IP addresses? 
+
+The first three positions are fixed, which means you cannot touch these three positions as they are fixed. So how many remain here? 5. And how many here? 8, 8, and 8. That means 24. 24 and 5 make 29. So the total will be 2 raised to the power of 29, because what is the number of bits? 29. Leave these 3 because these are fixed, leaving 29 bits. So what is the total number of addresses? 2 raised to the power of 29. This means 2 raised to the power of 29 number of IP addresses are possible in Class C. 
+
+If you see this, this is near about 12.5% of the total IP addresses. How many are the total IP addresses? 2 raised to the power of 32. Out of which, how much is this proportion? 12.5%. So 12.5% of the IP addresses are in Class C.
+
+### Number of Networks
+
+Now we are going to discuss how many numbers of networks are possible, and in each network, how many hosts are possible. 
+
+First, we find out how many numbers of networks are possible in Class C. To find out networks, we know that in Class C for the network, 3 octets are reserved, and the last octet represents the host. This means these 3 octets here represent what? Network. And this last octet represents what? Host. 
+
+Like in Class B, 2 octets were for the network and 2 octets were for hosts. In Class A, 1 was for the network, 3 were for hosts. Here it is 3 for the network and 1 for the host. 
+
+So how will you find out the number of networks? First, find out the number of bits for networks. 8 bits here, 8 bits here (16), and 5 places here because these 3 are not to be touched—they are fixed values because they are prefixed. So 8 and 8 is 16, and 5 is 21. 
+
+So how many numbers of networks are possible? 2 raised to the power of 21, because the number of bits used to represent is 21. If the number of bits used to represent is 21, then the total number of IP addresses or total number of networks are how many? 2 raised to the power of 21. 
+
+This means my second point—that how many networks are possible in Class C—is 2 raised to the power of 21, which is approximately 20 lakhs. This means near about 20 lakh equivalent this value comes. So here, 20 lakh networks are possible in Class C. 
+
+If you feel, "How is 2 raised to the power of 21 number of networks possible?", then you can find it out from here. See this: 192, 193, 194... up to 223. How many IP addresses are here in the first octet? 32. This means there are 32 values. I'll write here: 32. For each value, there are 8 bits here and 8 bits here. This means how many values are you representing 8 bits with? 256. And here also 8 bits, which you can represent with 256. 
+
+I mean to say, if you see this from a simple point of view: 192... for 192 here, only 192 if I fix as the value of the first octet, then here you have $256 \times 256$ possible values. If you take 193, then for 193 also $256 \times 256$; for 194 also $256 \times 256$. So how many are these values? These values are a total of 32. So for each of the 32 values, $256 \times 256$ values are possible. And you can check how much this value is. You can write 32 as $2^5$, this as $2^8$, and this also as $2^8$, which is approximately equal to $2^{21}$—not approximately, it is exactly equal to $2^{21}$. And that is the value we found. This is why $2^{21}$ number of networks are possible in Class C.
+
+### Number of Hosts per Network
+
+Now we will discuss in each network how many hosts are possible. In every network, how many hosts are possible? 
+
+To find out hosts in each network, you come to the host bit. How many host bits? 8. So how many numbers of hosts are possible? $2^8$, which is 256. This means for one network of Class C, 256 hosts are possible. If an organization takes an address of Class C, then in that it can create 256 number of hosts. But we can't give all 256 to hosts; we can't give them to users. The usable value is minus two, that is 254. 
+
+So the third point is 254. The number of hosts, possible hosts, the number of hosts is 256, but the number of possible or number of usable values—that is what? 254. 
+
+What is the reason? That I had told in previous videos also. The reason is we don't give the first address and the last address to any user. Why don't we give them? I'll tell you with a simple example so you will have a clear idea.
+
+### Example and Subnet Mask
+
+Let's say we take a network of Class C: `194.2.3.4`. I take a simple IP address, `194.2.3.4`. 
+
+Now, I have to first find out which class this IP address belongs to. So first, you come to the range. How much is the range? 192 to 223. Does this come between 192 and 223? You only have to check the first octet. The value of the first octet—yes. So you can simply say this belongs to Class C. 
+
+Now next, what is the Network ID of this IP address? To find the Network ID of this IP address, we use the subnet mask. And what is the subnet mask of Class C? `255.255.255.0`. And what do we do? We perform an AND operation between them. We perform an AND operation between corresponding values. 
+
+When you perform an AND operation, you open 194 in binary. 255 is simply eight 1s, so if you AND any value with 1s, then the same value will come again (I had told this before also, here I will tell you with a simple example). If you open 2, then what will you write? `0000 0010`. And 255 is `1111 1111`. So if you AND this, only this 1 will be 1, all others will be 0s. This means 2 is again 2, so you can simply check it. 
+
+Now, if you do an AND of 3 and 255, then it will be 3. If you do an AND of 4 and 0, then the answer will be 0, because if you perform AND with all values, here all values are 0, so all values will become 0. 
+
+So what is this value? This is the Network ID. This means this IP address belonged to which network? It belonged to this network: `194.2.3.0`. This means I have a network of any ABC organization; how is that network recognized? This means the whole world knows that network by which IP address? This IP address: `194.2.3.0`. 
+
+And in this IP address, in this network, how many hosts are possible? It is of Class C, so how many hosts are possible? 256 are total, but we use 254. Why?
+1. **First address (`.0`):** This IP address is first. This we will not give to any host because it represents this network.
+2. **Last address (`.255`):** Which one is the last one? Don't touch network bits, just copy them as they are, because if you change the network bit, then the network will change, and you will reach from some ABC organization to an XYZ organization. So copy network bits as they are, but for the last octet, which represents host bits, put all 1s in the host bits. This means I will put eight 1s here. Eight 1s are what? 255. 
+
+So, how many total IP addresses are there? 256. But out of these 256:
+* The first one—this one with 0—is not to be given to any user because it represents this network.
+* Do not give the last one to any user because it is the direct broadcast address. If someone from outside wants to send a message to everyone in your organization—if he wants to broadcast—then he will put which destination address? This one, so that the router knows that this packet is to be provided to all hosts. 
+
+That's why we neither use this first IP address nor this last IP address to give to a host. Other than these, how many remain? 254, which I can provide to any host. 
+
+So this is all about Class C. Thank you.

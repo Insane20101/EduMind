@@ -1,0 +1,79 @@
+Hello students. Welcome to Gate Smashers. In today's class, I am going to explain multi-level paging, and in multi-level paging, we will first talk about two-level paging. 
+
+I have already explained simple paging. If you haven't checked that video, then check it out for once; the link is in the description box, so that you get to know what paging is, how we make a page table, what a page table is, and what a page table entry is. If you know all these points, then it will be easy to understand the multi-level page. 
+
+Now let's start. I will explain this point also with the help of a question. First of all, we will talk about what the need for multi-level paging is. When we already have a page table, why did we divide the page table into further multiple pages? What was the reason for that? What is coming to your mind? 
+
+If the page table that we created becomes bigger than the size of that frame—frame size means the frames which are there in the main memory, where we put the page table in one of those frames so that when we search any particular page or frame, to find that page I need the help of the page table, so I put the page table in the frame of the main memory—if my page table is not getting fit in the main memory because the page table size is big and the main memory's frame size is small, then obviously I can't fit that. I have to divide the page table into smaller pages. 
+
+So we will discuss the same story here. Let's go! You'll get clarity with an example. 
+
+Let's say the physical address space is 256 MB. Here we have a given physical address, and how do we write a physical address? We write a physical address in two parts, i.e., frame number and frame offset, or what we also call the size of the frame. 
+
+The frame size is given as 4 KB. Memory byte-addressable is given to us. If our memory is byte-addressable, then with how many bits will I represent the size of the frame? How many bits do we represent 4 KB with? We represent it with 12 bits, because K is $1024$ ($2^{10}$) and 4 is $2 raised to the power 2$. Obviously, 12 bits represent the frame size. 
+
+And I know that the total size of the memory is 256 MB, which I can represent in how many bits? $2 raised to the power 8$ (since M is $2^{20}$), so I can represent it in $2 raised to the power 28$. My memory is byte-addressable, so this means this whole is called the physical address. 
+
+If my physical address is 28 bits and the offset is 12 bits, then what is the frame number I got? If you subtract 12 from 28, then here comes 16. Are you getting the point or not? I mean to say that my total numbers of frames—you have to add points one by one, otherwise you'll lose the concept somewhere. 
+
+Here I came to know one thing: the total size of the main memory is 256 MB, and each and every frame size is 4 KB. So how many frames do I have in total? $2 raised to the power 16$ frames. The total frames we have are $2 raised to the power 16$, which you can say I have a total of 65,536 frames, and the size of each and every frame is 4 KB. If you multiply, then the total size will be 256 MB. That's it. 
+
+Now let us talk about the logical address space. I have a process, and what I did to that process is that process is divided. Now see, I have a process, and that process is divided into a number of pages, and each page size—you already know each page size is equal to the frame size. 
+
+So if my frame size is 12 bits, meaning 4 KB, then obviously my logical address will be... what is my logical address size? What is the logical address space? 4 GB. So obviously, in how many bits will I represent 4 GB? What is 4? 4 is $2 raised to the power 2$, and G is $2 raised to the power 30$. So that means my logical address is 32 bits. In this, 12 bits are representing the size of the page. So the number of pages is $2 raised to the power 20$. 
+
+We got to know one more thing: the size of the total process is 4 GB, so I divided it into 4 KB pages. So my total number of pages is $2 raised to the power 20$, meaning 1 million pages came. 
+
+Now I have to store 1 million pages somewhere. Here, the whole page table which I have to create will be known with the help of the page table: which page is lying in which page of memory. 
+
+What I did here is I have created a page table. The page table is actually a database which we are creating. How many entries are there in the page table? The page table will have the same number of entries as the number of pages in that process. In how many pages have we divided the process? $2 raised to the power 20$. In this page table, my entries will be $2 raised to the power 20$, which we can also call 1 million entries. 
+
+The size of one page of the process is 4 KB. But what do we put inside the page table? Generally, we put only the mandatory part. We only put which page of ours is lying in which frame of our memory—we put the frame number. How many frames are there in total? 16 frames came; a total of $2 raised to the power 16$ frames came. How many bits will it take? It will take 16 bits to represent. Its 1 entry will be of 16 bits. Although apart from these, valid, invalid, protection bits, cache bits—we have lots of different kinds of bits. But the mandatory entry is the frame number, so we'll take only that. 
+
+So I have to store data of 16 bits. You can also call 16 bits 2 bytes. I have given it to you: what is the page table entry size? 2 bytes. Each page table entry is 2 bytes. Getting the point or not? 
+
+From here I can get the page table size. What will be the size of the page table? Look, how many entries are there in the page table? $2 raised to the power 20$. Each and every entry is of 2 bytes. You can say that my page table is 2 MB. 
+
+The size of the page table is 2 MB, and where did we put that page table? We put that page table into the frame of the main memory. How do we put it? The frame of the main memory is 4 KB, and the page table of the process is 2 MB. So 2 MB won't fit in 4 KB. 
+
+So at this point, you came to know that I have to divide this entire page table into further pages. If it fits—let's say if its size is 4 KB or less—then we would put this in the frame. But now this page table will not fit in the page of the main memory. So what to do? The page table has to be divided. 
+
+Now we will divide the page table into multiple pages. Getting my point? I think you got clarity about why we did that. The size of the page table is 2 MB, and the whole page of 2 MB can't fit in one table, so obviously I have to divide this page table further. Like if one process was not fully fit, then we divided the whole process. On the basis of that, we have created a page table. Now the page table is not getting fit in the frame of the main memory, so now we're dividing the page table into pages. 
+
+There might be a little confusion for you here, but I am telling you every point in a way so that you can get clarity. 
+
+Now we will divide this page table. The size of the page table is 2 MB, and obviously, when we divide this, the pages that come will be stored in the main memory only. So again I am dividing this with 4 KB. Why? My main memory's frame size is 4 KB. 
+
+What came when we divided? In how many numbers of pages will it be divided? You can take it out from here: it will become $2 raised to the power 21$ divided by $2 raised to the power 12$, meaning $2 raised to the power 9$. You can say the total number of pages that came is $2 raised to the power 9$, that is 512 pages. 
+
+Now we will make one more page table. We will make one more outer page table. How many entries will we put inside that page table? Into the number of parts we have divided it. The internal or inner page table—we have divided it with 4 KB, so how many pages have we got? 512. There will be 512 entries in the outer page table; $2 raised to the power 9$ entries will be there. 
+
+Now, what will happen in these entries? Where is your particular page stored? Where have you stored it in the main memory? Inside it, we are representing 2 bytes each. So we should take out the outer size of the page table also: $2 raised to the power 9$ (number of entries) multiplied by 2 bytes. So this becomes 1 KB. 
+
+Is 1 KB less than 4 KB? Yes! That means we can store the entire page table in one frame, because this is of 1 KB and the size of the main memory—the size of the frame of the main memory—is 4 KB. You can fit this; you won't have any problem at all. No need to divide this further. 
+
+Now see. Now the story will be completely clear to you: what we did in the outer page table and what we did in the inner page table. 
+
+Now the next point is: in the next point you have to find how we will map the address that the CPU will generate. How do we actually map that? For mapping that, this was my logical address; this was my original logical address that was of 28 bits. Getting the point? No, the logical address was... our total logical address was 32 bits. 12 bits out of 32 bits will represent the size of the page, and 20 bits were representing the page table entry. 
+
+Now we have to divide this into further two parts. How did we do that? The entries of the outer page table are $2 raised to the power 9$ entries. 
+
+Now the second thing you have to find is: in my outer page table, there are $2 raised to the power 9$ entries. Now if any address is generated here, first of all, you will go to any one of these entries. The CPU will generate to go to this particular page number. What will you get from here? From here you will know where that page is stored in memory. You got the address; you got the answer in the outer page table: in which frame the page is lying in the main memory which you're searching. 
+
+Then you'll go into that particular main memory frame. From there you will find the next page. But how many entries are there on the page? We have divided. We had $2 raised to the power 20$ entries. We have divided internally. So when we divided, how many entries were there on each page? You have to find out. 
+
+How many entries are there on each page? How will we know? 4 KB is the size of a whole frame divided by the data which we are putting inside that, which is 2 bytes; the entries will be $2 raised to the power 11$. 
+
+Now what you have to do is you have to go to the outer page table. From the outer page table, you'll get a particular address of a page table. You go to that page; you have got only the starting address of that page—in which entry you have to go to that page? Because the particular page frame you are looking for, it will be in one of the $2 raised to the power 11$ entries. 
+
+Now in these $2 raised to the power 11$ entries, you have to go to the particular entry. After going to that entry, you'll get the actual frame number. By going to the frame, you will get the data. Now in that frame, you have to go to that frame—from here you got the address—then go to the main memory frame, and by going to the main memory frame, which particular byte do you have to pick? An offset bit will tell you that. 
+
+So you got the simple point. This diagram will clear everything: my total logical address was 32 bits, in which 12 bits are the size of my block, or you can say page size. Next, in 20 bits, what have we done? 9 bits will take you to the outer page table: which page you are searching. Let's say you were searching this page. After going to that address in the main memory, you'll pick the particular page. But how many entries are there on the page? $2 raised to the power 11$ entries. P2 is telling $2 raised to the power 11$ entries are there. In those $2 raised to the power 11$ entries, in which entry will you get the actual page frame? Now from there, you have to go to the main memory; you have to pick that particular block. This is how the whole story goes. 
+
+There was a book. We have created an index of that book—talking about a multi-level index. You have created an index. That index has become so big that it covers your entire book. An index generally is 8 to 10 pages, but if my index becomes 100 pages, then what's the benefit of making an index? Then we are creating another index of that index; that is what we are doing here. 
+
+My original page table size is so big that it did not fit in my frame. We have divided those page tables into further pages, and we have stored those page tables in the outer page table, so that we can know from which particular page table the demand has come. From there I will go to the inner page table. From the inner page table, I will get a particular entry: in which frame your page table is lying. From there I will go to the main memory, and I will pick that particular block or byte. So this is how your address will be generated. 
+
+So this is the whole story of two-level paging. So always remember this point: if you got any of these questions in two-level paging, you have to work in the same format. If any question comes—whether a GATE-level question or any other question—you'll not face any sort of problem. 
+
+This is all about two-level paging. Thank you!

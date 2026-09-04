@@ -1,0 +1,25 @@
+Hello friends, and welcome to Gate Smashers. Today, we are going to discuss various networking devices. Generally, we use a lot of devices in computer networks. In some devices, it is pure hardware, and in other devices, both hardware and software work. 
+
+We are not going to talk about all the devices in the real world, but we will focus on them from your exam's point of view, covering the most important devices we use on a daily basis. Even if you are not directly aware of using them, we generally connect to the internet through our mobile, laptop, or PC. When a packet or data leaves our laptop, which device does it reach, and how does it reach the receiver? All these devices work in the background. These devices include cables, repeaters, hubs, bridges, switches, routers, gateways, IDS, firewalls, and modems. 
+
+Questions about these major devices have frequently appeared in competitive exams like GATE and UGC NET, and especially in your college or university-level exams. If you want to properly understand the concepts of computer networks, you should definitely know about these devices.
+
+### Cables, Repeaters, and Hubs
+We will look at these devices one by one in complete detail, but here I am giving just an introduction. If we talk about cables, repeaters, and hubs, these devices are pure hardware, meaning no software works in them. What software is and what it does, you will find out in future videos.
+
+### Bridges, Switches, and Routers
+Bridges, switches, and routers are very important devices that have both hardware and software. Because they have software working in them, their price is obviously higher since both hardware and software are operating. What the hardware does and what its responsibilities are, we will study in detail when we cover these devices.
+
+### Gateways
+Similarly, if we talk about a gateway, "gateway" is generally a term rather than an actual device. A gateway generally means a door. In a gateway, we can use a firewall, a router, or proxy servers, which is why we call it a gateway.
+
+### Security Devices: IDS and Firewalls
+For security purposes, we generally use IDS and firewalls. It is not that only these two devices are used, but the two most important devices are IDS (Intrusion Detection System) and firewalls. We use firewalls and Intrusion Detection Systems for security.
+
+### Modems
+Then we have the modem, which you have definitely seen in your homes as well. Modem stands for Modulator/Demodulator. Computer software works in 0 or 1 form, meaning it works on digital signals, so the data we are sending is digital data. However, the wires used at the back end carry analog signals. Therefore, the digital-to-analog and analog-to-digital conversion is done by the modem.
+
+### Conclusion
+There are different kinds of cables, repeaters, and hubs. We will see what their uses are, what their purposes are, and what types of questions based on them have appeared in the GATE and UGC NET exams. These are the major devices we use in computer networks. 
+
+Thank you!

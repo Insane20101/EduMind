@@ -1,0 +1,61 @@
+Let's say I have a website, and there is a sidebar on it. When I click on a button, the sidebar comes out from the left side. You can tell me yourself whether the sidebar looks good coming from this side or from that side. The smooth transition you just saw on your screen is made with the help of the transition property in CSS. This means that we specify a very smooth transition from one property to another so that it looks appealing to the eyes. 
+
+In today's video, we will learn to make transitions like this. Like this video and write "Sigma Batchop" in the comment section. Now, let's go to the computer screen. Let's roll the intro.
+
+I have come back to the computer screen, and I will create a new folder named "video45." Now, what is this transition? First of all, I will explain this because if you don't know what a transition is, you will not be able to understand this property well. Transition means going from one state to another state very smoothly. 
+
+In CSS, a transition means going smoothly from one state to another. Suppose I have a container, and after this, I have a box. I will write some styles. I will put a style here, and after this, I will write `.container` and then `.box`. What will I write inside the `.container`? I will write the background color red. Now, don't say, "Why are you choosing red?" It's my choice. 
+
+Let’s say I write the background color as aquamarine. There is no such thing as bad. Okay, I did this; I chose antique white. Now, I will show you its preview. You will say that I have seen the preview, but I have not set the width and height, so we don't have to do it so soon. I will set the width to 50vw and the height to 40vh. 
+
+Now, I want it to be translated to the front. It was a simple box I was showing you, and now our structure is ready. I want it to translate, so if I put a class in it, I will write `class="tr"` which will translate. I will put the name, and I am saying that I want to transform and translate on the x-axis by 10%, and along with that, I want to translate it on the y-axis by 10%. 
+
+As soon as I put a class called "translate," it will be translated to 10% on the x-axis and 10% on the y-axis. The percentage will be based on the width of this. If I make it a little more, or I do one thing, why not use vw or vh so that it looks a little moving? Now, if I remove this class from it, I will show you by inspecting. We do this with JavaScript, but now I will show you. 
+
+If I remove this class and put it back, you will see it comes suddenly. It comes with a shock. What does this sudden appearance mean? It means that this is not a smooth transition; it is not coming easily. That is why we have to make it smooth, and that is what the transition property does. 
+
+I will say that wherever the `.translate` class is applied, I will apply the transition property. The transition property is made up of four properties. Never learn the transition property directly; learn these four properties first. 
+
+First of all, the transition property, then the transition timing function, transition duration, and transition delay. These four functions are important. You can specify which property you want to transition, the duration (let’s say 3 seconds), the timing function (ease-in and ease-out), and the delay (let’s say I want it after 1 second). 
+
+Now, I will show you its output. As soon as I reload it, you will see that as soon as I remove this class, it goes up, and how many seconds will it take to go from here to there? It will take 4 seconds. The transition duration means how long this animation will work. The transition delay means how long it will take to start the animation. 
+
+Now, I am using the word "animation" here; it does not mean that you should get confused with the animation property. I will explain that in the coming videos. But this is an animation; the name of the property is not animation; it is transition. 
+
+We are doing this transition to the transform property. The transform property that is applied here will be the transition. Instead of going from 1 to 100, you will go from 1 to 100 easily. 
+
+Now, what we will do is move forward and learn to combine these four properties into one property. You can combine these four properties into one because who has the time to write all this? Instead of writing long properties, we can use shorthand. 
+
+You can also do `transition: all;` to apply it to all the properties. For example, if I put translate and change its background color to blue, as soon as I remove this property, I will remove the translate class. As soon as I put the translate class back, you will see that it went up, and its color also changed. 
+
+If I remove the translate class, it will go up, and its color will change. When I put the translate class back, you will see that after one second, it will come down, and the transition will happen because I am also transitioning the color property. 
+
+Now, suppose I want to transition two properties; I can use comma-separated values. Instead of saying "all," I can specify the color transition along with the transform. If you come here and do this work again, remove the translate class. As you remove it, you will see it goes up after 1 second. 
+
+You can make a transition of only two properties, but you can use "all" if you want to transition all properties. You can also use multiple transformations. If I say here to scale it to 2, it will also increase in size. 
+
+Now, I will tell you about the timing function. The transition timing function can be linear. What does linear mean? It means it goes from here to there uniformly. Then you have ease-in-out, which works differently. 
+
+You can make your own function, and the animation will run accordingly. The speed will increase, then it will become constant. If you want it to run differently, you can adjust the function. 
+
+You can see many other functions available, and you can choose one that you like. Copy and paste it into your code. 
+
+In total, this is the transition property. Let me tell you one more thing about the shorthand property, which combines all four properties. As I mentioned, we are lazy people; we don't have that much time. 
+
+You write `transition` and then specify all four properties. For example, I want to apply all properties for 3 seconds with an ease-in-out function and a delay of 1 second. 
+
+If you need help, click on the MDN reference, and you will find all this information with comments and syntax. Syntax is never my priority; I focus on understanding the concept. 
+
+If I show you my page, you will see that if I translate it, it will go up after 1 second, and if I translate it again, it will go up for 1 second and work for 3 seconds. Everything is working. 
+
+Let’s change the function to make it a little more aggressive. It will go very fast and then slow down. I will copy this function and replace it in the ease-in-out section. 
+
+When I reload the page and translate it again, you will see how aggressively it starts and then slows down. You can create such functions. 
+
+That was all about the transition property. I don't want to make this course too long; I want to keep things short and to the point. If you have not solved the exercise from the last video, please do so because the solution is coming soon, and people are going to get shoutouts. 
+
+I will not record it now; you have time to design this grid, and you will get a shoutout. Many people were saying that the views have decreased, so don't get demotivated. I am making videos based on the views. 
+
+To be very honest, I am creating the best course in web development. I want to give 100% from my side. This much is in my hands, and I am doing it well. 
+
+Access the GitHub code, access this playlist, click here, and bookmark it. Please like the video; it motivates me. Thank you so much for watching this video, and I will see you next time. Bye!

@@ -1,0 +1,124 @@
+The producer-consumer problem is a standard problem of multi-process synchronization. It means we have two processes here: one is of the producer and one is of the consumer. The assumption is both processes are coming at the same time, meaning both are parallel processes, and they are sharing something. This means we are talking about cooperative processes. In cooperative processes, two or more processes share something; it could be code, resources, memory, or some variable also — something common between them. So we are talking about the cooperative processes only, where one is a producer and the other one is a consumer. 
+
+This is the code for the consumer and this is the code for the producer. It's just code written in normal C language. Let's see the producer. When the producer's code runs, the producer produces an item and places it in a buffer. And what the consumer does is, it consumes the item, and to consume it will execute this whole code, and then finally will bring out the item from the buffer, and then it can process anything it wants. This is the way of how we are doing this. 
+
+So let's start with Case 1. We are starting with the normal case, i.e., the best case, because when we run the program, then there could be many cases. I mean, when we execute a program in the real world or create some situation in the real world, then we are not bound with only one or two cases. I have to check all cases, so we are taking a simple case. 
+
+Like Case 1: In case one, the producer is producing an item. It's just any random item, let's say the item is X1. The item name is X1. Now, to produce item X1, the producer's process will execute this code. So it's simple: `int count = 0`. Count is a global variable that both are sharing. We just talked that there is some share or something common in cooperative processes. Here, in the producer-consumer problem, this is the buffer which is shared by both the processes. Both processes are sharing this buffer. The buffer is like a memory or space in RAM that both processes are sharing. And one more thing they are sharing is the `count` variable. 
+
+Now:
+```c
+void producer(void) {
+    int item_p; // this is the local variable of producer
+    while (true) { // which is always true
+        produce_item(item_p); // this is a function which will produce an item, let's say item_p
+        while (count == n); // n is the size of the buffer
+```
+I've already picked up `n`'s size as 8. This means the size of the buffer is 8, and the index is 0 to `n-1`, meaning from 0 to `8-1`, i.e., 7. So already there's numbering: 0, 1, 2, 3, 4, 5, 6, 7. And we are doing increment and decrement by using two local variables. The consumer uses `out`, and the producer uses `in`. 
+
+Now let's say that the producer produced an item: `while (count == n)`. What is the meaning of this condition? If the `count == n`, it means if the size of `count` is equal to the size of the buffer, it means that the buffer has overflowed. If the buffer is overflowing, it means I can't produce any other item in it. So if I can't do it, then there's a semicolon there. This means this code will stop here definitely. This producer will get stuck in an infinite loop, obviously, if my buffer is filled from 0 to 8 completely. Now, if `count`'s value is equal to the maximum size of the buffer, this is the condition for buffer full. The buffer is full. Obviously, if the buffer is overflowed, then we can't produce any item. Even if I created an item, then where will I save it? Then I have to put it in the buffer, but the buffer is already full. Then here the producer will get stuck in an infinite loop. 
+
+But we are taking the normal case where let's say my buffer is initially empty, and the producer came and wants to produce a new item. So now let's jump to the next line:
+```c
+        buffer[in] = item_p;
+```
+Means whatever the item... let's say the item is X1. `buffer[in]`... by default, the starting position of `in` is 0. `in` tells the address of the next empty slot. Means it tells the address of the empty slot where that item will reside inside the buffer. So now my item is pointing out at int 0 position. This means the 0th position is empty. This means we are incrementing like this: when items will keep coming, then we'll keep incrementing `in`. And when we'll release items, then we'll increment `out`. 
+
+Let's say `item_p` i.e. X1... and `buffer[in]`. What is the position of `in`? Zero. So we filled item X1 in the buffer. We filled item X1 in the buffer.
+```c
+        in = (in + 1) mod n;
+```
+What is the value of `in`? Zero. Then `(0 + 1) mod 8`. `n` is the maximum size of the buffer, i.e., 8. So this is `1 mod 8`, and we already know this is the remainder. `1 mod 8` is equal to 1. This means now `in` will become incremented to 1. So this is a simple case of how we produced an item and placed it in the buffer. 
+
+Now the last condition is `count = count + 1`. Now the `count` variable, which is used by both the producer and consumer, so I have to increment the `count` variable also. The `count` variable, which is initially zero, `count` says that how many items are there in the buffer. For now there's no item, so it's a zero. But we added a new item, i.e., X1, so `count` will also change from zero to 1. So this is how the code will execute. 
+
+Now if you see this part: `count = count + 1`. This is an important part over there. `count` is a simple instruction. This is a simple instruction of C, `count = count + 1`, but how CPU executes it... this is very important. The CPU converts every instruction into micro-instructions and then executes it. So how will this instruction convert into micro-instructions? 
+
+First, we'll load `count`'s value from the memory into a register. Let's say the register is `Rp`. Because CPU works on registers first for efficiency and time saving. So what did I do? `count`'s value was zero initially, so I loaded zero in the register. Then increment... `INCR` is increment. Increment of `Rp`, so `Rp`'s value will change from zero to 1 in the register. And then we store the value of `Rp` into `m[count]`, so `m[count]` will change from 0 to 1. 
+
+Same... let's see how the consumer works. Now whenever the consumer wants to consume an item, then it'll confirm from the same buffer. Means it'll use the same buffer, meaning both are sharing the common buffer over there. Now they are sharing the common buffer, then let's say the consumer came and chose `item_c`. 
+
+This is the `while (true)` which is always true:
+```c
+        while (count == 0);
+```
+What is the meaning of `while (count == 0)`? It means if `count`'s value is equal to zero... `count` tells how many items are there in the buffer. And if there's no item in the buffer, it means my buffer is totally empty. So obviously this will be an infinite loop, meaning the consumer doesn't have anything to consume, so it'll get stuck here in the infinite loop. So what this condition is telling us? Buffer empty, that the buffer is empty. If the buffer is empty, then there's nothing to consume from the buffer, so the consumer's code will get stuck in an infinite loop. 
+
+So let's say that there's something always to consume:
+```c
+        item_c = buffer[out];
+```
+Now `out` is what? `out` is by default again starting from the zero. Means how we are running the items: when putting the item, then we are putting from 0 to 7, and when we are bringing out items, then we'll keep incrementing to the next position from 0. And now we are using mod. Then what is the advantage of mod? It'll move from the 7th position back to the 0th position. 
+
+Let's say `buffer[out]`... what is `buffer[out]`? The `out` value is initially 0, because we're always putting out items at the 0th position. We are entering items at the 0th position and taking them out at the 0th position also. So let's say `buffer[out]`... what is the position of `buffer[out]`? Zero. So whatever value is there in the 0th position, it'll come in `item_c`. What's the value in this? X1. There's an item X1 which is primarily produced by the producer. So the X1 item will come under `item_c`. 
+
+Now when the X1 item will come in `item_c`, then we have to update `out`, because `out` will show the next value because the consumer has already consumed it. So we'll increment `out` from zero to one so that the consumer has to consume a new item. So it's fine, it can consume items from the 1 position also. In any case, it may be possible that my buffer is filled, then the consumer can pick multiple items also one by one. 
+
+We changed `out`'s value from 0 to 1, now it'll point on 1. If there'll be some item, then it'll consume from there, then it'll keep moving next. This is the way.
+```c
+        out = (out + 1) mod n;
+```
+So `out`'s value in starting is 0, so `(0 + 1) mod n`. What is mod `n`? `n` value's 8, so `1 mod 8`... i.e., 1. So `out`'s value will be updated. I updated `out`'s value from 0 to 1. 
+
+Now this is again important because `count` is common in both. The `count` variable is common in both, that's why this is the most important instruction:
+```c
+        count = count - 1;
+```
+`count - 1` means... we consumed an item, then obviously we have to reduce `count`'s value by 1, so `count = count - 1`. This is also a normal instruction. We've written a line in C: `count = count - 1`. But how does the CPU execute it? Again through micro-instructions. 
+
+Let's say what it'll do first. `count` value from memory... what is the `count` value now? The `count` value is 1 because there was just one value in the buffer. We entered that one value, so the `count` value is one. So 1 will be loading into the register. Let's say there's a dedicated register for the consumer, so value 1 will get loaded in that consumer's register. Decrement of `Rc`... means we decremented the value from 1 to 0. And then zero will be loaded into `count` memory, meaning we again changed `count`'s value from 1 to 0, meaning stored value from 1 to 0. 
+
+So it means `count`'s value now is also zero. So `count`'s value zero means that we consumed the item from here, so there's no item which is left over there. Obviously, there's no item. We saw a simple case: first we produced an item, then placed it in the buffer, then the consumer consumed the item, took it out of the buffer, and then `count` changed again from 0 to 1, and then from 1 to 0. We took out the X1 that we produced. Now `out` will point to the next one that it wants to read, and if there's the next item, then it'll use it. `in` is also there: if I want to produce some item, then we'll produce it here. This way we'll keep incrementing. When we'll go from 7 to 8, then `8 mod 8`... again 0. Then again my pointer will move after 7 to 0. 
+
+This is a normal case, which we generally call the best case, that if my code will work in a way that the producer came first, then the consumer came, then the producer came, and again the consumer, then there's no problem, this will be perfectly fine. 
+
+But now we are moving towards the next case. The next case is... let's say... now we are talking about process synchronization. In process synchronization, if these processes aren't synchronized... let's say at any point of time the producer produced three items. Let's say X1, X2, X3. These three items at any point of time, anytime... this can happen, this is one of the cases. These three items have been produced, so in `count` it's showing 3, because there's three items, so the value in `count` is 3. 
+
+`in`... what will `in` show here? Always the next empty slot, as we discussed. Next empty slot, because we always keep `in`'s value one extra incremented so that we can keep getting the next value where I have to place the item. And `out`... let's say that the consumer hasn't consumed any item until now, so we are starting from zero. 
+
+Now let's run this program again. Let's say the producer is ready to produce one more item. The producer has already produced three items and now wants to produce a new item, so we are running this code again. Let's say the producer produced an item: `while count == n`. Count value is 3. `3 == n`? NO... false, because still we have empty slots, so we'll easily jump from here to the next. Meaning we came out of the loop. 
+
+Buffer... let's say the item is X4. In this case, let's say the item is X4. So we'll do `buffer[in] = X4`. What is the `in` position? 4. 4 position is what? This is 3... because the next empty position is three. So let's say we'll insert the item in the third position. This is the third position. So X4, we inserted X4 here. This statement says X4 will be inserted into `buffer[in]`. What is the `in` value? 3. So in `buffer[in]`, we inserted an item X4 at the 3rd place. 
+```c
+        in = in + 1;
+```
+Again we incremented `in`, because `in` always tells the next empty slot so that the producer can produce the next empty slot there. 
+
+Now let's say `count = count + 1`, because we have to increment `count`. Because now here 4 items came, but `count` is at 3, so obviously we've to update `count`. So my whole producer's code will terminate. But let's say `count = count + 1`... this one:
+1. Load `Rp`, `m[count]` — What is the `count` value now? The `count` value is three. Previously the `count` value is 3. Three will be loaded into the `Rp`. Let's say there's one register `Rp` in which we loaded value 3. 
+2. Increment of `Rp` — Next section is increment of `Rp`, meaning we incremented `Rp` from 3 to 4. When incremented from 3 to 4... 
+3. Let's say the third instruction is store `Rp` into `m[count]`. 
+
+But now we are taking one case that after this 2nd instruction, this producer got preempted. This means this process has got preempted, because whenever we run processes in real time, then a process can get preempted anytime. The reason could be... interrupt — maybe some hardware or software got an interrupt, or some high-priority process arrived, or time quantum... that maybe its time quantum got expired. In any case, a process can get preempted anytime. 
+
+So let's say it executed the 1st and 2nd instructions: it executed this 1st and 2nd one, entered the value of `m[count]`, i.e., 3, into the `Rp`, and did increment of `Rp`, so it became from 3 to 4. Internal register value changed from 3 to 4. But before it would run the 3rd instruction, the producer code got preempted already. 
+
+The CPU will always search for new processes if there's any other process in the ready queue that it can change to running. Yes, there's one more process. Now see, the consumer came and ran this code: `while (count == 0)`. We already have a lot of items to be consumed, so this is false, so it came in. `buffer[out]`... what is `out` value? The `out` value is zero, means we can read something with zero value here. What is the value at the 0th position? X1. So it'll put X1 in `item_c`... will consume it. 
+```c
+        out = (out + 1) mod n;
+```
+The same... `out` value is zero, `(0 + 1) mod 8`, i.e., 1. So we shifted the value from zero to one here, and item X1 got consumed from here. Obviously, when it placed the item in its local variable, then the item left the buffer. 
+
+We did `out = out + 1`. 
+```c
+        count = count - 1;
+```
+The next instruction is `count = count - 1`. `m[count]`... same. What is the `m[count]` over there? `m[count]` is 3. The `count` value is 3. It entered the `count` value 3 in the register. Let's take a register here, `Rc`. In the `Rc` register, we entered the value, i.e., 3. `count`'s value is 3 because it didn't get updated until now and the system already got preempted, so my `count` value here came 3. Decrement of `Rc`, i.e., 2. It got decremented. But the same, before I would execute the third instruction, the system got preempted already. 
+
+Before it... let me write here for your easiness. Case: in this case, what we are doing? First of all, the consumer came. The consumer is executing the instruction I and II. But before it would execute instruction III, the consumer already arrived. This is how we are doing it: first the producer came, executed item 1 and instruction 2; after that, the consumer arrived, the consumer executed instruction 1 and instruction 2. This is instruction I and II.
+
+Before it could execute instruction three, it got pre-empted and the producer came again. When the producer came again, then it has already executed up to here. So this value will be the same in the PCB that we have the process executed up to here. So we'll resume it, we'll never restart it, otherwise our CPU's efficiency will get so much reduced. So PCB will indicate that we've done up to here. Only the third instruction was left. 
+
+So we executed the third information, that's $i_3$. The moment we executed $i_3$, what is the value of $R_p$? Value of $R_p$ is 4 in the local register. So we loaded 4 value in the count. Now the count is updated with 4. Count is updated with 4 means the third instruction got executed. Code got terminated because this process has ended. So when it got over, then it got terminated. When it got terminated, then the consumer will get the control back. 
+
+So in the consumer also, we'll check in the PCB, all these values were executed already. In count also, this one and two was already done. Just the third one was left. So which is the third one again? Consumer's $i_3$. This is the flow which will help you how to execute this. 
+
+So the consumer came and ran the last instruction, i.e., $i_3$. The moment it ran $i_3$, what is $R_c$? In $R_c$, the value in the register is 2. We'll load 2 value to memory count. Memory location of count, what is the memory location of count? This. So we again updated the value from 4 to 2. Now the value of count is 2. What is the meaning of that? Here this statement got executed, means this code is also executed. When this code got executed, then this also got terminated. So when both processes got terminated, now the value of count is 2. So it means I have 2 items in the buffer. 
+
+But just check the buffer. How many items are there in the buffer? 1, 2, 3. There are 3 items in the buffer. But the count is wrong over there. And obviously, it should be 3. We had 3 items, out of them, 1 we produced and then consumed one, so it became 4 and should be 3 back again. But here count says that there are 2 values only. But there are 3. So there are 3 values in the buffer and count says 2, so this is the problem. This is again a race condition problem. We checked it out in the last video also. This is again called the race condition where wrong values are competing. If we ran producer here first, if you'll run consumer first, then producer, then there must be some other value, but 3 won't arrive. So this is the case because of which we failed to achieve process synchronization. So here we are getting the wrong value. 
+
+You just focus on the producer, then $i_1, i_2$ of the producer, then consumer, $i_1, i_2$ of the consumer, then again producer. Just make a note of that. If you have any doubt in the middle, then you can revive the video and play it again. This is the flow of how we deal with the producer-consumer problem. 
+
+Now, some of the viewers might be thinking that why this case has been made. Because I said already that when we bring a situation in the real world, even if we bring a software in the market, when we do its testing, we don't see 3-4 cases in testing, we try to get maximum situations to test the case, that's the best. So there could be a lot of cases to execute this, but do processes get synchronized in all cases? NO. So there's one case if we'll execute it like this, in this way, here problem will be created. So this is the problem: count is telling 2, but the right one is 3. So this is again the problem. If the process synchronization is not done, then this problem can arise. 
+
+Now we can remove it again using the binary semaphore, using monitors, using locks, and other methods are there, which we'll see in the future videos. Thank you, guys!

@@ -1,0 +1,103 @@
+Hello friends, welcome to Gate Smashers. Today we are going to discuss the Readers-Writers Problem, which is a standard problem of process synchronization in operating systems. 
+
+Before discussing the problem, I want to establish a little baseline on what the problem is. We actually have a database. What is a database? A collection of related data. Now, two types of users use or access the database: readers and writers. Readers are those who only want to see the data and read it—that's it. Writers, on the other hand, are those who want to update something in the data. If we look at a simple example like the IRCTC Indian Railways website, checking the train status by putting in a train number is just reading the data; we are just seeing the data and not performing any changes. But if someone is reserving tickets, etc., that is a write operation because we are making some changes to the ticket count. So here we have two users: readers and writers. 
+
+Now, what the problem actually is: multiple users can use the database at the same time. Users mean either readers or writers. If they are using it simultaneously, what can the problem be? The problem is that if one reader is already using the data—meaning one reader is already in the database using it—at that time, if some writer comes, that is a problem. It is definitely a problem, and I am talking about the same data here. In the same database, if there is a reader and at the same time a writer comes in parallel, that can create a problem. 
+
+Similarly, if a writer is already using the database and at the same time a reader comes, that is also a problem. 
+
+The third case is if some writer is trying to update the database and at the same time one more writer comes and tries to update the same database, that will also create a problem. 
+
+And the fourth case is Read-Read: one guy is reading the data and at the same time one more reader comes. That is not creating any problem. This is the important one—that is not creating any problem. 
+
+What is the constraint here? The constraint is the same data. If there is a reader who is working on data A and there is a writer who is working on data B, there is no problem in this because they are performing operations on different data. That will not create any problem. I am talking about the same data. In the same data, Read-Write, Write-Read, and Write-Write problems are standard problems of DBMS which we study in transaction control and concurrency (known by standard names like dirty read problem, lost update problem, and temporary read problem). But Read-Read doesn't create any problem. 
+
+If these problems occur in a database, a big problem arises because many times data is lost or inconsistency is created. So how can we stop it? To stop that thing, we have to synchronize these processes, these users: readers and writers. To synchronize, there are many methods like semaphores, monitors, and locks, but the most popular method is the semaphore. I want to write my code such that these three problems do not occur, but if at a time two or more readers want to come, can they come? Yes, they can come. Not just one or two, even if 100, 1,000, or 100,000 readers come, there is no problem. My code is to be designed such that these three problems should not come, but this fourth case can come anytime. To handle these four cases, whose help will I take? Semaphores. Why am I taking the help of semaphores? Because I want to synchronize the processes—which processes? Readers and writers. To synchronize them, we are using the semaphore because it is the most popular method.
+
+So let's start with the code. Let's write the code: `int rc = 0`. What is the meaning of `rc`? That is read count. Read count means how many readers are there in the buffer, or we can say the number of readers in the buffer, or how many readers are there using the database. So initially, there is no reader, which is 0. 
+
+We have taken two semaphores here: `mutex` and `db`. You can take any name; `mutex` is a standard variable so we use it again and again, but you can take `a`, `b`, `c`, or any name you want. We initialized both with 1. 
+
+Now, let's look at `void reader`. When a reader comes, they will execute this code. As we have already discussed before, when any process wants to come into the critical section, it has to run entry code, and when it exits, it has to run exit code. So for the reader, this part up to here is the entry code, and after that, what have I written? `db`. `db` means the critical section. Critical section means where we keep common things. In this case, what is common? The database. The database is common; all guys want to access the database, the same data. So that is the critical section. To enter this, it has to run this code, and when it exits the critical section, it has to run that exit code. 
+
+For the writer, this code is there: when a writer wants to enter the critical section, this is the entry code, and when it wants to exit, this is the exit code. We will come to that later; let's start with the reader.
+
+Let's discuss Case 1. Case 1 is when a reader comes. Let's say Reader 1 comes first. When Reader 1 comes, what is the initial value of `rc`? 0. We start from here: `while(true)`. Then `down(mutex)`. `down(mutex)` means, as we already know, "down" is to reduce the value. `Down`, `P`, and `Wait` are all the same. Whether `down`, `P`, or `Wait` is written here, you don't need to worry; these are synonyms in a way, they are all operations and the work of these three is the same. Here we have used `down`. `down` means what? It will make the `mutex` value go from 1 to 0. 
+
+Let's list our variables: `mutex` is initially 1, `db` is initially 1, and `rc` is initially 0. Now when Reader 1 comes, the line `down(mutex)` makes the `mutex` value go from 1 to 0. 
+
+Then `rc = rc + 1`. What is the meaning of `rc = rc + 1`? The read count increased because one reader has come, so the `rc` value becomes from 0 to 1, increased by 1. 
+
+Next, `if (rc == 1)`. Since $1 == 1$ is true, it executes `down(db)`, which brings the `db` value down from 1 to 0. Why do we do it? Actually, we will stop the writer here. Let's continue with the case, and I will discuss all those cases. 
+
+Then `up(mutex)`. What is the meaning of `up(mutex)`? The value becomes from 0 to 1, and Reader 1 happily enters the database and is now using the database, reading it. Okay.
+
+Now, let's say at the same time a writer comes. This is the problem we are discussing in Case 1. The reader is put in, but at the same time, in parallel, a writer comes who wants to use the same database. So which code will the writer run? This one: `void writer(void)`. 
+
+`while(true)` which is always true. `down(db)` is the entry code to enter the critical section. What is written in entry? `down(db)`. It means make the `db` value go from 1 to 0. What is the `db` value right now? It is 0. It is already 0, so if `down` gets 0 and our value is already 0, it cannot make it from 0 to -1 because it is a binary semaphore. We have taken two binary semaphores, so the value cannot be reduced below 0. Therefore, the process will be blocked. 
+
+In this case, the writer is blocked. That's what we want: if a reader is already reading the database, can a writer come at that time? No. Because when it does `down(db)`, the value of `db` is already 0, so it will be blocked. This means the writer is blocked and cannot enter the critical section. So my first case is established; this code is running properly.
+
+Let's discuss the second case, which is the Write-Read problem. Again we will start with initial values: `rc = 0`, `mutex = 1`, `db = 1`. 
+
+Now let's say a writer comes first. That is Case 2: we are now discussing Case 2, where the writer comes first. Since the writer comes first, we will run the writer code. Writer `W1` comes. `W1` wants to come, let it come. `while(true)`, true. `down(db)`. What is the meaning of `down(db)`? The value of 1 will become 0. And who happily enters the database? `W1`. `W1` enters the database. 
+
+Now, while `W1` is already in the database, can a reader come? Let's say a reader also comes—let's say `R2` comes. Reader `R2` comes: `while(true)`, `down(mutex)`. What is the `mutex` value? It becomes from 1 to 0. This line runs successfully. `rc = rc + 1`. What is the `rc` value? It was 0, and now it is updated to 1 because the read count increased as one reader came. 
+
+Next, `if (rc == 1)`. Is it true? What is the `rc` value? It is 1. $1 == 1$ is true, so it executes `down(db)`, which means make the `db` value go down. What is the `db` value right now? It is 0. This cannot be made down, which means the reader will be blocked. The reader will be blocked on this line; this line cannot run. 
+
+So yes, my second case is also established. It is going successfully according to this code: if one writer is already sitting there, can a reader come? It can never come.
+
+Let's start with the third case: Write-Write. Again we are starting with initial values: `rc = 0`, `mutex = 1`, `db = 1`. 
+
+What is the third case? Write-Write. Let's say that a writer comes first. Let's name it `W1`. Writer `W1` comes. `down(db)`: what is the `db` value? It is 1. It is made from 1 to 0, and successfully Writer 1 enters the database. 
+
+Now what are we checking? If one writer is already in the same database, can another writer come? We'll check it. Let's say that `W2` also comes. `W2` runs: `while(true)`, `down(db)`. What is the `db` value? It is 0. It cannot go from 0 to -1, which means Writer 2 is blocked. That's what we want: if one guy is already writing, nobody else can write the same data. Thus, my case is established, meaning my code is working properly for Case 3 also.
+
+Then our last case remains, and we will check it. Let's start again with the initial values: `rc = 0`, `mutex = 1`, `db = 1`. 
+
+What is the fourth case? Read-Read. A reader comes—let's say Reader `R1` comes. `while(true)`, which is always true. `down(mutex)`: what is the `mutex` value? It is 1. 1 is made 0, a successful operation. It comes down to `rc = rc + 1`. What is the meaning of that? Read count increased; the value becomes from 0 to 1. 
+
+`if (rc == 1)`: is $1 == 1$? Yes. `down(db)` means make the `db` value go from 1 to 0. We can do it, and we did it, because that value was already 1. This line is also successful. 
+
+`up(mutex)` means make the `mutex` value go up from 0 to 1. So Reader 1 happily comes in. 
+
+Now, what was the fourth case? Can another reader come at the same time? Let's check it. Let's say that `R2` also wants to come. `R2` comes: `while(true)` is true, `down(mutex)`. What is the meaning of `down(mutex)`? Is the `mutex` value 1? Yes, the `mutex` value is 1, so it becomes from 1 to 0. `rc = rc + 1` means the read count is increased by 1; a second reader comes, so the value becomes 2. 
+
+`if (rc == 1)`: what is `rc`? It is 2. Is $2 == 1$? No. Then will this line run? It will not run. What is the next line? `up(mutex)`. The value of 0 becomes 1, and `R2` also happily enters the database. 
+
+So my fourth case is also working properly; there is no problem in this case. Can we run this case successfully? Yes, we are running it, which means this code is working properly. 
+
+Let's say at this time `R3` also comes. Okay, let `R3` also come. For `R3`, it executes: `while(true)`, `down(mutex)` (because these lines are always true). The `mutex` value is made again from 1 to 0, `rc = rc + 1`, and the value of `rc` becomes 3. `if (rc == 1)`: is $3 == 1$? No. Then this line will not run. The next line is `up(mutex)`, which makes the `mutex` value become 1, and `R3` also happily enters the database. So all three readers—not just 3, even if you get 300 readers here—all of them can enter the database easily.
+
+Now our last remaining case is how we execute when we remove someone from the database. Let's say Reader `R1` says my work is done and I want to exit the database—meaning I have read, and I want to exit. Then okay, he can easily exit. Let's say he exits. When he exits, it will run the exit code. So what is the exit code? It is written here; this is the code of the exit up to here. 
+
+What will he do in the exit first? When `R1` exits, the first line he runs is `down(mutex)`, which means the `mutex` value (which was 1 here) is made from 1 to 0. 
+
+`rc = rc - 1`: obviously, one reader is reduced, so the value of `rc` is updated again to 2. So we made the value of `rc` equal to 2. 
+
+`if (rc == 0)`: is $2 == 0$? No, so we will not do `up(db)`. 
+
+Can `up(mutex)` be done? Yes, `up(mutex)` can be done; the value is made again from 0 to 1. 
+
+This is the beauty of the code. All the beauty is right there in this line. What is the beauty? If the value of `rc` is still 2, it means two readers are already sitting in the database. If two readers are sitting in the database, then do not "up" the database value even by mistake! If you make the `db` value go from 0 to 1, then a writer will have the opportunity to enter the database. So that's why the writer still cannot come. 
+
+Let's say Reader `R2` says my work is also done and I want to exit. Let him go; he will exit and run this code: `down(mutex)`. What is the `mutex` value? It becomes from 1 to 0. 
+
+`rc = rc - 1`: obviously, one more reader left, so the value becomes 1. 
+
+`if (rc == 0)`: is $1 == 0$? No. So this line will not run. 
+
+`up(mutex)`: the value is made from 0 to 1, and the process goes on after doing its work. Still, the database value will not be "upped". Why not? Because there is still one reader sitting inside. 
+
+So you might be thinking: why is `up(mutex)` used here? Why do we make the `mutex` value go up again and again while `R3` is sitting inside? Can `R4` not come at this time? Can `R5` not come? `R5` can also come! If `R5` wants to come, it will easily come, make the `mutex` value go from 0 to 1, do `down(mutex)`, and easily enter inside. That's why we are making the value of `mutex` go up. 
+
+Now `R3` says my work is also done now. Okay, if it's done, then exit. While exiting, `down(mutex)` makes the value from 1 to 0, and `rc = rc - 1` makes the value of `rc` become 0. Now there is no reader inside. 
+
+`if (rc == 0)`: $0 == 0$ is true! So `up(db)` runs. Now this line will run, so the `db` value becomes from 0 to 1. Then `up(mutex)`, the value becomes from 0 to 1, the process finishes data, and exits. 
+
+Now a writer wants to come—can it easily come? Yes, `down(db)` makes it go from 1 to 0, and it enters the database. 
+
+This is how we actually implement all four conditions—meaning all these four cases (Case 1, Case 2, Case 3, Case 4)—using binary semaphores. 
+
+If you liked this video, then please like it, share it, and if you have any questions you can ask me in the comments. Please subscribe to my channel. Thank you!

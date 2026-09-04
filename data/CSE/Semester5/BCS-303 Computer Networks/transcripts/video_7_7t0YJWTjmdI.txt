@@ -1,0 +1,33 @@
+Hello friends, welcome to Gate Smashers. In the last video, we discussed topology, and mainly we discussed mesh topology and star topology. In this video, we are going to discuss the next topology, bus topology. 
+
+First of all, from the diagram, you will have an idea of what bus topology actually is. First, there is a backbone cable; this we call the backbone cable. The cable at the centre is called the backbone. You can also say coaxial cable. You can also call it thick Ethernet wire. What does thick Ethernet wire basically mean? Where bandwidth is very high. Why are we keeping bandwidth high here? Because on this cable, multiple devices are connected. See here, A, B, C, D, four devices are connected on this cable through the drop lines—that we call drop lines, they are wires only. This we call tap; a tap is an electric device which connects the backbone and drop wires. 
+
+If we ask here, what questions actually come here? Specially in UGC NET—as I have said in the last video, whatever topic we are discussing in this video, although they are very simple topics, what happens, especially in UGC NET, sometimes such questions come, or in KVS, even in GATE exams, such questions come where we feel that "I can do it, this is easy, I can attempt this question," but when we see the point, we get confused. 
+
+So first of all, let's talk about the number of cables. So in bus topology, how many cables are needed? One is the backbone cable, and second, and through what all devices are connected? Through drop lines, and what are drop lines? They are a type of wire. If $n$ number of devices are there, $n$ drop lines you want. If there are $n$ devices, total $n$ number of devices, then how many drop cables are required? $n+1$. Why this $n+1$? Because of the backbone; this backbone is also a major cable, thick Ethernet. 
+
+Number of ports: how many ports do I need on each device? I need one port on one device. If the number of devices is $n$, then the total number of ports will be $n$ number of ports. 
+
+Next is reliability. If asked about reliability, is bus topology reliable or not? As we have discussed in mesh, that mesh is very much reliable. If any point of failure occurs—a single point of failure—do I have any other way to send a message or to transmit? Let's say A wants to transmit to D, so which path will it use? This path. B wants to transmit to D, which path will it use? This channel, this wire it will use. So here, there is a single point of failure. The meaning of single point of failure: if in this wire some failure occurs, means some problem occurs in the backbone wire, then the whole topology, the whole system will stop. So reliability is not here. 
+
+Security: if we talk about security, security means if A is sending a message to B, will C and D know? Yes, they will know, because when A will send a message to B, that message will also go to C and D because the cable cannot decide, it cannot filter. The funda of using filters is there in switches, routers. Here, the cable will send a message to all; whoever gets the message—let's say B got, C got, and D got—but whose destination address will be there? Of B. So B will know that the message is for me. So there is no security here. Reliability is not here. 
+
+Next, cost: if we talk about cost, yes, it is cheap, means its cost is less as compared to the mesh topology, because here we have a lesser number of cables. 
+
+I have noted a small point here: terminator or repeater. What do we put in the end of the cable? We can also install a repeater. What is the reason? Let's say the length of this cable is 500 metres, because we use it for LANs, and the size of a LAN is not too long. So in this cable, data can be sent only up to 500 metres. And if I want the size of the LAN to be 1 km, then how will you do for 1 km? You will put one more LAN; the size of that LAN is also 500 m. So here you can put a repeater. What does a repeater actually do? The repeater raises the strength of the signal, due to which the signal can move a greater distance. I have already put a video on the functionality of a repeater; I will share its link with you, please do check that video. 
+
+These are all the major points related to bus topology, and the most important point here is of collision, because this is a multipoint network. What is the meaning of a multipoint network? With one wire, multiple devices are connected, and they are sharing that wire. Here it is not point-to-point; in mesh topology, there is point-to-point. This is multipoint. What is the problem in multipoint? Because multiple devices are sharing, the collision may be too high. If you see, on average, what can be the maximum collision? $n$, meaning all the devices started transmission at the same time. So all the signals will collide with each other. This is the problem, although we then use a token system or token methodology, or we use CSMA/CD. But this is all about the basics of bus. 
+
+Next, we talk about ring. What is the meaning of ring topology? If I connect both the ends of bus topology, then this will form ring topology. So basically, in ring topology, here I have put 4 devices: A, B, C, D. Here one device acts as a monitor, and it monitors ring topology, and the others can transmit data with each other. 
+
+So here, if we talk about the number of cables, the number of cables is one backbone plus four drop lines, so it is the same. 
+
+If we talk about the number of ports, that is also the same, because with every device 1 port is required. 
+
+If we talk about reliability, yes, this is also less reliable, because if this link gets damaged, it is not like that if there is some problem in the wire here, then A and B can send messages to one another. No, they can't send messages, because this is an electric signal; when the circuit is broken, how can A and B communicate? So here also, reliability is less. 
+
+Secondly, if we talk about security, then obviously security is less here, because when a device will send a message, it will reach everyone. 
+
+Next, if we talk about cost, then the cost of both is relatively same. But if we compare ring and bus, in ring it is unidirectional, especially that messages are transmitted in only one direction. Secondly, here also we use tokens, which we say token ring. So with the help of a token ring, we can reduce collisions to some extent. Collisions are here and here also as compared to the mesh topology. 
+
+But these are the basic points which can be asked: what is actually in bus topology and ring topology, and especially on these points. On these points, questions have already come, and they will be coming in future also. Thank you.

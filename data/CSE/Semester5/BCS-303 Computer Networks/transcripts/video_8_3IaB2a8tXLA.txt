@@ -1,0 +1,39 @@
+Hello friends, welcome to Gate Smashers. In today’s video, we are going to discuss the differences between Manchester and Differential Manchester encoding. 
+
+The major responsibility of the physical layer is the transmission of data. This means the data coming from the upper layer is in the form of digital data (1s and 0s). It is not necessary that we transmit that data further in the form of 1s and 0s; we can transmit data in the form of an analog signal or a digital signal. Therefore, we need to encode the data in the physical layer. We can use different types of encoding techniques, such as analog-to-analog, analog-to-digital, digital-to-analog, or digital-to-digital. When we use digital-to-digital encoding, we use Manchester and Differential Manchester encoding. This is a very simple concept, and questions on this topic appear many times in exams. In this video, I am going to give you a clear-cut idea of how to convert data using Manchester and Differential Manchester encoding.
+
+### Manchester Encoding
+
+First of all, let’s start with Manchester encoding. In Manchester encoding, you have to keep in mind how to represent 1 and 0. There are two conventions: the first is the Dr. Thomas convention, and the second is the IEEE 802.3 convention. Many times in exams, it is mentioned which convention you have to use. If it is not mentioned, then by default you can use the IEEE convention. Here, I am explaining the process according to the Dr. Thomas convention; the IEEE convention is its exact reverse. 
+
+Let's say you are given the data string `1 0 1 0 0` and you have to encode it according to Manchester encoding. This is a very simple process. First, draw a line so that it is easy for you to represent the signals. Under the Dr. Thomas convention, we represent 1 as a transition from high to low (upper to lower signal), which looks like a "Z" shape. We represent 0 as a transition from low to high, which looks like a reverse "Z" shape. 
+
+When 1 comes, you represent it with a "Z" shape. When 0 comes, you represent it with a reverse "Z" shape, keeping the signal continuous and bringing it over. Again, 1 means a "Z" shape, and 0 means a reverse "Z" shape. For the next 0, draw another reverse "Z". Do not forget to connect the signals together at the transitions. This is a simple way of using Manchester encoding.
+
+Now, let’s change the scenario with the string `0 0 1 1 1`. According to the Dr. Thomas convention, you use this simple method: if it is 0, start with a reverse "Z". For the next 0, draw another reverse "Z" from that point, but do not forget to connect them because the first one ended where the second one started. Next is 1, so continue with a "Z" shape. For the next 1, keep the "Z" shape going and connect them. For the final 1, continue with another "Z" shape and connect it. This is how we represent 1 and 0 in Manchester encoding according to Dr. Thomas. 
+
+If you look at this according to the IEEE convention, we represent 1 in the opposite way (low-to-high transition) and represent 0 as a "Z" shape (high-to-low transition). This makes it easy to remember that "Z" is 0 under the IEEE convention. This is the simple way of representing data according to Manchester encoding.
+
+### Differential Manchester Encoding
+
+What about Differential Manchester encoding? In Differential Manchester, we use a different concept. You have to keep in mind that 0 means an edge (a transition at the beginning of the interval) will occur. Here, you have to draw a line; it cannot be empty. Why? There is a very simple logic: we represent voltage either from high to low or from low to high. If you get a 0, remember that 0 means an edge. An edge means you have to draw a line at the boundary. How do you draw the line? You can do it in two ways. 
+
+How do you represent a 1? A 1 is represented without an edge, meaning you do not draw any line at the boundary. You can draw it either way, depending on your preference. Let me explain this with a simple example so that you can solve it easily.
+
+Let's start with the sequence `1 0 1 0 0`. The first bit is 1. A 1 means there should not be any edge at the start. To avoid an edge, we have two options: we can start with either transition. Let's say we start with a transition from low to high. We draw it this way. 
+
+Next is 0. In the case of 0, you must remember there is an edge. This means at the boundary, it should not go empty; you have to draw a vertical line to show the edge. Since the previous bit ended at a high level, to draw an edge, you must start the next bit from the opposite level (low). So, you draw the transition from low to high. 
+
+Next is 1. A 1 means "continue"—you do not have to draw an edge at the boundary, but simply continue the signal. Since the previous bit ended at a high level, you continue from the high level and transition to low. This means we choose this transition. You cannot choose the other one because that would require drawing an edge. The meaning of 1 is to move continuously without a boundary transition. 
+
+Next is 0. A 0 means an edge. Since you ended at a low level, you must draw a vertical line (an edge) to the high level and then transition from high to low. 
+
+Next is another 0. A 0 means an edge. Since you ended at a low level, you draw a vertical line to the high level and transition from high to low. This is the way of representing data according to Differential Manchester.
+
+Let me take another small example so that you have a clear idea. Let's say the string is `0 1 1 1 0`. For any data given to you, you can easily draw it by keeping in mind that 0 means an edge. An edge means you can start with either transition. Let's say we start with a transition from low to high, drawing a vertical line at the start to represent the edge. 
+
+Next is 1. A 1 means continuous, so you end the previous bit and continue without drawing a boundary line. Next is another 1, which also means continuous, so you continue without drawing a boundary line. The next bit is also 1, so you continue again. Finally, we have 0. A 0 means an edge, which means you have to draw a vertical line at the boundary and then transition. This is the simple way of representing Manchester and Differential Manchester encoding.
+
+### Conclusion
+
+In competitive exams like GATE, UGC NET, or KVF, this type of question appears many times, and you can easily solve them using these conventions. Thank you.

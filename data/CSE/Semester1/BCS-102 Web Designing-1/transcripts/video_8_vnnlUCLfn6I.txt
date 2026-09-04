@@ -1,0 +1,37 @@
+Learning the concept of inline and block elements in HTML is very important. Inline elements are those which take only as much width as required, while block elements take the full width of the screen. This is also referred to as the display property, which can be set through CSS.
+
+Now, let's go to the computer screen and examine inline and block elements closely through some examples. 
+
+First, I will create a folder named "video 8" since I have already put seven videos in the previous folder. I will open this folder in VS Code and create an `index.html` file. To do this quickly, I will type the exclamation mark and hit enter. I could have typed everything manually, but this shortcut is more efficient.
+
+In the `index.html` file, I will write "Inline and Block Elements." I previously mentioned this topic, but I will elaborate further. Inline elements take only as much width as necessary, whereas block elements require the full width. 
+
+To illustrate this difference, I will add some CSS. You might wonder why I am adding CSS when we haven't studied it yet. I will only add the necessary CSS for this demonstration. I will create a paragraph element and write, "Hey, I am a paragraph." I will set the background color of the paragraph to blue. 
+
+Next, I will add an anchor tag with an `href` attribute pointing to "https://google.com" and label it "Google." I will set the background color of the anchor tag to red. You can choose any color you like. 
+
+Now, you can see that the paragraph has a blue background, while the anchor tag has a red background. When I click the anchor tag, you will notice that the background color of the anchor tag only covers the width of the text, while the paragraph takes the full width. This happens because the paragraph is a block element, and the anchor tag is an inline element. Inline elements only take up as much space as they need, while block elements take the entire width, causing the next content to appear below.
+
+For further clarification, if I talk about the `<div>` element, it is a block element, while the `<span>` element is an inline element. I can place an inline element, like an anchor tag, alongside a span element because inline elements allow other elements to occupy their width. 
+
+Now, will the anchor tag always be inline? Will the paragraph tag always be block? The answer is no. You can change the display property of any element with CSS. This means that an inline element can be made block, and a block element can be made inline. We will explore this in CSS later.
+
+I want to quickly address a mistake I made regarding the video numbering. The video on forms was mistakenly placed in the folder named "video 6," but it should be "video 7." I will correct this, and now we are working on "video 8." 
+
+I hope you are finding this information helpful. Many people have pointed out this error in the comments, and I appreciate your understanding. The source code will be available for you, and you can also visit codewithari.com to download notes, which will serve as a supplementary resource. 
+
+Now, regarding which elements are inline and which are block, this knowledge comes with practice. However, I have created a comprehensive list for you. The list includes the most commonly used block elements, such as `<div>` and `<p>`, and it also contains inline elements. 
+
+Please ensure that your code does not have unnecessary spaces. If you right-click and format the document, it will help maintain clean code. Write good code so that in the future, when your grandchildren open your laptop, they will see that you wrote quality code.
+
+Now, I want to give you a quiz through HTML comments. Write a vertically aligned form asking for a name, city, and pin code. This form should be based on what we learned in the last video. I encourage everyone to participate in this quiz. Please write your code in the comment section and specify which elements you used, whether they are inline or block elements. 
+
+In upcoming videos, we will also explore how to use CSS to set inline, flex, inline-block, and other display properties. 
+
+If you are following this course, you are on your way to becoming a great web developer. Don't be discouraged by the length of the videos; they are designed to be beginner-friendly. 
+
+Remember, many people will tell you that you are wasting time studying, but they won't acknowledge the blessing it is to have access to such a comprehensive course for free. You are fortunate to be focused and not distracted. When you look back, you will realize how blessed you are for the sacrifices you are making now.
+
+Now, I will add a background color to the span element. I will set it to a gradient of blue and violet. 
+
+That's all for this video. I hope you understood the difference between inline and block elements. Please access the playlist, like the video, and share your thoughts in the comments. Thank you for watching, and I will see you next time. Bye!

@@ -1,0 +1,72 @@
+Hello friends, welcome to Gate Smashers. In this video, we are going to discuss an important question on B-trees, and this is important for your competitive as well as your university exams. Why am I saying it is important? Because this type of question has already been asked many times in exams, and in the future also, there are chances it will come, only the values get changed.
+
+See what is given in the question: Consider a B-tree with a key size equal to 10 bytes, a block size of 512 bytes, a data pointer size of 8 bytes, and a block pointer of 5 bytes. Find the order of the B-tree. 
+
+If we talk about exams like GATE and NET or any competitive exam, if you search previous year questions, definitely you will get this type of question on B-trees. Either this type of question comes on B-trees, or questions on insertion and deletion are very popular. 
+
+Now, regarding the order of a B-tree, insertion and the structure of a B-tree—I have already made a video on that, and the link to that is mentioned in the description box. But from this video also, you will get an idea of what the structure of a B-tree is, and all these things, including the order, you will get to understand from here as well. 
+
+The order of a B-tree, in actual terms, is the maximum number of children possible for any node. Because here we are talking about trees, the structure of a tree consists of nodes and edges. See, this is our root node, in front of the root there are internal nodes, and these are our leaf nodes. So we have root, internal, and leaf nodes, and we call these nodes. 
+
+First, you have to understand that the order is the maximum number of children possible. The minimum children of a root can be 2, but how many maximum it can be is called the order. Similarly, if we talk about the maximum and minimum possible children of an internal node, that is also called the order. 
+
+Before the order, you need to understand the node. What is the structure of this node inside a B-tree? The structure is like this: in a B-tree, every node—whether we are talking about the root node or any node at an internal level—will have a specific structure. 
+
+Firstly, we have a block pointer. To whom does this block pointer point out or denote? If this node further has any children—like see, if this is a root node and these are its further children—the block pointer points to any other node, meaning some other children. 
+
+After the block pointer, we have a key value, and with the key value, we have a data pointer. The key value means the basis on which we are searching for data. I have already made a video on this and explained what the meaning of a key is. We are keeping index records in the tree only. So if you search in any book or search any topic, firstly we move to the index. 
+
+What is there in an index? There are only two things. First is the key value, and the second is the pointer. What is a key value? It is the topic that you are searching for, the broad topic of that, its main topic name, and corresponding to that name, you get a page number. So this is the key value—the value on the basis of which you are searching for data. And the data pointer is the pointer that will take you to that data. Here you are only getting its key value, but the actual data is present in secondary memory. To go to that data, this data pointer will help you. 
+
+So we have a key and a data pointer. After that, what will be there? After this pair, again there will be a block pointer. And again, if further we have any children to point out, what will we have? Again a key and a data pointer, then again a block pointer, then again a key and a data pointer, and again a block pointer. So in this way, the structure works. 
+
+Finally, in the end, what will we have? A block pointer, which will denote the right-side children. 
+
+So what do we have in every node? A block pointer, a key value, and with that a data pointer, then again a block pointer, key, data pointer, block pointer, key, data pointer, and finally a block pointer. 
+
+You got the purpose of the block pointer—the nodes of the tree are pointed out by block pointers. And the data pointer, or record pointer, points out where your data is present in secondary memory; to go to that page, this pointer will help you. And the key value is what you are searching on the basis of. That is the simple meaning of this particular node. You will get all of this in every node. 
+
+Now, what do you have to do to solve this question? 
+
+Let's say we have $n$ number of block pointers. The number of block pointers in a single node is $n$. In a whole block or a whole node—or we can say block also—let's say we have $n$ number of block pointers. So obviously, what will be the total size of the block pointers? One block pointer's size multiplied by the total number of block pointers, plus what we have apart from this. 
+
+So see, if we have $n$ block pointers, the total number of keys will be $n - 1$. If we take a simple example here, let's say we have 3 block pointers: block pointer 1, block pointer 2, and block pointer 3. So obviously, how many keys will be there? Key 1 and Key 2. On the sides of the keys are block pointers, so if the number of block pointers is 3, how many keys will there be? 2. 
+
+And how many record pointers or data pointers will there be? 2, because for every key we have a corresponding data pointer. So you can say that if we have $n$ number of block pointers, the number of keys will be $n - 1$, and the number of record pointers will be $n - 1$. 
+
+Here we have this structure: $n \times \text{Block pointer}$. If we consider the number of block pointers to be $n$, the number of keys will be $n - 1$. What is the size of every key? That is given to us. Plus, what do we have apart from this? Apart from this, we have record pointers. 
+
+As I have already told you, record pointers will also be $n - 1$. Record pointers are equal to the total number of keys. You can also call them data pointers; data pointers and record pointers are the same thing. 
+
+So the size of this whole structure will be less than or equal to the block size. This is the equation that will actually form. One block—which you can also call a node—its size depends upon how many total block pointers it has, and its total keys and record pointers or data pointers. 
+
+Now, let's put in the values. If $n$ is the number of block pointers, the size of 1 block pointer is given as 5 bytes. Insert it: $5n$. If $n - 1$ is taken as a common factor here, then $(\text{Key} + \text{Record pointer})$ will be together, since $n - 1$ is taken as common: $(\text{Key} + \text{Record pointer})$. 
+
+The size of the key is 10, and the size of the data pointer is 8. So this is your equation:
+$$5n + (n - 1)(10 + 8) \le 512$$
+where the block size given is 512 bytes, and all values are in bytes. 
+
+Simplifying this:
+$$5n + 18(n - 1) \le 512$$
+$$5n + 18n - 18 \le 512$$
+$$23n - 18 \le 512$$
+$$23n \le 530$$
+$$n \le \frac{530}{23}$$
+
+When you solve this, it will be $23.04$. That means 23 is the exact value that will come. It can't go above 23, because your 23 block pointers will properly fit, but the 24th block pointer won't fit properly as little space is left here, but not that much that you can fit a block pointer or record pointer in that. 
+
+So how much value do you need to take? 23. Do not take 24, because 23 is less than or equal to 23.04, not 24, since 23 will properly fit in, whereas the 24th one will not. 
+
+Here, the number of block pointers is 23. And the total number of block pointers—the maximum block pointers—represent children. Every block pointer represents children. So you can say your maximum order is 23, meaning the maximum children can be 23 in this question. 
+
+If we talk about the root node, the maximum order value can be 23, meaning maximum children can be 23, and the minimum children can be 2. If we talk about the root node, the minimum is 2 children and the maximum is 23, which we just found out. So the total number of block pointers equals the total children. 
+
+If we talk about an internal node, how many maximum children are possible? 23. And the minimum we find out by taking the upper value of $\frac{\text{order}}{2}$. Meaning the order that we have, divide the order value by 2 and take its upper value (ceiling function). So this will be 11 point something, which you can write as 12. So the minimum children possible for an internal node is 12, but the maximum is 23. 
+
+Generally, we take the maximum only, because we want to make it broad. If it is broad, there will be less depth, so a greater number of children will make it broader. But if the maximum is asked of you, you can find the maximum. If asked about the root, you can find that. Root, internal node, minimum, and maximum—all values you should know. 
+
+And how many children can a leaf have? A leaf won't have any children because it is a leaf node. 
+
+This type of question can come to you in such a way. And if this value is given to you, how many keys are possible? Keys are found out by $\text{order} - 1$. So if we have to find the total keys, subtract 1 from the order. That many numbers of keys and record pointers are possible. 
+
+Like this, we have to find the order of a B-tree. This is all about the question related to B-trees. Thank you!

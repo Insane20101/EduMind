@@ -1,0 +1,65 @@
+In today's video, I will tell you about CSS transforms. There are two types of transforms in CSS: 2D transforms and 3D transforms. A 2D transform means we want to change any object in two-dimensional space. For example, we can increase its scale, translate it, or rotate it. A 3D transform, on the other hand, works in three dimensions, which includes an additional axis, the z-axis. This allows us to manipulate an object in three dimensions. 
+
+Don't get confused about how all these things are done. Just like the video and write "sigma batch op" in the comment section, and I will explain the rest of the concepts in this video. Let's go to the computer screen. 
+
+**Introduction to CSS Transforms**
+
+I have come to my computer screen, and here I have already prepared something for you. The first thing we will do is take a very basic start. I will create an `index.html` file and put a basic template there. 
+
+Let's say I have a div that contains a container with a box inside it. I will give some styles to the box. First, I will set its height to 50 pixels and its width to 50 pixels. I will give it a background color and a border of 2 pixels solid black. 
+
+Now, let's see the preview. It looks like this. Now, suppose this box is inside a container. I will set the width of the container to 100vw, give it a height of 80vh, and change the border color to purple. 
+
+**Transform Property**
+
+Now, what does the transform property do? The transform property applies various transformations to the element. The first transform I want to show you is rotate. Suppose I want to rotate the box. I will set the transform property to rotate. 
+
+You can see that rotate has 3D options: rotate X, rotate Y, and rotate Z. I will show you how to rotate it. Let's say I want to rotate it by 40 degrees. I will also write "box" inside it so that you can see the box. To center the content, I will use `display: flex`, `justify-content: center`, and `align-items: center`. 
+
+Now you can see the box in the center, and I have rotated it. I can rotate it by 45 degrees or 40 degrees. There is another unit here, which is famous: turn. For example, if I say 0.25 turn, it means 90 degrees (since 360 degrees is one turn). If I rotate it 0.5 turn, it will rotate 180 degrees. One turn means it rotates 360 degrees. 
+
+If I turn it 5 times, it will rotate 180 degrees, and 1 turn means it will rotate 360 degrees. We can also rotate it around an axis. For example, I can say `transform: rotateX(40deg)`, which will rotate it around the x-axis. 
+
+**Understanding Axes**
+
+Now, let’s understand the axes. This is my x-axis, this is my y-axis, and the z-axis is inside the screen. If this is my box, and this is my x-axis, then it will rotate like this. If I give it a 90-degree rotation about the x-axis, it will become paper-thin, and you won't be able to see it. 
+
+If I rotate around the y-axis, I can rotate it by 90 degrees, and you will see it rotate around the y-axis. Similarly, if I rotate around the z-axis, it will rotate about the z-axis in such a way that the z-axis goes inside the screen. 
+
+**Scale Property**
+
+I hope you understood this. Now, let's move on to the scale property. With scale, you can make an object bigger or smaller. If I write `transform: scale(1.5)`, it will increase the size by 1.5 times. If I want it to be bigger in the x-direction, I can use `scaleX`, and if I want it to be bigger in the y-direction, I can use `scaleY`. 
+
+You can also use `scale3D`, which applies a 3D transformation. 
+
+**Skew Property**
+
+Now, let's talk about skew. If I apply `skew(5deg)`, it will skew the box as if someone pulled it from two sides. You can also skew in the y-axis, but remember that skew is not applicable for the z-axis. 
+
+**Translate Property**
+
+Next, we have the translate property, which is the most commonly used property. For example, if I say `translate(34px)`, it will move the box by 34 pixels. If I say `translate(34%)`, it will translate based on its width. I can also translate in the x and y directions. 
+
+Sometimes, we need to apply more than one transform property. When we do this, we can apply them with spaces. For example, if I want to skew in the x direction and translate in the x direction, I can write `transform: skewX(40deg) translateX(45%)`. 
+
+**Using Multiple Transform Properties**
+
+I hope you understood how to apply multiple transform properties. When is transform used? Mainly when we are making a navigation bar, and I want the nav bar to be hidden, I can translate it to -100 pixels, so it will move out of view. 
+
+For example, if I set `margin: 0` and `padding: 0`, and then apply `translateY(-100%)`, it will move out of the view. Similarly, if I apply `translateX(-45%)`, it will move in the negative direction along the x-axis. 
+
+**Transform Origin**
+
+Now, there is one more property called transform origin. This property defines the point around which the transformation occurs. By default, the transform origin is set to 50% for both x and y, meaning it rotates around the center. 
+
+If I set it to `transform-origin: 0 0`, the rotation will occur around the top-left corner. If I increase the value, the rotation point will move accordingly. 
+
+**Conclusion**
+
+I hope you understood this concept. I have made an exhaustive list of demos to preview. I have tried to cover all the transforms. You can see how scale, translate, and rotate work in different axes. 
+
+I will also cover transitions and matrix transformations in future videos, so stay tuned for that. 
+
+Thank you so much for watching this video, and I will see you next time! If you haven't accessed the Sigma web development playlist, do it now. You can either bookmark it or save it. The source code is being updated on GitHub. 
+
+Thanks for watching, guys!

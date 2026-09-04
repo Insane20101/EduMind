@@ -1,0 +1,39 @@
+Hello friends! Welcome to Gate Smashers. 
+
+The topic is finding the conflict equivalent schedule. What do we do in finding the conflict equivalent schedule? If we are given a schedule, we try to find the conflict equivalent of that schedule, or we will be given two schedules and I have to check that they are conflict equivalent with each other or not. 
+
+How will we find out? I have taken two schedules over here, $S$ and $S'$. If you see $S$ and $S'$, then they both are not equivalent to each other. That means they both are different in appearance, because over here it is read and write, and read is done below. And over here, read, write, and read also is being done first, and after that something else. So they both are not equivalent in appearance. But I want to check that are they both conflict equivalent or not. 
+
+For that, how do we check? First of all, we have to check these pairs over here: conflict pairs and non-conflict pairs. Which are they? If I talk about read-read, that means if two people are reading at the same time, that is always what? It is non-conflict. Read-write, write-read, and write-write—these three are standard problems. Read-write, write-read, and write-write, we call this as a conflict pair. 
+
+And there can be one more non-conflict pair. What? If any person is reading on $A$ or on $B$, and is writing on some other variable. That means, if at both places variables, these values are different. Over here work is being done on $A$, over here on $B$. Over here on $B$, over here on $A$. So these are also non-conflict pairs. Because if I am working on $A$'s value, if any other person is working on $B$'s value at the same time, then it is non-conflict. There is no problem. Non-conflict means a problem is not there. 
+
+So now we have to use these methods and pairs over here, and we have to check: are they both equivalent or not? For that, I am starting from here, from schedule $S$. 
+
+What do we have to do? See schedule $S$ and $S'$. $\text{Read}(A)$ and $\text{write}(A)$ are as it is. Over there, the positions are the same; $\text{Read}(A)$ and $\text{write}(A)$ also have the same position. But this $\text{read}(B)$ position is over here, it is changed. For that, what do we have to do? What is the method? We have to check non-conflict pairs that are adjacent. We have to check adjacent non-conflict pairs. And if they are non-conflict pairs and adjacent, then what will we do? We will swap their positions. 
+
+Like, see over here: $\text{read}(B)$ and $\text{write}(A)$. What are $\text{read}(B)$ and $\text{write}(A)$? They are adjacent. Adjacent means what is coming just after $\text{write}(A)$? $\text{Read}(B)$, or just before $\text{read}(B)$ what is coming in the next transaction? $\text{Write}(A)$. So what are they with each other? Adjacent. 
+
+So see, $\text{write}(A)$ and $\text{read}(B)$ are a non-conflict pair. See this $\text{read}(B)$ and $\text{write}(A)$, these are a non-conflict pair. So if they are a non-conflict pair, true, then swap their positions. That means we will bring this up and this down. That means we will write this over here, and we will write this down. How? If I write and show it to you, then over here, in this way, I will write and show it over here: $T_1$, $T_2$. 
+
+And when we swapped the positions, then $\text{read}(A)$ and $\text{write}(A)$ will be over here only. This $\text{read}(A)$ will be over here only. But this $\text{read}(B)$ position will be changed, and the $\text{write}(A)$ position is also changed. Simply, what did we do? This $\text{read}(B)$ we brought up, and $\text{write}(A)$ we brought down. So now the new schedule will look like this. 
+
+Now we don't have to stop. Again we will check. Now we checked this $\text{read}(B)$ and $\text{write}(A)$. $\text{Read}(B)$ and $\text{write}(A)$ are non-conflict pairs because, as it is, read and read is non-conflict, and over here the work is done on $A$ and $B$. So this is definitely a non-conflict pair. So if they are a non-conflict pair, we can swap their positions. If it was conflict, then we cannot do that. If they are non-conflict, then swap the positions—that means take this $\text{read}(B)$ up, and bring $\text{write}(A)$ down. 
+
+If I write it again, so if I write at this place only, $\text{read}(A)$ and $\text{write}(A)$ will be as it is. $\text{Read}(B)$ went up, $\text{read}(A)$ came down, and this $\text{write}(A)$ as it is at that place is stopped. 
+
+Now see, these both are equivalent with each other or not? Yes, both are equivalent. So if they both are equivalent with each other, then we can say that $S$ and $S'$ are conflict equivalent schedules. 
+
+In the same way, if this schedule, if we write it like this: $T_1$, $T_2$, $\text{read}(A)$, $\text{write}(A)$, $\text{read}(A)$, $\text{write}(A)$, $\text{read}(A)$. Let's say over here if I write $\text{write}(A)$ and $\text{read}(B)$. $\text{Write}(A)$ and $\text{read}(B)$, anything I have done change in this. 
+
+Now, if you want to check what is the equivalent schedule of this, so to check that, what do you have to do? Again, check the adjacent pair. Adjacent is either this one or this one. Adjacent means this one is getting over and this one is starting. Over here it is finishing and over here it is starting. So what are we calling this? Adjacent. 
+
+So if I talk about this one: $\text{write}(A)$ and $\text{read}(A)$. Are they non-conflict or conflict? What are they? Conflict. So wherever there is a conflict pair, no swapping of positions, no change in positions. No change in positions because over here what is it? A conflict pair. 
+
+So where are the positions to be changed? Where I have a non-conflict pair. So in a non-conflict pair, as you see, you can swap the positions. Operations are not to be swapped, just the positions are to be swapped. And finally you will get such a schedule which will be serial. 
+
+So if any schedule, any schedule, if a conflict equivalent exists, then what will it be? It will always be serial. So you can also note this: if any schedule $S$, and if its $S'$ conflict equivalent $S'$ exists, then what will $S'$ be? Serializable. That means in a way it will be a serial schedule. 
+
+But we will not check it like this; we also have other methods. But sometimes this type of question also comes in the exam, then you should know how do we check that two schedules are conflict equivalent or not. 
+
+Thank you.

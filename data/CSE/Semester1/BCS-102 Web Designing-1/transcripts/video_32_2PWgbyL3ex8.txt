@@ -1,0 +1,77 @@
+You guys did a great job in Exercise 3! A lot of people have solved it, and I'm really proud of you for learning so much. In today's video, you'll get a shoutout, and I'm going to react to your solutions to help improve your understanding of CSS. Like the video with high energy and write "Sigma Batch OP" in the comment section below. Let's go to the computer screen and do the intro.
+
+Alright, guys, I have come back to my computer screen. I am going to give you a shoutout. Many people have used different ways to solve this exercise, and I am really proud. You guys have employed a lot of great methods. 
+
+Now, I have created an `index.html` file where I will design my card. In the body, I will simply put a `<div class="card">`. After putting the card, I will add some styles to it. First, I will set the background color of the body to gray. In the card, I will set the background color to white so that it looks distinct. I will give it a width of 344 pixels and a height of 444 pixels. This is how my card looks.
+
+Now, I will adjust the dimensions. I will make the width 344 pixels and the height 244 pixels. I just need to design my card. You can reach the ideal width and height of a card through trial and error, but right now, it is not important how it looks; I need to achieve a specific design.
+
+First, I will give it a border radius of 3 pixels, which I can increase to 7 pixels until I achieve the desired curve. I will create a `<div class="image">` inside the card, where I will put an image. Let’s say I will use an image of a boat. You can download any stock image or use its URL. I will take the URL from Pexels and insert it here. 
+
+It will overflow for sure, so for this, I will set the width to 188 pixels. I will give the `.image` class a padding of 5 pixels from all four directions. Now it looks like this, and I will apply the same border radius to the image. 
+
+There can be many ways to design this card; many people have used Flexbox. I am giving myself a challenge by not using Flexbox. After this, I will create a `<div class="capsules">` where my capsules will go. Inside this, I will create a `<div class="content">`, and in the content, I will add an `<h1>` with the text "Harry" and a paragraph with "Lorem 23".
+
+Now, I will set the font size of the `.content` class to 13 pixels. This is not enough, so I have to increase my card's height. Let’s change the height to 300 pixels. Now it looks fine. 
+
+I have made the card like this, and the content is here. Let’s add some padding. I will set the padding to 13 pixels. Now you can see how it looks. I definitely need to download a font from Google Fonts. I will add two capsules here. One will be a span with the text "Nature," and the other will be "Lake." 
+
+Now, inside the `.capsules`, I will style the span. I will give it a border of 2 pixels solid black and some padding. I can keep increasing it if I feel like it. The `.capsules` class will have padding of 0 from top and bottom and 34 pixels from left and right. 
+
+I am just writing the code without referring to any sheet, and everything is coming together. If I reduce the padding, you can see which side is affected. This is how we can control padding individually. 
+
+Now, let’s open it in the browser and inspect it. You can see the span and how the padding is applied. I have given some padding in the content, and the `<h1>` also has padding. Let’s set the margin of the `<h1>` to 0 and the padding to 0. Now it has moved up. 
+
+I will reduce the font size of `.content h1`. In fact, I should use `<h2>` instead of `<h1>` for a secondary heading. This way, the font size will automatically reduce. 
+
+If I want to shift this card a little bit, I can give padding to the body, say 45 pixels. This will shift the card slightly down, giving it some spacing from the top. 
+
+Now, if a designer is in touch with me, I will ask them which font they used. They might say it’s grey, so I will change the color of the content to grey. I can use "Poppins" for the font. There is an extension called "WhatFont" that can tell you which font is being used somewhere. 
+
+I will go to Google Fonts and use "Poppins." I will copy the import link and paste it at the top of my code. By importing it, I will write this wherever I want to use "Poppins." 
+
+When I write like this, I don’t have to use "Ballo Bhai" for everything. I can use "Poppins" instead. If I want to use "Ballo Bhai," I will apply it to the span of the capsules. 
+
+Now, I will increase the border radius a little and adjust the font size. If I want to make the capsules smaller, I can do that too. I will set the padding of the capsules to 0 and increase it a little more. 
+
+I also want to adjust the spacing. I will make the padding of the capsules 6 pixels and reduce the padding of the content to 3 pixels. 
+
+When you start liking your card, you can stop adjusting it. If the font sizes don’t look good to you, change them. 
+
+Now, I will show you one more thing. If you don’t set a height for the card, it will auto-adjust. I will give the card some padding, say 34 pixels from the top and bottom. 
+
+Let’s quickly make a button. I will create a `<div class="button">` and inside it, I will add a button with the text "Submit." I will center the text in the button and style it. 
+
+In the `.button` class, I will give it padding of 3 pixels and a border radius of 9 pixels. I can set the background color to blue. The color will be white. 
+
+I will write "Read More" in the button. I will set the font size to 12 pixels and adjust the padding. If I want to make the font size smaller, I can do that too. 
+
+Now, I will remove the border from the button to eliminate the outline. I will adjust the padding and margin to make the button look better. 
+
+My card is almost complete. I will increase the border radius a little more to make it curvy. 
+
+Now, I have made it lighter. The "Read More" button should also be the same color. I will adjust that as well. 
+
+When you create a website for any freelancing project, the designer will usually not specify exact details. If they want something specific, you can share your screen and inspect it together. 
+
+This is my card. I have not made it exact, but you can duplicate this card and create another one. 
+
+Now, I have made another card here.
+
+If I give a margin-top to the card, where is my card? I will give a margin of only 4 pixels. You can see I have another card, so we will get a card here. If I want all these cards to align like this, I will use `display: flex`. Although I will explain `display: flex` later, I just want to emphasize how amazing Flexbox is. You will get an idea from this that I cannot live without it; I am using it actively.
+
+Now, see how it came together. You can create such cards, and different elements will appear here. It has become a kind of website. Now, let's do one more thing: add `cursor: pointer` to the button. This is how you implement `cursor: pointer`. 
+
+If you want to hover over the button, you can change its background color. Let’s say I want to change the background color on hover. I can make it lighter. For example, I will move the arrow, and it will look like this. I might make it white, but I don’t think it’s right to make it completely white. Instead, I will make it a little lighter so that at least the button is visible. 
+
+Now you can see that it is happening like this. When you hover, it is clear that there is a button. I hope you liked this card. You can do a lot of things with it. 
+
+Now, I want to give a shoutout to those people who designed this card. First of all, shoutout to Aditya, Irfan Ali, Program In World, Mohammad Tanveer Alam, Rule Breaker, Alok Chaudhary, RRC Gaming, and Developer Foundation. Felix has not provided a solution; he has just accepted the challenge. Here, RRC Gaming is the winner. 
+
+Finally, your code should work. I also want to give more shoutouts to Felix, Graham, Grand Navid Khan, Subhash Trikas, Nitin Saxena, Saif Ansari, Kumaal Tariq, Sabha Sehar, Sports Talk, Dilip Gujar, Biz Gamer Rahul Mehta, Treasure, and Khubel B Tech. 
+
+I will give shoutouts to some people randomly: Shiv Mahapur, Zain Ali, Core Zero, Shakeel Ahmed, Zubair Khan, Code with Rohit, Priyanshu, It's Zivo, Funair Nasir, Idzmi Dilip, Rishabh Shakya, and Abhishek Katiyan. 
+
+With this, we will meet in the solution of the next exercise, which is going to be even more intense. Enjoy the upcoming exercise, which will be posted soon. If you have not yet accessed the playlist for the Sigma Web Development course or have not accessed the code, do it right now. Everyone should bookmark the playlist for the Sigma Web Development course on their laptops. If you ever meet me and I do not see a bookmark on your laptop, you can click here and save it. 
+
+Thank you so much for watching this video, and I will see you next time.

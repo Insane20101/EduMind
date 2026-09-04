@@ -1,0 +1,103 @@
+**Critical Section**
+
+The critical section is a part of the program where the shared resources are accessed by the various processes. Now, what scenario are we taking from the start? Concurrent, meaning where multiple processes are running at a time. And second, which type of processes? Cooperative processes. The various processes that I am talking about here, which are these processes? Cooperative. Cooperative processes mean processes that share something, which have something common. 
+
+Now, what can that common thing be? It can be code, a resource, memory, a buffer, or it can be some variable. That's it. The critical section is a part of the program where shared resources are accessed by the various processes. When we write a program—like if we write a program in C—then generally we start with header files, like `#include`, then the `main` function, and inside the `main` function, we write different lines of code. 
+
+Now, when we write the code, the entire code is divided into two sections: one is a critical section, and one is a non-critical section. For example, if there is a program P1 and another program P2, both will similarly have some `main` functions and some code. In P1, whatever section of the code exists, it is divided into two parts. The non-critical section is a place where shared variables or resources are not placed. 
+
+We can also say that the critical section is a kind of place, meaning a portion of the program, where if there is something common between the two programs, that is where we keep it. If there is some code between two programs that is not common, we keep it in the non-critical section. In your two programs, it can happen that some code is common and some is not. What is common, we will keep in the critical section, and what is not common, in the non-critical section. 
+
+Similarly, in P2, there may also be a non-critical section. The non-critical section means, for instance, if P1 is working on some variables `x` and `y`, I will keep variables `x` and `y` in the non-critical section. If P2 is working on variables `A` and `B`, I will save variables `A` and `B` in the non-critical section. However, the critical section is common. You can say there is a `count` variable, for example. If P1 and P2 are both using the `count` variable, then we will keep `count` in the critical section. 
+
+That portion which is not common, that portion which is independent, does not need to be kept in the critical section. They can be easily executed because there is no dependency in their execution. This can be easily executed, and this part of the code can also be easily executed. But when this code—the critical section—is executed, we have to take care. 
+
+Why do we have to take care? As we have already seen in the race condition—you can check my previous video in which we checked race condition and the need for normalization—if we are changing something here in the `count` variable, like `count++`, and here `count--`, meaning we are trying to do operations on the same variable, problems can arise. Now, if one program is already using the critical section, at the same time, the second program cannot use the critical section. 
+
+If this happens, a race condition will occur. Meaning, if P1 is using the critical section and executing its code, and at the same time P2 also starts executing the code of the same section (since the variable is the same in both, that is `count`), then both are executing at the same time, and problems may be created. And what is that problem? A race condition. 
+
+**Synchronization and the Entry/Exit Sections**
+
+If we want a race condition not to occur, then we have to synchronize them. To synchronize, what do we have to do? We will first keep these portions in the critical section, and then we will apply different methods. What do we do in those methods? When any program wants to use the critical section, it cannot use it directly. 
+
+Instead, at the entry section, we will write some code. For this, there are different solutions, like semaphores, monitors, lock variables, and TSL (Test and Set Lock). What do they do simply? P1 can easily run its non-critical section, but if it wants to execute the critical section, whatever lines are written in the critical section—before executing them—it will have to execute the code written in the entry section. The same applies to P2. 
+
+Now, if P2 also wants to use the critical section, if it wants to use the lines written in the critical section, then before using it, it has to execute whatever lines are written in the entry section. If the entry section clears, then a program can enter the critical section. 
+
+It is the same like when we go out of our house, we put on the lock and go, and when we enter the house, we open the lock. Meaning the entry gate of the house, entry is where we entered from, and when exiting, we exit from the same gate. While entering, there are some lines which I will have to follow—those are the different methods that we will see in further videos. 
+
+When this entry section is cleared, that program will enter the critical section. So, we have to write such an entry section that if one program clears the entry section and enters the critical section, then the other one cannot clear the entry section. Therefore, that program cannot enter the critical section; it will stop here. If it stops here, then it means we can achieve synchronization. This is how we have to follow the rule. 
+
+Now, when the program exits the critical section, there will be an exit section also. Similarly, when it is the turn of P2 later, when P2 exits the critical section, it will also execute an exit section. Meaning, in a normal C program, I added something. What was the add-on? Entry section code of three to four lines, five lines, or ten lines—it varies according to different methods. Those lines need to be executed then it will enter. When its work is done, meaning it executed all the lines, then it will exit and execute the exit section code. 
+
+Then, in case P2 gets a turn, P2 will first execute the code written in the entry section, then enter the critical section, and when its work in the critical section is completed, it will exit the critical section and execute the exit section. So, this rule we have to follow. 
+
+If we don't follow this rule, then a race condition can occur. From race conditions, we have already seen what the different flaws are, such as wrong data being created. This we have to stop, and for that, there are different solutions for process synchronization. A lot of methods are available which provide process synchronization. Even you can write your own program; it doesn't mean that you have to use only those programs already given by researchers and inventors to achieve synchronization. You can design your own. 
+
+**Conditions for Synchronization Solutions**
+
+If I want to achieve synchronization—meaning I write any mechanism to achieve synchronization—it has four conditions, four rules, or we can say four conditions we have to follow. Meaning that method, whichever method you take to achieve synchronization, that method must fulfill four conditions. If it does, then that solution is the best solution. 
+
+Now, what are those four conditions? 
+1. Mutual Exclusion
+2. Progress
+3. Bounded Wait
+4. No assumption related to hardware or speed
+
+These four conditions are very important. You can give any solution—any solution that is already available or one that you create on your end to achieve synchronization. You can create it; it is open. If you are creating a solution, then that solution must follow these four conditions, or rules. 
+
+Now, out of these four rules, the first two rules are primary rules, meaning these are mandatory. These two rules have to be followed. The others are secondary. Secondary means if these are not followed, there is no problem, but we try to ensure that all four of them are used and followed. Among these, first we like to talk about Mutual Exclusion. 
+
+**Mutual Exclusion**
+
+What is Mutual Exclusion? We have already seen the critical section, where my common data, common code, or common resource is lying. Now, whatever shared data or shared code we kept in the critical section, let's say there is a process P1 and a process P2. Call it a process or call it a program; it is the same. A program in execution state is called a process, while in an idle state, it is called a program. 
+
+Now, let's say there are two processes in the running state. In both processes, something is common between them, and something is independent. What is independent is in the non-critical section of P1, and what is independent is in the non-critical section of P2 as well. So, the non-critical section contains independent things which you don't need to synchronize; they will both execute at their own end. But what is common in both—anything can be common—that common thing we kept in the critical section. 
+
+Now, P1 wants to execute whatever code and lines are written in the critical section. No problem, P1 can execute. But if P1 is executing—meaning P1 has entered the critical section after successfully running its entry code—P1 enters the critical section and executes the lines written in it. At the same time, if P2 also says that it wants to execute, then P2 cannot enter into the critical section. 
+
+Meaning, if P1 is already using the critical section, P2 is not allowed to enter it. We will have to stop P2 outside. How do we implement that stop? We will write the entry section of P2 such that if P1 is already in, P2 cannot enter. It is like a lock: if P1 has entered, it puts up a lock. Like a washroom—if we are using it, we lock it. P2 wants to enter the washroom, but cannot enter because P1 is already sitting inside and has locked it. 
+
+If P2 is not able to come in, this is the best case. Meaning, mutual exclusion is being achieved. If mutual exclusion is achieved, then my first condition is fulfilled. If this is not happening—meaning P1 is sitting in the critical section and P2 also enters—then it means mutual exclusion is not there. And if mutual exclusion is not there, then your primary rule and first condition are mismatched, meaning your solution is not appropriate. 
+
+This is a very important condition. For P1 and P2, if P1 is in, P2 is not allowed. Yes, this can also happen; it doesn't mean that only P1 will come first. You can also insert P2 first. Let's say P1 and P2 are two processes, and both are competing to enter the critical section. Let's say that P2 won first, meaning P2 runs its entry section first and ran it successfully. It ran the entry, put up the lock, and entered inside. Now P1 wants to come, but P1 cannot come. 
+
+Meaning, there is no constraint on any process that one must come and the other cannot. We are simply saying that if one process enters the critical section, then the other one cannot enter; it has to stop outside. If this is happening—if the code written in my entry section, my solution, is providing this thing—then mutual exclusion is there; otherwise, it is not. 
+
+**Progress**
+
+Now, the next condition is Progress. What is progress? Again, I have a critical section where common or shared code is lying, which P1 and P2 want to access to execute their programs. Because they have executed the code kept in their non-critical sections, for a process to fully terminate, it has to enter the critical section, run the remaining common code, and then terminate. But to enter the critical section, it has to follow the first condition: mutual exclusion. 
+
+Now, what is progress? Let's say the critical section is empty, meaning there is no process in the critical section right now. Neither P1 nor P2 is using it. Yes, we wrote whatever was common code in the critical section, but neither P1 nor P2 is using it. We have said that if P1 wants to come, it can come; if P2 wants to come first, it can come. 
+
+But let's say that P1 is interested in entering the critical section and wants to execute it, but P2 is stopping it. P2 is not letting it enter. Meaning, P1 wants to enter, but P1 is not able to enter because there is code written in the entry section of P2 that is blocking P1 from entering. 
+
+I will explain it again. Suppose P1 and P2 are two processes, and P2 is interested—P2 wants to enter the critical section. There is no process in the critical section right now, and P2 says, "I want to use the critical section." But P1 is stopping it. P1 itself is not entering, yet it is stopping others, saying, "You will not be able to enter the critical section." This means progress is not there. 
+
+And this generally happens a lot in our normal society: someone himself doesn't want to do anything, and he doesn't let others do anything either. So in this thing, keep a little defense: progress yourself, and let others progress as well. Meaning, progress has to happen. 
+
+If this blocking is happening, then progress is not there. And if there is no progress, then there will be a lot of problems. Meaning, both are not able to use the common code, so which one will be executed? Neither will be executed, because when P1 wants to come, P2 is stopping it, and when P2 wants to come, P1 is stopping it. 
+
+Now, what does stopping mean? In the entry section of P1 and P2, such code was written—maybe it was written by mistake, or whatever the solution was. I said before that some solutions are already available while some are open, meaning you can create and patent code in your name. Now, you ran the code, but in that code, by chance, you mistakenly wrote that when P1 wants to come, the entry code of P2 stops it, or when P2 wants to come, the entry code of P1 stops it. This means progress is not there. 
+
+Progress should happen when the critical section is empty. Yes, if there is already some process in the critical section, then P2 should be stopped, or P1 should be stopped—that was mutual exclusion. But if the critical section is empty, stopping a process means progress is not happening. Progress should happen: if P1 is interested in coming, P2 won't say anything; P1 can go and use the critical section easily. After using it, P1 comes out. Now P2 says, "I want to go," so P2 can go ahead and use it. P2 will not stop P1, and P1 will not stop the other. 
+
+So this is the second condition, which is progress. The third one is—now we are talking about secondary conditions, although they are very important. Primary conditions are mandatory and definitely important, but these secondary conditions are also important.
+
+It is often asked in exams, it comes in competitive exams also, and it often comes in your normal college exams also. 
+
+Now, bound wait. What does bound wait mean? If there is a critical section where P1 is inside the critical section, P2 will obviously be outside because mutual exclusion is there. P2 cannot enter. So P1 used the critical section and came out, meaning P1 used the critical section once and came out. P2 has not used it even once now. P1, after using it once, again entered, meaning this is its second turn, and P2 again could not use. No problem. P1 again came out after executing the critical section and again went in a third time, but poor P2 still couldn't go. Still no problem. 
+
+However, it should not happen that this value reaches infinity—that only P1 is using it again and again and P2 doesn't get a turn. Meaning, whenever a process uses the critical section, it should have a bound. If P1 is accessing it once, twice, thrice, then after that, P2 gets a turn. Meaning, after that, if P1 executes the 4th time, then after that, P2 also executes once. This condition is valid. It is possible that one process is using it 4 times and another is using it once. No problem. But it should not happen that P1 accesses an infinite number of times and this poor process could access it only once. This should not happen; this condition should not be there. 
+
+What does bound wait mean? One guy is waiting outside. P1 is in, P2 is waiting outside. So P2 thinks, "When P1 comes out, it will be my turn." P1 came out and again went in. Poor P2 thinks that no problem, let him go, he will again come out. P1 came out, P2 is interested now in entering, but as soon as he was about to enter, P1 again entered. So it will be what? It is a kind of starvation. Meaning P2 will be starved, and P1 will repeatedly keep using it. So your solution should be such that it is not a problem if one is using it more times and one is using it less times, but it shouldn't happen that one is using it too much and one is just using it once or twice. So this should not be there. 
+
+Yes, this is possible that some process, for instance, P1 entered 10 times and P2 entered only once. Can I call this as bound wait? Yes, no problem with that. But it should not be unbounded, like one guy used it infinitely and the other could use the critical section only once. This condition should not be there. So bound wait is simply that one process is using the critical section—let it use it—but it should not happen that only that process uses it repeatedly while poor P2 or other processes are sitting outside waiting. No, this situation should not be there. Yes, some process may use it more, some less; that is no problem. But it should not happen that one used it infinitely and another used it only once. So that condition should not be there. This condition is valid. This condition can happen that P1 used it 10 times and another used it once; no problem with that. 
+
+Now, the fourth condition is no assumption related to hardware and speed. Meaning, I gave a solution to achieve synchronization in the critical section, and I said that this solution will run on a 32-bit system on an operating system, but won't run on a 64-bit system. This is not a condition; meaning there should not be an assumption like this. I am saying if the processor is 1GHz, if the speed is this much (1GHz), then it will run very well, but if the speed is less than 1GHz, then it won't run. This type of solution should not exist. Meaning, whatever your solutions are, they should not be related or bound to the hardware or the speed of the processor. 
+
+Furthermore, they should be portable, meaning you can port it from one system to another system, and it should run easily. It should not happen that a solution is running on one operating system and stopping on another—meaning if it is running on Linux and you run it on Windows, it says, "I am not going to run on Windows." There should be no rule like that. You create a solution, and that solution must be universal. The solution should be universal, easily portable, and flexible. That is the fourth rule. 
+
+These are the four rules which should all be followed: Mutual Exclusion, Progress, Bounded Wait, and No Assumptions. Out of these, two are primary and two are secondary. 
+
+Now, in the future, we will make new videos in which we will discuss these rules. For example, there is a solution called a semaphore. Now, which of these four conditions does that semaphore solution follow, and which does it not follow? If you like this video, then please like it, share it, and if there is any query, then you can ask me in the comments section, and please subscribe to my channel. Thank you.

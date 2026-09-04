@@ -1,0 +1,236 @@
+**Introduction**
+
+Hello friends, welcome to Get Academy Class 10. Ranjan here, and today I am back with our next session on the latest happenings. We will be discussing circuit theory, specifically focusing on network reduction techniques. We have previously covered KVL (Kirchhoff's Voltage Law) and KCL (Kirchhoff's Current Law), how to apply them in circuits, the types of questions that arise, and how to save in books. Today, we will move on to the next topic in our first module.
+
+**Network Reduction Theorems**
+
+In this lesson, we will learn how to apply network reduction programs. We will discuss the basics of network reduction theorems, their importance in circuits, and how to approach numerical problems related to them. We will explore different types of numerical problems and create various examples that are significant from my perspective. I hope that any problems you have related to this video will be clarified by the end of our session.
+
+**Understanding Network Reduction**
+
+First, let me explain the basics of network reduction. As I have mentioned before, network reduction refers to simplifying a circuit without losing its essential characteristics. In our previous videos, we discussed how to apply KVL and KCL. We did not merely reduce the circuit but calculated the important quantities using the existing circuit laws. 
+
+Now, we will focus on reducing the complexities of a given electrical circuit. We will transform the circuit into another simplified form. It is crucial to understand that if you have an electrical network composed of bilateral elements, regardless of its complexity, you can simplify that network into a series circuit where voltage and current can be easily calculated.
+
+**Basic Steps for Network Reduction**
+
+Before we dive deeper, let me outline the basic steps for network reduction. 
+
+1. **Identify the Elements**: The first step is to identify the values of the elements in the circuit, including resistances and voltage sources.
+   
+2. **Remove the Load**: Next, we need to remove the load resistance to analyze the open circuit voltage.
+
+3. **Calculate Open Circuit Voltage**: This involves calculating the open circuit voltage across the terminals where the load was connected.
+
+4. **Calculate Equivalent Resistance**: After removing the load, calculate the equivalent resistance across the open terminals.
+
+5. **Reintroduce the Load**: Finally, reintroduce the load and calculate the current and voltage across it using the equivalent circuit.
+
+**Numerical Problems Approach**
+
+Now, let's discuss how to approach numerical problems related to network reduction. The first step is to identify the load resistance and the elements connected in the circuit. 
+
+For example, if you have a circuit with a 1-ohm resistor, you will need to calculate how much current flows through it. The systematic approach involves:
+
+- Identifying the value of the load resistance.
+- Removing the load and calculating the open circuit voltage.
+- Replacing all active sources with their internal resistances.
+- Finally, calculating the equivalent resistance and analyzing the circuit.
+
+**Example Problem**
+
+Let’s consider a numerical problem. Suppose we have a circuit with a 1-ohm resistor. The question asks for the current flowing through this resistor. 
+
+1. Identify the load resistance (1 ohm).
+2. Remove the load and calculate the open circuit voltage.
+3. Replace active sources with their internal resistances.
+4. Calculate the equivalent resistance across the open terminals.
+5. Reintroduce the load and calculate the current.
+
+By following these steps, you will be able to solve any numerical problem related to network reduction effectively.
+
+**Conclusion**
+
+In summary, understanding network reduction is essential for simplifying complex circuits and calculating important electrical parameters. I hope this session has clarified the concepts and provided you with a structured approach to tackle numerical problems. Let's continue practicing with more examples to solidify our understanding.
+
+जब किसी को श्रवण में दिक्कत होती है, तो मैं कोशिश करूंगा कि सभी प्रश्नों को स्पष्ट और सही तरीके से समझा सकूं। यदि आपके मन में साइन कन्वेंशन को लेकर कोई समस्या है, तो उसे स्पष्ट करने का प्रयास करूंगा। 
+
+इस पर, यदि मैं केवीएस से संपर्क करूं, तो सबसे पहले मुझे उस पास की आवश्यकता है, जो एसे भी तक की सब्जी को पूरा करे। उस पास में जितने भी एलिमेंट होंगे, सभी को VoLTE सपोर्ट में कंवर्ट करना है। 
+
+अब, यदि हम पॉइंट टू की बात करें, तो हमें यह सुनिश्चित करना होगा कि हमारे पास पर्याप्त दूरी हो और स्पष्टता हो। यदि हम सबसे हॉटस्पॉट की बात करें, तो पॉइंट से 1000 केवल एक एलिमेंट स्पाट है। इसे कंवर्ट करना सबसे आसान होगा, लेकिन जरूरी नहीं कि आप इसे ही चुनें। आप चाहें तो इसमें विकल्प से भी जा सकते हैं। 
+
+हम फाइबर का उपयोग करेंगे क्योंकि इसे कंवर्ट करने पर एक ही सिंगल एलिमेंट सीधे कंवर्ट हो सकता है। यदि आपको स्पर्म रजिस्टेंस को VoLTE सोर्स में कंवर्ट करना है, तो निश्चित रूप से यह वोल्टेज ड्रॉप को दर्शाएगा। 
+
+वोल्टेज ड्रॉप में दो समस्याएं हैं। पहली समस्या यह है कि रोल्स कैसे बनाएंगे और साइन कन्वेंशन कैसा रखना है, पॉजिटिव कहां क्रॉप करना है। दूसरी समस्या यह है कि इसकी वैल्यू कैसे निर्धारित करेंगे। 
+
+यदि आपको ओम स्लॉट पता है, तो आप आसानी से वोल्टेज अपडेट कर सकते हैं। मैं रिक्वेस्ट करता हूं कि यदि आप आर की वैल्यू की जगह शिफ्ट करते हैं और करंट ब्रांच की जानकारी प्राप्त करते हैं, तो आप उस पॉइंट की बॉर्डर निकाल सकते हैं। 
+
+सबसे पहले, हम लोग आंच क्लिक करें और निकालते हैं। यदि मैं केवल सपोर्ट करने वाला हूं, तो सबसे पहले मैं यह लूंगा कि वह मैच और एक्सेस कर लूंगा। 
+
+आपका पहला अप्रोच लॉर्ड कृष्ण से वैज्ञानिक होना चाहिए। दूसरा अप्रोच यह होना चाहिए कि आप लोगों का लोड रेफरेंस को हटाने के बाद जितने मैच बस स्टैंड समय सलेक्ट कर लीजिए। 
+
+अब, मैं यहां पर दो मैच रखता हूं। मैं करंट को एंटी क्लॉकवाइज अस्युम कर सकता हूं, जैसा कि मैंने अपने वीडियो में पहले बताया है। 
+
+आप इसको जॉइंट कर सकते हैं, लेकिन जो भी ऐड करेंगे, यूनिफार्म रखिए। यदि आप एंटी क्लॉकवाइज कर रहे हैं, तो वह यूनिफार्म रखिए। 
+
+अब, मैं स्वंय लिख सकता हूं कि देखिए, डायरेक्टली करेंसी नोट की वैल्यू 51612 एम्पीयर का सेवन सीटर सीट मिल गया। इसके लिए कोई प्रश्न बनाने की जरूरत नहीं है। 
+
+हम लोग पॉवर मैच नंबर टू के लिए इक्वेशन लिखेंगे: 
+
+\[ A + 0 = PM - 20 \]
+
+यह -5.2 के बराबर है। 
+
+अब, चैनल टू -5.2 = -1582 - टैन और -80 हो गया। 
+
+चैनल वन = 10 का दंश के बाद 150 एम्पीयर सपोर्ट कर देता हूं। 
+
+अब, हम बीटीएच निकालना चाहते हैं। 
+
+यदि हम ए से बी तक जो 5 ओम का रजिस्टेंस है, उसे समझें। यदि यह रेजिस्टेंस है, तो निश्चित रूप से वोल्टेज ड्रॉप होगा। 
+
+यदि वोल्टेज ड्रॉप होगा, तो साइन कन्वेंशन कैसा होगा? 
+
+यदि हम करेंट को देखते हैं, तो यह पॉइंट एंटर कर रही है। 
+
+अब, यहां से होते हुए भी करेंट एंटर कर रहा है। 
+
+यह पॉइंट उच्च पोटेंशियल है, जहां से यह लिप्स कर रही है। 
+
+इसलिए, हम वोल्टेज ड्रॉप की कंडीशन को सेटिस्फाई कर सकते हैं। 
+
+अब, हम नया वोल्टेज इक्विवेलेंट बनाने वाले हैं। 
+
+सबसे पहले, वोल्टेज की वैल्यू निकालते हैं। 
+
+यदि आपको वोल्टेज निकालने के लिए 2 इनटू 5 करना है, तो आप इसे कर सकते हैं। 
+
+अब, बीटीएच निकाल लेते हैं। 
+
+इसके लिए, क्लॉकवाइज क्वेश्चन बनाना है। 
+
+क्वेश्चन में लिखा है कि हमें बीटीएच को कैलकुलेट करना है। 
+
+अब, हम आगे बढ़ते हैं। 
+
+हमको डेबिट करना था। 
+
+यहां पर हमें विभिन्न रिएक्शंस की आवश्यकता है। 
+
+यदि आपने पहले भी इक्विवेलेंट रेजिस्टेंस का पोर्शन बना हुआ है, तो आपको यह स्पष्ट होगा कि VoLTE सपोर्ट सिगरेट छोड़ सकते हैं। 
+
+यदि आपने पहले नहीं पढ़ा है, तो आप इसे अभी ले सकते हैं। 
+
+VoLTE सोर्स हमेशा न इंटरनल रेजिस्टेंस होता है। 
+
+यदि आपके सर्किट में कहीं वोल्टेज सोर्स लगा हुआ है और आप उसे रिप्लेस करना चाहते हैं, तो उसके इंटरनल इंपोर्टेंट सेंट को ध्यान में रखें। 
+
+यदि आपने पहले नहीं पढ़ा है, तो आप इसे नोट कर सकते हैं। 
+
+अब, हम अगले प्रश्न पर चलते हैं। 
+
+यहां पर हम एक और एडवांस वर्जन का प्रश्न देखेंगे। 
+
+इसमें एक से ज्यादा करंट्स होंगे। 
+
+इसलिए, हमें साइन कन्वेंशन का ध्यान रखना होगा। 
+
+आप देख सकते हैं कि यह प्रश्न पिछले प्रश्न की तरह है, लेकिन यह थोड़ा खास है। 
+
+इसमें हमें करंट थ्रू 50-ओम रजिस्टर निकालने को कहा गया है। 
+
+हमारी अप्रोच वही रहेगी। 
+
+पहला काम यह है कि हमें रोड डिस्टेंस की वैल्यू पहचाननी होगी। 
+
+अब, हम रेजिस्टेंस को रिमूव करते हैं। 
+
+यह सर्किट थोड़ा सा चेंज हो जाएगा। 
+
+अब, हमें यह देखना है कि यह सर्किट कैसा दिखता है। 
+
+हमने रिमूव कर दिया है। 
+
+अब, हमें यह देखना है कि वोल्टेज कैसे कैलकुलेट करेंगे। 
+
+हम जानते हैं कि वोल्टेज बिटवीन टू प्वाइंट्स कैसे कैलकुलेट करना है। 
+
+अब, हम बीटीएच को कैलकुलेट करने के लिए आगे बढ़ते हैं। 
+
+इसमें हमें ध्यान रखना होगा कि कितनी मैसेज हैं और उनकी इंडिविजुअल रेंज कितनी है। 
+
+अब, हम रेजिस्टेंस को रिमूव करते हैं।
+
+### Circuit Analysis and Calculations
+
+After removal, we can see how many matches are left in the circuit. Here, after removal, we have resistance values that correspond to two messages presented in the circuit. If I sign the current, two messages appear. I will match the first and second messages, and I have signed the current as 192. 
+
+Now, the task is to search the channel and extract values based on these. Let's mix it up; this is a completely normal process. I will create an equation. I will directly address the question for you. In the first section, alongside this, you will find a shortcut that if you are only solving questions, you can quickly create the questions in shortcut form. 
+
+For the first match, I will apply the help of Umesh and Navmesh to total all elemental values, excluding water sources. We add all the cords, which total 20. The first equation I will write is: 
+
+3011 + (the number of elements shared with the second match, which is 20) = 3082. This is equal to fonts and compensation. If I take this side, I write + 23.2 on the other side. The same thing will apply. 
+
+If your basic concept is clear, you can attempt this shortcut directly. There is no need to write every step, such as 2011, 210, 1962. However, if your basics are not clear, you may want to write out the previous steps for better understanding.
+
+### Verification and Element Analysis
+
+Now, let's move on to the second verification. The first thing we need is to identify which elements are involved. I will write down the elements in match two: 2030, Shyam. I have mentioned all four elements: 340, 752. This equals zero for any water source. 
+
+Now, looking at equation number two, I have directly created question number two. This has saved us some time and made our approach systematic. If you start practicing, you will gradually begin to create such equations. 
+
+Now, let’s solve this question and calculate the value of one and two. We can write the value of 512 MB. I have calculated the value of how to derive it, and I got 0.4 amperes for I1. 
+
+### Current and Voltage Calculations
+
+Next, it is important to find the value of I2. We need to focus on this. I will be drawing another circuit for BTS, which will be the equivalent circuit. My first task is to set up the circuit so that I can reach this point. 
+
+As you can see, I am creating operations. My first element will be to turn on this tank and secondly, 121 resistance. This will be completed. You can also approach this with point two. 
+
+Now, moving on to the next approach for A to B, I will draw the circuit. I have created a sign convention for BTS between points A and B. 
+
+### Current Direction and Resistance
+
+In this circuit, the first current is I1, which flows through this point. The second current is I2, which flows in the opposite direction. The important thing is to determine how to derive the results. 
+
+You can write that I1 - I2 is equal to the difference in currents. We need to compare which current is greater. In this question, I have clearly written down the values. 
+
+Now, we have calculated the result, and we can convert the current into voltage by multiplying it with the resistance. The positive and negative polarities will depend on the direction of the current. 
+
+### Final Calculations and Results
+
+Now, let’s calculate the values. The potential difference will be determined by the greater current. I will show you how to create the potential difference based on the current direction. 
+
+We have calculated the voltage drop across the resistances. The final voltage drop will be expressed in terms of resistance. 
+
+Now, we will calculate the equivalent resistance for the circuit. We will remove the active sources and replace them with their internal resistances. 
+
+This is how the equivalent circuit will look. We will calculate the value of the equivalent resistance. 
+
+### Conclusion
+
+In conclusion, we have derived the values for the circuit and calculated the necessary parameters. The approach taken is systematic, and with practice, you will find it easier to navigate through these calculations.
+
+### Lecture Transcript
+
+**Introduction to Circuit Analysis**
+
+In this lecture, we will calculate the value of the circuit with two elements connected in series, considering the road distance provided at the beginning of the question. The values of P and the balance will be calculated using the results from 2018. We will use 1021 EMPIERS as a reference point. This discussion will focus on how to approach the calculation of the values in the circuit.
+
+**Key Aspects of the Question**
+
+The key aspect of this question is the approach needed to calculate the BTH. When determining the resistance, we need to consider the potential required for VoLTE support. It is crucial to establish the sign convention correctly, as well as how to calculate the current and decide between positive and negative values. These are the important details within this problem.
+
+**Identifying the Circuit**
+
+Another important point is calculating the RTS. We need to identify the circuit in different ways and visualize it effectively. This will help us understand how to approach the problem. Once you start visualizing the circuit correctly, you will be able to update its values easily. 
+
+**Practice and Understanding**
+
+This particular question is quite straightforward. I hope that you have identified any points where you might have doubts or difficulties in understanding the approach. Many specific points should have become clearer, and you should start forming questions as you practice more. The more numerical problems you solve, the easier it will be to tackle similar questions in exams. 
+
+**Future Topics**
+
+In upcoming videos, I will discuss Norton's theorem, which is our next topic in network induction theory. If you haven't watched the previous videos yet, I encourage you to do so, as KVL and KCL are important points that we cannot overlook. 
+
+Stay tuned for our next video, where we will delve into Norton's theorem, model number one. Thank you very much for your attention.

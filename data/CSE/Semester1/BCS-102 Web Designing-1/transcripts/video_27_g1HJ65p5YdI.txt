@@ -1,0 +1,51 @@
+I have given you Exercise 2, and I am proud to say that many of you have solved it. In today's video, I will provide the solution to Exercise 2. Please like this video with high energy because everything will be revealed here. I am really excited! Let's go to the computer screen. Let's roll the intro.
+
+**Intro**
+
+So, who will be the next shoutout in the next episode? We are going to see the solution to Exercise No. 2. A lot of people have solved Exercise No. 2, and I will scroll down to see the solutions from all of you. As I scroll down, I will check all the solutions and then come back to the top.
+
+First of all, this was Video Number 20. By the way, someone suggested that I rename this video to "Tutorial 20" and make the "1" written here "01." I might do that, so if you see Video 01 instead of Video 1, don’t be shocked. I will rename it all. In fact, I did it, as you can see. Now, I will go to Video 20 and see what it was about because I have forgotten it a little bit, to be honest. I had written in the comments what the question was.
+
+If we look at the question here, I will open it in VS Code. I will open Video 20 with code, copy it, and then create a new folder named Video 27. In Video 27, I will open a new VS Code instance and create an index.html file to put this content inside it.
+
+**Question Overview**
+
+The question is to write HTML and CSS code to style a paragraph inside a div that contains five other paragraphs. Here is a div, and inside the div, you have five other paragraphs. The first paragraph must have a background color of yellow and a text color of red. The rest of the paragraphs should have a background color of blue and a text color of white.
+
+To solve this problem, first, I will set the background color of all my paragraphs to blue, as specified. If you don’t know, to bring your cursor to a new line, hit Ctrl + Enter. This will move your cursor down. Here, you can see that the background color is blue and the text color is white. 
+
+Now, I will open it in the live server by clicking "Open in Browser." For now, let’s focus on the colors. After this, I will specify that if the paragraph is the first child of the div, then change the background color to yellow and the text color to red. The first paragraph will look like this, and the rest will remain as they are. 
+
+This was a very simple exercise. Many people have also used the nth-child pseudo-selector. The nth-child means that if p is the first child, then this property will be applied to that paragraph. For example, if you make nth-child 2, then the property will apply to the second child. 
+
+Let me show you. I will set nth-child to 2, and you will see that the property will be applied to the second child. This means that you should apply this property to p when it is the second child of your parent. I hope you understand this concept, but I will delete it because I want to provide you with the solution.
+
+**Solution Summary**
+
+The HTML and CSS code to style a paragraph inside a div that contains five other paragraphs is as follows: the first paragraph has a background color of yellow and text color red, which we have done. The background color of the other paragraphs is blue, and the text color is white, as you can see in the HTML below for your reference. Do not change this HTML; it’s important that you do not alter it.
+
+Now, let's give a shoutout in the next episode. Who will be the shoutout recipient? Here, without a hashtag, Muhammad Hassan has written in, and a big shoutout to him! I would like to see his CSS. He did exactly what I did, and in fact, he printed the whole thing. I have printed it; I have not cheated. His solution is exactly the same as mine, so big shoutout to Muhammad Hassan!
+
+Next, we have Dev Dutt Paul. Let’s see his solution. Here, you can see that he has used "P1st child." There was no need to do that because if a div is the first child of its parent, it won’t work. Let me show you. I will comment out my CSS and put their CSS here, and you can see that their CSS is not working. 
+
+We said that inside a div containing five other paragraphs, the first paragraph must have a background color of yellow. The color of the one below is spoiled. Their solution is incorrect, but I appreciate their intent to learn. Big shoutout to Dev Dutt Paul! 
+
+After this, we have Rohit Jagtap. He put a class, which was not a good idea because he changed the HTML. This is something I wrote in the question that you cannot change the HTML. But big shoutout to Rohit Jagtap! I hope you see your mistake and come back stronger in the next exercise.
+
+Next, we have Suraj Biswas and Devendra Chauhan. Suraj did exactly what I did. Big shoutout to him! Devendra put an ID, which was unnecessary. You could have used inline styles if you wanted, but that’s fine. MD Huzaif, why did you put an ID? You could have used inline styles, but I hope you understand what I said and implement it in the next exercise.
+
+Let’s see what’s happening with Sumit Handa. He targeted exactly by saying "not first child." This will also work, and we can check if they have made any syntax mistakes. Their CSS is working, but as I mentioned, you should apply one style to all paragraphs and then style the first one differently.
+
+Big shoutout to all of them! After this, I want to give shoutouts to other people who have provided solutions: Aankar Javkar, Shubham, Sukesh, Without Me, MD, R.A. Hussain, Arshad, Hashir, Shrest, Tauseef, Preetam, Nitesh, Mohit, Aryan, Rhea, Vikas Gupta, Pathan, and Bhaktawar. 
+
+Now, I will give some random shoutouts from above. I want to give a shoutout to Study, Aribul Haq, Thor, Prince, Samadhan Patil, Umar, Ranjeet, Hustler, and Sai Chand. I hope you liked this exercise. I will scroll down so that everyone's names are visible on the screen. 
+
+I know many people will feel dizzy after seeing this, but if you press the middle mouse wheel and move your mouse up, it scrolls like this, which is very useful during recording. 
+
+If you have not accessed this playlist yet, please do so. I am updating the source code on GitHub. Sometimes I get half an hour late or forget, but it happens very rarely. You will receive it. By the way, I merged the pull request that someone submitted; I liked the description very much. If you want to make it better, you can submit a pull request, but I suggest focusing on learning web development now.
+
+Our first focus in the Sigma Web Development course is to learn web development, so please focus on that. I hope you are enjoying this course. How is it looking? I want you to go to the first video of this course and comment on how you feel about it. 
+
+Please give me five stars for those who are going to start this course. I will push the source code here, and you will get all their names updated. I have changed the names so that they are in the series, doing video 01, 02 from top to bottom. It was a good idea; big shoutout to whoever suggested it. 
+
+I hope you are enjoying this course. Thank you so much for watching this video, and I will see you next time. Thanks for watching!

@@ -1,0 +1,33 @@
+Hello friends! Welcome to Gate Smashers. The topic is read-write problem, which we also call as read-write conflict or unrepeatable read problem. These are standard problems in parallel schedules. Where are parallel schedules? What are parallel schedules? Basically, where multiple transactions run at one time only, multiple transactions are running. 
+
+So over here, we have four cases because we have two major operations: read operation and write operation. If I talk about read and read, read-write, write-read, and write-write, I have these four cases on the same database. I am talking about the same data; I am not talking about different data. Same data means User 1 is doing a read on A, and another is also doing a read on A. Read on A, write on A, write on A, read on A, write on A, and sorry, write on A. So these are all occurring on a database or a value A.
+
+If we first talk about Read-Read: in the case of Read-Read, there is no problem. Because Read-Read means the database is to be read, meaning we have to access the database, we just have to see it. If I say in a real-life example, if in Indian Railways, if you go and check the train status on IRCTC, if you are checking train status, that is just a read operation. So if two people at the same time, of the same train, on the same day, if they are checking what the status of the train is, then no problem can occur. Not only two, but if two lakh people are accessing the database at the same time, what are they doing? Read, read, read. So in that case, there is no problem.
+
+Where is the problem? In the remaining cases, there is a problem. In these three cases, there is a problem. So in this, we are discussing the first case: the read-write problem. 
+
+How does a read-write problem occur? Let's say there are two transactions, T1 and T2. User 1 and User 2. User 1 is executing T1. User 2 is executing T2 transaction. Now, we were talking about IRCTC, but now let's say about reservation. We want to reserve some seats in a train. Let's say the value of A is 2. Initially, the value of A is 2 in the database. Value of A is 2. 
+
+Read(A) T1 came first because this is time. Time is increasing like this, time is going like this. So read(A), T1 came and did read(A). So what will it read? It will read the value of A from the database: 2. 
+
+Now, what are you thinking in a way? That User 1 came—let's say I am User 1. I checked in the database that on that particular day, in a particular train, how many seats are available. We saw two seats are available. I am deciding that I should go in a train or in a bus. Still, I am deciding this thing. I have seen that two seats are available. 
+
+As I was deciding, in that much time, User 2 came and started his transaction. And let's say he is also accessing the same data: Read(A). When he did read(A), what value will come? 2. Because still, I have not done anything. When it read data, from where will it read? It will read from the database only because this is also an initial read. This is an initial read. 
+
+Write(A): Let's say he has reserved both the seats, A = A - 2. Still, I am deciding, and he has reserved both the seats. Did write(A). As he did write(A), we subtracted 2 from 2. So what will write(A) be? 0. And commit means update in the database the value 0. That means it is saying 0 seats available, and it completes the transaction and went. 
+
+Now, when the control again came to me, I again let's say did the operation. Performed the operation Read(A). As I did read(A), what will this read? It read from the database: 0. But over here, one problem came. What is the problem? See, read(A) returned 0, and T1 had only done the first read(A) as 2. So T1 is thinking, "I have not performed any operation, so how did this value become 0? How did this value become 0?" 
+
+So in this case, we will have to kind of abort T1. We will have to rollback it because now T1 is working on a wrong value. It had taken 2 value in the starting. Now what is the value being shown? 0. So automatically, T1 will abort over here, and T2 has already executed. 
+
+So why did this problem occur? Why did this problem occur? Because of this, this read-write conflict. 
+
+And I will tell you one more example. Let's say T1 and T2. We will take an example of a library. There is one book A, and its 10 copies are available. 10 copies are available. 
+
+T1 came first. Let's say T1 transaction came first. Did read(A). It will read 10. A = A - 1, meaning he wants to reserve 1 book. A = A - 1, now what is the value? 9. But who will perform A = A - 1? CPU. So CPU changed the value in its register: 9. But as it was going to change in local memory (Write(A)), before that, T2 came. And T2 also performed Read(A). So as it will perform read(A) over here, we have not updated anything. Just some value is there in the register (9), but in memory, what is the value? There is no value in memory. So from where will this read the value? From the database. What did this read? 10. And it also issued 1 book: A = A - 1, Write(A). It performed write(A). So what was the value? 9. And as the value was 9, it committed and went. As we did commit, what is the value in the database? 9. 
+
+Now, let's say this was going on. Control came to it [T1]. So what has this performed in the last? Write(A). Write(A), because its read(A) is completed. Write(A). When this will do write(A), so what is the value with it? What is the value in the local register? 9. So this will write the 9 value, and it will commit, it will go. As it did commit, the 9 value was again overwritten as 9. 
+
+But if you see carefully, how many books are issued? 2. So over here, what should the value be? 8. But due to read-write conflict, this read and this write, due to them, this problem is occurring. 
+
+So this problem can occur in parallel schedules. It is not always a problem, but yes, in some of the scenarios, this problem can occur. Even if you see this example or if you see this example, this problem can occur. So this is the read-write problem, or you can also say it as a read-write conflict. Thank you.

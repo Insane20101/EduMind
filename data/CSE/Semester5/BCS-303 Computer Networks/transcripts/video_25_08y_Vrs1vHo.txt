@@ -1,0 +1,37 @@
+Next comes Selective Repeat. Selective Repeat is the next category of sliding window. In this, remember that the sender window is $2^{m-1}$ and the receiver is also $2^{m-1}$. Look, the window of both is the same. You can say if $m = 3$, the sequence number becomes $2^3$, which is 8, meaning the sequence numbers range from 0 to 7. 
+
+So what will be the sender window size? Half of that, $2^{m-1}$, and the same will be the receiver window. In Go-Back-N, the $m-1$ was in the exponent with a minus 1 outside ($2^m - 1$), but here, $m-1$ is in the exponent ($2^{m-1}$). Getting the point? Remember this. 
+
+Now, if I have the value of $m$ as 2, then how many sequence numbers? $2^2$ is 4. What is the range? 0 to 3. So see this: 0, 1, 2, 3, 0, 1, 2, 3. We have to write sequence numbers normally—0, 1, 2, 3, 0, 1, 2, 3—you keep writing this way ahead, keep repeating it. 
+
+But don't think that the sender window is also the same size as the total sequence range. How much is the sender window? It is what is seen in grey. How much is it? $2^{m-1}$. What is the value of $m$? 2. So $2^{2-1}$ means $2^1$, that is 2. Look, you can see 0 and 1 in grey. Why are they seen? Because the sender window size is 0 and 1, meaning 2. The receiver's is also how much? 2, meaning 0 and 1. What will it send at a time? It will send 0 and 1, and the receiver will accept 0 and 1. 
+
+So remember here that the window size should be equal to $2^{m-1}$. It should not be greater than that. If it is bigger—meaning greater than $2^{m-1}$—then there will be the same problem which we faced in Go-Back-N. If the packet or frame is lost... say it sends 0 and 1, the receiver accepts 0 and 1, but the acknowledgement is lost. The sender then sends 0 again. But where is the receiver's window? Its window has moved to 2 and 3. It says, "I want 2, I want 3, why are you sending 0?" From this, the sender will come to know that the acknowledgement was lost, so it will resend the acknowledgement. 
+
+Let's look at a case where the window size is incorrectly chosen to be greater than $2^{m-1}$. Instead of 2, we take the window size as 3. So we send 3 packets at a time (0, 1, and 2). The receiver accepts all 3. Now where is the receiver's window? Its window moves to the next ones. What does it want now? It wants 3, 0, 1. Because 0, 1, and 2 are accepted, but the acknowledgement is lost on the way. 
+
+The sender then sends 0 again. When it sends 0, it will get accepted! Why? Because the receiver's current window expects a frame with 0. In its current window, 0 is present, and 1 will also be accepted, but 0 and 1 should not be accepted here because they are the 0 and 1 that were accepted previously. Duplicate packets will be accepted again. That is why the window size must not be greater than $2^{m-1}$. It must be equal to $2^{m-1}$. Remember this point; many times it has been asked in exams, and specifically in this exam, they won't ask you more than this.
+
+Next, we talk about out-of-order packets. Out-of-order packets will be accepted in Selective Repeat. Look here: as packet numbers 0, 1, and 2 were sent, it doesn't mean that only 0 is wanted first, then 1, then 2—no. What is in this window? There are 0, 1, and 2 in this window. The receiver has opened the window, and any of 0, 1, or 2 can arrive. 
+
+Now, let's say 0 is a little late, and 1 reaches earlier. The receiver will not reject it; it will say, "Come in." But what happened in Go-Back-N? In Go-Back-N, the receiver window accepted only 1 packet, which was 0. When 1 came, it rejected it; when 2 came, it rejected it—it wanted only 0. But here, the window size includes 0, 1, and 2. The window is bigger, so it expects that out of 0, 1, and 2, whichever comes first will be accepted. Thus, it accepts out-of-order packets. Remember these little points.
+
+Now, one more little point here, which is NAK (Negative Acknowledgement). What is the funda of negative acknowledgement? The story written here is explained in the next diagram, so I will explain the diagram verbally and you will understand from it. 
+
+Consider sequence numbers 0, 1, 2, 3... up to 7. How much is my window size? We have taken the value of $m$ as 3. $2^3 = 8$ is the total sequence number range (0 to 7). If you are given this in an exam, they will give you the value of the sequence number range by specifying $m = 3$ or $m = 2$. So, we take 0 to 7 sequence numbers, written here as well. 
+
+What is the window size? $2^{m-1}$, where $m-1$ is in the exponent. That is $2^{3-1} = 2^2$, which is 4. Can you see the window size here? I will zoom in a little. I think all of you can see it: the window size is 0, 1, 2, 3. Getting the point? It is half of the total sequence space. In Go-Back-N, for $m=3$, the window size would be up to 7 minus 1 (size 7), but here it is 4. 
+
+Now, see here: the sender window size is 4, and the receiver window size is also 4. Both are equal. Frame number 0 was sent, got accepted, and the window moved to the next one. Now the receiver wants 1, 2, 3, 4. 
+
+What does the receiver send? It sends an acknowledgement for 1 ($\text{ACK 1}$). Sending $\text{ACK 1}$ means 0 is accepted, and now it wants the next frame out of 1, 2, 3, 4. 
+
+What does the sender send? It sends frame number 1, but it gets lost. Even though frame number 1 is lost, the sender also sends frame number 2 and 3 right after, because as many frames as fit in the window can be sent at a time. So, since my window had 2, 3, and 4, we sent frames 2 and 3. 
+
+When we send 2 and 3, the receiver accepts them. Very important point: this will accept them! Look, can you see in the diagram? Frame 1 hasn't come yet—it is lost. But frame 2 comes, and the receiver accepts it. Frame 3 also arrives and is accepted. See, 2 and 3 are both accepted here. Why? Because the receiver's window size is big. In Go-Back-N, the window size was effectively 1 (waiting for the exact base), but here the window size is big, so it allows them in and says, "Okay, come in." 
+
+However, even now, the receiver is still expecting 1. It doesn't mean it will forget 1. Frames 0, 2, and 3 have come, and 4 will also come later, but it still wants 1 because a file or message can only be delivered to the upper layer when it is complete. It is not like when 90% of a file comes, I hand it over to the system—no. Whenever a file comes, it must arrive 100% complete; only then can it be opened, otherwise it will not open. 
+
+So it's a similar process here. Since frame 1 did not arrive in between, what will the receiver do? It will send a Negative Acknowledgement for 1 ($\text{NAK 1}$). Why is it sending $\text{NAK 1}$? It means: "Frames 2 and 3 have all come to me, but 1 did not come." The NAK specifies 1. 
+
+Now, what does this $\text{NAK 1}$ mean? "I need 1." So the sender sends 1. Once 1 is received, the receiver's window moves forward to include 4. Look here: the window moves to the next set including 4. Now the sender will send the next batch: 4, 5, 6, 7, and the receiver will accept 4, 5, 6, 7. This way, it will keep working.

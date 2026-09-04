@@ -1,0 +1,39 @@
+Dear students, welcome to Gate Smashers. In this video, I'm going to explain Turn Variable, which we call the Strict Alteration Method. In this video, we will discuss all the points related to Turn Variable which in your competitive exams, college/university exams, interviews, anywhere if you are asked, you can easily answer. 
+
+So guys, quickly like the video, subscribe to the channel if you have not done yet, and even if you have, then you can subscribe from more devices—subscribers are very important. 
+
+So let's start Turn Variable. Before this, I have told you in the process synchronization about the basic lock mechanism, then we talked about Test and Set instruction, then we are going to talk about here Turn Variable. 
+
+So it is again a 2-process solution, means this method that we are making, this strict alteration method that we are applying, it works for only 2 processes. You cannot take more than 2 processes—that is the restriction. Second, it runs at the user mode, means where does it work? It works on user mode. Support of kernel is not required here. Kernel, operating system, we are not using here, means directly we will write the code through application and we will directly run it. So it works on user mode. 
+
+This becomes its pseudo-code. We take process P0, process P1—any name you can take, there are 2 processes P0 and P1. And this turn variable that we have, the turn variable `int turn`, its value you can initially take 0 or 1 because we have 2 processes, so there can be only 2 values, either 0 or 1. If we take its value 0, so means process P0 will run first; if I take turn value 1 first, then process P1 will work first. So you can take any value, let's say initially we take value of `int turn` as 0. 
+
+Now, what our entry code says, means before this it is our non-critical section. Before entering critical section, entry code—on entry code when you run `while (turn != 0)`. Now look, value of turn is what? 0. `0 != 0`, what will this return? This will give what output? False. Because `0 != 0`, but 0 is equal to 0, so means what will this give? False. 
+
+So as soon as it becomes false, what is outside? Semicolon. So means this will go out of this. If this was true, then it would have been trapped in an infinite loop inside it. But this became false, came out. Coming out means what? Went in critical section? P0 went in the critical section. 
+
+Now look, who is there already? P0 is in critical section. Now we check, can P1 come at this time? Look, P1 comes. P1 says, "I also want to come." Let's say this is our non-critical section, so to enter it runs the entry code `while (turn != 1)`. What is the value of turn? Now it is 0. `0 != 1`, so `0 != 1` is what? It is true. So while becomes true. True means it got stuck in loop in semicolon, means this cannot enter critical section because it stopped here. Means when P0 is in, then P1 cannot enter. 
+
+Similarly, if you took value of turn initially, let's say 1, then first who would have entered? First P1 would have entered, and then when P0 says that I want to come, then `1 != 0` would be what? True. Then P0 would be trapped, and P0 could not enter. 
+
+Means what you can say? Mutual exclusion condition is satisfied here. If you are asked like this anywhere that whether turn variable and strict alteration always ensures, guarantees that mutual exclusion will definitely happen, then yes, you can say it is totally true because you have already proved it that if one is in, then the other one cannot enter. So this way we can decide that yes, it is mutually exclusive. 
+
+Second, if we say here, progress. If we talk about progress, then what progress says is that if my critical section is empty, and either of the two wants to enter first, then they will not stop one another. Progress means what? Critical section is empty, P0 says I want to come, then P1 will not stop it, which generally happens in India that if one wants to progress then another will pull his leg. So this story of progress I have told many times before, but here if we check, then look, let's say we initially take value of turn as 0. You can take whatever 1 or 0; initially, we take value of turn as 0. Critical section is empty. P1 says I want to come. P1 can say, obviously can say if critical section is empty then either of the two can say, so we say that P1 says that I want to enter. 
+
+So P1 says that, "Okay, in order to enter, I will run the condition `while (turn != 1)`." What is the value of turn? 0. `0 != 1`, true. Where is this trapped? It is trapped in this in infinite loop. P1 cannot enter critical section. Why can't P1 enter critical section? Because value of turn is 0. 
+
+Now you will feel, sir, then how will P1 come? When can P1 come? When P0 goes first. Look, P0 goes first, `0 != 0` becomes false. Who enters critical section? P0 enters. When it exits critical section, then it runs exit code `turn = 1`. So `turn = 1` means value of turn becomes 1. Now if P1 applies that I want to go, now what can happen? P1 can enter. 
+
+Getting the point or not? Means what? If critical section is empty and a process wants to enter, then the other is stopping it. The other is saying, "I will go first; when I enter and exit, then I will change value of turn, then you can enter." Getting the point? 
+
+Similarly, if you initially take value of turn as 1, then P0 cannot go, then first P1 will go, it will make value of turn 0 after coming out, then P0 can enter. So what does this mean? If critical section is empty, then either of the two can enter, but these two are stopping each other. So mutual exclusion occurred, but if we talk about progress, then that is not satisfied here. 
+
+Third, if we say bounded waiting. What is bounded waiting? It is not like if one is using critical section then again it enters, third time again enters, fourth time again enters—this way the other one will keep waiting. Getting the point or not? It happens many times that one person took away the opportunity, means took away a job, so when the next guy who was going to take the job, he left that job and took the next job. Means one person is grabbing the opportunity again and again and the other poor guy is waiting. So bounded waiting means what? Let it wait, but for a limited amount of time. It should not happen that he is waiting infinitely. 
+
+So if we talk about this, then look, if first P1 enters, then when P1 exits... let's say first P0 enters, so when P0 enters, then when it exits, it will make turn value 1. Now again, if P0 wants to go, it cannot go because after that whose turn will come? P1. 
+
+Similarly, let's say first P1 enters, and when P1 exits, then what will it make turn value? 0. Then if P1 says I want to go again, it cannot enter. Why? Now it is the turn of P0. That is why its name is strict alteration: first this one's turn, then after that this one's turn, then after that this one's turn. This way they are changing turns, means bounded wait is there, no one is waiting infinitely here, everyone will have their turn. 
+
+Then if we talk about here, what is the fourth option we have? The fourth condition of critical section says that whether it is dependent on some hardware or software? No, this is independent of hardware and software. You can run this code on any platform, it will run on all platforms, this is independent of platform, hardware. 
+
+So you note all the aspects. Out of these, some or the question will be asked. Thank you.

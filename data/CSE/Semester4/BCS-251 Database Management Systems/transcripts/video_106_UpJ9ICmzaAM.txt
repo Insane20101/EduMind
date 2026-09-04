@@ -1,0 +1,29 @@
+Hello friends, welcome to Gate Smashers. The topic is clustered index. 
+
+When we make a clustered index in a database, there are two conditions. First, the data should be ordered, meaning the file and the data you are entering in the hard disk, which is in secondary memory, need to be ordered and sorted. Second, it is non-key, which means it should not be unique. The data should be sorted, but it doesn't have a unique key value. Then we use a clustered index. Non-key means that the data is not unique. 
+
+Here I have taken an example. Let's say there is a table with department number, employee name, and phone number. There can be so many employees in a department, so these values will be repeated. For example: Department 1, employee A; Department 1, employee B; Department 2, employee C; Department 1, employee A (because names can also repeat, and the department number will also repeat). 
+
+So what is my search key here? That means, on what basis am I searching? Let's say we are searching on the basis of the department number. If you see the department number carefully, the values are repeating, but the data is sorted. In this case, which index is used? A clustered index. 
+
+Now we are talking about how the index table will form. If this type of data is there, how will the index of that data be formed? First of all, a very important point is: if your data is repeating and it is not unique, it doesn't mean that it will not be unique in the index as well. In the index table, you will add a single value. If there are multiple ones, in the index table there will only be one 1, one 2, one 3, one 4, one 5, and so on. 
+
+How will it work? For 1, there will be a pointer that will point to 1. For 2, if I make a pointer for 2, that will also point here because the 2 values are also there. For 3, if I am making a pointer, where will it point? Here. If I say for 4, the pointer for 4 will point here for the value of 4. 
+
+Now see, if I have to search for 1 in this block, for searching for 2 it would be on the same block, and for searching for 3 it would be on this block. We try that these 3 values fit into one block, these 4 values fit into this block, 5 values fit in one block, and 6 values fit in one block. But it is not necessary. Maybe the values of 1 are less, and the values of 2 are more. So what happens in this case? 
+
+Let's say some 4 values fit here, but some 4 values are there in another block. Then how will we search? Let's say I want to search the data related to department number 4. As soon as I move to 4, 4 took me to this block. As we sometimes write "PTO" at the last line in exams—where PTO means there will be something written on the next page also—the same point is here. That 4, 4, 4 is here, but some 4 values moved to another block also because they were unable to fit in the same block. 
+
+So how will we search that? Here we will use an extra concept called a block hanger. This is one more extra pointer being used. Wherever data is transferring to another block—like in this case, 2 came here, 1 fit, 3 and 4 also fit, and now let's say 5 is coming to the next block—for 5, one more block hanger will we use here. Here the search criteria increases. 
+
+If you are searching here, firstly you'll search in the index table. In the index table, data will be unique and also ordered. What will you use here? We applied binary search: $\log_2 N$, where $N$ is the number of blocks in the index table. So from this, you'll get a pointer which on the hard disk points towards the data, plus 1, because you have to search there also, searching data at that place. If you have to search for number 4, number 4 is here, so plus 1 here. 
+
+Will it work with plus 1? Because in a primary index it works with plus 1, here it won't work with just plus 1. Maybe the block hanger is also there, so plus 1—it is more than 1 value, meaning it can be plus 1, plus 2, or plus 3. Minimum $\log_2 N$ will apply for sure, plus extra, because the block hanger also has to be searched in the future. Instead of searching 1 block, we may have to search 2 to 3 blocks. 
+
+So if someone asks—as I told you that in a primary index there is sparse—will this index form a sparse index, or will it form dense? Sparse. You don't have to make a pointer for every value. If multiple ones are there, then there will be one pointer. Multiple 2s, one pointer. Multiple 3s, one pointer. So a clustered index is also sparse. It is always sparse. 
+
+And the third point: if it is asked whether we can make more than one primary index in one table or on one data, or if we can make more than one clustered index if we want—yes, we can. But there is no need to create it because in a table there is only one primary key. We can't make more than one primary key. So more than one primary and clustered index we can't make. At most 1, almost 1. Either don't make it; searching will obviously take more time. If you want less I/O cost, make an index either primary or clustered, and both are at most plus 1—it can’t be more than 1. 
+
+So, questions that can be asked from you about a clustered index are: first, is it sparse or dense? And second, search time, and remember while searching that in the index table search time is $\log N + 1$, because we have to search the data. And why did we add one more 1? Because some 4 values may be present in another block. 
+
+So this is the concept of a clustered index. Thank you.

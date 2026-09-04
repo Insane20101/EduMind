@@ -1,0 +1,49 @@
+Optimal page replacement. In the optimal page replacement algorithm, whenever a page fault occurs, we replace the page which is not used in the longest dimension of time in future. This means whenever a page fault will occur, we will replace that page whose demand in the future is late as compared to others. So this is how the optimal page replacement works. Let's understand this with an example. 
+
+Let's say a reference stream is given. This is the reference stream, and there are four frames: frame 1, frame 2, 3, and 4. Now the first is page number 7, which means the CPU is demanding page number 7. We know initially all the frames are empty, so here a page fault is occurring. I will have to service the page, so I serviced the page, called that page from the hard disk, and placed it in frame number 1. This is called a page fault because this page is faulted—the page which the CPU was demanding actually is not in main memory. But here, there is no need to replace the page because we already had 4 empty frames, and I filled in the first frame. 
+
+Next is page number 0. Do I have page number 0? It is not available, so I also called page number 0, serviced the page fault, and also filled 0. Then page number 1: initially all the frames are empty, and over here, a page fault is occurring. Then page number 2: page number 2 is also not present, then I serviced page number 2 also. Page number 2 is called from the hard disk and placed in frame number 4 in main memory. So initially these 4 page faults are occurring. 
+
+Now the next page number is 0. Check page number 0: is my page number 0 present? Yes, page number 0 is already present in the main memory. So if page number 0 is present, then what do we call this? A page hit. Whatever page the CPU is demanding, is that page number 0 present? Page number 0 is already present, so we call this a page hit. 
+
+Next is page number 3. Now we will check: is page number 3 present? Page number 3 is not present, so again over here it is a page fault. From the hard disk where all the pages are present, from there we will call page number 3. But do I have any frame empty? No, none of the frames are empty. So here I will have to replace any of the frames, meaning we will have to swap out any page and swap in page number 3. 
+
+So how will we replace? How do we check optimal page replacement? At this moment you are at this frame number, so what you have to check is: from here you have to go to the last, meaning from here you have to go towards the future. We have gone towards the future, which means I will get further requests. These are my further requests of the future, so I am starting from here. First of all, we have to check from these which frame is coming last, meaning frame numbers 7, 0, 1, and 2. From 7, 0, 1, and 2, which frame is coming last? So we will start scanning after frame number 3, frame number 0, or which is also called page number 0. 
+
+So page number 0 is here, so at first there is page number 0. Then after that, page number 2 has also come, then page number 1 also came. But if you see carefully, page number 7 is at the last, meaning the CPU demands page number 7 very late. So what does optimal page replacement do? Whichever page's demand is after a long time, for the time being, replace that page. This is how the optimal page replacement works. So we will replace 7 with 3 and write the rest of the pages as they are. What will we write for this? A page fault, because the page you demanded is not there, that is serviced. 
+
+Next, we have come to page number 0. Is page number 0 present? Yes, page number zero is already present, so we call this as a page hit. Just copy all these frames as they are, and this we call a page hit. 
+
+Then move towards page number 4. Is page number 4 present here? No, page number 4 is not present here. If page number 4 is not present, then I will call page number 4 and that I will replace here. But with what? So again we will check. From 4 onwards, we have to check: after 4 onwards, we have 2, 1, 0, 3. Among 2, 1, 0, 3, which page number is at the very last? Check from here: page number 2 just came next to it, then page number 3 came, then page 0 has also come. But if you see page number 1, it is at the last—not at the last of this string, among four which one is farthest? It's a very simple point: among these four frames or page numbers, which page number is farthest to this '4'? That we have to replace. Which one is farthest? 1 is farthest. So I replaced 1 with page number 4. And what is this too? A page fault, because the page which you were searching for was not present, that page was absent. So you called that page from the hard disk to the main memory. 
+
+Then page number 2: further come to page number 2. Is page number 2 present? Yes, page number 2 is already present. So when it is present, we call it a page hit. So just copy as it is and write here 'this is hit'. 
+
+Then page number 3: is page number 3 present? Yes, page number 3 is already present, so copy this too as it is and we will call it a hit. 
+
+After that, page number 0: is page number 0 present? Yes, page number 0 is also present. It means one more page hit. Once it is a page hit, just keep copying this again and again because many times at the last it asks the number of page hits and number of page faults. That's why whenever it is a page hit, keep copying the previous frames as it is. 
+
+Then page number 3: did you come to page number 3? Is page number 3 present? Yes, page number 3 is already present. So here comes one more hit that we write here as a hit. 
+
+Then page number 2: is page number 2 present over here? Yes, page number 2 is also present. So here comes one more hit, a page hit, that we write here as a page hit. 
+
+Then page number 1: is page number 1 present? No, page number 1 is not present. If page number 1 is not present, then from here we have to see towards the future. From that page, we have to move towards the future, meaning we have to move forward, not backward. Moved forward: firstly see the page numbers 2, 4, 0, 3. Among 2, 4, 0, 3, which one is far from 1, which is farthest? First check 2: 2 is just near to 1. After that 4: 4 is not even in the list over here. 4 is not in the list, means we can easily replace 4 because further there is no demand of 4. So which have no demand, remove that first of all. But then too, let's check for the rest: 0 is also near to 1. After that check 3: there is no demand of 3 in the future. So over here I have two options: I can replace 4 as well as 3. Let's say if I replace 4, because from 4 and 3 there is no demand of these in the future, so you have two options, you can replace any of these two. So let's say I replaced 4. So in place of 4, I called 1, we swapped in 1, and this we will call as a page fault. Why? Because page number 4 was not present. So what is here? It is a page fault. 
+
+After that, there comes page number 2. Is page number 2 present? Yes, page number 2 is already present, so copy it here as it is. Copied as it is, and what is it? A hit. 
+
+Then, is page number 0 present? It's already present. This too I will copy here and I write hit. 
+
+Come to page number 1. Page number 1: is my page number 1 already present? Yes, page number 1 is already present, so copy as it is and this too write hit. 
+
+Then page number 7: is my page number 7 already present? No, page number 7 is not present. So we will have to replace anyone. So if we talk about the future from here, we do not have to replace anyone from 0 and 1, meaning you have 2, 1, 0, 3. Among these, which one is near to 7 and which one is farthest to 7? 0 and 1 are near to 7, so we cannot replace these two. There is no demand next to 3, so it is best that you replace 3 because there is no demand in the future. So we replaced 3 with 7 and copied the rest as it is. This we will call as a page fault because page number 7 was not present and we called it. 
+
+After that, we come to page number 0. It is the second last. Is page number 0 present? It is already present, so copy it as it is and write this as a page hit. 
+
+Last but not least, your page number 1: is page number 1 present? Yes, page number 1 is already present. So this too, what can I write? Page hit over here, page hit. 
+
+So you can count how many hits are there: one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve. Twelve number of hits—page hits. And how many faults? One, two, three, four, five, six, seven, eight. So faults are eight. 
+
+So this is how we can calculate the number of page faults and number of page hits. This is all about how optimal page replacement actually works. Just a simple rule is there over here. Let's calculate once again: one, two, three, four, five, six, seven, eight. One, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve. Here page hits actually are twelve. Page hits actually are twelve, and page faults are eight. 
+
+Now here, if somebody asks you what is the hit: 12 divided by total. What is the total here? Total = 20. 12 divided by 20 into 100, that will be the hit ratio. 8 divided by 20 into 100, whatever the value comes, that is called the page fault or page miss ratio. 
+
+So this is all about how the optimal page replacement works. What you have to do in the future: whichever has late demand, whose demand is at last, we try to replace that page with the current page. So that's all about the optimal page replacement. If you loved this video, please like the video, share the video, and please subscribe to my channel. Thank you.

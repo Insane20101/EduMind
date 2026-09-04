@@ -1,0 +1,31 @@
+Hello friends, welcome to Gate Smashers. Today we're going to discuss a question that arrived in UGC NET July 2018. This question has arrived from the operating system and from the CPU scheduling topic in operating system. 
+
+The topic of CPU scheduling in operating system is a very important topic. It's important in terms of frequency that every time from this topic, questions come in GATE and UGC NET exam both. Secondly, it is important because if any question comes in exam from this topic then it shouldn't get wrong. Because it is a type of topic that all those who are preparing for UGC NET, they all cover this topic. But in every question there's a point where they try to trick you in the question. So you just have to find out that crux and then solve the question easily through it. That's why this portion of CPU scheduling is very important. There are different algorithms in it. 
+
+The question that has come this year in July 2018 is a very simple question. There are three processes P1, P2, P3. Arrival time is 0, 1, 2 and burst time is given 7, 4, 8. What they're asking, the Gantt chart for the pre-emptive SJF scheduling algorithm is, and they've given four Gantt charts here in the options. You have to find out the correct Gantt chart according to the pre-emptive SJF algorithm. 
+
+First of all, you have to focus on the algorithm. The algorithm is shortest job first. It's shortest job first, but along with that it's pre-emptive. Means when it's shortest job first along with pre-emptive then you can call it as SRTF also, i.e., shortest remaining time first. Here we have to check first which job has the lowest burst time. I have to execute the one with lowest burst time. But it should be in pre-emptive mode, means we don't have to fully execute one job, we have to check regularly which job's time... 
+
+So let's see how to solve this question. I'm making a new Gantt chart here from the starting. The Gantt chart always starts with 0 because we always start the time with zero. At time zero, first you have to check which processes have arrived, means which are those processes that have already arrived. Which process has arrived at 0? Only P1. 
+
+Only P1 has arrived, so first of all we'll run P1 here. But here it's pre-emptive, so in pre-emptive you have to keep in mind that we'll run P1 but for only 1 unit time. Because after one unit we'll check again if there's any other shorter job that's ready which we can run first. If this would be SJF only, then you would run P1 completely up to 7. But now you won't run it like that because it is pre-emptive. In case of pre-emptive, run only up to one and then reduce 1 from here. Because P1 ran up to one burst time, then the leftover is 6. 
+
+Now we have to check again, we are at 1 now. Because now we are standing at one then check again which process has arrived. Arrived means they are in ready queue. P1 is already in the ready queue, it's already ready and even it's done running also, so we sent it in ready queue back from running. And P2 also came in ready queue. Now P1 and P2 both are in ready queue. So which one will we select first? We'll select the shortest first, the one with low burst time. So out of 6 and 4 which one has lower burst time? P2 has lower burst time. So we'll get P2 executed here and we'll give that P2 to whom? We'll give it to CPU to get it executed. 
+
+Now CPU will execute it only up to one time unit. First you have to run only up to one time. Let's suppose it ran from 1 to 2. Now P2 is left 3. 
+
+Now at time 2, check again which processes have arrived. At 2 time all three processes have already arrived and already ready. But which one is the shorter out of all these? That's P2. So you have to run again P2. Let's say you ran P2 again for one time unit and now here left it is 2. 
+
+Now again we have to run P2 because it is shortest here, it's getting lower here, others are obviously greater value than this. So that's why we have to run P2 again. You can write it also that we ran P2 up to 2 time units together, means we ran it up to 5 and P2 got over here. 
+
+Now when P2 got over here, then which one is short out of the two? P1. So we'll run P1 again. And for how much time will we run it? We can run it up to 5, but then it'll be 5 left and still lower than this. So now you can run it completely up to 6. Means 5 + 6 = 11. So you can get P1 completed up to 11. 
+
+And then obviously only P3 is left. So there's no need to run P3 one by one because it's the only one left. There's no one else in the competition. So when there's no one in competition then you can run it completely. But when two or more processes are in competition then you can check burst time. So we'll run P3 completely, means its burst time is 8 then it'll be 19. 
+
+You can also write it in a way like first we ran P1 up to 1, then we ran P2 continuously up to 5, then we ran P1 again up to 11, then we ran P3 finally up to 19. So which Gantt chart matches it? The option is B or 2. Option 2 matches with this, so this is the correct answer. 
+
+This is a very simple question actually. Even this is only just Gantt chart, they can even ask you about turn around time after it, and even about waiting time. So this whole concept of scheduling algorithm is important. And the video of shortest job first with pre-emption, I've explained video of this whole concept with example. And I've already shared the link of that video in the description box, so you can check it there and can study about this topic in more detail there. Even I've covered all scheduling algorithms with examples. 
+
+Make sure to do it one by one because this is a topic that comes in exam every year. And this is a topic that every student tries to cover. So that's why, you can do any question wrong, but don't do this question wrong. 
+
+So this is all about the concept of shortest job first with pre-emption. Thank you!

@@ -1,0 +1,25 @@
+Dear students, welcome to Gate Smashers. In this video, I'm going to explain what are single row functions and what are multirow functions. If we talk about SQL functions, both are, from a competitive level point of view or a certification level point of view, very much important. Because in certification exams—whether you talk about Oracle certification or SQL Server—if you go for any certification, one or more questions on inbuilt SQL functions can be asked from you. So, we'll discuss all aspects, and even in further videos, I'll show its execution also.
+
+So guys, do like and subscribe to the channel if you haven't done yet, and if done so, let it be from another device also, and don't forget to like and share. So let's start.
+
+Firstly, if we talk about single row function, from the name only is it clear: single row. And row means tuple; we add tuples in a table like 1, 2, or 3, meaning in this way our tuples or rows are organized. So if my any function is applicable on a single row and it is giving a single output for a particular single row—meaning my function is applicable on a single row only and that gives one output corresponding to that row—corresponding to that row it will give output. 
+
+But what about multirow function? The meaning of multirow function is that function which is applicable on one or more rows and gives one output corresponding to all these inputs, to all the rows I apply that will give one output, but that will apply on multiple rows. Here it applies on a single row.
+
+So see, in single row functions also, we have further categorization. Firstly, there is number functions, in which we have round, trunk, and mod. Round means like we normally do round off, like I've written a value 50.926, and if I want to round off this—let's say I want to round this till two digits, two digits after the dot—so it will be 93 because after that there is 6, a value bigger than 5, so it will make it 6. I'm just giving you a small overview only, because we will execute all this in further videos. So there is trunk, mod—mod value is the value when we divide and the value of remainder, so that is your mod.
+
+In character functions, we've case manipulation: lower, upper, initcap. Meaning you've any string and you've to convert that in lower, then you can do lower just to appear that permanently; it won't get converted when you select that, meaning when you select and see a column, then it will make you appear lower. In upper, all letters will become capital. In initcap, it will make the first letter capital. 
+
+Then there is character manipulation: concatenate, joining two strings and making it one; substring, in it basically from a big string, a smaller string needs to be taken out; length, to find out length of any string; in-string (INSTR), in a particular string you need to find out any particular word, at what particular position that word is, so that is in-string; LTRIM and RTRIM for padding—if you want to do left padding or on the right if you want to pad a value; trim, if you want to trim any particular value, trim from anywhere, so left and right trim is there; replace. All these small points or functions really help a lot.
+
+If we talk about date functions, there is months_between, where you have two dates and you've to find the months between that; add_months, let's say that a date is given to you and you've to add 5 months or 6 months in that, then you can do it by adding; next_day and last_day; round or trunk. So these all are also in date functions.
+
+In general functions, we've NVL. NVL, whenever we compare with a null value—null value is a very much important fact in SQL, so to take care and handle null values—NVL, NVL2, COALESCE, CASE, DECODE, we use this. Decode is for if/else concepts like we do in programming, if/else, that case that we use in normal programming helps in implementing that.
+
+Data type conversion: TO_CHAR, meaning if I want to convert any value to character, that's the same type casting; to number, date, so according to that I can convert. So mainly single row functions are in such a way. We can easily execute this by taking an example; I'll show you execution in the next video.
+
+Then, multirow functions, that we've already done. This you'll already find on the DBMS playlist, even on the SQL playlist you will get a video of this, that is aggregate functions. In which we have to find out sum, to find out max and min, count, and average. So generally these all are aggregate. Like there is a sum; if you apply sum, let's say there is a salary column and you apply sum on that, so it'll give you the total of all the rows, meaning it applies on multiple rows and gives a single output. 
+
+So, single row functions apply on a single row and give a single output, whereas multirow functions apply on multiple rows and give a single output. This is the major difference between single row and multirow functions. 
+
+Thank you.

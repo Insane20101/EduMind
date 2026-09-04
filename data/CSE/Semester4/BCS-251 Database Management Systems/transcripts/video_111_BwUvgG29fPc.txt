@@ -1,0 +1,83 @@
+Hello friends, welcome to Gate Smashers. In this video, I'm going to explain the difference between a B-tree and a B+ tree, which is a very important topic from a competitive exam point of view, and even for your college and university exams. 
+
+From this video, you will come to know about all the important points of B-trees and B+ trees. All these points will really help you understand the concept of how a B-tree works, what it is, and what its structure is; and how a B+ tree works, what it is, and what its structure is. 
+
+So here, I have some differences already written. For example, the first one is that data is stored in leaf as well as internal nodes in a B-tree, whereas in a B+ tree, data is stored only in the leaf node. But right now, I'm not talking about the differences because once you get to know the structure of a B-tree and a B+ tree, then all differences will become clear to you. Then, not only four, you can easily write eight to ten differences on this. That's why you shouldn't cram these differences; you need to understand the concept. Once you've got the concept, you can easily write eight to ten differences easily.
+
+### Purpose of B-Trees and B+ Trees
+
+Firstly, if we talk about B-trees and B+ trees, why do we use them? We use them to hold index records. It actually contains index records. Now, what is an index record? Two things are there: a key point and a data pointer. 
+
+A key means the basis on which we are searching, and a data pointer means the data related to the key and where it is present in actuality. For example, if we talk about a book, at the starting of the book, there is an index. Now, in the index, there are two things: the broad topic or main topic and its page number. If you want to search what is there inside the topic, you have to go to that page, and then you'll get the data. 
+
+So here, in the data, I have only two things: a key and a data pointer. Actually, there is no whole database present here; only two things are there in an index record: a key and a data pointer.
+
+### Structure of a B-Tree
+
+Now we'll talk about the B-tree and B+ tree structures. First, we'll talk about the B-tree structure. 
+
+Here, if we talk about a tree generally, a tree is denoted in such a way that we have nodes—this is called a node or vertex—and it is connected by edges. This is our root, this is an internal node, and these are leaf nodes. You can say leaf nodes or non-leaf nodes. Like, in non-leaf nodes, you have internal nodes as well as the root comes in it. 
+
+So firstly, let's understand the structure of a B-tree. See what the structure of a B-tree is. If we talk about every node of a B-tree structure—whether it is a leaf, an internal node, or the root—the structure will remain the same. This is the first important point: that inside a B-tree, the structure of a node remains the same always, whether we talk about the root level, internal level, or leaf node. 
+
+So what is there in its structure? Firstly, we have a block pointer, then we have a key and data pointer, then another block pointer, then another key and data pointer, then again a block pointer, and again a key and data pointer. Like this, it has its structure. 
+
+These block pointers (which are also called tree pointers) represent the downward nodes. It represents the children in a way which we can call a block pointer or tree pointer. And if here we talk about the key or data pointer, the key, like I've already told you, is what you are searching any particular thing on the basis of—that is your key value. And the data pointer means this is pointing towards the secondary memory where your whole data is present. 
+
+So if we talk about the root, internal nodes, and leaf nodes, on every level, the structure of a node in a B-tree will remain the same. So you can say there are block pointers, keys, data pointers, block pointers, keys, data pointers, and finally at last, a block pointer. 
+
+Here, if we talk about block pointers, they generally represent our children—meaning children who are at the downside. Sometimes questions can come about leaf nodes. In a leaf node, there are no children; if this is a leaf, there are no children in this. So what is the role of a block pointer in a leaf? In internal and root nodes, they are representing their children. Let's suppose if it is a leaf, in a leaf there are no children, so what happens in that case? A block pointer will still be there in a B-tree on a leaf also. But what is it representing and what does it have? It has `null` inside it, because now it is a leaf node. And let's suppose if it has further more children (in other contexts), it will point to that further. 
+
+So this point is very much important: whether it is a root, internal node, or leaf node in a B-tree, the structure remains the same in every node. And this is the actual structure. We call its order also—so what is the order of a B-tree? It is the maximum number of children, meaning how many nodes a child can have, or you can say in this way also, how many block pointers are there in a single node. That is the order of the B-tree. From this, all these points will get clear to you.
+
+### Structure of a B+ Tree
+
+Now here we'll talk about the B+ tree structure—meaning how the structure of a B+ tree is. The structure of every node in a B+ tree is different from the B-tree. 
+
+Here, the biggest problem in a B-tree is that data—meaning keys and record pointers—is present everywhere. It is present at the root also, in internal nodes also, and in leaves also. This means the key you are searching for, you can get a data pointer anywhere corresponding to that key. If we have a B-tree like this—suppose if we make a simple one—if we are searching for a key, you can get the key here also, you can get the record pointer here also, or anywhere in the whole tree, because the key and data pointer are distributed in the whole tree. 
+
+But it is not the same in a B+ tree. In a B+ tree, if we talk about the internal node, what have we done with the internal node structure? What is in an internal node? This is the internal node or root. The root and levels like that—that is your internal node, meaning we are talking about non-leaf nodes. 
+
+So in an internal node or non-leaf structure, we have block pointers (as it is non-leaf, so there must be children which are pointed to there), children, and with that, we *only* have keys. We don't have record pointers. We only have a key, then a block pointer, then again a key, then again a block pointer representing children, and again a key. 
+
+In this way, you have the structure of an internal node in a B+ tree. So what have we deleted from the internal node of a B+ tree? We removed all record pointers. So all record pointers are removed from here. Because of this, you can say that we have vacant space. So we can create more and more children—meaning we can put more and more keys, and more and more block pointers we can put. 
+
+Because of this, a B+ tree is more breadth-wise, because if children are more, it will grow breadth-wise. And if we talk about a B-tree, it is depth-wise more, because we've inserted more in this; if we fill it more, obviously we'll have less space for block pointers, and thus the number of children will reduce as compared to the number of children in a B+ tree. So a B+ tree is more breadth-wise, and a B-tree is depth-wise more. 
+
+Because a B-tree is depth-wise more, obviously searching—because data is present everywhere and index records are everywhere—searching will be slower, or deletion will be complex, obviously because of this reason. But here in the internal node of a B+ tree, we only have block pointers and keys, block pointers and keys, and block pointers and keys. 
+
+Now the question is: where is the record pointer? Because ultimately I have to go to that page number or I have to search data. So for searching data, record pointers are required. Where will all the record pointers in a B+ tree be? They will be in the leaf nodes. 
+
+### B+ Tree Leaf Node Structure
+
+You need to understand the leaf node structure, so I'll tell you the structure of a leaf node. That's why the structure of internal nodes (meaning non-leaf structure) in a B+ tree is different. 
+
+Now here we're talking about the structure of a leaf node. What do we have in the structure of a leaf node? A key and a data pointer, a key and a data pointer, a key and a data pointer—like this. Meaning we have removed block pointers from here. In a B-tree, we had block pointers in the leaf also (which represented `null`), but here there is no block pointer in the leaf, only a key and data pointer, a key and data pointer, and a key and data pointer. 
+
+So finally, what will be there at last? In the last, we'll have a block pointer which will point to the next child or leaf. This is actually used for range queries. 
+
+If I make the structure of a B+ tree: this is the root, this is an internal node, let's suppose this is a leaf node, and obviously you know that B-trees and B+ trees are both balanced—all children or leaves, all those will be on the same level. And here, if we talk about the structure of a leaf node, here is a key and data pointer, a key and data pointer, and here at last, there will be a block pointer which will point out to the next child (this leaf). Here also at last, a block pointer which will point to this. Here, a block pointer which will point out to this child. 
+
+So this is the actual structure of a B+ tree leaf node. So the internal node is clear to you, and if we talk about the leaf node, its structure is also clear to you.
+
+### Key Insertion, Searching, and Redundancy in B+ Trees
+
+When we insert keys on a B+ tree, while inserting we need to be careful. When we insert data, you have to insert data very carefully. 
+
+Let's suppose if we have this key value—any key—values less than that key will be on the left side, and values greater than it, where will they be? That will be on the right side. B+ trees and B-trees both will be like this: smaller values are here, values which are greater are here. 
+
+But what are we doing here in a B+ tree? On the right side, on the key value, we have to keep a copy of the exact same key here. Let's say if it is 10, keys less than 10—all those will be on the left side, and greater than the key... wait, greater than the value, those will be on the right side. But apart from greater than 10, what you need to write? Equal to also! Meaning it will include 10 also, and apart from 10, whatever is greater than 10, that will also be here. 
+
+The reason for that, I just told you: when we search, while searching you can search here as it is—meaning you only need to search on the leaf node, because you know the leaf node of a B+ tree has all keys and data pointers. A key and a data pointer, a key and a data pointer, and a key and a data pointer are there. So whenever you have to search, obviously you have to reach the data pointer. The data pointer with the key, you have to reach there. So where is it? It is in the leaf in a B+ tree. But in a B-tree, the key and data pointer can be anywhere in the whole tree, so that's why searching is a little complex. 
+
+Here, searching will be easy because all the keys will be on the leaf level, because whoever is keeping keys, a copy of that key we are keeping on the next level also—meaning equal. If we've kept 10 here, it will be 10 on the next level also. And if it goes further to the next level, 10 will go there also; the key you have to bring to the leaf level so that you can get the data pointer corresponding to that. That's why searching is faster in the case of a B+ tree, which is not the case in a B-tree.
+
+Similarly, if we talk about redundant keys: the same point that I've told you. In a B-tree, we'll not have redundant keys—meaning let's suppose 10 is there, so less than 10 is here, and higher than 10 is here (values less than 10 are on the left side, and values more than 10 are on the right side in the case of a B-tree). But in the case of a B+ tree, less than 10 is here, 10 is here, and more than 10 is also here—meaning 10 you have to copy, you have to copy the key value here. So a redundant copy will obviously form in the case of a B+ tree.
+
+### Linking Leaf Levels
+
+Finally, regarding linking leaf levels: in a B-tree, leaf nodes are not linked—obviously, there is no link. But in a B+ tree, they are linked together like a linked list. As I've told you earlier also, the diagram I've shown here: whatever leaf level we have, at the last of the leaf level on every node, there will be a block pointer which will point out the next one. This will also have a block pointer which will point out the next one, and this will also have a block pointer which will point out the next one. 
+
+So it works like a linked list. Your searching—if you search on only the leaf level also, you'll get the values. But in a B-tree, you can get it anywhere, so you have to search the whole tree. But on a B+ tree, you'll get all the values on the leaf level only. 
+
+So this is actually the difference in the structure of a B-tree and a B+ tree. On the basis of that, you can write the differences between a B-tree and a B+ tree. Thank you.

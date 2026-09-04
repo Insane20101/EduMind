@@ -1,0 +1,61 @@
+Hello friends, welcome to Gate Smashers. Let's understand the concept of the shortest job first scheduling algorithm with a numerical. 
+
+In the numerical first, we have given here four processes: P1, P2, P3, and P4. Their arrival time and burst time are given. It will be given to you in almost all numericals. What we need to find is completion time, turnaround time, waiting time, and response time. 
+
+We have the algorithm here: shortest job first. In shortest job first, we have the criteria of burst time. It means we check the burst time. Shortest job means a process whose burst time will be lower, and we'll select that process. It means we'll run that process first on the CPU. And the mode is non-preemptive. Non-preemptive means if we give one process to the CPU to execute, then that whole process will get executed without any interruption. 
+
+Now let's start with the help of a Gantt chart, because it will make the process very easy. Time will start from zero always. So let's start with zero. 
+
+At zero, which process has arrived already? Now first, you have to check if there is any process arrived at zero. There is no process that has arrived at zero. You can get this type of numerical also in exams. So no problem, from zero to one, you can simply make it idle. Idle means the CPU is idle from the 0 to 1 limit of time. Alright, if there is no process, then obviously the CPU will be idle. 
+
+Now we are at time 1. Check at 1 first of all: which process has arrived? We'll check burst time criteria later; first, we have to find out which process arrived already. I checked at 1, then P1 and P3 arrived at 1. It means P1 and P3 both arrived at 1. Now should we pick P1 or P3? For that, I have to use the criteria, i.e., burst time. 
+
+First, we checked the burst time of P1. P3's burst time checked: 2. So which one is shortest out of the two? That's 2. Then we'll select P3 first, because its burst time is lower. 
+
+Now, mode. Mode means non-preemptive. It means it has to execute it completely. Executing completely means its execution time is 2, so we executed it up to 2 times. Two means we are at 1 and it'll take 2 more. I'll take 2 units of time more, so 1 + 2, that'll become 3. So at 3, P3 got executed completely. 
+
+Now we are at time 3. At time 3, first, we have to check which process has arrived already. P1 has already arrived; P1 arrived at 1, but hasn't executed yet, so we'll keep P1 here for now. Other than P1, which process has arrived at 3? If we'll check at 3, then yes, P2. P2 has arrived at 2. So you can simply write here that, yes, P3 and P1 are already present in the ready queue. 
+
+Now, if these two processes are in the ready queue, then which one to select? Then we'll select it using burst time. It means first check the arrival, which process has arrived. If only one has arrived, then there is no logic of burst time; we have to run that process only. But if multiple processes came and arrived at that time, then we have to use burst time. 
+
+So in this case, we have got P1 and P3—sorry, it'll be P2 here. P2 came on 2, that's why P2... P3 already got executed, so you can remove it now. Let's check P1 and P2's burst time. P1's burst time is 3, and P2's burst time is 4. Then P1's burst time is less out of the two. So we'll get P1 executed for 3 units of time. So 3 means, until 3 + 3 = 6 units of time, P1 will get executed. 
+
+It means now you can remove it also from here, because both of these got passed already. Now P1 is gone already, so I have P2 left now. But check time first—it's 6. 
+
+Now check which process has arrived at 6. P4 came now, because it was supposed to come at 4. So it means P4 came to this point somewhere. So I can say there are two processes in the ready queue, i.e., P2 and P4. Now, which process to select out of these two? Again, we'll use the criteria of burst time. 
+
+So check the burst time of P2—it's 4. And for P4—it's 4. It means both of their burst times are the same. Now I've created this type of question intentionally so that we can cover as many variations as possible. In this case, when P2 and P4's burst times are the same, then which one to select? Because both of their burst times are the same. 
+
+So no problem, whenever you get a conflict like this, then come a step back. It means check their arrival time; check which one has a lower arrival time, which one came first. Then you'll find out that P2 came first. Then which one to select out of these two? P2. Although the burst time is the same, why are we selecting P2? Because of the arrival time. 
+
+In case the arrival time would also be the same—just as an example, if we would assume that the arrival time is also the same—so in that case, you can simply come to the process ID, and the one with the lower process ID, you can simply select it. 
+
+So in this case, we are selecting P2 first, and we have to run P2 up to 4 units of time. 6 + 4, i.e., 10. So we ran P2 up to 10. Now after that, there's no problem, because only P4 is left. So we selected P4, and it also needs 4 units of time. So 4 units of time means 10 + 4, i.e., 14. So P4 will be completed on at 14. 
+
+Now write the completion time. First of all, when did P1 get completed? Check on the right-hand side of P1 in the Gantt chart—it's 6. So it got completed on 6. P2 completed at 10. Now check P3—P3 completed at 3. Now we checked P4, and it got completed at 14. So this is how we can calculate the completion time. 
+
+When completion time has arrived, then for TAT (turnaround time) and WT (waiting time), just use the simple formula: completion time - arrival time = turnaround time. 
+So its value will be:
+* P1: 6 - 1 = 5
+* P2: 10 - 2 = 8
+* P3: 3 - 1 = 2
+* P4: 14 - 4 = 10
+
+Now for waiting time: turnaround time - burst time. 
+* Turnaround time is 5, burst time is 3, so it comes out to be 2. 
+* 8 - 4 = 4
+* 2 - 2 = 0
+* 10 - 4 = 6
+So this is the waiting time. 
+
+Response time: you don't need to find response time in the case of non-preemptive, because it'll be equal to the waiting time. In case if they asked you, then simply how do we select response time? The time at which a process gets the CPU the first time. For example, when P3 got the CPU the first time, at 1—you can check the left side—and P3 came at 1 also, so 1 - 1 = 0. 
+
+Means you don't have to do it, because it'll come equal to waiting time. But in case if they ask you, then you can calculate like this. Why is it not coming in it? Response time will come in the case of preemptive only, because when a process gets the CPU, no matter at what time, then that process will get completely executed. Then there's no chance of getting the CPU 2nd or 3rd time. When it'll get it once, then it'll get completely executed. 
+
+But what happens in the preemptive case is the CPU switches; maybe it'll get its turn later again. So in this case, it's no problem if you won't find response time in this case, because it'll come equal to waiting time, so you can directly write it. 
+
+So in this question, after it, they can ask average turnaround time. So average turnaround time is just total it—it'll be 25. Divided by the number of processes, i.e., 4. So it comes out to be 6.25. 
+
+Now we'll calculate average waiting time. Just total it first: 2 + 4 + 0 + 6 = 12. Divided by the number of processes, i.e., 4. So the average waiting time comes out to be 3. 
+
+So this is how we can solve the question of shortest job first. Thank you!

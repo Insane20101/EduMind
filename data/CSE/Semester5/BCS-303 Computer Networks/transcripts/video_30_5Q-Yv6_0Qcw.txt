@@ -1,0 +1,47 @@
+Hello friends, welcome to Gate Smashers. The topic is CRC, that is called as Cyclic Redundancy Check. This method we use for Error Detection, and it is a very powerful method. Why do we say powerful? Along with being powerful, this is the most widely used method which is even used in real-life environments. Meaning, in real-life applications, CRC is used the most to check errors. 
+
+Here we are saying powerful on the basis that it can detect all odd numbers of errors, single-bit errors, even double-bit errors, and along with that, burst errors of length equal to the polynomial degree. Polynomial degree means the polynomial we use here, with which we will divide, has a maximum degree. For example, in this polynomial, the maximum polynomial degree is 4. So the length of the burst error can be up to 4, and it can detect errors equal to that. On average, we can say it is a very powerful method.
+
+Let's see how we have to use this method. If we talk from the point of view of UGC or GATE, you will get only numerical-type questions of this because its theory is quite limited, which I have already written here. 
+
+Here we have a dividend. Many times in the question, you may be given this dividend directly in binary form, or this dividend may be given to you in polynomial form. Let's see how to solve it. Here we have been given an extra polynomial. In this polynomial, it is said in a way that this is a divisor—meaning, with which we have to divide this value and find out what? We have to find out CRC bits. 
+
+What are CRC bits actually? They are redundant bits. When we have to correct or detect errors, if we send pure data, detection and correction are, you could say, impossible. You have to send some redundant bits along with pure data; that's why we use a kind of formula (m+r). Here, $m$ is the number of bits in the message, and $r$ is the number of redundant bits which you have to send. 
+
+First of all, how many redundant bits will there be? According to this question, how do you find out? What is the maximum power of the polynomial? That number of bits you have to append. That means you have to append 4 zeros because the highest degree is 4. So here I will append four bits, four zeros. These 4 bits we will replace with the remainder, and this will become a full string which I will send to the receiver. 
+
+Next, how do we get the divisor? We have to divide this, and the divisor value we have is in polynomial form. So it will have to be converted. How to convert? A very simple method: get the coefficients. Like, the coefficient of $x^4$ is 1, the coefficient of $x^3$ is 1. $x^2$ is not there, meaning by default its coefficient is 0. If you calculate $0 \times x^2$, then it will be 0. Then $0 \cdot x^1$, because that is also not here, and lastly, we have $1 \cdot x^0$. So if you get its coefficients, it becomes 11001. This becomes your divisor. 
+
+I have told you many times that in questions, you may be given both these values in binary form. If it is given in binary form, then I don't have to do anything. But if it is given in polynomial form, like the divisor is given this way, then I have already told you how to convert the value of the divisor into binary. It is also possible that you may be given this dividend in polynomial form; still, no problem, you have to find out this value using the same method.
+
+Now, one more important point: here, how many bits did we append, how many zeros? Four zeros. Why? Because the maximum value of the polynomial is 4. But in case you are given the divisor directly in binary form, and it has 5 values—1, 2, 3, 4, 5—then don't append 5 values. In that case, from the number of bits in the divisor, you have to subtract 1. The remaining number is how many values you have to append here, because the leading 1 is extra. So, depending on how you are given the values according to the question, you can find it out.
+
+Now the next portion is very simple: binary division you have to perform here, and in binary division, we will use the XOR operation. The divisor is 11001. We don't have to find the quotient; the quotient is of no use here. The remainder value is used, so the remainder is to be calculated. When you divide this, always start from 1—meaning the first position should always be 1. 
+
+If you apply the XOR operation here: what is XOR? 0 for the same values, 1 for different values. 0 for same values means 1-1 becomes 0, 0-1 becomes 1, 0-1 becomes 1, 0-0 becomes 0, 1-1 becomes 0. So here we got 1100. Always leading with 1 means start from here; if I have to start from here, then I have only 4 bits left, and in the divisor, I have 5. So we will simply carry one from above: 1, 2, 3, 4, 5. Here I will carry a 0. 
+
+Next, again I have to start from leading 1, where the first value should be 1, so 001. Simply perform binary XOR here, same value means 0, 0, 0, 0, 1. It will be very simple if you perform it one bit at a time, but it will be very lengthy and we don't have that much time. You use a simple funda: now what comes here is 1; you have to start from leading 1. But there is nothing after 1, and here we have 5 values, so we will have to carry 4 values from above: 1 0 1 0. So here I have 5 values. 
+
+Now we'll take 11001. Again we start with 1 and apply the XOR operation: 00011. Next, again I have to start from leading 1 (first value should be 1), so we will again carry values from above. We take 0, take this 0, and one more 0 we have to take, then this will be 5 values. Again we do 11001, so we use 11001, which gives 00001. Next is 0; if we start from leading 1, then it will be 1 0, then we don't have any bits, so here the division is finished.
+
+Now what you have to do is append the remainder value in these 4 locations. But how? You can see 6 values in the remainder. You can't append 6 values here, so remember a simple funda: pick the last 4 values. Meaning, don't start from the MSB, start from the LSB. What are the 4 bits in the LSB? 0010. So you replace this by 0010. If I replace this here, then what will it become? The valid code that will come out will become 0010 appended to the message. 
+
+Now we can say this whole thing becomes a valid data code word—meaning this whole thing becomes a code word. Now what will we send to the receiver? We will not send just this much message; we will send the full code word. In this, how many bits of $m$ are there? 10. And how many are $r$ bits? 4. So a total of 14 bits you have to send. 
+
+When we send these 14 bits, let's see what will happen. If these 14 bits reach as they are to the receiver, then in this case, the receiver will use the same funda: the receiver will divide this whole thing with the same divisor. When it divides, what will happen? Again, see:
+11001 
+11001
+So again we will do this quickly: 01100. We again borrowed 0 from above, 11001 gives 00001, so again we will take values from above: 1010, 1001, 00011. Again we take values 001, next again 11001. This becomes 00000, and from above we take 0; the entire remainder becomes 0. 
+
+This means that no error occurred on the way; all the bits are as they are. If you change any bit—like making 0 from 1 or making 1 from 0—then your remainder will never be 0. Some value will become 1 in it. From that, the receiver can detect that some error has occurred, meaning some bit has changed. This is the simple funda of CRC and how it detects errors.
+
+These are the major points you have to remember:
+1. If the divisor is given in polynomial form, then whatever the maximum degree is, that number of bits you append.
+2. If instead of a polynomial, you are given it directly in binary form—let's say 5 bits—then $5 - 1 = 4$ bits you have to append.
+3. Always start to divide with 1; then its length will be reduced, otherwise, it will be very lengthy. That's why from my personal experience, I say don't do this with any other method—this is the shortest method.
+
+Other than this, what else can come? What is the efficiency? Efficiency means how many bits out of the total are we using for data? You can see in this case, how many bits of data are we sending? 10 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10). But how much entire data are we sending? 14, because we have put 4 redundant bits. So the total data is $(m+r)$, which is 14. Thus, $\frac{10}{14} \times 100$. This value is a kind of efficiency or channel utilization for sending the message. 
+
+These are little points which you will see in GATE or UGC-NET, and specially this portion has come many times and it's a very simple portion. Don't make a mistake in this question because if this goes wrong—almost all students know this, even those who didn't get coaching know how to solve this. So these tricks you remember, they will be very helpful. 
+
+All these points, please note down. These are theory points, so you should know them in case they ask in theory, though the chances of that are very less. 99% chances are of getting this type of numerical question. Thank you.

@@ -1,0 +1,57 @@
+Hello friends, welcome to Gate Smashers. In today's video, we're going to discuss all UNIX commands. That's an important portion of operating systems. Even in competitive exams, you can get many questions on UNIX commands. So like the video fast and subscribe to the channel if you haven't done yet, and please press the bell button so you can keep getting all the latest notifications. 
+
+Let's start with question no. 1: Which command is used to assign only read permission to all the three categories of file "note"? 
+
+We know that if we have to provide permissions on some file or directory or change them, then we use the `chmod` command. That's change mode. Mode means in which mode we want to keep it, like read mode, write mode, or execute mode. And to change it, we use `chmod`. 
+
+Let me tell you about `chmod` a little bit. In `chmod`, we use it generally with positions. First of all, the 3 positions we have are for the users, which we denote by `u`. If you talk about any file or directory, then there are basically 3 categories in it: user, groups, and others. 
+
+Now talking about the permissions, there are three types of permissions. Either a user can read, can write or change, or can execute that file. If it's a code file, then he can execute it. So there are three types of permissions: read, write, and execute. And there are three types of categories regarding who the owner is—i.e., either user, group, or others. 
+
+First of all, the three positions here are for users, then the next three positions are for the group, and in the third, the last three positions are for others. You have to remember this point. Now why are they 3 and 3? Because we have three types of permissions. 
+
+Let's say if you'll write here read, write, read, write, and so on. If I'll write like this, then what does it mean? That I've given the user the permission of read and write. And the third is execute. If I'd keep execute empty, it means it didn't get executed. And if I want to give it, then I'll write `x` here. So it means the user has all three permissions over the file, and you have to remember it in this same sequence: read, write, `x`. Read, write. Read, write. 
+
+It means I gave permission of read and write to the group but didn't give execute permission. And to others also, I gave permission to read and write, but not to execute. You can give it if you want. If you don't want to give any permission—let's say you don't want to give write permission—then you can just remove write from here. So this way we generally give permissions. 
+
+Here it's saying in the question that which command is used to assign only read. Then either we can use `r`—i.e., only read. So here `chmod a-rw`—this is simply not it because we are taking back the permission from here. Then if we go `go+r`—i.e., I'm giving other permission to group and other. Here `go` means group and other, and I'm giving them read permission. 
+
+But in the question, it said all three categories, meaning `u`, `g`, `o`—i.e., user, group, and others. So I gave read mode to all of them. So your third option is correct here: `u+r`. It's also right that you are giving it to the user. `g+r` is also right. But `o-x`—i.e., other minus `x`, you are taking back `x` from others. Minus means taking back. It means it's not correct according to my question. 
+
+So `ugo=r` means we are providing read mode to user, group, and others. You can do `+x` here also. So these are multiple ways of writing commands. The more you execute them on the Linux terminal, the better you'll understand it, as verbally there are a lot of variations possible on it.
+
+Here I gave one more question based on it: `chmod ugo+rw`. This means I'm giving read-write mode to user, group, and other. So this command can be written or can be represented in octal notation. 
+
+If I want to represent it in octal notation, then as I said, there are different ways to write it. So if I'm talking about read and write, then we give it numbering also. For read, it's 4 and it's fixed. For write, it's 2, and for execute, it's 1. 
+
+Now if you want to give read-write, then 4 + 2 = 6. Let's say if you want to give read and execute, then read means 4 and execute means 1, then it becomes 5. If you want to give all three—i.e., read, write, and `x`—then 4 + 2 + 1 = 7. This is the way we generally denote it. 
+
+Here if we'll see, the question says to give read-write. Read-write means 4 + 2—i.e., 6. Read means 4, write means 2, then 4 + 2 = 6. But I'm giving it to user, group, and other also. So we have to write 3 times: 6, 6, 6. So it means option (b) is correct, because this 6 means I'm giving read and write both to the user, 6 for the group (read and write both), and 6 for others (read and write both). 
+
+Now if I'd talk about other options—well, this option (b) is correct completely. But for your understanding, let me explain a couple more. 
+
+Let's say 5, 5, 5. What does it mean? It means read-execute, because 4 for read and 1 for execute, so 4 + 1 = 5. Meaning to the user I'm giving read-execute, read-execute, read-execute. I'm giving read-execute permission to all. 
+
+Same if we'd talk about the third one: 3 means write (2) and execute (1), so 2 + 1 = 3, meaning write-execute, write-execute, write-execute. 
+
+And talking about the last option, then 4, 4, 4 means read to user, read to group, and read to others. So it means here it's giving read permission to all three in this case. 
+
+So you have to give read-write both, then your option (b) would fit right. You can see in that question also which command is used to assign all read to all 3 categories of the file. So if you'd write here `chmod 444 note`, still it'd be true. Either you can write option (a) or if you'll write this also, still it'll give read permission to all 3 categories—i.e., user, group, and other. But according to the question, all the options which are given to you, you have to go with those options only.
+
+Then question 3: Suppose you have a file `F1`. It has content "1234567890abcdefghij". This continuous content is written in that file. 
+
+Here `lseek` is used. `lseek` is also treated as a command many times, but generally, `lseek` is a system call. The main system calls which are important for your exam are `lseek`, `read`, `write`, and `fork`. These 3-4 system calls are very important; you should know all of them. 
+
+In `lseek`, if you want to move the read-write head back and forth, or want to access data randomly, then you have to move the read-write head. To access data randomly and to move it, we use the `lseek` command. By default, the read-write head stays on position no. 1, which if we want to give an index, then you can say 0 index—that the read-write head stays on the 1st position by default. But if you want to move it back and forth, then for that, we use the `lseek` command. 
+
+So here we used `lseek` 2 times. First here: `lseek(n, 10, SEEK_CUR)`. Here `n` is the file descriptor—meaning somewhere above that, we read a file and placed it in `n`. `n` is the file descriptor, so we placed it in the file descriptor `(10, SEEK_CUR)`. Current means that whatever the current position is, right now the current position is the first one. Now from this position, we took it to the 10th position. Meaning we moved forward to the 10th position. So `(lseek 10)` means it'll reach to the 10th location by default. 10th location means if we'd say `123467890`, meaning it'll reach to the 10th location. When it'll reach to the 10th location, so current means whatever the current position is, it'll move this much position ahead. So going forward means before it was on 0, then you'll add 10, so it'll reach to this position. 
+
+Then we did `SEEK_SET`. `SEEK_SET` means if you want to set it on a particular location, so for that, we use `SEEK_SET`, and it has given a value 5. Meaning you can set it at value 5. When you'll set it at 5 value, then it'll reach to the 5th position. 
+
+Meaning after applying `lseek` 2 times, if I'd apply both of them, then what will be the current position of the read-write head? First you took it to the 10th position, and from 10 you set it again at 5. Meaning your B option is correct—i.e., your read-write head will go to the 5th location. 
+
+The same way we use `SEEK_END` also. End means that how much you've to move from the last position. We use "-" in that case. So if you'll use "-", then it'll go from the last towards the left. So these are variations basically in `lseek` that we use generally. 
+
+If you'll use the `SET` first, and would use this one later, then `SET` means first you moved to 5, or if you wrote the current one later, then 5 + 10, then it'd reach to 15. 15 means it'll reach to this position. Then in that case, if you'll write it first and the other one after it, then you can say its answer would be 15. But you have to solve according to the question only. So its answer would be "B". 
+
+Thank you!

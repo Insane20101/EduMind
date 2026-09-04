@@ -1,0 +1,121 @@
+In CSS, you will encounter different types of sizing units. Sometimes you will see pixels, sometimes VH, sometimes VW, sometimes REM, and sometimes EM. Which unit should you use? Which is the best among them? Which one should you avoid? What do these units mean? This will be the topic of this video. Let's go to the computer screen. I am very excited. Let's roll the intro.
+
+**Intro**
+
+I am now at my computer screen, and the topic I am going to discuss today is very important. Understanding sizing is crucial because it affects how your designs will look and function. Here, I will create a new folder and a file named `index.html`. 
+
+In this file, I will create a simple box using a `<div>` element. I wrote `div.box` and added the text "This is a box." I applied a basic style, setting the border of my box to 2 pixels solid black and the width to 233 pixels. 
+
+**Understanding Pixels**
+
+What are pixels? Pixels are units that I used here. Is there only one unit called pixel? No, there are many units to use in CSS. The choice of which unit to use will depend on what you are trying to achieve. For example, if you want to set the height of an element according to the viewport height, you can do that as well.
+
+If you have not accessed the playlist, please do so. Many people have been asking for the source code, and I hope you have it. Now, let’s preview it. I wrote "This is a box" and set the width to 200px. You can also set the background color to Aquamarine.
+
+The pixel is 1/96th of an inch. If I write 233 pixels here, you will see that the width is set accordingly. Now, I will use a universal selector to set `margin: 0` and `padding: 0` by default. My monitor has a resolution of 2048 pixels wide. If I set the width to 2048 pixels, you will see that it takes the full width, and a horizontal scrollbar appears, possibly due to the border. 
+
+If I apply `box-sizing: border-box`, the horizontal scrollbar will disappear. If I inspect the element and increase the width by 1 pixel, you will see the scrollbar again. 
+
+**Responsive Units**
+
+If you set the width to 2048 pixels and then view it on a smaller device, such as a 1080p monitor with a width of 1920 pixels, your website layout may break. To avoid this, you should use responsive units. Instead of using pixels, you can set the width to 100vw, where VW means viewport width. This means it will take the width of your viewport. 
+
+If I increase the viewport size, the width will adjust accordingly. You can right-click, inspect, and choose responsive mode to see how it behaves. When using VH, the horizontal scrollbar may not appear, which is an advantage of using viewport height units.
+
+Sometimes you want the width of your element to equal the viewport width. For example, if I set it to 80vw, I can center the div by setting `margin: auto`. This means that the left and right margins will be automatically set, centering the div. 
+
+However, keep in mind that `margin: auto` will only center block-level elements. If the element is inline, it will not center. For example, if I change the box to a `<span>`, it will not work the same way.
+
+**Creating Containers**
+
+Suppose I want to create another box, which I will call my navbar. I want to give it the same width as the previous box. I can apply the same styles and add a top margin of 23 pixels. You can use the margin shorthand property to separate horizontal and vertical margins. 
+
+Now, I will write "56" inside the container. You can tell me in the comments why I wrote "56." If I view this on an iPhone, it will adapt responsively. 
+
+**Understanding VH and VW**
+
+Now, I want to explain VH. If I want the height of the container to be 80% of the viewport height, I will set it to 80vh. If I want it to take 10% of the viewport height, I will set it to 10vh. This means that as I change the height of the viewport, the container will always take 10% of the viewport height, and the other will take 80%.
+
+VH and VW are very important units. Pixels are our universal unit, which we will continue to use. You cannot avoid pixels; they will always be part of your CSS toolkit.
+
+**Understanding EM and REM**
+
+Next, I want to discuss REM and EM. Let's start with EM. Assume the font size of the container is set to 1em. If the font size of this container is 16px, which is the default, I will add a paragraph with some lorem text. 
+
+Now, I will set the font size of the paragraph to 1em. The computed font size will be 16px, as it inherits the font size from the container. If I change the container's font size to 18px, the paragraph will also inherit that size. 
+
+If I set the paragraph's font size to 1.5em, it will be 1.5 times the inherited size. For example, if the inherited size is 18px, then 1.5em will be 27px. If I set it to 2em, it will be 36px. 
+
+**Understanding REM**
+
+Now, let’s talk about REM. Assume I change the font size of the root element (HTML) to 12px. If I set a font size of 2rem, it will be 2 times the root font size, which is 24px. 
+
+REM means the font size is based on the root element, while EM is based on the parent element. If I set the root font size back to 16px, and then set a paragraph to 2em, it will be 32px because it is 2 times the inherited size from the container. 
+
+If I change the root font size to 12px, everything will inherit from there. If I set it to 2rem, it will be 24px. If I set it to 18px, the font size will be 36px. 
+
+**Conclusion**
+
+These are the most commonly used units in CSS. There are other units, but these are the ones I use most frequently when designing websites. Additionally, there are two more units: Vmin and Vmax. 
+
+Vmin refers to the smaller of the viewport's width or height, while Vmax refers to the larger. For example, if I set a container to 100vmin, it will take 100% of the smaller dimension (either width or height). 
+
+This concludes our discussion on sizing units in CSS. We will explore more about responsive design in future videos.
+
+Here is the cleaned and structured version of the lecture transcript:
+
+---
+
+I will give my container a background color of red. For the text color, I will choose yellow. The font size will be set to 22 pixels. 
+
+Now, I made another container, and I want to set the width of this container to `vmin`. I will specify the width as `100vmin`. But what does `100vmin` mean? 
+
+`vmin` is the minimum of the height or width of the viewport. In the device I am using to create this video, `vmin` corresponds to the height. Therefore, `100vmin` is equal to `100vh` for this device. You can see that it is `100vh`. 
+
+Should I write `100vmin` or `100vh`? It doesn't always matter. In this device, `vmin` and `vmax` are the same. However, if you want to use `vh` on a phone and `vw` on a computer, you might consider `vmax`. `vmax` is used in complex scenarios, but don't get confused; it is used less frequently. 
+
+You should know about `vmin` and `vmax`. If I set my container to `100vmin` and then change it to `100vh`, will it make any difference? No, it won't. Should I change it to `100vh` or keep it at `100vmin`? In this device, they are the same. 
+
+Now, what will be `vmin` on my phone? Will it be `vh` or `vw`? Please tell me in the comment section. What will be `vmin` on the phone, and what will be `vmin` on this device? I hope you have understood the concept of `vmin` and `vmax`. 
+
+This was about `vmin` and `vmax`. There are many more complex units. I use the term "complex" because these units are not used as frequently. Your websites will be made up of these units. If I open the MDN Docs for CSS units, you will see many units listed. 
+
+For example, there are `Q`, `IN`, `PC`, and `PT`. You may not remember all these units, but in this video, I have highlighted the important ones. If you want a reference for all the units, you can take a screenshot of this comprehensive list. 
+
+What is `M`? It refers to the font size of the element. What is `X`? It refers to the X-side of the element. There are many more units, but the ones I mentioned are the most important and the ones you will use the most. 
+
+In case you are looking for a comprehensive list, I will provide the link to the MDN in the source code. However, I recommend that you focus on the units I discussed in this video. Many of these units may not be relevant for a normal user, but if you take on the challenge, you can learn them. 
+
+Now, let’s make this container a little more visually appealing. First, I want to remove the reddish background color. I will set the box-sizing to `border-box`. Additionally, I will add a border and margin to center the container. 
+
+Now it looks like this. I will also add a border so that you can see it clearly. I will change the border color to black instead of yellow. I will copy the border style to the `mycont` box. 
+
+I have set the width to `100vmin`, which is fine. If I change it to `100vmax`, it will extend a bit, but that’s acceptable for now. I will adjust the width to `80vw` to avoid confusion. 
+
+Now, we have created a very basic website layout with a footer and main content. I want to emphasize that this container should have some height. If I remove the height, you will see what happens. 
+
+You want your website to maintain a minimum height. If I add more content, the height will adjust accordingly. I will set a minimum height of `80vh`. This means the container will have a minimum height, but there is no limit to how much the height can increase with additional content. 
+
+Let me demonstrate this by adding a lot of lorem text. I will input `lorem 1233` to fill the container. You can see that the website adjusts, and the box height increases as more content is added. 
+
+I have set a minimum height, and the same concept applies to minimum width. You can specify a minimum width and allow the maximum space to be utilized. 
+
+I hope you are enjoying this. I will reduce the text since I think I have added too much. I could have demonstrated it with `lorem 999`, and if I wanted to add more, I could. 
+
+You understand the point. I will leave it at `lorem 999`. You can see that this container adjusts its height. I will add a comment here to illustrate that as more text is added, the height of the second container increases accordingly.
+
+Now, let’s discuss percentage units. Percentage units are very important. If you set the width to `50%` in a particular box, it means 50% of the parent's width. For example, if I set the paragraph width to `50%`, it will take half of the parent's width. 
+
+Now, the percentage property is not applicable everywhere, so you need to be cautious. A common mistake people make is setting the height to `100%` or `80%` without defining the parent's height, which can lead to issues. 
+
+Always use `vh` and `vw` units unless you are sure of what you are doing. For example, if I give this paragraph a width of `50%`, I will add a border of `2px solid red`. You can see that it takes 50% of its parent's width. 
+
+If I put a `div` inside this paragraph and set its width to `50%`, it will also take 50% of the parent's width. Let me show you. I will create a `div` inside the paragraph. 
+
+Now, you can see that this `div` is 50% of its parent, which is the red box, and the parent of the red box is the black border box. I hope everything is clear regarding percentages. 
+
+You have the link to the rest of the units, so please check that out. As I mentioned, everything I have discussed in this video is what you need to know. Other units like `ex`, `cap`, and `ch` are used very infrequently, making up only about 1-2% of websites. 
+
+You are safe, and as you improve your CSS skills, you will learn about these additional units. I hope you are enjoying this course. If you haven't accessed the playlist yet, please do so. 
+
+Click here to bookmark and save. Access the source code, and like the video. Thank you so much for watching, and I will see you next time.

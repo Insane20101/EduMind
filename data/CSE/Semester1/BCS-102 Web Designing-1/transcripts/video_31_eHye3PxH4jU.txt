@@ -1,0 +1,37 @@
+There was a time when you had to specifically tell a client that you would make their website responsive. Today, however, if anyone asks you to make a website, it is expected to be responsive by default. The most important aspect of responsiveness is the media query, for which you need to write some additional code. This ensures that your website looks good on both desktop and mobile devices.
+
+To make your website look good on mobile, you have to use media queries, which have a very simple and straightforward syntax. Like the video in the comment section below and write "sigma batch" too. I am very excited, as always. Let's go to the computer stream. 
+
+To save time, I have opened my VS Code here, and I have already created a file named `index.html`. I have given a title to this page called "CSS Media Query." Now, I will explain what a media query is. I will put a title on this page named "Media Query" and here I will describe what a media query is. 
+
+I will set a style where the background color of the body is red. You might say, "The background color of the body is red." I will write inside a div, "Hey, I am a red body guy." The term "red body guy" refers to the body tag being red. If you have not accessed the playlist of Sigma Web Development, please do so and also access the GitHub code.
+
+Now, let's preview what we have. After previewing, you might say, "What is this? The body has become red." While it may seem trivial, what I want to convey is that you can change your styles based on the device being used. 
+
+Let me tell you a story, like grandfathers tell their grandchildren. I don't know about my time, but when CSS2 came out, a query named media was introduced. Its purpose was to allow styles to change based on the device accessing the website. This was the only purpose of the media rule, which was introduced in CSS2. In CSS3, the name of this media rule was changed to media query.
+
+Now, how does the media query work in CSS3? The syntax of a media query starts with `@media`, indicating that you are writing a media query. You specify which device you want to write the media query for, and before that, you can use `not` or `only`. For example, you can write `@media only screen`, which means it will apply only when viewed on a screen.
+
+A typical syntax of a media query looks like this: `@media not or only [media type]`. After that, you write some expressions, and then you include the CSS code that will be applied when the specified conditions are met.
+
+In most cases, you will write `only` because you want the media query to match only when the media type is screen. Other media types include `all`, `print`, and `speech`. For example, if you want your CSS style to apply only when there is a speech device, you would write `speech`. However, in most cases, you will use `screen`.
+
+After specifying the media type, you can write a condition. For instance, if I write `max-width: 455px`, I can set the background color to blue. If the max width is 455 pixels, the background color will be blue. 
+
+Now, I will demonstrate this. I will make the window smaller, and as I reduce the width, you will see the background color change. If the max width is 455 pixels, the background color will be blue. If I increase the width beyond 455 pixels, the media query will no longer apply, and the styles will revert.
+
+To summarize, media queries are used to create responsive designs. For example, if I have two boxes, I will create a div with the class "boxes" and multiple divs with the class "box." I will set the width of each box to 344 pixels and the height to 344 pixels. 
+
+I chose 344 pixels for this example for a specific reason. If you have any idea why I chose that number, please let me know in the comment section below. I will also set the background color of the boxes to steel blue, along with padding and margin.
+
+Now, suppose I want these boxes to wrap themselves on small screens. I will set the display to flex. When I make the screen smaller, the boxes will start wrapping. For example, when the breakpoint is at 388 pixels, I will set the flex direction to column. 
+
+As I make the screen smaller, you will see the boxes rearranging themselves. This demonstrates the concept of breakpoints in responsive design. We typically define breakpoints for different device sizes: below 455 pixels for phones, between 455 and 750 pixels for tablets, and so on.
+
+When creating responsive designs, you will often use media queries. If you are using frameworks like Tailwind CSS or Bootstrap, they handle media queries behind the scenes, but when writing raw CSS, you will frequently use media queries.
+
+Before I conclude, I want to show you another media query. I will write `@media` and specify the orientation. For example, if the orientation is landscape, I want to set the body color to purple. If the orientation is portrait, the styles will change accordingly. 
+
+This media query is also popular, but in most cases, you will use the standard media queries I described earlier. If you have not accessed the playlist yet, please do so. I will update the source code, and you can access it. Like the video, share the playlist, and share the video. 
+
+Thank you so much for watching this video, and I will see you next time!

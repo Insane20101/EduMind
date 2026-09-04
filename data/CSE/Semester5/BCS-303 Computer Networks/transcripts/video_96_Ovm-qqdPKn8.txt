@@ -1,0 +1,73 @@
+Hello students, and welcome to the computer networks class. In today's class, I am going to explain the top Linux networking commands. 
+
+I have already told you that I am not worried about the high-level topics because we have covered that aspect. However, I am a little worried about the basic points. Although I have already explained many points related to this, I felt that this small topic was missing, so I decided to make a video for it. 
+
+Here, I have listed 20 to 21 Linux commands. Just as there are major commands in operating systems, there are also many commands in networking. You will not likely be asked subjective questions to write down ten commands. Instead, you should know the names of the main commands and their functionalities. Questions are typically formatted such that you are given a functionality and asked which command is used for it, or you are given a command and asked for its purpose.
+
+### `ifconfig` (Interface Configuration)
+The first command is **`ifconfig`**. In Linux, `ifconfig` stands for "interface configuration" or "interface configurator." An interface is the point where your network and your machine meet and connect to each other. In your system, you can think of the Network Interface Card (NIC) as an interface, which can be both software and hardware. 
+
+Similarly, a router is connected to multiple networks, and the connections to these different networks are different interfaces (e.g., interface 0, interface 1, interface 2, interface 3). An interface provides a connection between the system and the device, or where the device and the network connect. When your system is connected to a network, you can use the `ifconfig` command to find its IP address, MAC address, and Maximum Transmission Unit (MTU), which defines the maximum bytes of data that can be sent in one go.
+
+### `ip`
+The next command is the **`ip`** command, which is the latest and updated version of `ifconfig`. You may be asked about either `ifconfig` or `ip`, as both serve the same purpose. They provide the same information regarding the network interface. Most of these commands are related to network configuration or troubleshooting, focusing on how to maintain and recover networks.
+
+### `traceroute`
+The third command is **`traceroute`**, which is highly important. Linux `traceroute` is one of the most useful commands, and its primary purpose is troubleshooting. We use this to troubleshoot delays and latencies along the path. For example, if you send a `traceroute` command from a source to a destination, it will reveal the reasons behind any delays in your path by tracing the route.
+
+### `tracepath`
+The **`tracepath`** command is similar to `traceroute` and shares the same purpose, but there is a major difference: `tracepath` does not require root privileges. Root privilege is similar to having administrator privileges in Windows. You need administrator-level privileges as a network administrator to run `traceroute`, but `tracepath` is available to normal users and is included in Ubuntu by default. Ubuntu is an operating system, whereas Linux is the kernel of the operating system. There are multiple distributions of Linux, such as Red Hat, Ubuntu, and Kali.
+
+### `ping`
+Another highly important command for troubleshooting is **`ping`**. If you send a ping request from your system, it tells you the entire round-trip time—meaning the time it takes for a packet to be sent and its acknowledgment to be received. You can run this command as `ping google.com`. When you target a specific site, the request goes to the server and comes back using the Internet Control Message Protocol (ICMP). The full form of ping is "Packet Internet Groper."
+
+### `netstat`
+The **`netstat`** command, which stands for "network statistics," is also very important. It provides all key information related to the network interface, such as how many open connections exist and the contents of the routing table.
+
+### `ss`
+The **`ss`** command is an advanced version and replacement of `netstat`. It is faster and more informative because it retrieves information directly from the kernel's user space. There are many variations of these commands (such as using flags like `-O` or `-B`). If you want to see these details, you can use the **`man`** (manual) command. Writing `man` before `ping` or `ss` displays all the possibilities for how the command can be used. For the exam, you only need to know the basic purpose of each command.
+
+### `dig` and `nslookup`
+The **`dig`** command stands for "Domain Information Groper." It is used for any query or troubleshooting related to DNS, providing detailed information. Similarly, **`nslookup`** is also used for DNS-related queries, but it is an older version of `dig`.
+
+### `route`
+The Linux **`route`** command displays and manipulates the routing table existing on your system. To maintain or build routing tables, we use routing protocols such as RIP (Routing Information Protocol), OSPF (Open Shortest Path First), and BGP (Border Gateway Protocol). RIP uses the Distance Vector routing algorithm, while OSPF uses Link State routing. These algorithms regularly operate and update routing tables, and the `route` command helps manage them.
+
+### `host`
+The Linux **`host`** command displays the domain name associated with a given IP address. If you know the IP address and want to find the corresponding domain name, you can use the `host` command.
+
+### `arp`
+The **`arp`** command stands for "Address Resolution Protocol." It is used to view and add content to the kernel's ARP table. Address resolution involves mapping between MAC addresses and IP addresses. We use ARP and RARP (Reverse Address Resolution Protocol) for this. If you know the MAC address of a system and want to find its IP address, or if you know the IP address and want to find the MAC address, you use these protocols.
+
+### `iwconfig`
+The **`iwconfig`** command is used to configure wireless network interfaces, such as Wi-Fi. While we normally use `ifconfig` for wired connections, we use `iwconfig` for wireless networks, where the "w" stands for wireless.
+
+### `hostname`
+While the earlier command was `host`, this one is **`hostname`**. The Linux `hostname` command is a simple utility used to view and set the host name of a system.
+
+### `curl` and `wget`
+The Linux **`curl`** and **`wget`** commands are used to download files from the internet through the Command Line Interface (CLI). Historically, when using systems like DOS, files had to be downloaded via the command line. Today, we primarily use Graphical User Interfaces (GUIs), but these older commands are still frequently focused on in competitive exams.
+
+### `mtr`
+The Linux **`mtr`** command is a combination of `ping` and `traceroute`. It displays information regarding the packets sent along with the ping time for each hop. A hop refers to each machine or router the packet reaches and returns from along its path.
+
+### `whois`
+The **`whois`** command is used to gather information about a website. If you have the name of a website (for example, by typing `whois google.com` or `whois facebook.com`), the command provides registration details, such as the registered name and the owner of the host.
+
+### `ifplugstatus`
+The **`ifplugstatus`** command detects the physical status of a local network interface, such as a NIC card. If you are trying to connect to the internet and it shows that the connection is unavailable, you perform troubleshooting. During troubleshooting, this command checks whether the interface or NIC card is properly plugged in and working.
+
+### `iftop`
+The Linux **`iftop`** command is used for network monitoring. It measures the traffic on a network, showing where packets are coming from, much like software tools such as Wireshark. It monitors how many packets are sent and received per second, how much bandwidth is being utilized, and the source of the packets.
+
+### `tcpdump`
+The **`tcpdump`** command is one of the most widely used commands for network analysis. It captures and displays the traffic passing through a network interface. This is an important command to note, as it allows you to monitor and inspect the packets and information being transmitted.
+
+### `ssh`
+Finally, we have **`ssh`**, which stands for "Secure Shell" (or Secure Socket). Historically, remote logins were performed using `telnet` or `rlogin`, which transmitted data in plain text. This meant usernames and passwords were sent without encryption. In today's world, security is essential for activities like internet banking and online payments. 
+
+`ssh` addresses this by transmitting information as ciphertext instead of plain text, utilizing cryptography. It encrypts messages using backend algorithms such as RSA, DES, or AES. When performing a remote login, `ssh` ensures that the host you are connecting to is properly validated and secure.
+
+***
+
+Please note down these key points for each command, as this level of detail is more than sufficient for your exams. Thank you.

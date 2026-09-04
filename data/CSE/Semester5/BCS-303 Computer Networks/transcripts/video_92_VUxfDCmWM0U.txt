@@ -1,0 +1,100 @@
+Hello friends, and welcome to Gate Smashers. In today's video, we are going to discuss a question on the RSA algorithm. Let's read the statement first:
+
+> In an RSA cryptosystem, a particular user, A, uses two prime numbers, $P = 13$ and $Q = 17$. We have to find the public and private keys of A. The public key is already given as $35$. You have to find the private key.
+
+### Introduction to RSA and Asymmetric Cryptography
+The RSA algorithm falls under asymmetric key cryptography. In cryptography, we have two main methods: symmetric key and asymmetric key cryptography. I have already made a video explaining the differences between these two and how they work; the link is shared in the description box, so do check it out to understand the basics. 
+
+This particular question has already appeared in the GATE exam. Similar types of questions appear frequently in the GATE and NTA NET exams, where the core question remains the same and only the values are different. Understanding how the RSA algorithm works and how to find the public and private keys will help you easily solve these questions in your exams.
+
+In asymmetric cryptography, if two people (let's say A and B) want to communicate, they will each generate a public key and a private key. They share their public keys openly but keep their private keys secret. For example, if A wants to send data to B, A will use B's public key to encrypt the data. 
+
+---
+
+### Step 1: Calculate $n$ and $\phi(n)$
+To make these problems solvable in an exam environment, you will typically be given small prime numbers instead of the very large prime numbers used in real-world RSA. Here, we are given:
+* $P = 13$
+* $Q = 17$
+
+First, we calculate the value of $n$:
+$$n = P \times Q$$
+$$n = 13 \times 17 = 221$$
+
+Next, we calculate Euler's totient function, $\phi(n)$ (phi of $n$):
+$$\phi(n) = (P - 1) \times (Q - 1)$$
+$$\phi(n) = (13 - 1) \times (17 - 1)$$
+$$\phi(n) = 12 \times 16 = 192$$
+
+---
+
+### Step 2: Determine the Public Key ($e$)
+This is where the main algorithm starts. We have to choose the value of $e$ (the public key exponent) based on the following conditions:
+1. $1 < e < \phi(n)$ (meaning $e$ must be greater than $1$ and less than $192$).
+2. $e$ must be co-prime to $\phi(n)$, meaning the greatest common divisor of $e$ and $\phi(n)$ must be $1$:
+$$\gcd(e, \phi(n)) = 1$$
+
+This means $e$ and $\phi(n)$ should not share any common factors other than $1$. 
+
+In this question, the value of $e$ is already provided to us as $35$. We can verify this: $35$ is between $1$ and $192$, and the greatest common divisor between $35$ and $192$ is indeed $1$. 
+
+Note that we designate $e$ as the public key and $d$ as the private key. In exam questions, one of these two values must be given to you so that you can calculate the other. While the underlying mathematics relies on complex concepts like Euler's theorem, the Euclidean algorithm, or the Extended Euclidean algorithm, you do not need to dive too deeply into these proofs for the exam. You just need a basic overview of how to solve the steps.
+
+---
+
+### Step 3: Calculate the Private Key ($d$)
+To find the private key $d$, we use the relation:
+$$d \times e \equiv 1 \pmod{\phi(n)}$$
+
+This can also be written as:
+$$(d \times e) \bmod \phi(n) = 1$$
+
+We know $e = 35$ and $\phi(n) = 192$. We need to find a value for $d$ such that when multiplied by $35$ and divided by $192$, the remainder is $1$.
+
+#### Method 1: Solving Using Multiple-Choice Options
+If your exam question provides multiple-choice options, the simplest way to find $d$ is to plug the options directly into the formula. 
+
+Let's test an option, for example, $d = 13$:
+$$(13 \times 35) \bmod 192 = 455 \bmod 192 = 71$$
+Since $71 \neq 1$, $13$ is not the correct private key.
+
+Now, let's test another option, $d = 11$:
+$$(11 \times 35) \bmod 192 = 385 \bmod 192 = 1$$
+Since the remainder is $1$, we have quickly found our answer: $d = 11$.
+
+---
+
+#### Method 2: Solving Without Options (Formulaic Approach)
+If you do not have multiple-choice options (such as in a fill-in-the-blank or numerical-answer-type question), finding $d$ can be more challenging. In this case, you can use the following algebraic formulation:
+$$d \times e = 1 + k \times \phi(n)$$
+
+Where $k$ is an integer ($0, 1, 2, \dots$). Rearranging the formula to solve for $d$, we get:
+$$d = \frac{1 + k \times \phi(n)}{e}$$
+
+We substitute our known values ($e = 35$ and $\phi(n) = 192$) into the equation and test sequential integer values for $k$ starting from $0$. We are looking for the first value of $k$ that yields a whole integer for $d$ (no decimals).
+
+* **For $k = 0$:**
+  $$d = \frac{1 + 0 \times 192}{35} = \frac{1}{35} \approx 0.028$$
+  This results in a decimal, so we discard it.
+
+* **For $k = 1$:**
+  $$d = \frac{1 + 1 \times 192}{35} = \frac{193}{35} \approx 5.51$$
+  This also results in a decimal, so we discard it.
+
+* **For $k = 2$:**
+  $$d = \frac{1 + 2 \times 192}{35} = \frac{1 + 384}{35} = \frac{385}{35} = 11$$
+  This gives us an absolute integer value of $11$. 
+
+Therefore, the private key $d$ is $11$.
+
+---
+
+### Conclusion
+Always start your calculations for $k$ systematically from $0, 1, 2$, and so on. Do not jump to random numbers. Disregard any steps that yield decimal values, and accept the first step that results in a whole integer. 
+
+Through this process, we have determined that:
+* **Public Key ($e$):** $35$ (given in the question)
+* **Private Key ($d$):** $11$ (calculated)
+
+If you have options available, simply test them using the modulo formula to see which one yields a remainder of $1$. In the worst-case scenario where no options are provided, follow the formulaic method using $k$ to find the correct answer. 
+
+This is how the RSA algorithm works. Thank you!

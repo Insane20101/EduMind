@@ -1,0 +1,75 @@
+Memory Management in Operating Systems
+
+Memory management in an operating system is a method or functionality used to manage various kinds of memories. In our laptop and system, there are a lot of different types of memories available, such as RAM, hard disks, and registers. How we can manage all the memory resources in a more and more efficient manner is the functionality of the operating system. Stated simply, it is the method of managing the primary memory. Why primary memory? Because out of all the types of memories, the majority of our focus is on the RAM—meaning we have to concentrate more on how our system actually works. 
+
+Let us see this with a simple diagram. The purpose of the CPU is to execute instructions and programs. A program is a collection of instructions that are executed one by one, which the CPU does. The CPU is generally directly connected with registers and cache memory, as well as with the RAM, which is also known as primary memory. The RAM is generally connected with secondary memory. We will see the memory hierarchy in future videos on how the systems and memories are actually connected with each other, but the core concept is that the CPU executes instructions one by one and has a direct connection with registers, cache, and RAM. 
+
+However, secondary memory is not connected directly to the CPU. The reason is speed; secondary memory is very slow while the CPU is very fast, so we generally cannot connect them directly. That is why we put faster memories in between: registers, cache, and RAM. There is a fundamental principle of computer science regarding the sizes of registers, cache, and RAM. If we increase the size of the RAM, cache, or registers—for instance, if we put more registers in the system, add more cache, or increase the RAM size—the cost of the system will also go high. If the cost is very high, it is possible that it goes out of the budget of a normal user. That is why the laptops and computers we purchase from the market have limited RAM, like 4GB, 8GB, or up to 16GB.
+
+Why are we discussing RAM here? Because in secondary memory, almost all programs—whatever number of processes or programs are available—are stored in the secondary memory awaiting execution. The CPU will execute them, but how will the CPU execute these processes? For the CPU, I have to bring the processes from secondary memory into the RAM so that the CPU can directly interact with the processes and execute them. This is a very important part. All normal programs, like the ones we make in C or C++, sit idle in secondary memory because the size of secondary memory is very big, allowing it to accommodate as many programs as possible. 
+
+When you have to execute these programs, the CPU is required. How will the CPU execute them since it is not connected to secondary memory? This means we have to pick the programs and bring them into the RAM so that the CPU can directly interact with the RAM. And why must they come into RAM specifically? While you can also use cache and registers, their sizes are much smaller than RAM. Registers in our laptops are generally in kilobytes, which is a very small size. Although they are very fast, their size is very limited. 
+
+For simplification, let's remove the hierarchy and not talk about registers and cache at this point. Instead, we will talk directly about RAM. As many processes or programs as are present in secondary memory, we need to swap them in—meaning we have to bring those processes into the RAM. When a process enters the RAM, the CPU can directly interact with it and execute the processes one by one. 
+
+This brings us to the Degree of Multiprogramming. What does the multiprogramming concept say? Multiprogramming means whenever we are keeping programs in secondary memory and bringing them into the RAM, we should not bring just one program into the RAM; we should try to bring more than one process into the RAM at a time. That is called multiprogramming, named for multiple programs. Why is there a need for multiple programs? To bring the maximum number of programs or processes from secondary memory into the main memory (RAM) so that the CPU can execute them. 
+
+The Advantage of Multiprogramming and CPU Utilization
+
+What is the advantage of bringing the maximum number of programs into memory? The advantage is that the higher the degree of multiprogramming, the higher the utilization of the CPU. If we take a simple example, let us say I bring only one process, P1, into the RAM. The CPU starts executing that process. As we already know, each process can involve two types of activities: CPU execution and Input/Output (I/O). 
+
+A process executes either when the CPU executes it, or it may make a request for Input/Output in between—meaning it wants to use a printer, a scanner, or read a particular file from secondary memory. When a process makes an I/O request, the CPU releases it, telling it to get blocked and start using the I/O device. Let us say P1 is being executed by the CPU, and in between, P1 says that it wants to do some I/O operation. What will the CPU say? It will say, "Okay, you can do the I/O operation." 
+
+That process then exits the CPU and the RAM to do its I/O work. When it is doing I/O work, the CPU is not executing P1, meaning the CPU will sit idle. This is what we should not do. If the CPU is idle, the efficiency and performance of the system will go down, and we cannot let that happen. 
+
+What is the degree of multiprogramming's role here? It is to keep more and more processes in the RAM. By bringing as many processes as you can and keeping them in the RAM, the efficiency of the system becomes very high. When the utilization of the CPU is very high, the performance of the system will automatically increase. 
+
+Numerical Analysis of CPU Utilization
+
+For more detail, let us solve a numerical problem to gain more clarity. Let us say I have a RAM of size 4MB, and there is one process whose size is also 4MB. How many processes can be accommodated in the RAM? Simple: one process, because the RAM size is 4MB and the process size is 4MB. 
+
+Let us say process P1 comes into the RAM. There is a probability that the process will go for an I/O operation. Let's call this probability $K$, or we can say $K$ is the amount of time that a process will spend doing an I/O operation. If, out of the total time, it does I/O operations for $K$ amount of time, for how much time is it executed in the CPU? It will execute in the CPU for $(1 - K)$ amount of time. 
+
+As we know, a process does only two jobs: either it is executed by the CPU, or it performs an I/O operation. If a process is being executed by the CPU and in between decides it wants to do an I/O operation, it goes to perform I/O, during which the CPU cannot execute it. Let us assume that for $K$ amount of time, process P1 performs I/O operations. If it performs I/O for $K$ amount of time, what will the CPU utilization be? The CPU utilization is $(1 - K)$, because we subtract $K$ from the total time of 1. 
+
+Now, let us say this $K$ amount of time is 70%. This means out of the total time, 70% of the time is spent doing I/O operations, and the remaining $(1 - K)$, which is 30%, is spent performing work in the CPU. So, CPU utilization is only 30%. Why? Because there was only one process. 
+
+Now, let us increase the size of the RAM. Let's say the RAM size is now 8MB, while the process size remains 4MB. The number of processes that can come and be accommodated in the RAM will now be 2 (8MB divided by 4MB equals 2). 
+
+Following the same logic, if a single process performs I/O operations for $K$ amount of time, with 2 processes, the total time spent on I/O becomes $K \times K = K^2$. If $K^2$ is the time spent on I/O operations, what will the CPU utilization be? The CPU utilization will be $(1 - K^2)$. Previously, with a single process, the I/O time was just $K$. Here, because there are two processes both potentially using $K$ amount of time, the total time used for I/O is $K^2$. 
+
+If the value of $K$ is 70% (0.7) for I/O operations, the CPU utilization here will be $1 - (0.7)^2$, which equals approximately 76%. Look at the difference: when there was only 1 process, the utilization was only 30%. By simply increasing the size of the RAM, the CPU utilization increased by a huge amount to 76%. 
+
+Let us increase the size of the RAM again. Suppose the RAM is now 16MB and the process size is still 4MB. How many processes can I accommodate in the RAM? The number of processes will be 4 (16MB divided by 4MB). 
+
+If $K$ is the amount of time one process spends doing I/O operations, what is the probability that all 4 processes are doing I/O operations at the same time? The total time will be $K^4$. Then what will the CPU utilization be? The CPU utilization will be $(1 - K^4)$. If we substitute the value $K = 70\%$ (0.7), the answer will be around 93% or approximately 94%. You can simply substitute the values and find that the result is approximately 94%. 
+
+Conclusion on Memory Management and CPU Utilization
+
+What is the core point here? The point is that whenever we increase the size of the RAM, the CPU utilization increases. How do we get a higher number of processes? We can only accommodate more processes (like 1, 2, or 4 processes) when the size of the RAM is large. 
+
+There are two key takeaways here:
+1. To increase the number of processes (i.e., to increase the degree of multiprogramming), I have to increase the size of the RAM. 
+2. When we increase the size of the RAM, more and more processes are accommodated, and when more and more processes are accommodated, CPU utilization becomes very high. 
+
+If we take the number of processes up to '$n$', the formula becomes $1 - K^n$, and the value will approach 100%, meaning our CPU utilization will be nearly 100%. If you want, you can increase the RAM size further to 32MB while keeping the process size fixed at 4MB, and you will automatically see the utilization increasing. 
+
+Generally, in theory, we say that the degree of multiprogramming means having more and more processes in the RAM—that is the standard definition. But how can we bring more and more processes in? For that, I have to increase the size of the RAM, which allows more processes to be accommodated, thereby automatically increasing CPU utilization, as demonstrated by the numerical example. 
+
+Thus, our memory management technique involves the following: although the operating system manages all memories, the management of RAM is the most important. Whatever number of processes are present in the secondary memory, bringing them into the RAM is the responsibility of the operating system, making it a crucial part of memory management. 
+
+Furthermore, because our goal is to bring more and more processes into the RAM, the operating system's functionality expands to focus heavily on allocation and deallocation. When more processes come into the RAM, more allocation happens, and when processes finish and go back, deallocation takes place. Finally, the fundamental concept of security is also applied throughout this process.
+
+Why? Because the more processes we bring in the RAM, it is possible that one or two processes may interfere with each other, meaning their instructions may interfere with each other. The Operating System takes care of this also, ensuring that this type of problem should not happen. The size or memory allocated to some process, it will use only that much space; more than that, its instructions cannot come out. So the fundamentals of security, allocation, and deallocation are done by the Operating System in memory management. 
+
+That is why this is an important part of why we relate the degree of multiprogramming to memory management, and here the entire memory management—the majority of memory management—is to bring more and more processes into the memory. In which memory? In RAM. But that is a challenge in itself. 
+
+The challenge is in one more sense, as it may happen that I bring a process entirely—one full process I bring into the RAM—and second, it can also be that I divide the process into fractions, and some of its part, the part that is required, I bring only that. That will be seen in Paging and Segmentation further. But yes, we can also bring the entire process into the RAM. 
+
+However, let's say that a process of 4MB we bring into the RAM, then it is possible that only one or two instructions need to be executed in it, so one or two instructions are in bytes, meaning the CPU only wanted data of one or two bytes, but I bring 4MB data into the RAM to execute. Obviously, here also the efficiency of the system can be affected because this much data has to travel through buses, through the data bus. 
+
+So instead of traveling more data, what do we do? We generally divide the process into fractions, into multiple blocks, and we bring blocks of some processes, like we bring one block of P1, a second block of P2, some other block of P3, some other block of P4, some other block of P5, and some other of P6. Meaning, we try to bring their blocks into the RAM. But how we divide these blocks and all, that will be seen in the further videos of Paging and Segmentation. 
+
+This is all about how we relate the degree of multiprogramming and memory management with each other, why the degree of multiprogramming is very important, and how to achieve it. The concept is simple: increase the size of RAM, and when you increase the size of RAM, more and more processes will be accommodated. And how will CPU utilization increase? You can easily check through this example. 
+
+So this is all about memory management and the degree of multiprogramming. If you like the video, then please like it, share it, and please subscribe to my channel. Thank you.

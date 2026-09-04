@@ -1,0 +1,55 @@
+Hello friends, welcome to Gate Smashers. The topic is Self Join. In self join, the table is joined with itself, meaning we join a table with itself. Actually, where do we need the use of self join? For that, I have taken a scenario where I am talking about a study table. All the online material available with me—either we search somewhere on Google or we search on YouTube—maximum time you will find one example only: there is an employee, there is a manager, so find employee and manager ID, find who is an employee and find his manager. That example, although I have also read that example during my time, the example here I am going to explain to you is a fresh example.
+
+In that example, first of all, let me tell you what is the scenario. Scenario means which table we are taking and how do we apply self join on it. The table is study. In the study table, there are three columns: student ID that is S_ID, course ID that is C_ID, and since—meaning this is giving me information about student ID, it is giving about course ID, and this on since, since means which student is enrolled in which course or which student is studying which course and from when. 
+
+But in actual, from where does this study table take information? From where is data coming to it? Here, what is the S_ID doing? As a foreign key, and it is taking reference from the student table. Now you assume there is an additional table, there is a SID, and this is giving it reference. There is one more table, course; in that course, this is the course ID, and that is giving reference to it, meaning this is a relationship table, an intermediate table which is giving information that which student is studying which course and when. 
+
+This is the actual view, the scenario is this: there are three tables. But now we don't need these tables; only on this table we are applying join, and on that, we have written a query, and we will solve that query. Therefore, you concentrate on this table where student ID, course ID, and this student ID and course ID are of composite primary key. Here we have taken a composite primary key. Composite means such a primary key which is made up of two attributes. So here, the two attributes student ID and course ID are making the primary key in a combined way. 
+
+Now what is the second thing we are talking about? There is one query we will solve. The query is: find the student ID who is enrolled in at least two courses. Means we have to find student ID S1, S2, S1—lots of IDs are there—and what courses are they studying? But what information actually we have to find out? ID of that student who is enrolled in at least two courses. What is the meaning of at least two? Minimum two, it can be more than two, but enrolled in minimum two courses. 
+
+So here I have put the data in such a way that you will know that S1 is enrolled in C1, S2 is enrolled in C2, S1 is enrolled in C2, meaning S1 student is enrolled in two courses. So what should come in output? S1. S2 should not come because S2 is enrolled only in C2. We have taken the content of this table in such a way that we can easily solve the value and the question. 
+
+Now we will frame this query and we will solve this query with self join. Although we can solve this query with a subquery also, we can also do it with a nested query, but now we are concentrating on self join. 
+
+So what is self join? We are joining one table with itself. So we are using the study table here, so here we have to join the study table with itself again. For that, the query—if I write the query here, let's say select—what we have to select, we will look afterward, because always the SQL query starts to execute with FROM. So first of all, I have to see the table. What tables do I need? What tables do I need here? 
+
+So first of all, you know that whenever we solve any query, first of all, we find what tables do we need. So obviously, here there is only one table; you will have to take the help of that table only. So we have to use the study table. But now, from study, now I have to use this table two times. How will you use this table two times? Because whenever join occurs, join is always cross product plus some conditions. Cross product plus some conditions. So without cross product, join cannot happen. Even I have made a video on natural join, you can check in that also; I've made a video on equi join, you can check there also, that whenever we join, first there will be cross product, means two tables will get multiplied with themselves. 
+
+But here there is only one table, and from that table, I have to bring output. So how will it happen? Means we have to multiply study table with study table, means you imagine study table is written two times, let's say one more time it is written: S1 C1, S2 C2, S1 C2, and 2016, 2017, 2017. And how do we implement? `from study table` and we will make its alias. Alias, alias—alias means we generate a temporary name. So what will the compiler feel? What have we changed the name of the study table? T1. It is not permanent, we are not renaming it, but just creating an alias: `study as T1`, `study as T2`. 
+
+So what meaning it has? The name of this study table became T1, and the name of this study table became T2. It is the same table, but there are two copies, means there is as it is one copy, name of one copy we temporarily kept T1, and we kept another name temporarily as T2, so that we can write the query. Because in query, we have to obviously do join, and join will be done after cross product. 
+
+So for cross product, I need two tables, but we can write table name only one time. Can you write `from study, study`? If you write like this, `from study, study`, it will show an error that study table is one. Therefore, we are fooling the compiler. How? The same table we have made T1, and the same table as T2, we have made two aliases. 
+
+Now by default, you understand whenever we write this, after FROM, what does comma mean? Cross product. So what will happen in these two tables? Cross product, meaning this table and this table, there will be cross product in between. And whenever cross product happens, always, if there are $m$ number of rows in one table and in other $n$ number of rows, so total will be $m \times n$. So here it is 3, and here it is 3, so total will be 9. 
+
+So here I am writing what will be the output when we do cross product. S1 C1—means 1st row will be multiplied with first. See: S1 C1, S2 C2, S1 C2, and we copy this as it is. Then second row is S2 C2; this we will multiply with 3 rows: S2 C2, S1 C2, S2 C2, S2 C2. And the third row is S1 C2, and this also will be multiplied with all 3: S1 C1, S2 C2, S1 C2, S1 C2, S1 C2. 
+
+Right, so this is the value from table 1, and this is the value from table 2. Nothing to do, took one row from here and multiplied with these three, took 2nd row and multiplied with all three, picked 3rd row and multiplied with all three. I didn't take the since column here; if you want to take, you can take as it is, but we don't need this, it is not asked here, so therefore I had not written that column here. If you want, you can write it. 
+
+Now, 1, 2, 3, 4, 5, 6, 7, 8, 9, so these 9 rows have come after what? We have made two aliases from study table, and we did its cross product. But cross product plus some condition—now we have to put some condition. What we have to find in the condition? Find the information of that student, find the S_ID of the student who is studying two minimum two courses, at least two courses, means student is one and courses are two. Student is one, course are two, means student ID should be same and course ID should be different, so then only we can know. 
+
+So what query will we write? We will complete it: `select ... from study as T1, study as T2 where ...` This query is in the whole row, in complete one row. Where T1—because now study has become T1—`T1.Sid = T2.Sid` and `T1.Cid` (take column name as it is, otherwise you will have confusion, take the name of column as it is) `T1.Cid <> T2.Cid` (not equal to, not equal to). Means in both the tables, student ID is same, but course ID should be different. This is not equal to, not equal to. If both IDs are same of students, means if we talk about same students, if we talk about one student, but corresponding courses are different, so at least my condition number two will be fulfilled. 
+
+So how we will do here? So this condition, we have to—these two conditions here after cross product we will apply, because here cross product is done. This is the cross product, but after cross product, condition. So this is cross product plus some condition, so this is the condition. 
+
+Now we will check this condition: 
+`T1.Sid = T2.Sid` (True), `T1.Cid <> T2.Cid` (False), so True and False will be False. So this row will be neglected, this row will not be selected. 
+Next, `S1.Sid = Sid`—are they both equal? No. So first condition became false, so obviously false and—so you do anything, answer will come false. So this row is also rejected. 
+`S1 = S1` (Yes), `C1 <> C2` (Yes), so this row will be selected. See, S1 and S1 are equal, Sid and Sid are equal, and C1 and C2 are not equal, and the same thing we are talking about: Cid is not equal to Cid. So this row will be selected. 
+Sid is equal to Sid (No). 
+Sid is equal to Sid (Yes), but no, Cid is not equal to Cid. 
+Cid is equal to Cid (Rejected). 
+Sid is equal to Sid (No). 
+Sid is equal to Sid (Yes), course ID is not equal (No), course IDs are equal, so this row will be rejected. 
+
+So what I got finally in output? Only these two rows came. I'll highlight them here: first this row came, second is this. These rows will be in the final output. Means whose output are these? This one, this one, and this one. Whose output came? Of this total, from to this whole condition. Therefore, I was given these rows in output. 
+
+Now from these rows, what output I have to find? It is student. Obviously student 1 has to come, because student 1 is that who is studying two courses. So at least 2nd condition is here; for 3, 4, we can write condition further, but at least for 2, now my condition is being fulfilled. 
+
+So what we have to find in final? Sid. In final, we have to print Sid. So I will print Sid, but here keep in mind, if you write Sid alone, the compiler will give error, because compiler will be confused, because here there are two Sid: one Sid is in T1, and one Sid is in T2 also. So from where Sid has to be taken? So you mention there, let's say `T1.Sid` (you can use T2 also, no problem: `T1.Sid`). So final output will be S1. 
+
+So this is how the self join actually works, means we multiply a table with itself, and how do we write? By making an alias and then applying conditions. 
+
+So self join I have told you already. Mostly you will get one example, but this example is best and a new query. We have solved this query with the help of self join, and if you liked my video, then please like this, share this, and please subscribe my channel. Thank you.

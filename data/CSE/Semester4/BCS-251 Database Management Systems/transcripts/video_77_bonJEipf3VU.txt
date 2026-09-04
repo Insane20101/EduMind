@@ -1,0 +1,124 @@
+Welcome to Gate Smashers! In this video, we are going to discuss a very important concept in SQL that you will not find in one single video anywhere else on YouTube. 
+
+Specifically, we are going to write the exact same query using three different methods: a nested subquery, a correlated subquery, and a JOIN. Through this comparison, you will understand the differences between these three approaches. While writing normal SQL queries (like `CREATE TABLE` or `ALTER TABLE`) is simple, students often experience confusion when dealing with subqueries, correlated subqueries, and joins. In this video, I will properly compare these three concepts by writing a single query using all three methods.
+
+---
+
+### Table Setup and Scenario
+
+First, let's look at the tables and the scenario we are using for our example. We have two tables:
+
+1. **`Emp` Table:**
+   - Columns: `E_id`, `Ename` (I am taking just 2 columns, but you can take as many as you wish).
+   - This table holds employee details for all employees in any XYZ company.
+   - Let's say `E_id` values are `1, 2, 3, 4, 5` and `Ename` values are `A, B, C, D, E`.
+   - Assume that employee address, employee number, date of birth, etc., are also present.
+   - We have taken 5 employee records, but you can increase this as much as you want. The queries we write are generalized; whether a table has 50,000, 5 lakh, or 5 crore rows, your answer will still be correct.
+
+2. **`Dept` Table:**
+   - Columns: `deptnum`, `deptname`, and a common attribute `E_id`.
+   - This table details the departments in the company.
+   - Whenever we want to retrieve answers from two tables, there must be a common attribute between them so we can relate the data. If there is nothing common between two things, you can never relate them. 
+   - *Analogy:* If your parents compare you, they never compare you with Ambani's son or Tata's son. Comparison is done with your neighbor's son or a relative's son—where something is common. Similarly, two tables can only be related if they share a common attribute.
+   - Let's keep `E_id` as the common attribute in both tables. (You could also use `deptnum`, as long as your answer comes out properly).
+   - In the `Dept` table, let's take three departments: `D1`, `D2`, `D3` with department names `IT`, `HR`, `Marketing`.
+   - For `E_id`, let's say we have `1, 2, 3`. This means employee numbers 1, 2, and 3 are working in these three departments. 
+   - Employee numbers 4 and 5 are freshly recruited or sitting on the bench and have not been assigned a department yet. This is a realistic scenario because the employee table lists all employees, while the department table lists departments and active assignments.
+
+---
+
+### The Problem Statement
+
+Let's look at the query we want to write for this scenario:
+> **Query:** "Find the complete detail of all employees who work in any department."
+
+If the question only asked for `E_id` (`SELECT E_id FROM dept`), the answer would simply be `1, 2, 3`. But our question asks for the *complete detail* of the employee (name, mobile number, address, department they are working in, etc.). Since employee details reside in the `Emp` table and department assignments relate to the `Dept` table, we will need to use both tables.
+
+---
+
+### Method 1: Nested Subquery
+
+First, let's look at the nested query:
+```sql
+SELECT * 
+FROM Emp 
+WHERE E_id IN (SELECT E_id FROM dept);
+```
+
+#### How a Nested Subquery Works:
+In a nested subquery, the inner query is executed first (bottom-up approach) exactly once to produce an output. 
+
+1. **Inner Query Execution:** `SELECT E_id FROM dept` fetches the employee IDs from the department table: `1, 2, 3`. This runs once and finishes.
+2. **Outer Query Execution:** `SELECT * FROM Emp WHERE E_id IN (...)`. Each row of the `Emp` table is compared against these 3 values (`1, 2, 3`).
+   - We use `IN` instead of `=` because we are comparing a single value against a group of values. (`=` is only used when the inner query returns a single answer).
+   - **Row 1 (`1, A`):** Is `1` included in `(1, 2, 3)`? Yes. So row `1, A` appears in the output along with all its corresponding details.
+   - **Row 2 (`2, B`):** Is `2` included? Yes. `2, B` appears in the output.
+   - **Row 3 (`3, C`):** Is `3` included? Yes. `3, C` appears in the output.
+   - **Row 4 (`4, D`):** Is `4` included in `(1, 2, 3)`? False. It is not equal, so `4` does not appear in the output.
+   - **Row 5 (`5, E`):** False. It does not appear in the output.
+
+Thus, we get the complete employee details for employees 1, 2, and 3. *(Note: We use `*` to mean all attributes, though I haven't written out every column due to space).*
+
+---
+
+### Method 2: Correlated Subquery
+
+Now let's look at the correlated subquery approach. 
+*(Note: I have covered correlated subqueries and subqueries in more detail in separate videos, with links in the description box).*
+
+```sql
+SELECT * 
+FROM Emp 
+WHERE EXISTS (SELECT * FROM dept WHERE Emp.E_id = dept.E_id);
+```
+
+#### How a Correlated Subquery Works:
+Unlike nested subqueries, a correlated subquery uses a **top-down approach**. The outer table's first row is evaluated inside the subquery, and the inner query references the outer table (`Emp.E_id = dept.E_id`).
+
+1. **Pick the first row of the outer table:** `1, A`. 
+2. Compare its `E_id` (`1`) with the inner table: `WHERE Emp.E_id = dept.E_id` evaluates whether `1 = 1`. 
+3. The `EXISTS` operator checks for a true or false result. Since a match is found, it returns **true**. 
+4. Because it returns true, row `1, A` is printed in the output.
+5. **Pick the second row:** `2, B`. It checks against all rows in `dept`. A match is found (`2 = 2`), returning **true**, so `2, B` is printed.
+6. **Pick the third row:** `3, C`. It matches (`3 = 3`), returning **true**, so `3, C` is printed.
+7. **Pick the fourth row:** `4, D`. It is not equal to any `E_id` in `dept`, so `EXISTS` returns **false**. Row 4 is not printed.
+8. **Pick the fifth row:** `5, E`. It returns **false** and is not printed.
+
+#### Comparison Complexity:
+While both methods yield the same output, their execution styles differ. A nested query executes the inner query once and then performs simple comparisons. A correlated query evaluates row-by-row (outer row with all inner rows). If the outer table has $m$ rows and the inner table has $n$ rows, the total comparisons can reach $m \times n$.
+
+---
+
+### Method 3: Joins
+
+Finally, let's write the query using a JOIN:
+
+```sql
+SELECT * 
+FROM Emp 
+JOIN Dept ON Emp.E_id = Dept.E_id;
+```
+
+#### How Joins Work:
+A join fundamentally performs a **Cross Product + Condition**.
+
+1. **Cross Product:** Both tables are picked, and a temporary table is generated via cross-multiplication. If table 1 has $m$ rows and table 2 has $n$ rows, a temporary table of $m \times n$ rows is created in a buffer. Here, $5 \times 3 = 15$ temporary rows are saved.
+2. **Condition Check:** After multiplying both tables, it checks the condition (`Emp.E_id = Dept.E_id`) and outputs rows where the IDs match (yielding `1 A`, `2 B`, `3 C`).
+
+#### Joins vs. Correlated Subqueries (Time and Space Trade-off):
+The number of total comparisons in a join is also $m \times n$, but joins work better than correlated subqueries. 
+
+* **Correlated Subquery:** The system repeatedly takes data back and forth, comparing each row of the first table against the second table over and over, which increases Input/Output (I/O) cost and time.
+* **Join:** It picks data from both tables once, cross-multiplies them into a temporary table in memory/buffer, and performs all comparisons in one place. 
+
+*Analogy:* Imagine 5 people in one room and 3 people in another room. 
+- In a **correlated approach**, you take 1 person from the first room, walk them to the second room to compare with all 3 people, take the second person, and repeat. Moving data back and forth increases your I/O and time cost.
+- In a **join**, you bring all people into one big room together and compare everyone at once. While this requires more space, space is cheaper nowadays, and we care more about saving time. Therefore, joins are generally more efficient from a time perspective.
+
+---
+
+### Conclusion
+
+This is the basic fundamental difference between writing a single query using **nested subqueries**, **correlated subqueries**, and **joins**. Understanding how to write the same query using all three methods will help you greatly in placement interviews and competitive exams. 
+
+Thank you for reading, and see you in the next video!

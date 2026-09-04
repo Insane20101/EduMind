@@ -1,0 +1,87 @@
+In today's video, I will tell you about specificity in CSS. Assume you have an element that has been styled in two ways through CSS. That is, we have used two types of selectors to style it, and both styles are saying two different things. Let's say one style is saying to make the background color red, and the other style is saying to make the background color yellow. Which one will be applied? This will be determined with the help of specificity in CSS. In this video, I will explain all the rules regarding how specificity works in CSS.
+
+Do write "Sigma Batch OP" in the comments below. Let's go to the computer screen and roll the intro.
+
+I have entered my computer screen, and today's video is going to be important because I will explain how to decide which of the conflicting classes or property-value pairs will be applied in CSS. I will quickly make a folder named "video 21" and open it in my VS Code. I will create an index.html file and start this video with a question. 
+
+Suppose you have a div and an h1, and in this h1, it is written "CSS." Oops, I pressed Ctrl + S by mistake. Now, suppose I have added two classes: one is "yellow" and the other is "red." I have added these three classes. Now I will add styles here and say, "Look, it is h1; change its color to red," or "change it to aqua." After this, I will say, "Look, our class is yellow; change its color to yellow," and along with that, our "red" class will have the color red, and "purple" will have the color purple. 
+
+I have put it here, and I will click to show you that the purple color is applied. On what basis is the purple color applied? Why is it not yellow? Because I gave color aqua in h1, I gave color as .yellow, then I gave color as .red, and I gave purple because it was below. On what basis are things decided in CSS? I will tell you today. 
+
+In CSS, there is an algorithm called the Cascade Algorithm. CSS stands for Cascading Style Sheets, and to resolve any type of conflicts, CSS uses the Cascade Algorithm. This algorithm determines which property will be applied in CSS and which will not be applied. 
+
+Now, we have applied many color properties to the same element in different ways. Which property will win here? The winning property is determined by the Cascade Algorithm. There are four rules in the Cascade Algorithm. The first rule states that the position and order of appearance are important. If you have kept the position of anything later, then that property will apply. For example, you saw that I had kept h1 above, and you saw that the .purple property was applied. 
+
+If I keep .red later, then it will be applied. This means they are using class selectors, and they are using all three class selectors, so all three are equal in a way. Even after using class selectors, the one that is at the bottom is the one that will be applied. Just like in programming languages, the variable is overwritten; in the same way, this can also be overwritten if there is a similar type of selector. 
+
+Now, if it is .red, then the color will be red. If I keep .red later, then the color will be red. But when the way of selector changes, then specificity is used. Now, what is specificity? Specificity is calculated for a particular selector. I will explain this further. 
+
+The position and order of appearance affect the outcome. The thing that you write later will win if it is the same selector. For example, if you are using an element selector and a class selector, the one that comes later will win. Suppose I comment this out, so .yellow, .purple, and .red will win based on which one comes last. If I do .yellow first, then it will win. 
+
+If the selectors are of the same type, like class selectors, ID selectors, or any one type, then the conflict will be resolved based on which one comes later. You saw here that the one that was last won. Here it became yellow because yellow was the last one. 
+
+However, when we change the selector, for example, if I make this an ID selector or an element selector like h1, we use specificity. Now, specificity will be calculated for all these. What is specificity? Specificity is basically calculated as a value. Specificity indicates which CSS selector is the most specific. 
+
+Here, I will show you that the ID selector is considered the most specific. However, more specific than that is inline style. If you have applied inline style, meaning you have written anything by doing style="...", then that will be considered as a mantra by that tag. For example, if I write style="color: blue," then that will override any CSS you have written regarding color. 
+
+Now, if I show you here, if I remove this, we will talk about specificity and which is the most specific selector. All the specificity will be calculated. How to calculate specificity? I will show you. If you have very simple selectors, inline style is given priority. After this comes the ID selector. If anything is selected from ID, then it is the most specific. If you have put styles in ID, then it will be applicable more than if you have put in class or used an attribute selector. 
+
+What is an attribute selector? Let me explain. Let's say I have something like data-x="1" or data-x="a." I can say that where data-x value is "a," I will make the background color red. So, data-x="a" will have a background color of red. This is an attribute selector. 
+
+The most specific will be inline styles, followed by ID selectors, then class or attribute selectors, then element selectors, and finally the universal selector, which is a star (*). You should always try to use the least specific selector because it will be easy to overwrite. 
+
+For example, if I have written any style using the universal selector, and I want to overwrite it, I will use an element selector. If I want to overwrite it further, I will use a class or attribute selector. If I want to overwrite it even more, I will use an ID selector. However, if I have used inline style, then it will be difficult to overwrite. 
+
+This gives some problems. You can see that the position matters if there is only one type of selector. If the specificity is exactly the same, you will see the position; the one that is at the end will be applied. I will also teach you how to calculate specificity exactly, but I have told you at a high level that inline styles have priority, followed by ID selectors, then class selectors, and then the order in which CSS appears and where it comes from.
+
+Now, the origin is very important because if your CSS is coming from your browser's style, if you have not put CSS in any element, then the browser has its own stylesheet, which is called the user agent stylesheet. If I right-click and inspect, I can show you the effect of position heading. Some styles are coming from the user agent stylesheet. 
+
+You can see the user agent stylesheet means that this browser has applied it. Where is it coming from? What is its priority? If you have written the style, then it will overwrite the user agent stylesheet. This is the origin. Its role is very minimal, but it is important for you to know about it. 
+
+After this, there is importance. If you have put !important somewhere, then it will be the most important. If you put !important, it will become very important and will have to be applied to CSS. This means it will overwrite inline styles too. 
+
+For example, if I make its color inline styles red, style="color: aqua," and I want to overwrite it, I can only overwrite it with !important in CSS. If I do color: blue !important, then it will apply. 
+
+Now, I will tell you a very important note regarding specificity. This note is so important that you will clap for it. But before that, I want to explain how to calculate the specificity of any particular element. This is very important. 
+
+In specificity calculation, give 0 points to the universal selector. If there is an element selector or pseudo-elements, give 1 point to it. If there is a class selector, attribute selector, or pseudo-classes, give 10 points to it. After this, give 100 points to ID selectors and 1000 points to inline styles. 
+
+You will give points according to this and solve questions. Let me tell you how. For example, you have to calculate how much specificity you have. You can see that we have different types of selectors. I told you that the element selector has a specificity of 1. If it is a universal selector, then give it a value of 0. If it is an element selector, give it 1. 
+
+So, I will give it a value of 1. The specificity of this is 1. I will comment it out. The class selector has a specificity of 10, so I will make it 10. The same goes for this; this will also have 10. I will copy it from here. This will also have 10. 
+
+Now, you will see whose specificity is the most. The most specificity is of these three. A tie is being formed among these three. To break the tie, we will see which one comes last. Here, yellow is coming last, so its color will be yellow. 
+
+If I make any of these lower, like if I make this .red lower, then obviously its color will be red. No surprise there. Now, this is an example of an attribute selector. Let me do one thing; its specificity is 10. I want to show you something. 
+
+In data-x="a," I will make the color maroon. Now, I want you to write in the comment section what color the h1 will get. Everyone, please comment below. Two-way interaction makes the heart happy. Your lovely comments make my day, especially when you solve problems. 
+
+Now, I hope you all commented, and if you said maroon, you are correct because specificity is 10, so maroon will be applied. But if I make it higher, cut it from here, and place it here, then what will happen? If you said red, then obviously it will be red. Why? Because it has 10 specificity, and since it is coming last, it will be red. 
+
+Now, I will tell you one thing, and listen carefully. These are simple selectors, but selectors are not always simple. Sometimes selectors are complex, like .red, .cred, and paragraph. There are selectors like div.red, and if there is any paragraph in it, then this class is there. 
+
+How to calculate their specificity? To calculate their specificity, you need to add values. Let me write here h1.
+
+Yellow. Because of the `h1`, its specificity will be calculated as follows: `h1` is an element, so it contributes 1 to the specificity. The class associated with yellow contributes 10. If you add these together, 1 plus 10 equals 11. Therefore, the specificity has increased, and the color will be yellow. You can see here that the color will be yellow because the element contributes 1 to the specificity and the class contributes 10. 
+
+I hope you understood this. This is how specificity values are calculated for any selector. Many people may not understand this video if they are not fully focused. If you are watching this video and your attention is elsewhere, I recommend you watch it again. I have explained things clearly, and I will provide a link to this in the description of the blog tutorial. You can read this tutorial as well, as I have explained these concepts thoroughly.
+
+You don’t need to remember the values, and I will explain that in a moment. Inline styles have a specificity of 1000, and if you use `!important`, it adds 10,000 points to the specificity. When `!important` is used, it becomes very difficult to overwrite. 
+
+Now, I have a quick quiz for you regarding specificity values. Please don’t cheat. I have provided a solution, but I want you to determine the specificity value if you have a class like this. Pause the video and comment your answer. I will solve it directly after you comment. 
+
+Let’s calculate the specificity of this example. First, we get 1 from the `A` element because it is an element. Then, we get 10 from the class "Harry" and another 10 from the class "Rohan." The `href` attribute selector contributes 10 as well. An attribute selector means that if `h1` is present, it will apply. 
+
+If I just wrote `data-x` equal to `a`, it means that if the value of `data-x` is `a`. If I just wrote `data-x`, it means that if `data-x` is in the element. So, we have 1 plus 10 plus 10, and then we have the attribute selector which adds another 10. 
+
+As I mentioned earlier, pseudo-classes also contribute 10 to specificity. Adding these together gives us 1 plus 10 plus 10 plus 10 plus 10, resulting in a total specificity of 41. I hope you all got 41. If you did, that’s correct. The higher the specificity, the more likely the style will be applied. If there is no specificity, meaning the target of the element is not specific enough, then the properties will apply according to the next available rules.
+
+I have explained the solution here as well, detailing how we arrived at 41 and providing the values obtained from each component. 
+
+Now, I want to emphasize something important. Whenever you write your CSS classes or styles, ensure that you leave no confusion in the mind of any reader or fellow programmer. Why do you need to target any element multiple times? For example, if you say the color of `h1` should be red and then specify the same for a class, why do you need to do this? Make your websites simple. If you target someone with an ID, ensure that you do not need to overwrite it. That’s why you should use a specific selector.
+
+Avoid inline styles because the only way to overwrite them is with `!important`, and also avoid using `!important` because we do not want to be overly specific in our webpages. Instead, try to use classes that can be reused across different elements. This way, you can apply properties easily.
+
+I hope you understand what I am trying to convey. These concepts are often asked in web development interviews, and many people get stuck on them. It is important to know about the cascade algorithm, which decides which property-value pairs to apply based on four key factors. 
+
+This was more important than the theoretical aspects. If you liked the video, please give it a thumbs up and share it with your friends. Make sure to share it widely. Thank you so much for watching, and I will see you next time.

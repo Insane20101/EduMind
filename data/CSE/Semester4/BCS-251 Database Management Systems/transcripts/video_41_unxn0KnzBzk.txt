@@ -1,0 +1,35 @@
+Hello friends, welcome to Gate Smashers. Today we are going to discuss left outer join. 
+
+The first point is, what is a left outer join? It is a join which gives, which returns the matching rows and the rows which are in the left table, but not in the right table. Whenever asked about left outer join, always remember the details of left outer join—you will know only when you see what output it gives. 
+
+Before that, you should know about natural join, because left outer join, right outer join, or full outer join—these three, which are outer joins—are natural join plus something. "Plus something" means that the output of this natural join will definitely come in it, plus the row which is in the left table but not in the right table. 
+
+Now, what does natural join return? Matching values, meaning that the common data in two tables keeps the value of that common data equal. Which should match in both the tables. The value which is matching in both the tables should be common, and it gives it in the output. Definitely check my video once about natural join. I will also share its link with you in the description box. 
+
+So there is a natural join, plus there is one thing extra in this: that the data which is from the left table also comes in the output. If I see this in terms of DBMS—before that, if I tell you this with a normal Venn diagram, you will understand clearly from the Venn diagram. Let's say there are two tables A and B. What is the concept of natural join? Whatever is common in the two tables, it will come in the output. Common means, let's say what is common here: d1. The department number is common to both. So where department number is equal, that will come in the output. So I can say that this is common data, this common space. This is the natural join. 
+
+So what is left outer join? That is a natural join; it is bound to come. The matching value will surely come, common value will come. But what will come extra? A's data—meaning the table that is written on the left side, its data will also be shown in the output. This is the concept of left outer join. 
+
+So look at the scenario first. There is an employee table and a department table. Employee has employee number, name, and department number. Department has department number, department name, and location. I write the table names here, and this is some of the data that we have inserted in both the tables. 
+
+Now, the query which is a left outer join query, how do we write it? Let's say: select. I need to select some values like employee number, employee name, department name, and location. Which means which employee, what is his name, and in which department, in which location is he working—that we have to find. From employee, table name one employee. And the employee table is on the left side, because left outer join—what I have written here—we will use direct left outer join. Now, which table is to the left of left outer join? Employee. All the data of the employee will come in the output. And which is the table on the right side? Department. On employee.department no = department.department no. This is the condition. 
+
+For whom do we put this? For natural join. What is natural join? We keep the common attribute the same. That is what we have done. Who is the common attribute? Dept. no., and we have kept that equal. But now, what is the output? See the output, how the output will come in this. The main output he will make in this is the table on the left. Which is the table on the left? Employee. If you write the dept. here, then the left one will become the dept. It depends on the query. So in the query, we have written employee. So whose data will come in the output? Left side table. 
+
+How? Look what we have to show in the output: employee number, employee name, department name, and location. These four things should come in the output. It will definitely return four things here, because it will put all four things as a table. You can create it as a table output. From employee left outer department on department number = department number. 
+
+So now look at E1 Varun D1. Is D1 here somewhere? Yes, here it is. So the matching happened. So the matching data will obviously come. So the matching data is there because it will come in natural join. So you have to definitely write this data, matching values E1 Varun, and D1 = D1. Yes, D1 = D1. We pick up the department name, IT, and location is Delhi. So the first row will look like this. 
+
+Second: E2 Amrit D2. Department number is D2. Is there any D2 in this? Yes. Is it matching? Yes. The matching data has to come, because the data of natural join will definitely come, plus extra will come. We will see when the extras come. D2 = D2, yes. So what is his corresponding department name? HR, and the location is Hyderabad. 
+
+Then 3rd: E3 Ravi D1. Is there D1 here? Yes, it is. D1 = D1. It did match. So we have to lift this data. In these, E3 Ravi D1. D1 corresponding department name is IT, and location is Delhi. So this is the output. 
+
+Now the fourth row. That is the fourth row: E4 Nitin. E4 Nitin, and dept. no.—there is no department number. So this department number's corresponding, is there any matching? Not matching. But it will come in the output. This value only. This value will come in the output. Because what have we written? Which are in the left table row, but not in the right. So it's in the left table, E4 Nitin is in the left table. But its corresponding—because there is null here, because its corresponding is not in the right table—so it doesn't matter. If it is not, then we will represent these values as null and null here. Simple, because there is no department name and location corresponding to it. So the output we will get is null, null. But these four rows will definitely come, because on all these four rows, we have to lift these four tuples from the left table. 
+
+When we talk about right, we will talk about that table first. So about the right table, I will explain to you in the next video. 
+
+So the left outer join which is there, it doesn't come up more, but you should know at least what the concept of left outer join is: natural join plus something else. What is something else? Always remember: matching row and the rows which are in the left table but not in the right table. 
+
+This is the way of writing the query for left outer join in Oracle. I have picked up this same format of Oracle. There may be a slight syntax difference in MySQL, but you can remember one query. Wherever you see left outer join, you can understand what will come in the data output. 
+
+So this is all about the left outer join. Thank you.

@@ -1,0 +1,84 @@
+We are going to discuss the closure method. The closure method is very important in DBMS because this method helps you to find all the candidate keys in the table. This means if you have a table given and you need to find all the possible candidate keys in that table, you have to use only one method, which is the closure method. We are talking about tables in which you might not have been given attributes that we normally use, such as SID or student name; a general table will be given. 
+
+Let's start with an example. Suppose there is a relation, which means a table. There are four attributes in the table: A, B, C, and D. They have given the functional dependencies: A goes to B, B goes to C, and C goes to D. These three functional dependencies are given. 
+
+Let's start with the closure method. What you have to do is take the first dependency, A. We denote it with $A^+$, which represents the closure, so we are finding the closure of A. The meaning of closure is: what can A determine? What can A determine? We already know A is determining B. From the functional dependency, you can clearly check that A is determining B. So I wrote the closure of A is B. 
+
+Now, B is determining C. This means B is determining C, and A is determining B. This is an example of the transitive property. What is the transitive property? If A determines B and B determines C, then since B is common, you can clearly say that A can determine C through B. So A is determining C over there. That means here A will determine both B and C. 
+
+Next, C is determining D. You will have to check very carefully that if C is determining D, then A can also determine D through the transitive property. And the last important point is that A will determine itself because of the reflexive, self-loop kind of property. A is kind of like a roll number. If I say A is a roll number, a roll number can determine itself. A student's name can determine itself. So A is determining itself. Other than that, what else does it determine? B, C, and D. 
+
+So when we check the closure method, now let's check which attributes came in A's closure: A, B, C, and D. Check which attributes are in the table: A, B, C, and D. This means A can determine all the attributes in the table. This is the property of a candidate key. A candidate key is a key such that if you are having confusion with any number of columns in the table, you can get them determined by the candidate key. So here, clearly I can say that A is a candidate key in the table. 
+
+If we make the set of candidate keys, I got the first answer here, which is A. But don't stop here, because the rule of candidate keys will be used in the second normal form, third normal form, and BCNF, where you have to find all the candidate keys in that table. 
+
+Let's start with $B^+$. If we check the closure of B, as we already know, B can determine B because it is reflexive; it determines itself. Now, check the functional dependency. In the functional dependency, B can determine C, which means B is determining C. This is a direct dependency. If it is direct, we can directly write it. And since C is determined by B, and C is determining D, through transitivity, B is also determining D. But see, here B is not able to determine A. This means B determines B, C, and D, but B is not able to determine A. So it means B cannot be a candidate key. 
+
+The same goes for C's closure. C is determining C, and C is determining D. So you can say C determines C and D. Similarly, D is determining only D. Apart from this, it is not determining anyone. So neither C can be a candidate key nor D can be a candidate key. Therefore, there is only one candidate key in this table, that is A. 
+
+Guys, here you have to be very careful. Many times, we check the closure of two attributes by combining them, such as AB. If AB is combined and we check the closure of it, then AB will determine AB because it is again a self-loop. AB is determining itself. Now here, if you check, single A determines B, and B determines C. So if AB determines AB, then from B we can determine C, and from C we can determine D. So what answer do I get here? That AB can be a candidate key. 
+
+But keep in mind, AB is not a candidate key. It is not a candidate key because we have already discussed that a candidate key is always minimal. In AB, only A is the candidate key. So if you are combining anything extra with it, that will become a super key. If you're adding anything extra to it, it will become a super key. So AB is not a candidate key over there; it is actually a super key. 
+
+Let's discuss another example here. There is a relation with attributes A, B, C, and D. Here the functional dependencies are: A goes to B, B goes to C, C goes to D, and here I add one more, which is D goes to A. 
+
+Let's start with the closure of A. What is A's closure? A can determine A, A can determine B, through transitivity A can determine C, and through transitivity A can determine D. This means A determines all the attributes in the relation. So A will be a candidate key. 
+
+Check the closure of B: B can determine B. Through B, we can determine C. Through C, we can determine D. But here see, through D, I can determine A. This means the closure of B also determines all of them. So B will be a candidate key. 
+
+The same applies to C: C can determine C and D. From D we can determine A, and from A we can determine B. 
+The same goes for D: from D we can determine A, from A we can determine B, and from B we can determine C. 
+
+So here, what are my candidate keys? All of them will be candidate keys: A, B, C, and D. How many candidate keys are there? Four candidate keys. And keep in mind, if your candidate key has come, then if you are adding anything extra to it, that will become a super key. That's why there are just four candidate keys here: A, B, C, and D. 
+
+Now, one more thing can be asked in the exam: what will be the prime attribute? The prime attribute. When you find out the candidate key, after that you can find what a prime attribute is. A prime attribute is actually an attribute that is used in the making of a candidate key, which is used in the formation of a candidate key. 
+
+So here, if you see carefully, there are four attributes, A, B, C, and D, in the relation, and all four attributes are present in the candidate keys. So what will be the prime attributes over there? The prime attributes are A, B, C, and D; all of them are prime attributes. 
+
+So what will be the non-prime attribute? The non-prime attribute will be null (represented by $\phi$). Because all four attributes in the relation are used in the making of the candidate keys, $\phi$ will be the non-prime attribute. 
+
+And if you see here, what is the candidate key? Just A. So what will be the prime attribute? The prime attribute will be A only. And what are the non-prime attributes? B, C, and D. What are these three? Non-prime attributes. So a prime attribute is an attribute that is used to make a candidate key. The attribute that is used in making the candidate key is what we call a prime attribute. 
+
+So guys, take note of both examples. Then let's start with the third example. There is a relation with attributes A, B, C, D, and E, and these are the functional dependencies given to you:
+- A $\rightarrow$ BE
+- E $\rightarrow$ C
+- BC $\rightarrow$ D
+- D $\rightarrow$ A
+
+Now here, you may have a problem: how many attributes do we have to take the closure of? Here you took the closure of A, B, C, D. In which way do you have to determine which attributes will form my candidate key? 
+
+Here we are solving this question with another method. Now see, in the functional dependencies, you have to check first which attributes are coming on the right side. The meaning of that is the attributes that are coming on the right side are all getting determined. They are all getting determined. This means B is being determined, D is being determined, C is being determined, and A is being determined. This means A, B, C, and D are all getting determined. 
+
+But guys, if you see here, A came, B also came, C also came, and D came, but E did not come. So it means, what is the underlying principle? E can come to the right side only if E is on the left side. So there is a very important point here: it will help you a lot in solving the question. Whatever candidate key is made—right now we do not know which will be the candidate key or how many candidate keys there will be—each and every candidate key must contain E. Because if E comes to the left side, then only it will be written on the right side as well. So, if you have to bring E, E has to be on the left side. 
+
+Let me tell you once again: you have to check which attributes are coming on the right side: B, D, C, and A. The attribute that is not coming on the right side must be on the left side. Left side means it will definitely be used to make the candidate key. 
+
+If you check the closure of only E, E can determine E and E can determine C (only C). This means only E is not a candidate key, but it will be used to make the candidate key. 
+
+Let's start with trying combinations. If I check the closure of only A, and as I said, E must come on the left side, let's check A and E combinedly. What can A and E's closure determine? A can determine B and E also. Through E, I can determine C. Because AE can determine AE, and A can determine B, I wrote ABE. From E, I can determine C, giving A, B, E, C. 
+
+Now I have two attributes, B and C. Check here the second functional dependency: BC can determine D. So I can also determine D, and from D I can determine A. I have already written A, so don't mention it again. So check it: A, B, C, D, E. And how many do we have in the original table? A, B, C, D, E. So guys, here AE is a candidate key. I got the first candidate key, which is AE. 
+
+Now, what can be the second candidate key over there? You can check other candidate keys directly, like you can check the closure of BE, you can check the closure of CE, or you can check the closure of DE. 
+
+If we see the closure of BE: what will be the output? From BE, I can determine BE. From E, I can determine C. And from BC, I can determine D (since B and C have come, I can determine D). From D, I can determine A. So yes, BE can determine all the attributes again. So BE can be a candidate key over there. 
+
+But there is another better solution than that, which you can also check. If you have got a candidate key, AE, what do you have to check? Is either A or E present on the right-hand side of any functional dependency? Let's check A. A is present on someone's right-hand side. Yes, I got it. A is present on the right-hand side of D. So what can I do? I can replace A with D. You have to check: A is present on the right-hand side of D. So I replaced A with D. Here, my new candidate key is DE. I got D and E both. 
+
+Now I am checking the closure of DE. From the closure of DE, DE will definitely come. A came from D, and now if you see carefully, AE both have come. AE is already a candidate key. This means you can clearly say they can determine all the attributes. Here I have two candidate keys: AE and DE. 
+
+Now, one more thing you can do. We just checked whether A is present on someone's right-hand side or not. Yes, A is present on the right-hand side of D. Now check whether E is present on someone's right-hand side or not. No, E is not on any right-hand side. We got another attribute, D; check whether D is present on someone's right-hand side or not. Yes, D is present on the right-hand side of B and C. That means here, I'll write: replace D with B. So we get the closure of B and E. And you can also replace D with C, giving the closure of C and E. 
+
+Let's check the closure of BE: BE will definitely come from BE (we even already checked that, but once again see that BE came from BE, C came from E, D came from BC, and A came from D). This means all the attributes are here. 
+
+And now CE: from CE, I have CE because it is a self-loop, then I have C from E. But CE will not be determining anyone. This means CE will not be a candidate key. 
+
+So here I had three candidate keys: AE, DE, and BE. 
+
+Now you can check that B is also present on someone's right-hand side. Yes, B is also present on the right-hand side of A. And if you replace B with A, it will become AE, which is already a candidate key. 
+
+Okay guys, you can use this method. You can repeat the video again so you will also understand clearly how to make candidate keys in the table. This method is very important because without it you cannot solve the questions of the second normal form, third normal form, and BCNF normal form, whether it is for the GATE exam or your college exams. This method will help you in all of them to find all the candidate keys in the table. 
+
+And how many prime attributes are there? And how many non-prime attributes are there? You can check here which are your prime attributes. Let's write them here: the prime attributes are the ones used to form the candidate keys. Here, A is used in the making of the candidate keys, D is used, B is used, and E is used. This means four of them are prime attributes. 
+
+As for the non-prime attributes: taking all the attributes present in the table and subtracting these four, one is left, which is C. So C will be the non-prime attribute. That's it.

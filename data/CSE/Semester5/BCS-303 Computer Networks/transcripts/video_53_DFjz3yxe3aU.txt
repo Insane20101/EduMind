@@ -1,0 +1,49 @@
+Hello friends, welcome to Gate Smashers. In today's video, we are going to discuss variable length subnet masking in CIDR, that is Classless Inter-Domain Routing. We have discussed subnetting in classful, and variable length subnetting in classful, and now we are going to discuss variable length subnet masking in CIDR. This means we have to do subnetting, make different subnets, but they should be of different sizes as well. So how will we perform these things?
+
+Let's say we are given an IP address. There is an ISP (Internet Service Provider) that has this address, along with a `/20` prefix. What is `/20` denoting here? It is the number of network bits. We have 20 network bits. How do we find the number of host bits? A 32-bit is the IP address. Since we have 20 network bits, when you do 32 minus 20, 12 bits are left as host bits. 
+
+So in this network, 2 raised to the power of 12 numbers of hosts are possible, out of which we will not use 2 because the first is the network ID and the last is the DBA. What is the last one? The direct broadcast address, which we have already discussed many times.
+
+Now we'll talk about what the ISP has to do here. It has to give this organization half of the portion—meaning we have to make a subnet, and in that subnet, half the number of hosts we have to give to one organization, and to another organization, a quarter of it. Out of the total IP addresses, we have to give half the part to any one organization, from the left-over half, a quarter we have to give to some other organization, and the remaining part the ISP has to keep with itself or can also be given to any other organization.
+
+So what do we have to do here? We have to do variable length masking. And how do we do variable length basically? The funda is similar to what we have already discussed in classful: `245.245.248.X`. Now what is the number of network bits? 20. So always remember to never disturb the network bits; you have to use the host bits only. 
+
+What is the number of network bits? 20. So here there will be 8 bits. It is an octet, so 8 bits here and 8 bits here. How many bits are used? 16. So the next 4 bits of the third octet will be used here. Let's open the third octet and write `1 2 3 4 5 6 7 8`, and we also open the last octet `1 2 3 4 5 6 7 8`. This is simple. Why did we open the last octet? Because 8 bits are used in the first, 8 used in the second (total 16). How many network bits do we have? 20. So 4 more will be used in the third octet, making `16 + 4 = 20`. Up to here, all these bits belong to the network, and the balance belong to the host.
+
+Now your question is very easy. What do you have to do? This whole subnet, this whole network, you have to divide into two parts. So how do we divide it into two parts? Reserve 1 bit. Which bit will we reserve? The most significant bit in the host part. Which bit is most significant in the host part? The first zero of the host portion. 
+
+So you fix this particular value—meaning nothing will be there except `0`. Or you can fix `1` there as well; any value you fix (`0` or `1`) will get fixed here. If we fix `0` here, then what will form? `245.248.1000 [0] [00000000]`. Don't disturb the network part, and this `0` we have also fixed here. So what is left? From `00000000` to `11111111` in the host portion. What will be the first? `1 2 3 4 5 6 7 8` zeros, so the first will be all zeros. Doing the same way, what will be the last one? `245.248.1000 [0] [11111111]`. This last will become your IP address. The whole subnet, the whole network, we have divided into two subnets: one `S1` and one `S2`.
+
+So how will the range of `S1` be formed? From `0` to all ones in the host part. But which one? See here, in this way, do not disturb this bit because we have already fixed this bit, then only we can divide it into two parts. What could be the value of this bit? It can be `0` or `1`. If you are keeping `0`, what will be the values of the others? If you are keeping `1` here, then the others will be adjusted accordingly. Sometimes options are like this: if you write `0` and none of your options match, if you try taking `1`, then your option will match. So you can find out the range. 
+
+What was its range? `245.248.`. What was the first value formed? `1000 0 0000000`. Obviously, what did it form? It formed `128` in the third octet, and in the end, all are zeros, meaning `0` is formed (`128.0`). 
+
+What is next? `245.248.`. See here, `1000` was the network. This `0` is fixed, and the rest are ones (`111 11111`). What does it become? `1000 0 111` in the third octet, which is `128 + 7 = 135`. And in the last octet, all ones mean `255`. So the range formed is for the first subnet, which is half. What is it? It is half (`S1`). So in half, we have a full range from `128.0` to `135.255`. This is the network ID of the subnet, and the last address (`135.255`) is the direct broadcast address.
+
+Next, what will be the slash notation of this? What is the number of network bits? 20 original, and what did we do here? We fixed one more bit here. After fixing this bit, the total number of fixed bits is `20 + 1 = 21`. So what is the subnet mask/slash notation of this network? `/21`.
+
+Now your first subnet is complete. Let's talk about subnet 2. What is the range of subnet 2? `245.248.`. What did we do here? `1000` was already fixed. For this next position, we fixed `0` in the first subnet. So obviously, in this second subnet, we will fix `1` at this position. After this, what do you have? The remaining host bits. Place `7` zeros for the start: `0000000`. Up to what will be the last one? 
+
+Wait, our question states that this subnet (the second half) we have to again divide into two parts, so that one quarter (`S2`) which will be formed we can give to one organization, and `S3` we can give to another organization. Then this half portion we have to divide into two parts as well. 
+
+In order to divide this into two parts, what do you have to do? The `1000` is already fixed, and we fixed `1` at the MSB of the host part for this section. But now, to divide this into two parts, what is the next host bit? The next bit in line. So fix this one as well. As soon as you fix it, make this value `0` in the next subnet (`S2`), and in the subsequent subnet (`S3`), this value will become `1`. It's a simple funda: the one which you are dividing into two parts, fix its next bit. 
+
+So as you fix here: `245.248.1000 1 0 [0000000]`. This is the fixed portion. Next is `0000000` for the first IP, and the host value we will keep changing up to `1111111` for the last IP. 
+
+When you convert this into a range, what will it become? `245.248.`. What is the first value we are having? `1000 10 00` in the third octet. What is the overall answer? Overall you have `128 + 16` in that octet? Wait, `1000` is `128`, and `10` in binary is `2` in decimal place value, or looking at the bits: `128 + 32 + 16`... Let's calculate: `1000` is `128`, the next bit is `0` (`64`), next is `0` (`32`), next is `1` (`16`), next is `0` (`8`). So `128 + 16 = 144`? Let's check the transcript's math: `128 + 8 which is 1 followed by triple 0, that is 8, so this has gone from 136.0`. Yes, `128 + 8 = 136`. So the range starts from `136.0` to `245.248.`. 
+
+What will be the last one? What is given here in the last one? `1000 10` is the fixed part, and the remaining host bits are `11 111111`. As you convert into decimal, this will become `1000 10 11`. What is `1011` in binary? It is `11`. When you add this `11` to `128`, you get `128 + 11 = 139`. So `139.255`. This is the simple funda. The overall answer you get converted into decimal is `139.255`. So this is the range of this subnet (`S2`). In this range, this is the network ID (`136.0`) and this is the subnet's direct broadcast address (`139.255`).
+
+Now let's talk about the last subnet (`S3`). What will be in the last subnet? Simple funda: in the last subnet, `245.248.`. Next, `1000 1` we had fixed, and for the next bit we fixed `0` in `S2`, so here `1` will be fixed. This `1` is fixed. Next, the remaining host bits go from `00000000` to `11111111`. 
+
+So the first IP is `245.248.1000 11 00000000`. When we write in decimal, what will it become? `245.248.`. `1000 1100`? Let's check: `1000` is `128`, plus `12` (`8 + 4`) is `140`. So `140.0`. 
+And the last IP is `245.248.1000 11 11111111`. `1000 1111` in binary is `128 + 15 = 143`. So `143.255`. 
+Thus, `140.0` is the network ID of this subnet `S3`, and the last broadcast address will be `143.255`. 
+
+So this is the simple funda, and this is in continuity. Here we had the range from `128.0` to `135.255`. `135.255` is the last; when you add `1`, it will be `136.0`. From `136.0` to `139.255`. When you add `1` to `255`, that will be `140.0`. So see from where the next is starting: from `140.0`. 
+
+So this is the story, simple, of how we do variable length subnet masking. But one last point I will tell you: here we fixed `0`, we have to fix positions here. As you fix this bit, you can fix `0` value also, and you can also fix `1`. If you write `1` here, fix it, do `0` here; sometimes options do not match, the range will be different, but the answer will remain correct.
+
+In this subnet, what will be the subnet mask slash notation? How many bits are fixed? 20 were fixed earlier, 1 here (`21`), and 1 more we have fixed (`22`). So we have `/22` notation here, here also `/22`, and here also `/22`. 
+
+So this is the simple way how we do variable length subnet masking in CIDR. Thank you.
