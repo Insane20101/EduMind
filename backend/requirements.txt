@@ -7,8 +7,8 @@ pydantic
 python-dotenv
 slowapi
 limits
-chromadb
 google-genai
+google-generativeai
 cloudinary
 python-multipart
 langchain
@@ -16,6 +16,8 @@ langchain-core
 langchain-community
 langchain-google-genai
 langchain-openai
-langchain-groq
-langchain-chroma
+PyMuPDF
+pypdf
+qdrant-client
+openai
 
