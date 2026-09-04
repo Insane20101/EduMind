@@ -10,7 +10,8 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bo
     """
     Sends a beautifully formatted HTML OTP email using Resend REST API.
     """
-    resend_key = os.getenv("RESEND_API_KEY") or RESEND_API_KEY
+    raw_key = os.getenv("RESEND_API_KEY") or RESEND_API_KEY or ""
+    resend_key = raw_key.strip().strip('"').strip("'")
     if not resend_key:
         logger.warning("[RESEND EMAIL] RESEND_API_KEY not configured in environment.")
         return False
