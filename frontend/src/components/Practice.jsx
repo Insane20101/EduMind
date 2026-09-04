@@ -8,6 +8,7 @@ import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import Mermaid from './Mermaid';
+import { getApiBaseUrl } from '../config';
 
 const MarkdownComponents = {
   h3: ({node, ...props}) => {
@@ -71,7 +72,7 @@ export default function Practice() {
     if (!subjectId) return;
     
     // Fetch available units
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/subjects/${subjectId}/practice`)
+    fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice`)
       .then(res => res.json())
       .then(data => {
         if (data.available) {
@@ -98,7 +99,7 @@ export default function Practice() {
     setSolutions({}); // Clear solutions state
     setExpandedQuestions({});
     
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/subjects/${subjectId}/practice/${selectedUnit}`)
+    fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice/${selectedUnit}`)
       .then(res => {
         if (!res.ok) throw new Error("Failed");
         return res.json();
@@ -123,7 +124,7 @@ export default function Practice() {
     if (!isExpanded && !solutions[questionId] && !loadingSolutions[questionId]) {
       setLoadingSolutions(prev => ({ ...prev, [questionId]: true }));
       
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/api/subjects/${subjectId}/practice/${selectedUnit}/${questionId}/solution`)
+      fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice/${selectedUnit}/${questionId}/solution`)
         .then(async res => {
           if (!res.ok) {
             if (res.status === 404) throw new Error("404");

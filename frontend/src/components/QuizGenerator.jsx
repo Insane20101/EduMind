@@ -8,6 +8,7 @@ import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import Mermaid from './Mermaid';
+import { getApiBaseUrl } from '../config';
 
 const MarkdownComponents = {
   h3: ({node, ...props}) => {
@@ -65,7 +66,7 @@ export default function QuizGenerator({ onBack }) {
     if (!subjectId) return;
     
     // Fetch available units from practice endpoint (reuses Phase 3 endpoint)
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/subjects/${subjectId}/practice`)
+    fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice`)
       .then(res => res.json())
       .then(data => {
         if (data.available) {
@@ -104,7 +105,7 @@ export default function QuizGenerator({ onBack }) {
     setIsSubmitting(false);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/subjects/${subjectId}/quiz/generate`, {
+      const response = await fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/quiz/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -140,7 +141,7 @@ export default function QuizGenerator({ onBack }) {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/quiz/${quizData.quiz.quiz_id}/submit`, {
+      const response = await fetch(`${getApiBaseUrl()}/api/quiz/${quizData.quiz.quiz_id}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers })

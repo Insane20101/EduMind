@@ -236,7 +236,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     setChatMessages((prev) => [...prev, promptUserMsg]);
 
     try {
-      const res = await fetch(`${API_BASE}/api/chat/video-summary`, {
+      const res = await fetch(`${getApiBaseUrl()}/api/chat/video-summary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -297,7 +297,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
 
     try {
       const history = chatMessages.map((m) => ({ role: m.role, content: m.content }));
-      const response = await fetch(`${API_BASE}/api/chat/stream`, {
+      const response = await fetch(`${getApiBaseUrl()}/api/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -352,7 +352,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     } catch (err) {
       console.warn('AI question stream error:', err);
       try {
-        const res = await fetch(`${API_BASE}/api/chat/`, {
+        const res = await fetch(`${getApiBaseUrl()}/api/chat/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

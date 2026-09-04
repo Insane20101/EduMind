@@ -9,6 +9,7 @@ import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import Mermaid from './Mermaid';
+import { getApiBaseUrl } from '../config';
 
 const MarkdownComponents = {
   table: ({node, ...props}) => (
@@ -128,7 +129,7 @@ export default function Chatbar() {
     
     try {
       const history = messages.map(m => ({ role: m.role, content: m.content }));
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+      const apiBaseUrl = getApiBaseUrl();
       
       if (currentTempFile) {
         // Temp Document Endpoint with Google AI OCR

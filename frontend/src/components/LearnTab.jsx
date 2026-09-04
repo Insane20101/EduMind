@@ -6,8 +6,7 @@ import PlaylistTheaterModal from './PlaylistTheaterModal';
 import { useAppStore } from '../store/appStore';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
-
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+import { getApiBaseUrl } from '../config';
 
 
 // ── Loading / empty placeholders ───────────────────────────────────────────────
@@ -59,7 +58,7 @@ function SuggestForm({ subjectId }) {
       if (url.trim()) fd.append('url', url.trim());
       if (file)       fd.append('file', file);
 
-      const res = await fetch(`${API}/api/resources/suggest`, {
+      const res = await fetch(`${getApiBaseUrl()}/api/resources/suggest`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         // No Content-Type header — browser sets it with the correct boundary
@@ -213,18 +212,18 @@ export default function LearnTab() {
     setActiveTheaterIdx(null);
 
     // Use unified /api/resources endpoint for notes and pyqs
-    fetch(`${API}/api/resources?subject_id=${subject}&resource_type=note`)
+    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=note`)
       .then(res => res.json())
       .then(data => setNotes(Array.isArray(data) ? data : []))
       .catch(() => setNotes([]));
 
-    fetch(`${API}/api/resources?subject_id=${subject}&resource_type=pyq`)
+    fetch(`${getApiBaseUrl()}/api/resources?subject_id=${subject}&resource_type=pyq`)
       .then(res => res.json())
       .then(data => setPyqs(Array.isArray(data) ? data : []))
       .catch(() => setPyqs([]));
 
     // Fetch dynamic playlists added via Admin Dashboard
-    fetch(`${API}/api/resources/playlists?subject_id=${subject}`)
+    fetch(`${getApiBaseUrl()}/api/resources/playlists?subject_id=${subject}`)
       .then(res => res.json())
       .then(data => setDbPlaylists(Array.isArray(data) ? data : []))
       .catch(() => setDbPlaylists([]));

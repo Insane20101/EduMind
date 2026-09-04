@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/appStore';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid, Cell } from 'recharts';
 import { Target, TrendingUp, Award, BookOpen } from 'lucide-react';
+import { getApiBaseUrl } from '../config';
 
 export default function Performance() {
   const { activeSubjectName } = useAppStore();
@@ -14,8 +15,7 @@ export default function Performance() {
   useEffect(() => {
     if (!subjectId) return;
     
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-    fetch(`${apiBaseUrl}/api/subjects/${subjectId}/performance`)
+    fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/performance`)
       .then(res => res.json())
       .then(resData => {
         setData(resData);
