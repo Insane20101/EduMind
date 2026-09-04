@@ -60,8 +60,11 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
 
         chunks.sort(key=lambda x: x["similarity"], reverse=True)
         return chunks
+    except RuntimeError as re_err:
+        logger.error(f"FATAL Qdrant configuration error: {re_err}")
+        raise re_err
     except Exception as e:
-        print(f"Qdrant retrieval notice for '{subject_id}': {e}")
+        logger.warning(f"Qdrant retrieval notice for '{subject_id}': {e}")
         return []
 
 def retrieve_context(query: str, subject_id: str, unit: Optional[str] = None, top_k: int = 6) -> List[Dict[str, Any]]:

@@ -28,10 +28,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from rag.vector_store import get_qdrant_client
+
 @app.on_event("startup")
 async def startup_db_client():
     await init_db()
     await seed_subjects_if_needed(db)
+    # Fail loud if QDRANT_URL or QDRANT_API_KEY is not configured
+    get_qdrant_client()
 
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 from routes.admin_auth import router as admin_auth_router
