@@ -5,7 +5,7 @@ import requests
 from database import db, upload_file, delete_file
 from rag.ingester import ingest_document
 from rag.retriever import retrieve
-from rag.vector_store import get_langchain_vectorstore
+from rag.vector_store import get_qdrant_client, delete_resource_chunks
 
 SECRET_KEYWORD = "QUANTUM_CYPHER_XYZ_9988"
 FILENAME = "Quantum_Encryption_Test_Unit1.md"
@@ -14,7 +14,7 @@ BASE_URL = "http://localhost:8000"
 
 async def run_e2e_verification():
     print("=" * 70)
-    print("STEP 1: Ingesting Test Document into ChromaDB & GridFS...")
+    print("STEP 1: Ingesting Test Document into Qdrant Cloud & GridFS...")
     print("=" * 70)
 
     test_content = (
@@ -26,7 +26,7 @@ async def run_e2e_verification():
     resource_id = str(uuid.uuid4())
     cloud_file_id = await upload_file(FILENAME, test_content, "text/markdown")
 
-    # Ingest document into ChromaDB collection for BCS-401
+    # Ingest document into Qdrant Cloud collection for BCS-401
     ingest_summary = ingest_document(
         content_bytes=test_content,
         filename=FILENAME,
@@ -60,11 +60,16 @@ async def run_e2e_verification():
     print(f"-> Created MongoDB Resource Record (resource_id: {resource_id})")
 
     # Verify vector store contains chunks
-    vs = get_langchain_vectorstore(SUBJECT_ID)
-    raw_before = vs._collection.get(where={"source_filename": FILENAME})
-    before_count = len(raw_before.get("ids", []))
-    print(f"-> ChromaDB Collection '{SUBJECT_ID}' Chunks Count for '{FILENAME}': {before_count}")
-    assert before_count > 0, "ERROR: Vector chunks were not created in ChromaDB!"
+    client = get_qdrant_client()
+    points, _ = client.scroll(
+        collection_name=SUBJECT_ID,
+        scroll_filter=None,
+        limit=100
+    )
+    matching_points = [p for p in points if p.payload and p.payload.get("source_filename") == FILENAME]
+    before_count = len(matching_points)
+    print(f"-> Qdrant Collection '{SUBJECT_ID}' Chunks Count for '{FILENAME}': {before_count}")
+    assert before_count > 0, "ERROR: Vector chunks were not created in Qdrant!"
 
     print("\n" + "=" * 70)
     print("STEP 2: Retrieval Check BEFORE Deletion — Confirming Content is Retrievable...")
@@ -81,24 +86,9 @@ async def run_e2e_verification():
     print(f"STEP 3: Executing Resource Deletion Workflow for resource_id '{resource_id}'...")
     print("=" * 70)
 
-    # Replicate exact delete_resource endpoint logic
-    target_doc = await db.resources.find_one({"resource_id": resource_id})
-    assert target_doc is not None, "ERROR: Resource document not found in DB!"
-
-    target_subject = target_doc.get("subject_id")
-    target_filename = target_doc.get("filename") or target_doc.get("title")
-
-    # 1. Purge ChromaDB Vector Chunks
-    cand_fnames = [target_filename, f"{target_filename}.pdf", target_doc.get("title")]
-    target_ids = set()
-    for fname in cand_fnames:
-        res_data = vs._collection.get(where={"source_filename": fname})
-        if res_data and res_data.get("ids"):
-            target_ids.update(res_data.get("ids"))
-
-    if target_ids:
-        vs._collection.delete(ids=list(target_ids))
-        print(f"-> Purged {len(target_ids)} chunks from ChromaDB collection '{target_subject}'.")
+    # 1. Purge Qdrant Vector Chunks
+    purged_count = delete_resource_chunks(subject_id=SUBJECT_ID, resource_id=resource_id, source_filename=FILENAME)
+    print(f"-> Purged {purged_count} chunks from Qdrant Cloud collection '{SUBJECT_ID}'.")
 
     # 2. Delete GridFS File
     if cloud_file_id:
@@ -118,11 +108,16 @@ async def run_e2e_verification():
     print(f"-> MongoDB Record Exists: {db_doc_after is not None} (Expected False)")
     assert db_doc_after is None, "ERROR: Resource record still exists in MongoDB!"
 
-    # 4b. Check ChromaDB collection chunks
-    raw_after = vs._collection.get(where={"source_filename": FILENAME})
-    after_count = len(raw_after.get("ids", []))
-    print(f"-> ChromaDB Collection '{SUBJECT_ID}' Chunks Count for '{FILENAME}': {after_count} (Expected 0)")
-    assert after_count == 0, "ERROR: Vector chunks still present in ChromaDB!"
+    # 4b. Check Qdrant collection chunks
+    points_after, _ = client.scroll(
+        collection_name=SUBJECT_ID,
+        scroll_filter=None,
+        limit=100
+    )
+    matching_after_points = [p for p in points_after if p.payload and p.payload.get("source_filename") == FILENAME]
+    after_count = len(matching_after_points)
+    print(f"-> Qdrant Collection '{SUBJECT_ID}' Chunks Count for '{FILENAME}': {after_count} (Expected 0)")
+    assert after_count == 0, "ERROR: Vector chunks still present in Qdrant!"
 
     # 4c. Check RAG Retriever AFTER Deletion
     retrieved_after = retrieve(SUBJECT_ID, None, SECRET_KEYWORD, top_k=5)

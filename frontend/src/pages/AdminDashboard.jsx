@@ -78,7 +78,7 @@ function UploadTab() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       
-      setIngestionState({ progress: 90, message: 'Ingesting vector chunks into ChromaDB...' });
+      setIngestionState({ progress: 90, message: 'Ingesting vector chunks into Qdrant Vector Database...' });
       
       setTimeout(() => {
         setIngestionState({ 
@@ -112,7 +112,7 @@ function UploadTab() {
   return (
     <div className="adm-card">
       <h2 className="adm-section-title">Upload Resource &amp; Ingest to RAG</h2>
-      <p className="adm-section-sub">Uploaded files are auto-processed with Google AI OCR, vector-embedded into ChromaDB, and published to students.</p>
+      <p className="adm-section-sub">Uploaded files are auto-processed with Google AI OCR, vector-embedded into Qdrant Vector Database, and published to students.</p>
 
       {/* ── Active Ingestion & Locking Banner Alert ───────────────────── */}
       {isIngestingActive && (
@@ -487,7 +487,7 @@ function PlaylistsTab() {
 
 // ── Tab: Vector Knowledge Base Curator ──────────────────────────────────────
 function VectorCuratorTab() {
-  const [subjectId, setSubjectId] = useState('BSM-104');
+  const [subjectId, setSubjectId] = useState('BCS-401');
   const [chunksData, setChunksData] = useState(null);
   const [loading, setLoading]     = useState(false);
   const [mdTitle, setMdTitle]     = useState('');
@@ -499,10 +499,10 @@ function VectorCuratorTab() {
     if (!subjectId) return;
     setLoading(true);
     try {
-      const res = await api.get(`/admin/vector/chunks?subject_id=${subjectId}`);
+      const res = await api.get(`/admin/vector/chunks?subject_id=${subjectId.trim().toUpperCase()}`);
       setChunksData(res.data);
     } catch {
-      toast.error('Failed to inspect ChromaDB collection.');
+      toast.error('Failed to inspect Qdrant collection.');
     } finally {
       setLoading(false);
     }
@@ -516,7 +516,7 @@ function VectorCuratorTab() {
     setIngesting(true);
     try {
       const fd = new FormData();
-      fd.append('subject_id', subjectId);
+      fd.append('subject_id', subjectId.trim().toUpperCase());
       fd.append('title', mdTitle || mdFile.name);
       fd.append('file', mdFile);
       await api.post('/admin/vector/ingest-md', fd);
@@ -533,9 +533,10 @@ function VectorCuratorTab() {
   };
 
   const handleScopedDelete = async (filename) => {
-    if (!window.confirm(`Purge all vector chunks for '${filename}' in subject '${subjectId}'?`)) return;
+    const cleanSubj = subjectId.trim().toUpperCase();
+    if (!window.confirm(`Purge all vector chunks for '${filename}' in subject '${cleanSubj}'?`)) return;
     try {
-      await api.delete(`/admin/vector/chunks/${subjectId}/${encodeURIComponent(filename)}`);
+      await api.delete(`/admin/vector/chunks/${cleanSubj}/${encodeURIComponent(filename)}`);
       toast.success(`Purged chunks for ${filename}!`);
       loadChunks();
     } catch (err) {
@@ -547,17 +548,18 @@ function VectorCuratorTab() {
     <div className="adm-card space-y-6">
       <div>
         <h2 className="adm-section-title">Vector Knowledge Base Curator</h2>
-        <p className="adm-section-sub">Inspect, refine, add, and purge ChromaDB vector chunks per subject to curate high accuracy.</p>
+        <p className="adm-section-sub">Inspect, refine, add, and purge Qdrant Cloud vector chunks per subject to curate high accuracy.</p>
       </div>
 
       <div className="adm-grid-2">
         <div className="adm-field">
-          <label className="adm-label">Select Subject Collection</label>
-          <select className="adm-input" value={subjectId} onChange={e => setSubjectId(e.target.value)}>
-            <option value="BSM-104">BSM-104 (Mathematics)</option>
-            <option value="BEE-101">BEE-101 (Electrical)</option>
-            <option value="CS-101">CS-101 (Computer Science)</option>
-          </select>
+          <label className="adm-label">Subject Collection ID *</label>
+          <input 
+            className="adm-input font-mono uppercase" 
+            placeholder="e.g. BCS-401, BSM-104" 
+            value={subjectId} 
+            onChange={e => setSubjectId(e.target.value.toUpperCase())} 
+          />
         </div>
         <div className="flex items-end">
           <button className="adm-btn-ghost w-full" onClick={loadChunks}>Refresh Collection Chunks</button>
@@ -579,7 +581,7 @@ function VectorCuratorTab() {
       {/* Inspection & Chunks Table */}
       <div>
         <h3 className="text-sm font-semibold text-slate-300 mb-2">
-          ChromaDB Collection: <span className="font-mono text-indigo-400">{chunksData?.collection_name}</span> ({chunksData?.total_chunks || 0} total chunks)
+          Qdrant Collection: <span className="font-mono text-indigo-400">{chunksData?.collection_name}</span> ({chunksData?.total_chunks || 0} total chunks)
         </h3>
         {loading ? <Spinner /> : !chunksData || chunksData.chunks.length === 0 ? (
           <p className="text-xs text-slate-500">No vector chunks in this collection.</p>

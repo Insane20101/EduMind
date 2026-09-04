@@ -106,8 +106,20 @@ def delete_resource_chunks(subject_id: str, resource_id: str = None, source_file
     if not client.collection_exists(collection_name):
         return 0
 
+    # Ensure payload indexes exist
+    for field in ("resource_id", "source_filename", "source_file"):
+        try:
+            client.create_payload_index(
+                collection_name=collection_name,
+                field_name=field,
+                field_schema=models.PayloadSchemaType.KEYWORD
+            )
+        except Exception:
+            pass
+
     target_point_ids = set()
 
+    # 1. Attempt indexed scroll filter
     for key, val in [("resource_id", resource_id), ("source_filename", source_filename), ("source_file", source_filename)]:
         if not val:
             continue
@@ -123,13 +135,30 @@ def delete_resource_chunks(subject_id: str, resource_id: str = None, source_file
             points, _ = client.scroll(
                 collection_name=collection_name,
                 scroll_filter=scroll_filter,
-                limit=500
+                limit=500,
+                with_payload=True
             )
             if points:
                 for p in points:
                     target_point_ids.add(p.id)
         except Exception as e:
             logger.warning(f"Error scrolling Qdrant points for {key}={val}: {e}")
+
+    # 2. Fallback: Python-level payload match scan if target_point_ids is empty
+    if not target_point_ids:
+        try:
+            points, _ = client.scroll(
+                collection_name=collection_name,
+                limit=500,
+                with_payload=True
+            )
+            for p in points:
+                payload = p.payload or {}
+                if (resource_id and payload.get("resource_id") == resource_id) or \
+                   (source_filename and (payload.get("source_filename") == source_filename or payload.get("source_file") == source_filename)):
+                    target_point_ids.add(p.id)
+        except Exception as scan_err:
+            logger.warning(f"Fallback scan notice for {collection_name}: {scan_err}")
 
     if target_point_ids:
         client.delete(

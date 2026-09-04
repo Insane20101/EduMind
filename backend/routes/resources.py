@@ -276,7 +276,7 @@ async def approve_resource(
     if doc["status"] != "pending":
         raise HTTPException(status_code=400, detail=f"Resource is already '{doc['status']}'.")
 
-    filename = doc.get("title", "student_resource") + ".pdf"
+    filename = doc.get("filename") or (doc.get("title", "student_resource") + ".pdf")
     if not ingestion_queue.acquire_lock(filename):
         raise HTTPException(status_code=429, detail="An ingestion task is currently running! Please wait before approving.")
 
@@ -458,31 +458,48 @@ async def list_vector_chunks(
     subject_id: str,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Inspect ingested ChromaDB vector chunks for a specific subject collection."""
+    """Inspect ingested Qdrant Cloud vector chunks for a specific subject collection."""
     if not subject_id or not subject_id.strip():
         raise HTTPException(status_code=400, detail="subject_id is required.")
 
     subject_id = subject_id.strip().upper()
-    vs = get_langchain_vectorstore(subject_id)
-    raw_data = vs._collection.get()
+    client = get_qdrant_client()
+
+    if not client.collection_exists(subject_id):
+        return {
+            "subject_id": subject_id,
+            "collection_name": subject_id,
+            "total_chunks": 0,
+            "chunks": []
+        }
+
+    try:
+        points, _ = client.scroll(
+            collection_name=subject_id,
+            limit=100,
+            with_payload=True,
+            with_vectors=False
+        )
+    except Exception as e:
+        logger.warning(f"Qdrant scroll error for collection {subject_id}: {e}")
+        points = []
 
     chunks = []
-    ids = raw_data.get("ids", [])
-    metadatas = raw_data.get("metadatas", [])
-    documents = raw_data.get("documents", [])
-
-    for i in range(len(ids)):
+    for pt in points:
+        payload = pt.payload or {}
+        text_snippet = payload.get("text") or payload.get("page_content") or ""
+        meta = {k: v for k, v in payload.items() if k not in ("text", "page_content")}
         chunks.append({
-            "chunk_id": ids[i],
-            "metadata": metadatas[i] if i < len(metadatas) else {},
-            "snippet": documents[i][:200] if i < len(documents) else ""
+            "chunk_id": str(pt.id),
+            "metadata": meta,
+            "snippet": text_snippet[:200]
         })
 
     return {
         "subject_id": subject_id,
-        "collection_name": vs._collection.name,
+        "collection_name": subject_id,
         "total_chunks": len(chunks),
-        "chunks": chunks[:100]  # First 100 chunks preview
+        "chunks": chunks
     }
 
 
@@ -494,7 +511,7 @@ async def admin_ingest_markdown(
     file: UploadFile = File(...),
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Admin uploads custom Markdown/Text file directly into ChromaDB using unified ingester."""
+    """Admin uploads custom Markdown/Text file directly into Qdrant Cloud using unified ingester."""
     filename = file.filename or f"{title}.md"
     if not ingestion_queue.acquire_lock(filename):
         raise HTTPException(status_code=429, detail="An ingestion task is currently running! Please wait.")
@@ -517,7 +534,6 @@ async def admin_ingest_markdown(
 
 @router.delete("/vector/chunks/{subject_id}/{filename:path}")
 async def scoped_delete_vector_chunks(
-
     subject_id: str,
     filename: str,
     current_admin: dict = Depends(get_current_admin_user)
@@ -527,24 +543,14 @@ async def scoped_delete_vector_chunks(
         raise HTTPException(status_code=400, detail="subject_id and filename are required.")
 
     subject_id = subject_id.strip().upper()
-    vs = get_langchain_vectorstore(subject_id)
-    
-    # Strictly query and match by subject_id + source_filename
-    raw_data = vs._collection.get(where={"$and": [{"subject_id": subject_id}, {"source_filename": filename}]})
-    target_ids = raw_data.get("ids", [])
+    deleted_count = delete_resource_chunks(subject_id=subject_id, source_filename=filename)
 
-    if not target_ids:
-        # Fallback search by source_filename inside subject collection
-        raw_data = vs._collection.get(where={"source_filename": filename})
-        target_ids = raw_data.get("ids", [])
-
-    if target_ids:
-        vs._collection.delete(ids=target_ids)
+    if deleted_count > 0:
         return {
-            "message": f"Purged {len(target_ids)} chunks for '{filename}' from subject collection '{subject_id}'.",
+            "message": f"Purged {deleted_count} chunks for '{filename}' from subject collection '{subject_id}'.",
             "subject_id": subject_id,
             "filename": filename,
-            "deleted_count": len(target_ids)
+            "deleted_count": deleted_count
         }
     else:
         raise HTTPException(status_code=404, detail=f"No vector chunks found for '{filename}' in subject '{subject_id}'.")

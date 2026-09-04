@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
     """
     Extracts text from PDF bytes using PyMuPDF / pypdf.
-    If no text layer exists (scanned image PDF), falls back to Multimodal Vision OCR.
+    Handles encrypted PDFs, password-protected/blank-pass documents, and multi-layout blocks.
+    If no text layer exists (scanned image PDF), falls back to Multimodal Vision OCR (Gemini / OpenAI).
     If parsing fails entirely, returns a robust document placeholder chunk so ingestion NEVER fails.
     """
     if not content_bytes:
@@ -24,14 +25,46 @@ def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
 
     extracted_text = ""
     
-    # 1. Native text layer extraction via PyMuPDF
+    # 1. Native text layer extraction via PyMuPDF (fitz)
     try:
         import fitz
         doc = fitz.open(stream=content_bytes, filetype="pdf")
+        
+        # Authenticate with empty string if PDF has security/encryption flags set
+        if getattr(doc, "is_encrypted", False) or getattr(doc, "needs_pass", False):
+            try:
+                doc.authenticate("")
+            except Exception as auth_err:
+                logger.warning(f"PyMuPDF empty auth notice for {filename}: {auth_err}")
+
         pages = []
         for i, page in enumerate(doc):
             try:
-                t = page.get_text()
+                # Pass 1: Standard text extraction
+                t = page.get_text("text")
+                
+                # Pass 2: Blocks extraction fallback if standard text is empty
+                if not (t and t.strip()):
+                    blocks = page.get_text("blocks")
+                    if blocks:
+                        t = "\n".join([b[4] for b in blocks if len(b) >= 5 and isinstance(b[4], str)])
+
+                # Pass 3: Layout extraction fallback
+                if not (t and t.strip()):
+                    try:
+                        t = page.get_text("layout")
+                    except Exception:
+                        pass
+
+                # Pass 4: Form XObject / Field widgets fallback
+                if not (t and t.strip()):
+                    try:
+                        widget_texts = [w.field_value for w in page.widgets() if getattr(w, 'field_value', None)]
+                        if widget_texts:
+                            t = "\n".join(widget_texts)
+                    except Exception:
+                        pass
+
                 if t and t.strip():
                     pages.append(f"--- Page {i+1} ---\n{t.strip()}")
             except Exception:
@@ -45,6 +78,13 @@ def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
         try:
             import pypdf
             reader = pypdf.PdfReader(io.BytesIO(content_bytes))
+            
+            if getattr(reader, "is_encrypted", False):
+                try:
+                    reader.decrypt("")
+                except Exception as dec_err:
+                    logger.warning(f"pypdf decrypt notice for {filename}: {dec_err}")
+
             pages = []
             for i, page in enumerate(reader.pages):
                 try:
@@ -57,35 +97,65 @@ def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
         except Exception as e2:
             logger.warning(f"pypdf parse notice for {filename}: {e2}")
 
-    # 3. Vision OCR fallback for scanned/image PDFs
+    # 3. Multimodal Vision OCR fallback for scanned/image PDFs (Gemini or OpenAI)
     if not extracted_text.strip():
-        logger.info(f"PDF '{filename}' has no native text layer. Running Vision OCR fallback...")
-        try:
-            import fitz
-            doc = fitz.open(stream=content_bytes, filetype="pdf")
-            ocr_pages = []
-            for page in doc:
-                try:
-                    pix = page.get_pixmap()
-                    img_bytes = pix.tobytes("png")
-                    if os.getenv("OPENAI_API_KEY"):
-                        from langchain_openai import ChatOpenAI
-                        from langchain_core.messages import HumanMessage
-                        import base64
+        gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        openai_key = os.getenv("OPENAI_API_KEY")
+        
+        if gemini_key or openai_key:
+            logger.info(f"PDF '{filename}' has no native text layer. Running Multimodal Vision OCR fallback...")
+            try:
+                import fitz
+                import base64
+                doc = fitz.open(stream=content_bytes, filetype="pdf")
+                if getattr(doc, "is_encrypted", False):
+                    try: doc.authenticate("")
+                    except Exception: pass
+                
+                ocr_pages = []
+                for page in doc:
+                    try:
+                        pix = page.get_pixmap()
+                        img_bytes = pix.tobytes("png")
                         b64 = base64.b64encode(img_bytes).decode("utf-8")
-                        llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"))
-                        res = llm.invoke([HumanMessage(content=[
-                            {"type": "text", "text": "Extract all readable text, formulas, and diagrams from this scanned document page verbatim."},
-                            {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}
-                        ])])
-                        if res and res.content and str(res.content).strip():
-                            ocr_pages.append(str(res.content).strip())
-                except Exception:
-                    continue
-            if ocr_pages:
-                extracted_text = "\n\n".join(ocr_pages)
-        except Exception as ocr_err:
-            logger.warning(f"Vision OCR fallback notice for {filename}: {ocr_err}")
+                        
+                        ocr_text = ""
+                        if gemini_key:
+                            try:
+                                from langchain_google_genai import ChatGoogleGenerativeAI
+                                from langchain_core.messages import HumanMessage
+                                llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", google_api_key=gemini_key)
+                                res = llm.invoke([HumanMessage(content=[
+                                    {"type": "text", "text": "Extract all readable text, formulas, and diagrams from this scanned document page verbatim."},
+                                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}
+                                ])])
+                                if res and res.content:
+                                    ocr_text = str(res.content).strip()
+                            except Exception as g_err:
+                                logger.warning(f"Gemini Vision OCR notice for page: {g_err}")
+
+                        if not ocr_text and openai_key:
+                            try:
+                                from langchain_openai import ChatOpenAI
+                                from langchain_core.messages import HumanMessage
+                                llm = ChatOpenAI(model="gpt-4o-mini", api_key=openai_key)
+                                res = llm.invoke([HumanMessage(content=[
+                                    {"type": "text", "text": "Extract all readable text, formulas, and diagrams from this scanned document page verbatim."},
+                                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}
+                                ])])
+                                if res and res.content:
+                                    ocr_text = str(res.content).strip()
+                            except Exception as o_err:
+                                logger.warning(f"OpenAI Vision OCR notice for page: {o_err}")
+
+                        if ocr_text:
+                            ocr_pages.append(ocr_text)
+                    except Exception:
+                        continue
+                if ocr_pages:
+                    extracted_text = "\n\n".join(ocr_pages)
+            except Exception as ocr_err:
+                logger.warning(f"Vision OCR fallback notice for {filename}: {ocr_err}")
 
     # 4. Ultimate Guaranteed Metadata Placeholder (Ingestion NEVER fails)
     if not extracted_text.strip():
