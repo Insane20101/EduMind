@@ -176,7 +176,11 @@ async def serve_resource_file(resource_id: str):
     Public protected viewer endpoint for PDF notes and PYQs.
     Serves directly from MongoDB GridFS / Cloud Database with Anti-Download & CORS headers.
     """
+    # Find resource by resource_id or cloud_file_id
     resource = await db.resources.find_one({"resource_id": resource_id})
+    if not resource:
+        resource = await db.resources.find_one({"cloud_file_id": resource_id})
+        
     title = resource.get("title", "document") if resource else "document"
 
     headers_pdf = {
@@ -191,7 +195,7 @@ async def serve_resource_file(resource_id: str):
     cloud_file_id = resource.get("cloud_file_id") if resource else resource_id
     grid_file = await get_file(cloud_file_id) if cloud_file_id else None
 
-    if grid_file and grid_file.get("content"):
+    if grid_file and grid_file.get("content") and len(grid_file["content"]) > 0:
         return Response(
             content=grid_file["content"],
             media_type="application/pdf",
@@ -199,7 +203,7 @@ async def serve_resource_file(resource_id: str):
         )
 
     # 2. Fallback to cached file bytes if present
-    if resource and resource.get("file_bytes_cache"):
+    if resource and resource.get("file_bytes_cache") and len(resource["file_bytes_cache"]) > 0:
         return Response(
             content=resource["file_bytes_cache"],
             media_type="application/pdf",
@@ -214,8 +218,11 @@ async def serve_resource_file(resource_id: str):
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             }
             urls_to_try = [url]
-            if "cloudinary.com" in url and "/image/upload/" in url:
-                urls_to_try.insert(0, url.replace("/image/upload/", "/raw/upload/"))
+            if "cloudinary.com" in url:
+                if "/image/upload/" in url:
+                    urls_to_try.insert(0, url.replace("/image/upload/", "/raw/upload/"))
+                elif "/raw/upload/" in url:
+                    urls_to_try.append(url.replace("/raw/upload/", "/image/upload/"))
 
             for target_url in urls_to_try:
                 resp = requests.get(target_url, headers=req_headers, timeout=10)

@@ -87,10 +87,11 @@ async def student_community_upload(
     try:
         if os.getenv("CLOUDINARY_CLOUD_NAME"):
             folder = f"edumind/community/{subject_id}"
+            res_type = "raw" if ext == "pdf" else "auto"
             upload_result = cloudinary.uploader.upload(
                 content,
                 folder=folder,
-                resource_type="auto",
+                resource_type=res_type,
                 public_id=str(uuid.uuid4()),
                 overwrite=False
             )
@@ -177,10 +178,11 @@ async def admin_upload_resource(
         try:
             if os.getenv("CLOUDINARY_CLOUD_NAME"):
                 folder = f"edumind/{subject_id}/{resource_type}"
+                res_type = "raw" if ext == "pdf" else "auto"
                 upload_result = cloudinary.uploader.upload(
                     content,
                     folder=folder,
-                    resource_type="auto",
+                    resource_type=res_type,
                     public_id=str(uuid.uuid4()),
                     overwrite=False
                 )

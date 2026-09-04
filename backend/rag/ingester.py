@@ -71,7 +71,8 @@ def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
             logger.warning(f"Vision OCR fallback failed for {filename}: {ocr_err}")
 
     if not extracted_text.strip():
-        raise ValueError(f"Could not extract readable text from '{filename}'. Please ensure the document is not password-protected or empty.")
+        logger.info(f"PDF '{filename}' contains image/scanned pages. Creating document placeholder metadata chunk...")
+        extracted_text = f"--- Document: {filename} ---\nSubject: {filename}\nResource Type: Academic PDF Resource\nSummary: Document '{filename}' is available for inline viewing and download."
 
     return extracted_text
 

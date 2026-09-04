@@ -62,23 +62,34 @@ export default function QuizGenerator({ onBack }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [score, setScore] = useState(0);
 
+  const STANDARD_FALLBACK_UNITS = [
+    { unit_id: "Unit I", count: 5 },
+    { unit_id: "Unit II", count: 5 },
+    { unit_id: "Unit III", count: 5 },
+    { unit_id: "Unit IV", count: 5 },
+    { unit_id: "Unit V", count: 5 }
+  ];
+
   useEffect(() => {
     if (!subjectId) return;
     
-    // Fetch available units from practice endpoint (reuses Phase 3 endpoint)
+    // Fetch available units from practice endpoint
     fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice`)
       .then(res => res.json())
       .then(data => {
-        if (data.available) {
+        if (data && data.units && data.units.length > 0) {
           setAvailableUnits(data.units);
-          if (data.units.length > 0) {
-            setSelectedUnits([data.units[0].unit_id]);
-          }
+          setSelectedUnits([data.units[0].unit_id]);
+        } else {
+          setAvailableUnits(STANDARD_FALLBACK_UNITS);
+          setSelectedUnits(["Unit I"]);
         }
         setLoadingUnits(false);
       })
       .catch(err => {
         console.error("Failed to load units", err);
+        setAvailableUnits(STANDARD_FALLBACK_UNITS);
+        setSelectedUnits(["Unit I"]);
         setLoadingUnits(false);
       });
   }, [subjectId]);

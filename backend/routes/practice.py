@@ -5,31 +5,58 @@ from rag.chunker import chunk_markdown
 
 router = APIRouter()
 
+STANDARD_UNITS = ["Unit I", "Unit II", "Unit III", "Unit IV", "Unit V"]
+
 def get_subject_paths(subject_id: str):
-    # Search in data/ folder for the subject directory
-    base_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data")
-    search_pattern = os.path.join(base_dir, "**", f"{subject_id} *")
-    dirs = glob.glob(search_pattern, recursive=True)
-    if not dirs:
+    if not subject_id:
         return None, None
-    
-    subject_dir = dirs[0]
-    qb_path = os.path.join(subject_dir, f"{subject_id}_Question_Bank.md")
-    
-    sol_pattern = os.path.join(subject_dir, f"*Solutions.md")
-    sol_files = glob.glob(sol_pattern)
-    sol_path = sol_files[0] if sol_files else None
-    
-    if not os.path.exists(qb_path):
-        return None, sol_path
         
+    subject_id_clean = subject_id.strip().upper()
+    subj_no_hyphen = subject_id_clean.replace("-", "")
+    
+    # Base data directory search
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
+    if not os.path.exists(base_dir):
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+    if not os.path.exists(base_dir):
+        base_dir = os.path.abspath("data")
+        
+    matching_dir = None
+    for root, dirs, files in os.walk(base_dir):
+        dirname = os.path.basename(root).upper()
+        dir_clean = dirname.replace("-", "")
+        if subject_id_clean in dirname or subj_no_hyphen in dir_clean:
+            matching_dir = root
+            break
+            
+    if not matching_dir:
+        return None, None
+        
+    qb_path = None
+    sol_path = None
+    
+    for f in os.listdir(matching_dir):
+        f_lower = f.lower()
+        full_p = os.path.join(matching_dir, f)
+        if not f_lower.endswith(".md"):
+            continue
+        if "syllabus" in f_lower:
+            continue
+        if "solution" in f_lower or "sol" in f_lower:
+            sol_path = full_p
+        elif "question" in f_lower or "qbank" in f_lower or "qb" in f_lower or "practice" in f_lower:
+            qb_path = full_p
+            
     return qb_path, sol_path
 
 @router.get("/api/subjects/{subject_id}/practice")
 def get_practice_units(subject_id: str):
     qb_path, _ = get_subject_paths(subject_id)
-    if not qb_path:
-        return {"available": False}
+    
+    if not qb_path or not os.path.exists(qb_path):
+        # Fallback to standard units so quiz generator and practice unit scope are always available
+        units = [{"unit_id": u, "count": 5} for u in STANDARD_UNITS]
+        return {"available": True, "has_qbank": False, "units": units}
         
     with open(qb_path, 'r', encoding='utf-8') as f:
         text = f.read()
@@ -46,12 +73,15 @@ def get_practice_units(subject_id: str):
     units = [{"unit_id": u, "count": c} for u, c in unit_counts.items()]
     units.sort(key=lambda x: x["unit_id"])
     
-    return {"available": True, "units": units}
+    if not units:
+        units = [{"unit_id": u, "count": 5} for u in STANDARD_UNITS]
+        
+    return {"available": True, "has_qbank": True, "units": units}
 
 @router.get("/api/subjects/{subject_id}/practice/{unit_id}")
 def get_practice_questions(subject_id: str, unit_id: str):
     qb_path, _ = get_subject_paths(subject_id)
-    if not qb_path:
+    if not qb_path or not os.path.exists(qb_path):
         raise HTTPException(status_code=404, detail="Question bank not found")
         
     with open(qb_path, 'r', encoding='utf-8') as f:
@@ -68,7 +98,7 @@ def get_practice_questions(subject_id: str, unit_id: str):
                 "question_text": c["text"]
             })
             
-    questions.sort(key=lambda x: int(x["question_id"]))
+    questions.sort(key=lambda x: int(x["question_id"]) if str(x["question_id"]).isdigit() else 0)
             
     return {"questions": questions}
 
@@ -88,4 +118,10 @@ def get_practice_solution(subject_id: str, unit_id: str, question_id: str):
         if c["metadata"].get("unit") == unit_id and str(c["metadata"].get("question_id")) == str(question_id):
             return {"question_id": question_id, "solution_text": c["text"]}
             
+    # Sub-fallback if question_id is numeric match
+    for c in chunks:
+        if str(c["metadata"].get("question_id")) == str(question_id):
+            return {"question_id": question_id, "solution_text": c["text"]}
+
     raise HTTPException(status_code=404, detail=f"No solution found for unit {unit_id} question {question_id}")
+

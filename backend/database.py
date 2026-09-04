@@ -243,14 +243,20 @@ else:
         from bson import ObjectId
         bucket = get_fs()
         try:
-            grid_out = await bucket.open_download_stream(ObjectId(file_id))
+            try:
+                oid = ObjectId(file_id)
+                grid_out = await bucket.open_download_stream(oid)
+            except Exception:
+                grid_out = await bucket.open_download_stream(file_id)
+
             content = await grid_out.read()
             return {
                 "filename": grid_out.filename,
-                "content_type": grid_out.metadata.get("contentType", "application/octet-stream"),
+                "content_type": grid_out.metadata.get("contentType", "application/octet-stream") if grid_out.metadata else "application/pdf",
                 "content": content
             }
-        except Exception:
+        except Exception as e:
+            logger.warning(f"GridFS get_file exception for {file_id}: {e}")
             return None
 
     async def delete_file(file_id: str):
