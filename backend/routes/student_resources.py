@@ -168,10 +168,18 @@ from database import db, get_file
 async def serve_resource_file(resource_id: str):
     """
     Public protected viewer endpoint for PDF notes and PYQs.
-    Serves directly from MongoDB GridFS / Cloud Database with Anti-Download headers.
+    Serves directly from MongoDB GridFS / Cloud Database with Anti-Download & CORS headers.
     """
     resource = await db.resources.find_one({"resource_id": resource_id})
     title = resource.get("title", "document") if resource else "document"
+
+    headers_pdf = {
+        "Content-Disposition": f"inline; filename=\"{title}.pdf\"",
+        "X-Content-Type-Options": "nosniff",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "*"
+    }
 
     # 1. Fetch from MongoDB GridFS / Cloud File Storage
     cloud_file_id = resource.get("cloud_file_id") if resource else resource_id
@@ -181,10 +189,7 @@ async def serve_resource_file(resource_id: str):
         return Response(
             content=grid_file["content"],
             media_type="application/pdf",
-            headers={
-                "Content-Disposition": f"inline; filename=\"{title}.pdf\"",
-                "X-Content-Type-Options": "nosniff"
-            }
+            headers=headers_pdf
         )
 
     # 2. Fallback to cached file bytes if present
@@ -192,28 +197,30 @@ async def serve_resource_file(resource_id: str):
         return Response(
             content=resource["file_bytes_cache"],
             media_type="application/pdf",
-            headers={
-                "Content-Disposition": f"inline; filename=\"{title}.pdf\"",
-                "X-Content-Type-Options": "nosniff"
-            }
+            headers=headers_pdf
         )
 
-    # 3. Fallback to Cloudinary proxy
+    # 3. Fallback to Cloudinary / external proxy
     url = resource.get("url") if resource else None
     if url and url.startswith("http"):
         try:
-            resp = requests.get(url, timeout=10)
-            if resp.status_code == 200 and resp.content:
-                return Response(
-                    content=resp.content,
-                    media_type="application/pdf",
-                    headers={
-                        "Content-Disposition": f"inline; filename=\"{title}.pdf\"",
-                        "X-Content-Type-Options": "nosniff"
-                    }
-                )
+            req_headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+            urls_to_try = [url]
+            if "cloudinary.com" in url and "/image/upload/" in url:
+                urls_to_try.insert(0, url.replace("/image/upload/", "/raw/upload/"))
+
+            for target_url in urls_to_try:
+                resp = requests.get(target_url, headers=req_headers, timeout=10)
+                if resp.status_code == 200 and resp.content and len(resp.content) > 0:
+                    return Response(
+                        content=resp.content,
+                        media_type="application/pdf",
+                        headers=headers_pdf
+                    )
         except Exception as e:
-            pass
+            logger.warning(f"Cloudinary proxy notice: {e}")
 
     if url:
         return RedirectResponse(url=url)
