@@ -33,7 +33,7 @@ async def signup(user: UserCreate):
     user_dict = user.dict(exclude={"password"})
     user_dict["enrollment"] = clean_enr
     user_dict["branch"] = user_dict.get("branch", "CSE").upper()
-    user_dict["password_hash"] = hash_password(user.password)
+    user_dict["password_hash"] = hash_password(user.password.strip())
     user_dict["created_at"] = datetime.utcnow()
     
     try:
@@ -55,7 +55,14 @@ async def login(request: Request, credentials: UserLogin):
         raise HTTPException(status_code=400, detail="Enrollment number required.")
 
     user = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
-    if not user or "password_hash" not in user or not verify_password(credentials.password.strip(), user["password_hash"]):
+    if not user or "password_hash" not in user:
+        raise HTTPException(status_code=401, detail="Invalid enrollment number or password")
+
+    raw_pw = credentials.password or ""
+    clean_pw = raw_pw.strip()
+
+    is_valid = verify_password(clean_pw, user["password_hash"]) or verify_password(raw_pw, user["password_hash"])
+    if not is_valid:
         raise HTTPException(status_code=401, detail="Invalid enrollment number or password")
     
     user_dict = {
