@@ -20,25 +20,46 @@ class QuizGenerateRequest(BaseModel):
     count: int
     user_id: str = "test_user"
 
+from routes.practice import get_subject_paths
+from rag.chunker import chunk_markdown
+import os
+
 @quiz_router.post("/api/subjects/{subject_id}/quiz/generate")
 async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
     # 1. Retrieve chunks scoped to all requested units
     all_retrieved_chunks = []
-    # If the user selects multiple units, we retrieve for each unit
-    # to guarantee a mix.
     chunks_per_unit = max(4, (req.count * 2) // len(req.unit_ids) if req.unit_ids else req.count * 2)
     
+    # 1A. Vector Search from Qdrant Cloud scoped to requested units
     for unit_id in req.unit_ids:
-        # Retrieve chunks specifically for this unit
         unit_chunks = retrieve(
             subject_id=subject_id,
             unit_id=unit_id,
-            query=f"Generate a {req.difficulty} difficulty multiple choice question about {unit_id}",
+            query=f"Generate a {req.difficulty} difficulty multiple choice question about {unit_id} syllabus concepts and problems",
             top_k=chunks_per_unit
         )
         all_retrieved_chunks.extend(unit_chunks)
         
-    # Deduplicate chunks in case of overlap (though unlikely across units)
+    # 1B. Local Question Bank / Syllabus Markdown scoped strictly to requested units
+    qb_path, _ = get_subject_paths(subject_id)
+    if qb_path and os.path.exists(qb_path):
+        try:
+            with open(qb_path, 'r', encoding='utf-8') as f:
+                qb_text = f.read()
+            local_chunks = chunk_markdown(qb_text, os.path.basename(qb_path), subject_id, "unknown", "question_bank")
+            for lc in local_chunks:
+                chunk_unit = lc.get("metadata", {}).get("unit")
+                if chunk_unit in req.unit_ids:
+                    all_retrieved_chunks.append({
+                        "chunk_id": f"qbank_{lc['metadata'].get('question_id', uuid.uuid4().hex[:8])}",
+                        "similarity": 0.95,
+                        "text": lc.get("text", ""),
+                        "metadata": lc.get("metadata", {})
+                    })
+        except Exception as qb_err:
+            logger.warning(f"Notice parsing local question bank for quiz: {qb_err}")
+
+    # Deduplicate chunks in case of overlap
     seen_ids = set()
     unique_chunks = []
     for c in all_retrieved_chunks:
@@ -46,7 +67,6 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
             seen_ids.add(c["chunk_id"])
             unique_chunks.append(c)
             
-    # 2. Relaxed Context Rule (LLM will supplement missing context)
     required_chunks = req.count * 2
     retrieved_count = len(unique_chunks)
     
@@ -57,23 +77,31 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
         "retrieved_count": retrieved_count
     })
         
-    # 3. Construct prompt
+    # 3. Construct prompt with strict unit syllabus boundary instructions
     context_str = "\n\n".join([f"--- Chunk ID: {c['chunk_id']} ---\n{c['text']}" for c in unique_chunks])
     allowed_chunk_ids_str = "\n".join([f"- {c['chunk_id']}" for c in unique_chunks])
     
     system_prompt = RAG_SYSTEM_PROMPT.format(
         context=context_str,
         history="No prior conversation.",
-        query=f"Generate {req.count} multiple-choice questions of {req.difficulty} difficulty covering the following units: {', '.join(req.unit_ids)}."
+        query=f"Generate {req.count} multiple-choice questions of {req.difficulty} difficulty covering EXCLUSIVELY the following selected unit(s): {', '.join(req.unit_ids)}."
+    )
+    
+    unit_boundary_instruction = (
+        f"\n\nSTRICT SYLLABUS & UNIT BOUNDARY INSTRUCTION:\n"
+        f"Target Unit(s): {', '.join(req.unit_ids)}.\n"
+        f"1. You MUST generate questions EXCLUSIVELY covering syllabus concepts, definitions, and topics belonging to: {', '.join(req.unit_ids)}.\n"
+        f"2. Do NOT generate questions from any unselected units.\n"
+        f"3. The 'unit' property of each generated question in the JSON response MUST be set to one of the exact strings: {', '.join(req.unit_ids)}."
     )
     
     citation_instruction = (
         f"\n\nCRITICAL CITATION RULE:\n"
         f"For every generated question, 'source_chunk_ids' MUST contain one or more of the EXACT literal Chunk ID strings listed below:\n"
         f"{allowed_chunk_ids_str}\n"
-        f"Do NOT invent, alter, index, or summarize Chunk IDs (do not write 'chunk_1' or 'Chunk 1'). Use ONLY the exact literal UUID strings provided above."
+        f"Do NOT invent, alter, index, or summarize Chunk IDs. Use ONLY the exact literal strings provided above."
     )
-    full_prompt = system_prompt + "\n" + QUIZ_INSTRUCTION + citation_instruction
+    full_prompt = system_prompt + "\n" + QUIZ_INSTRUCTION + unit_boundary_instruction + citation_instruction
     
     # 4. Generation Loop with Validation and Retry
     def try_generate(error_msg=""):
