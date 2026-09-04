@@ -144,6 +144,7 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
     
     # Store using motor generic mock wrapper (await)
     await db.quizzes.insert_one(quiz_doc)
+    quiz_doc.pop("_id", None)
     
     return {
         "requested_count": req.count,
