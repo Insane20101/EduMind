@@ -1,0 +1,447 @@
+{
+  "Semester-1": [
+    {
+      "code": "BSM-104",
+      "name": "Linear Algebra and Differential Equations",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by Gate Smashers/GateHub/Sanchit Jain (they focus on CS core, not engineering math). Suggest: Gate Smashers Engineering Mathematics playlist is closest, or Dr. Gajendra Purohit for pure math."
+    },
+    {
+      "code": "BEE-101",
+      "name": "Fundamental of Electrical Engineering",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels. Suggest Neso Academy / Ekeeda for core EE."
+    },
+    {
+      "code": "BHM-101",
+      "name": "Professional Communication",
+      "status": "none",
+      "playlists": [],
+      "note": "Not a GATE-CS subject; not covered by these channels."
+    },
+    {
+      "code": "BCS-102",
+      "name": "Web Designing-1",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered \u2014 these are GATE/CS-theory channels, not web-dev channels. Suggest CodeWithHarry/Apna College for HTML-CSS."
+    },
+    {
+      "code": "BCS-103",
+      "name": "Computer Troubleshooting & Maintenance",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BSM-144",
+      "name": "Environment and Ecology",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BHM-113",
+      "name": "Industrial Psychology",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    }
+  ],
+  "Semester-2": [
+    {
+      "code": "BSM-156",
+      "name": "Applied Probability and Statistics",
+      "status": "none",
+      "playlists": [],
+      "note": "Not specifically covered; Gate Smashers has a general Engineering Mathematics playlist that touches probability."
+    },
+    {
+      "code": "BCS-151",
+      "name": "Introduction to C Programming",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "C Programming (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed Gate Smashers has a dedicated C Programming playlist \u2014 open channel page and pick it."
+    },
+    {
+      "code": "BSM-179",
+      "name": "Quantum Physics and Nanomaterials",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-152",
+      "name": "Web Designing-2",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-153",
+      "name": "IT Tools and Workshop-1",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BEC-154",
+      "name": "Basic Electronic Components and Circuits",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered \u2014 suggest Neso Academy Digital/Analog Electronics."
+    }
+  ],
+  "Semester-3": [
+    {
+      "code": "BSM-202",
+      "name": "Discrete Mathematics",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Discrete Mathematics (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed to exist on Gate Smashers \u2014 select from channel page."
+    },
+    {
+      "code": "BCS-201",
+      "name": "Digital Logic and Design",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Digital Logic (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed to exist on Gate Smashers \u2014 select from channel page."
+    },
+    {
+      "code": "BHM-202",
+      "name": "Cyber Ethics and IPR",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-202",
+      "name": "Principles of Data Structures",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Data Structure (Complete Playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT"
+        }
+      ],
+      "note": "Also check GateHub and Sanchit Jain (KnowledgeGate) channel pages for their DS one-shot/playlist."
+    },
+    {
+      "code": "BCS-203",
+      "name": "Object Oriented Programming",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "OOP / C++ playlist",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Verify exact OOP playlist on Gate Smashers channel page; not independently confirmed this session."
+    },
+    {
+      "code": "BCS-204",
+      "name": "IT Tools and Workshop-2",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    }
+  ],
+  "Semester-4": [
+    {
+      "code": "BSM-253",
+      "name": "Optimization Techniques",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-251",
+      "name": "Database Management Systems",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "DBMS (Complete Playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiFAN6I8CuViBuCdJgiOkT2Y"
+        },
+        {
+          "channel": "Sanchit Jain (KnowledgeGate)",
+          "title": "DBMS in 100 Minutes | Complete Placement Revision | One-Shot",
+          "url": "https://www.youtube.com/watch?v=KWkm1Gip4j4"
+        },
+        {
+          "channel": "Sanchit Jain (KnowledgeGate)",
+          "title": "DBMS full playlist",
+          "url": "https://www.youtube.com/playlist?list=PLnPUHuqVn2sdpLirlHMjklUkiWXmMxMCV"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BCS-252",
+      "name": "Theory of Computation",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "TOC (Theory of Computation)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiFM9Lj5G9G_76adtyb4ef7i"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BCS-253",
+      "name": "Design & Analysis of Algorithms",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Algorithms / DAA playlist",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Gate Smashers has DAA content; pick exact playlist from channel page (not independently verified this session)."
+    },
+    {
+      "code": "BCS-254",
+      "name": "Computer Organization and Architecture",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Computer Organization and Architecture (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed to exist on Gate Smashers \u2014 select from channel page."
+    },
+    {
+      "code": "BEC-256",
+      "name": "Signal and Systems",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "SCS-211/221/231",
+      "name": "Departmental Minor-1 (Data Science / Cyber-Physical Security / CG for VR \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels; these are specialized electives."
+    }
+  ],
+  "Semester-5": [
+    {
+      "code": "BHM-301",
+      "name": "Engineering & Managerial Economics",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-301",
+      "name": "Principles of Operating Systems",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Operating System (Complete Playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BCS-302",
+      "name": "Principle of Compiler Design",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Compiler Design (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed to exist on Gate Smashers \u2014 select from channel page."
+    },
+    {
+      "code": "BCS-303",
+      "name": "Computer Networks",
+      "status": "verified",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Computer Network (Complete Playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGFBD2-2joCpWOLUrDLvVV_"
+        }
+      ],
+      "note": null
+    },
+    {
+      "code": "BEC-305",
+      "name": "Microprocessor and Microcontroller",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels; suggest Neso Academy."
+    },
+    {
+      "code": "SCS-312/322/232",
+      "name": "Departmental Minor-2 (Data Analytics / Sensing & Comm / VR-AR \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-6": [
+    {
+      "code": "BHM-351",
+      "name": "Business Management",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-351",
+      "name": "Artificial Intelligence",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Artificial Intelligence (Complete Playlist)",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Confirmed to exist on Gate Smashers \u2014 select from channel page."
+    },
+    {
+      "code": "BCS-352",
+      "name": "Software Engineering",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Software Engineering playlist",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Gate Smashers channel description lists Software Engineering among covered topics; verify exact playlist."
+    },
+    {
+      "code": "BCS-353",
+      "name": "Parallel & Distributed Programming",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-370",
+      "name": "Project Part-I",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "BCS-380",
+      "name": "Seminar",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 no playlist."
+    },
+    {
+      "code": "SCS-313/323/333",
+      "name": "Departmental Minor-3 (Web Data Mining / IoT / Data Visualisation \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-7": [
+    {
+      "code": "BCS-401",
+      "name": "Fault Tolerance Analysis",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-402",
+      "name": "Cryptography and Information Security",
+      "status": "channel",
+      "playlists": [
+        {
+          "channel": "Gate Smashers",
+          "title": "Cybersecurity / Cryptography playlist",
+          "url": "https://www.youtube.com/@GateSmashers/playlists"
+        }
+      ],
+      "note": "Gate Smashers channel description lists Cybersecurity among covered topics; verify exact playlist."
+    },
+    {
+      "code": "BCS-403",
+      "name": "Introduction to Functional and Logic Programming",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these channels."
+    },
+    {
+      "code": "BCS-440",
+      "name": "Project Part-II",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "SCS-415/425/435",
+      "name": "Departmental Minor-4 (Data Science w/ Python / IoT w/ Arduino / Mobile VR & AI \u2014 choose one)",
+      "status": "none",
+      "playlists": [],
+      "note": "Not covered by these 3 channels."
+    }
+  ],
+  "Semester-8": [
+    {
+      "code": "ICS-400",
+      "name": "Industrial Practices",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 internship/training, no playlist."
+    },
+    {
+      "code": "BCS-480",
+      "name": "Minor Project",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    },
+    {
+      "code": "SCS-4xx",
+      "name": "Research Project",
+      "status": "none",
+      "playlists": [],
+      "note": "Not applicable \u2014 project work, no playlist."
+    }
+  ]
+}

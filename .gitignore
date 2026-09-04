@@ -1,0 +1,37 @@
+# Environment Variables & Secrets
+.env
+backend/.env
+frontend/.env
+*.env.local
+
+# Python Virtual Environment & Caches
+backend/venv/
+venv/
+env/
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Local Vector Store & Heavy Local Data
+backend/chroma_data/
+backend/data/
+chroma_data/
+data/
+*.sqlite3
+*.pdf
+
+# Logs & Temporary Test Dumps
+*.log
+backend/cleaned_log.txt
+backend/ingestion_hashes.txt
+audit_output.txt
+
+# Node Dependencies & Build Output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
