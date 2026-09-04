@@ -53,9 +53,9 @@ const ComingSoon = () => (
 );
 
 export default function Practice() {
-  const { activeSubjectName } = useAppStore();
+  const { subject: storeSubject, activeSubjectName } = useAppStore();
   const searchParams = new URLSearchParams(window.location.search);
-  const subjectId = searchParams.get('subject');
+  const subjectId = searchParams.get('subject') || storeSubject;
 
   const [available, setAvailable] = useState(null);
   const [units, setUnits] = useState([]);

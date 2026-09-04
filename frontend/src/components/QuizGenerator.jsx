@@ -39,9 +39,9 @@ const MarkdownComponents = {
 };
 
 export default function QuizGenerator({ onBack }) {
-  const { activeSubjectName } = useAppStore();
+  const { subject: storeSubject, activeSubjectName } = useAppStore();
   const searchParams = new URLSearchParams(window.location.search);
-  const subjectId = searchParams.get('subject');
+  const subjectId = searchParams.get('subject') || storeSubject;
 
   const [availableUnits, setAvailableUnits] = useState([]);
   const [loadingUnits, setLoadingUnits] = useState(true);
@@ -66,8 +66,7 @@ export default function QuizGenerator({ onBack }) {
     { unit_id: "Unit I", count: 5 },
     { unit_id: "Unit II", count: 5 },
     { unit_id: "Unit III", count: 5 },
-    { unit_id: "Unit IV", count: 5 },
-    { unit_id: "Unit V", count: 5 }
+    { unit_id: "Unit IV", count: 5 }
   ];
 
   useEffect(() => {

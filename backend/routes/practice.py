@@ -5,7 +5,7 @@ from rag.chunker import chunk_markdown
 
 router = APIRouter()
 
-STANDARD_UNITS = ["Unit I", "Unit II", "Unit III", "Unit IV", "Unit V"]
+STANDARD_UNITS = ["Unit I", "Unit II", "Unit III", "Unit IV"]
 
 def get_subject_paths(subject_id: str):
     if not subject_id:
@@ -14,12 +14,23 @@ def get_subject_paths(subject_id: str):
     subject_id_clean = subject_id.strip().upper()
     subj_no_hyphen = subject_id_clean.replace("-", "")
     
-    # Base data directory search
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
-    if not os.path.exists(base_dir):
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
-    if not os.path.exists(base_dir):
-        base_dir = os.path.abspath("data")
+    # Base data directory search — robust resolution for local and Render production
+    candidate_dirs = [
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data")),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data")),
+        os.path.abspath(os.path.join(os.getcwd(), "data")),
+        os.path.abspath(os.path.join(os.getcwd(), "..", "data")),
+        os.path.abspath("data")
+    ]
+    
+    base_dir = None
+    for d in candidate_dirs:
+        if os.path.exists(d) and os.path.isdir(d):
+            base_dir = d
+            break
+            
+    if not base_dir:
+        return None, None
         
     matching_dir = None
     for root, dirs, files in os.walk(base_dir):
@@ -47,6 +58,11 @@ def get_subject_paths(subject_id: str):
         elif "question" in f_lower or "qbank" in f_lower or "qb" in f_lower or "practice" in f_lower:
             qb_path = full_p
             
+    if not qb_path and sol_path:
+        qb_path = sol_path
+    if not sol_path and qb_path:
+        sol_path = qb_path
+        
     return qb_path, sol_path
 
 @router.get("/api/subjects/{subject_id}/practice")
