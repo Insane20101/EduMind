@@ -52,3 +52,7 @@ app.include_router(performance_router, tags=["performance"])
 def root():
     return {"message": "EduMind API is running"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok", "message": "EduMind API is warm"}
+

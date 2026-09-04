@@ -36,7 +36,14 @@ function AppShell({ children }) {
   );
 }
 
+import { getApiBaseUrl } from './config';
+
 function App() {
+  React.useEffect(() => {
+    // Non-blocking background health ping to pre-warm Render instance
+    fetch(`${getApiBaseUrl()}/health`).catch(() => {});
+  }, []);
+
   return (
     <BrowserRouter>
       <Toaster position="top-center" />
