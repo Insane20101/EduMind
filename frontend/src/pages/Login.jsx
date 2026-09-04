@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock, Mail } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+import { getApiBaseUrl } from '../config';
 
 export default function Login() {
   const [formData, setFormData] = useState({ enrollment: '', password: '' });
@@ -48,7 +48,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/api/auth/send-otp`, {
+      const res = await axios.post(`${getApiBaseUrl()}/api/auth/send-otp`, {
         enrollment: resetEnrollment.trim().toUpperCase(),
         recovery_email: recoveryEmail.trim().toLowerCase()
       });
@@ -77,7 +77,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/api/auth/verify-otp-reset-password`, {
+      const res = await axios.post(`${getApiBaseUrl()}/api/auth/verify-otp-reset-password`, {
         enrollment: resetEnrollment.trim().toUpperCase(),
         otp_code: otpCode.trim(),
         new_password: newPassword.trim()

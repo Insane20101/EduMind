@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { FileText, Eye } from 'lucide-react';
 import PdfViewerModal from './PdfViewerModal';
 
+import { getApiBaseUrl } from '../config';
+
 export default function FileCard({ title, label, url }) {
   const [showViewer, setShowViewer] = useState(false);
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-  const fileUrl = url && url.startsWith('/') ? `${API_BASE}${url}` : url;
+  const fileUrl = url && url.startsWith('/') ? `${getApiBaseUrl()}${url}` : url;
 
   return (
     <>

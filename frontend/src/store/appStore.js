@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getApiBaseUrl } from '../config';
 
 export const useAppStore = create((set) => ({
   branch: 'CSE', 
@@ -31,8 +32,7 @@ export const useAppStore = create((set) => ({
   fetchSubjects: async () => {
     set({ isLoadingSubjects: true });
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-      const res = await fetch(`${baseUrl}/api/subjects/`);
+      const res = await fetch(`${getApiBaseUrl()}/api/subjects/`);
       if (res.ok) {
         const data = await res.json();
         set({ subjectsData: data, isLoadingSubjects: false });

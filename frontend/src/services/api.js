@@ -1,16 +1,15 @@
 import axios from 'axios';
 import { useAuth } from '../store/useAuth';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-
-export const api = axios.create({
-  baseURL: `${API_BASE_URL}/api`,
-});
-
 import { useAdminAuth } from '../store/useAdminAuth';
+import { getApiUrl } from '../config';
+
+export const api = axios.create();
 
 api.interceptors.request.use((config) => {
-  const isAdminRoute = config.url.startsWith('/admin');
+  // Dynamically attach baseURL so runtime hostname changes are reflected
+  config.baseURL = getApiUrl();
+
+  const isAdminRoute = config.url && config.url.startsWith('/admin');
   
   if (isAdminRoute) {
     const adminToken = useAdminAuth.getState().token;

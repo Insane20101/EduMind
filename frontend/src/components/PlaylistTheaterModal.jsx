@@ -12,9 +12,8 @@ import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import Mermaid from './Mermaid';
 import { preprocessMarkdownContent } from '../lib/utils';
+import { getApiBaseUrl } from '../config';
 import 'katex/dist/katex.min.css';
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 const MarkdownComponents = {
   p: ({node, ...props}) => (
@@ -137,7 +136,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     setLoadingItems(true);
     setRealVideos([]);
 
-    fetch(`${API_BASE}/api/resources/playlist-items?list_id=${listId}`)
+    fetch(`${getApiBaseUrl()}/api/resources/playlist-items?list_id=${listId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.videos && Array.isArray(data.videos) && data.videos.length > 0) {
