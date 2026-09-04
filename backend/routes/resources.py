@@ -113,6 +113,7 @@ async def student_community_upload(
         "subject_id": subject_id.upper(),
         "resource_type": resource_type,
         "title": title,
+        "filename": filename,
         "url": url,
         "cloudinary_public_id": public_id,
         "status": "pending",
@@ -196,11 +197,10 @@ async def admin_upload_resource(
         doc = {
             "resource_id": resource_id,
             "cloud_file_id": cloud_file_id,
-
-
             "subject_id": subject_id.upper(),
             "resource_type": resource_type,
             "title": title,
+            "filename": filename,
             "url": url,
             "cloudinary_public_id": public_id,
             "status": "approved",
@@ -348,11 +348,48 @@ async def delete_resource(
     resource_id: str,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Permanently delete a resource."""
+    """Permanently delete a resource, including GridFS storage, Cloudinary mirror, and ChromaDB vector chunks."""
     doc = await db.resources.find_one({"resource_id": resource_id})
     if not doc:
         raise HTTPException(status_code=404, detail="Resource not found.")
 
+    subject_id = doc.get("subject_id")
+    filename = doc.get("filename") or doc.get("title")
+    purged_chunks = 0
+
+    # 1. Purge matching vector chunks from target subject's ChromaDB collection
+    if subject_id and filename:
+        try:
+            subject_id = subject_id.strip().upper()
+            vs = get_langchain_vectorstore(subject_id)
+            
+            # Candidate filenames to match (filename, filename.pdf, title, title.pdf)
+            candidates = [filename]
+            if not filename.endswith(".pdf"):
+                candidates.append(f"{filename}.pdf")
+            if doc.get("title") and doc.get("title") not in candidates:
+                candidates.append(doc.get("title"))
+                candidates.append(f"{doc.get('title')}.pdf")
+
+            target_ids = set()
+            for cand_fname in candidates:
+                raw_data = vs._collection.get(where={"$and": [{"subject_id": subject_id}, {"source_filename": cand_fname}]})
+                if raw_data and raw_data.get("ids"):
+                    target_ids.update(raw_data.get("ids"))
+                
+                # Fallback search by source_filename inside subject collection
+                raw_fallback = vs._collection.get(where={"source_filename": cand_fname})
+                if raw_fallback and raw_fallback.get("ids"):
+                    target_ids.update(raw_fallback.get("ids"))
+
+            if target_ids:
+                vs._collection.delete(ids=list(target_ids))
+                purged_chunks = len(target_ids)
+                logger.info(f"Purged {purged_chunks} vector chunks for '{filename}' from ChromaDB collection '{subject_id}'.")
+        except Exception as e:
+            logger.warning(f"ChromaDB vector purge note for resource {resource_id}: {e}")
+
+    # 2. Cloudinary mirror cleanup
     public_id = doc.get("cloudinary_public_id")
     if public_id:
         try:
@@ -360,6 +397,7 @@ async def delete_resource(
         except Exception:
             pass
 
+    # 3. GridFS file storage cleanup
     cloud_file_id = doc.get("cloud_file_id")
     if cloud_file_id:
         try:
@@ -367,8 +405,13 @@ async def delete_resource(
         except Exception:
             pass
 
+    # 4. Remove metadata record from MongoDB
     await db.resources.delete_many({"resource_id": resource_id})
-    return {"message": "Resource deleted.", "resource_id": resource_id}
+    return {
+        "message": "Resource and associated vector chunks permanently deleted.",
+        "resource_id": resource_id,
+        "purged_chunks_count": purged_chunks
+    }
 
 
 # ── Admin Playlist Endpoints (MongoDB db.playlists Migration) ──────────────────
