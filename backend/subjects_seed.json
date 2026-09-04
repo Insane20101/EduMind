@@ -389,15 +389,9 @@
     {
       "code": "BCS-402",
       "name": "Cryptography and Information Security",
-      "status": "channel",
-      "playlists": [
-        {
-          "channel": "Gate Smashers",
-          "title": "Cybersecurity / Cryptography playlist",
-          "url": "https://www.youtube.com/@GateSmashers/playlists"
-        }
-      ],
-      "note": "Gate Smashers channel description lists Cybersecurity among covered topics; verify exact playlist."
+      "status": "none",
+      "playlists": [],
+      "note": null
     },
     {
       "code": "BCS-403",
