@@ -6,6 +6,7 @@ Handles uploads, playlists, student community submissions, vector knowledge base
 import os
 import uuid
 import logging
+import traceback
 from datetime import datetime, timezone
 from typing import Optional, List
 
@@ -222,8 +223,10 @@ async def admin_upload_resource(
         ingestion_queue.release_lock(success=True, final_message=f"Successfully ingested '{filename}' ({ingest_summary['chunk_count']} chunks).")
         return doc
     except Exception as e:
-        ingestion_queue.release_lock(success=False, final_message=f"Ingestion error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
+        tb_str = traceback.format_exc()
+        logger.error(f"ADMIN UPLOAD EXCEPTION: [{type(e).__name__}] {str(e)}\n{tb_str}")
+        ingestion_queue.release_lock(success=False, final_message=f"Ingestion error: [{type(e).__name__}] {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Ingestion failed: [{type(e).__name__}] {str(e)}")
 
 
 @router.get("/")
