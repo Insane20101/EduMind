@@ -87,7 +87,16 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
   const [isDragging, setIsDragging] = useState(false);
   const [isChatFullScreen, setIsChatFullScreen] = useState(false);
   const [isModalFullScreen, setIsModalFullScreen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
   const modalContainerRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleModalFullScreen = () => {
     setIsModalFullScreen((prev) => !prev);
@@ -389,13 +398,13 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-md p-2 sm:p-4 text-slate-100 font-sans select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-md p-0 sm:p-4 text-slate-100 font-sans select-none">
       <div 
         ref={modalContainerRef}
         className={`bg-slate-900 flex flex-col shadow-2xl overflow-hidden transition-all duration-200 ${
           isModalFullScreen 
             ? 'w-screen h-screen fixed inset-0 z-50 rounded-none border-0' 
-            : 'rounded-2xl w-full max-w-7xl h-[94vh] border border-slate-800'
+            : 'rounded-none sm:rounded-2xl w-full h-full sm:h-[94vh] max-w-7xl border-0 sm:border border-slate-800'
         }`}
       >
         
@@ -511,10 +520,10 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
           {/* Main Video Screen (Hidden in Full Screen Chat Mode) */}
           {!isChatFullScreen && (
             <div 
-              className="flex-1 flex flex-col bg-black relative min-w-0"
-              style={{ width: `calc(100% - ${sidebarWidth}px)` }}
+              className="w-full lg:flex-1 flex flex-col bg-black relative min-w-0 flex-shrink-0 lg:flex-shrink"
+              style={isDesktop ? { width: `calc(100% - ${sidebarWidth}px)` } : {}}
             >
-              <div className="flex-1 relative flex items-center justify-center">
+              <div className="relative w-full aspect-video lg:aspect-auto lg:flex-1 flex items-center justify-center bg-black">
                 {embedUrl ? (
                   <iframe
                     key={`${activePlaylistIdx}-${activeVideoIdx}`}
@@ -542,8 +551,8 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
               </div>
 
               {/* Video Controls Bar */}
-              <div className="p-3.5 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300">
-                <div className="flex items-center gap-3 max-w-xl min-w-0">
+              <div className="p-2.5 sm:p-3.5 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300">
+                <div className="flex items-center gap-2 sm:gap-3 max-w-xl min-w-0">
                   <span className="font-semibold text-slate-100 flex-shrink-0">
                     Lecture #{activeVideoIdx + 1}
                   </span>
@@ -556,14 +565,14 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                   <button
                     onClick={handleGenerateSummary}
                     disabled={summaryLoading}
-                    className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-purple-500/20 hover:from-amber-500/30 hover:to-purple-500/30 border border-indigo-500/40 text-indigo-300 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all shadow-sm"
+                    className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-purple-500/20 hover:from-amber-500/30 hover:to-purple-500/30 border border-indigo-500/40 text-indigo-300 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all shadow-sm"
                   >
                     {summaryLoading ? (
                       <Loader2 size={14} className="animate-spin text-amber-400" />
                     ) : (
                       <Sparkles size={14} className="text-amber-400" />
                     )}
-                    <span>Summarize Video</span>
+                    <span>Summarize</span>
                   </button>
 
                   {listId && (
@@ -571,16 +580,16 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                       <button
                         disabled={activeVideoIdx === 0}
                         onClick={() => setActiveVideoIdx((v) => Math.max(0, v - 1))}
-                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-medium"
+                        className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-medium text-xs"
                       >
-                        Previous Video
+                        Prev
                       </button>
                       <button
                         disabled={activeVideoIdx >= totalVideosCount - 1}
                         onClick={() => setActiveVideoIdx((v) => v + 1)}
-                        className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center gap-1 shadow-md shadow-indigo-600/20"
+                        className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center gap-1 shadow-md shadow-indigo-600/20 text-xs"
                       >
-                        <span>Next Video</span>
+                        <span>Next</span>
                         <ChevronRight size={14} />
                       </button>
                     </>
@@ -590,8 +599,8 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
             </div>
           )}
 
-          {/* Draggable Vertical Splitter Resizer Handle (Hidden in Full Screen Chat Mode) */}
-          {!isChatFullScreen && (
+          {/* Draggable Vertical Splitter Resizer Handle (Hidden in Full Screen Chat Mode & Mobile) */}
+          {!isChatFullScreen && isDesktop && (
             <div
               onMouseDown={handleMouseDown}
               className={`hidden lg:flex items-center justify-center w-3 cursor-col-resize group bg-slate-950 border-x border-slate-800/80 hover:bg-indigo-600/40 transition-colors relative z-20 select-none ${
@@ -605,12 +614,14 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
             </div>
           )}
 
-          {/* Interactive Right Sidebar: Tracklist or Ask AI (Expands to 100% width in Full Screen Chat Mode) */}
+          {/* Interactive Right/Bottom Sidebar: Tracklist or Ask AI */}
           <div 
-            className={`border-t lg:border-t-0 border-slate-800 bg-slate-900 flex flex-col ${
-              isChatFullScreen ? 'w-full h-full flex-1' : 'h-80 lg:h-full flex-shrink-0'
+            className={`border-t lg:border-t-0 border-slate-800 bg-slate-900 flex flex-col min-w-0 ${
+              isChatFullScreen 
+                ? 'w-full h-full flex-1' 
+                : 'w-full flex-1 lg:h-full lg:flex-shrink-0 min-h-0'
             }`}
-            style={isChatFullScreen ? {} : { width: `${sidebarWidth}px` }}
+            style={isChatFullScreen || !isDesktop ? {} : { width: `${sidebarWidth}px` }}
           >
             
             {/* Sidebar Tab Selector Header */}

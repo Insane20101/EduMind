@@ -102,32 +102,21 @@ async def get_youtube_playlist_items(list_id: str):
         raise HTTPException(status_code=400, detail="Missing list_id parameter.")
 
     url = f"https://www.youtube.com/playlist?list={list_id}"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9"
+    }
 
     try:
         resp = requests.get(url, headers=headers, timeout=10)
         if resp.status_code == 200:
             html = resp.text
-            start_json = html.find("ytInitialData = ") + len("ytInitialData = ")
-            end_json = html.find(";</script>", start_json)
-            data = json.loads(html[start_json:end_json].strip())
-
-            def find_nodes_by_key(obj, target_key):
-                if isinstance(obj, dict):
-                    if target_key in obj:
-                        yield obj
-                    for v in obj.values():
-                        yield from find_nodes_by_key(v, target_key)
-                elif isinstance(obj, list):
-                    for item in obj:
-                        yield from find_nodes_by_key(item, target_key)
-
-            offline_nodes = list(find_nodes_by_key(data, 'offlineVideoEndpoint'))
+            
+            raw_video_ids = re.findall(r'"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"', html)
             video_ids = []
             seen = set()
-            for node in offline_nodes:
-                v_id = node.get('offlineVideoEndpoint', {}).get('videoId')
-                if v_id and v_id not in seen and len(v_id) == 11:
+            for v_id in raw_video_ids:
+                if v_id and v_id not in seen:
                     seen.add(v_id)
                     video_ids.append(v_id)
 
@@ -158,7 +147,7 @@ async def get_youtube_playlist_items(list_id: str):
                     }
 
                 from concurrent.futures import ThreadPoolExecutor
-                with ThreadPoolExecutor(max_workers=25) as executor:
+                with ThreadPoolExecutor(max_workers=30) as executor:
                     results = list(executor.map(fetch_info, enumerate(video_ids)))
 
                 results.sort(key=lambda x: x["index"])
