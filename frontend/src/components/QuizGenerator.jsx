@@ -126,7 +126,15 @@ export default function QuizGenerator({ onBack }) {
         })
       });
       
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonErr) {
+        if (!response.ok) {
+          throw new Error(`Server returned status ${response.status}. Please try again.`);
+        }
+        throw new Error("Received an invalid response format from the server.");
+      }
       
       if (!response.ok) {
         throw new Error(data.detail || "Failed to generate quiz.");
@@ -135,7 +143,7 @@ export default function QuizGenerator({ onBack }) {
       setQuizData(data);
     } catch (err) {
       console.error(err);
-      setErrorMsg(err.message);
+      setErrorMsg(err.message || "Failed to connect to quiz generator service.");
     } finally {
       setGenerating(false);
     }
@@ -156,14 +164,19 @@ export default function QuizGenerator({ onBack }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers })
       });
-      if (!response.ok) throw new Error("Failed to submit quiz");
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonErr) {
+        throw new Error(`Failed to submit quiz (Status ${response.status})`);
+      }
+      if (!response.ok) throw new Error(data?.detail || "Failed to submit quiz");
       setScore(data.score);
       setSubmitted(true);
       setIsSubmitting(false);
     } catch (err) {
       console.error("Submission error:", err);
-      setErrorMsg("Failed to submit quiz. Please try again.");
+      setErrorMsg(err.message || "Failed to submit quiz. Please try again.");
       setIsSubmitting(false);
     }
   };

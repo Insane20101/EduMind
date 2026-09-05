@@ -11,14 +11,20 @@ export const getApiBaseUrl = () => {
     return envUrl.trim().replace(/\/+$/, '');
   }
 
-  // 2. Dynamic local network IP detection for mobile/tablet/other device testing:
-  // If accessing from another device via IP (e.g., http://192.168.1.15:5173),
-  // automatically target the backend at http://192.168.1.15:8000.
+  // 2. Dynamic resolution based on hostname
   if (typeof window !== 'undefined' && window.location && window.location.hostname) {
     const hostname = window.location.hostname;
-    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    
+    // Check if accessing via explicit local IP address (e.g., http://192.168.1.15:5173)
+    const isIpAddress = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(hostname);
+    if (isIpAddress && hostname !== '127.0.0.1') {
       const protocol = window.location.protocol || 'http:';
       return `${protocol}//${hostname}:8000`;
+    }
+
+    // Deployed production environment (e.g., Vercel frontend targetting live Render backend)
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      return 'https://edumind-ebk1.onrender.com';
     }
   }
 

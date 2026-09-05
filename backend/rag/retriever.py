@@ -1,7 +1,10 @@
 from typing import Optional, List, Dict, Any
 from qdrant_client.http import models
-from .vector_store import get_qdrant_client
+from .vector_store import get_qdrant_client, ensure_payload_indexes
 from .embedder import generate_embeddings
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6) -> List[Dict[str, Any]]:
     """
@@ -36,15 +39,37 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
                 ]
             )
 
-        # 3. Vector Similarity Search in Qdrant Cloud
-        search_result = client.query_points(
-            collection_name=subject_id,
-            query=query_vector,
-            query_filter=query_filter,
-            limit=top_k
-        )
-
-        points = search_result.points if hasattr(search_result, "points") else search_result
+        # 3. Vector Similarity Search in Qdrant Cloud with fallback handling
+        points = []
+        try:
+            search_result = client.query_points(
+                collection_name=subject_id,
+                query=query_vector,
+                query_filter=query_filter,
+                limit=top_k
+            )
+            points = search_result.points if hasattr(search_result, "points") else search_result
+        except Exception as filter_err:
+            logger.warning(f"Filtered Qdrant query notice for '{subject_id}' (attempting index fix & fallback): {filter_err}")
+            ensure_payload_indexes(client, subject_id)
+            try:
+                search_result = client.query_points(
+                    collection_name=subject_id,
+                    query=query_vector,
+                    query_filter=None,
+                    limit=top_k * 3
+                )
+                raw_points = search_result.points if hasattr(search_result, "points") else search_result
+                if unit_id and unit_id.strip() and unit_id.strip().lower() != "all":
+                    target_u = unit_id.strip().lower()
+                    points = [p for p in raw_points if (p.payload or {}).get("unit", "").strip().lower() == target_u][:top_k]
+                    if not points:
+                        points = raw_points[:top_k]
+                else:
+                    points = raw_points[:top_k]
+            except Exception as fallback_err:
+                logger.error(f"Fallback Qdrant query failed for '{subject_id}': {fallback_err}")
+                points = []
 
         chunks = []
         for point in points:

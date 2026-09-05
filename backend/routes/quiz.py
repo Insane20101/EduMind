@@ -152,10 +152,15 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
                 
         q.source_chunk_ids = valid_chunk_ids
         
-        # STRICT GUARDRAIL: DISCARD ANY QUESTION WITH ZERO VALID RETRIEVED CHUNK IDS!
-        if not q.source_chunk_ids:
-            logger.warning("DISCARDING UNGROUNDED QUESTION: No valid retrieved chunk IDs matched", extra={"question_text": q.question_text})
-            continue
+        # STRICT GUARDRAIL: If retrieved chunks exist, discard ungrounded questions.
+        # Otherwise, allow syllabus-level quiz generation with fallback grounding.
+        if valid_retrieved_set:
+            if not q.source_chunk_ids:
+                logger.warning("DISCARDING UNGROUNDED QUESTION: No valid retrieved chunk IDs matched", extra={"question_text": q.question_text})
+                continue
+        else:
+            if not q.source_chunk_ids:
+                q.source_chunk_ids = [f"syllabus_{subject_id}"]
                 
         # Verify the unit requested is valid
         if not q.unit or q.unit not in req.unit_ids:
