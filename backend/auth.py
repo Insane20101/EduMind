@@ -340,3 +340,8 @@ async def update_profile(user_update: UserUpdate, current_user: dict = Depends(g
         "last_name": updated_user["last_name"],
         "created_at": updated_user["created_at"]
     }
+
+@router.get("/test-email")
+async def test_email(to_email: str = "akr20101@gmail.com"):
+    from utils.email_utils import test_smtp_connection
+    return test_smtp_connection(to_email)

@@ -199,3 +199,66 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str, conte
         return False
 
 
+def test_smtp_connection(to_email: str) -> dict:
+    smtp_user = os.getenv("SMTP_USER", "").strip().strip('"').strip("'")
+    raw_pass = os.getenv("SMTP_PASSWORD", "").strip().strip('"').strip("'")
+    smtp_password = raw_pass.replace(" ", "")
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com").strip()
+    try:
+        smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    except ValueError:
+        smtp_port = 587
+
+    if not smtp_user:
+        return {"success": False, "error": "SMTP_USER environment variable missing in Render dashboard."}
+    if not smtp_password:
+        return {"success": False, "error": "SMTP_PASSWORD environment variable missing in Render dashboard."}
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "[EduMind Test] Live SMTP Diagnostics Test"
+    msg["From"] = f"EduMind Security <{smtp_user}>"
+    msg["To"] = to_email
+    msg.attach(MIMEText("<p>This is a live test email from EduMind backend SMTP diagnostic module.</p>", "html"))
+
+    tls_err = None
+    ssl_err = None
+
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, to_email, msg.as_string())
+        return {
+            "success": True,
+            "method": f"TLS Port {smtp_port}",
+            "smtp_user": smtp_user,
+            "smtp_server": smtp_server,
+            "recipient": to_email
+        }
+    except Exception as e:
+        tls_err = str(e)
+
+    try:
+        with smtplib.SMTP_SSL(smtp_server, 465, timeout=10) as server:
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, to_email, msg.as_string())
+        return {
+            "success": True,
+            "method": "SSL Port 465",
+            "smtp_user": smtp_user,
+            "smtp_server": smtp_server,
+            "recipient": to_email
+        }
+    except Exception as e:
+        ssl_err = str(e)
+
+    return {
+        "success": False,
+        "smtp_user": smtp_user,
+        "smtp_server": smtp_server,
+        "smtp_port": smtp_port,
+        "tls_error": tls_err,
+        "ssl_error": ssl_err
+    }
+
+
