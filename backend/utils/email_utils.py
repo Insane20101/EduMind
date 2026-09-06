@@ -14,12 +14,19 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
     """
     Sends OTP email using standard SMTP (e.g. Gmail App Password) without requiring custom DNS domain setup.
     """
-    smtp_user = os.getenv("SMTP_USER", "").strip()
-    smtp_password = os.getenv("SMTP_PASSWORD", "").strip()
+    smtp_user = os.getenv("SMTP_USER", "").strip().strip('"').strip("'")
+    raw_pass = os.getenv("SMTP_PASSWORD", "").strip().strip('"').strip("'")
+    # Remove any spaces automatically if user copied Google App Password format (e.g. 'abcd efgh ijkl mnop')
+    smtp_password = raw_pass.replace(" ", "")
     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com").strip()
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    
+    try:
+        smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    except ValueError:
+        smtp_port = 587
 
     if not smtp_user or not smtp_password:
+        logger.warning("[SMTP EMAIL] SMTP_USER or SMTP_PASSWORD missing.")
         return False
 
     if context == "signup":
@@ -71,23 +78,33 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
     </html>
     """
 
-    try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = subject_line
-        msg["From"] = f"EduMind Security <{smtp_user}>"
-        msg["To"] = to_email
-        msg.attach(MIMEText(html_content, "html"))
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject_line
+    msg["From"] = f"EduMind Security <{smtp_user}>"
+    msg["To"] = to_email
+    msg.attach(MIMEText(html_content, "html"))
 
-        with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
+    # Try STARTTLS on specified port (default 587)
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port, timeout=12) as server:
             server.starttls()
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, to_email, msg.as_string())
-        
-        logger.info(f"[SMTP EMAIL SUCCESS] Dispatched OTP code ({context}) to {to_email} via SMTP")
+        logger.info(f"[SMTP EMAIL SUCCESS] Dispatched OTP code ({context}) to {to_email} via TLS port {smtp_port}")
         return True
-    except Exception as e:
-        logger.error(f"[SMTP EMAIL EXCEPTION] Failed to dispatch via SMTP: {e}")
-        return False
+    except Exception as e_tls:
+        logger.warning(f"[SMTP TLS FAILED] Port {smtp_port} failed: {e_tls}. Retrying via SSL port 465...")
+        # Fallback to SSL on port 465
+        try:
+            with smtplib.SMTP_SSL(smtp_server, 465, timeout=12) as server:
+                server.login(smtp_user, smtp_password)
+                server.sendmail(smtp_user, to_email, msg.as_string())
+            logger.info(f"[SMTP EMAIL SUCCESS] Dispatched OTP code ({context}) to {to_email} via SSL port 465")
+            return True
+        except Exception as e_ssl:
+            logger.error(f"[SMTP EMAIL FAILED] Failed via TLS ({e_tls}) and SSL ({e_ssl})")
+            return False
+
 
 def send_resend_otp_email(to_email: str, student_name: str, otp_code: str, context: str = "password_reset") -> bool:
     """

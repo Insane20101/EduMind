@@ -133,7 +133,7 @@ async def signup(user: UserCreate):
 
     if otp_record.get("otp_code") != submitted_otp:
         await db.signup_otps.update_one(
-            {"_id": otp_record["_id"]},
+            {"recovery_email": clean_rec_email},
             {"$inc": {"attempts": 1}}
         )
         raise HTTPException(status_code=400, detail="Invalid verification code. Please check your email.")
@@ -169,7 +169,7 @@ async def signup(user: UserCreate):
         raise HTTPException(status_code=400, detail="Enrollment number already registered.")
     
     # Clean up OTP record on success
-    await db.signup_otps.delete_one({"_id": otp_record["_id"]})
+    await db.signup_otps.delete_one({"recovery_email": clean_rec_email})
 
     user_dict.pop("password_hash", None)
     user_dict.pop("_id", None)

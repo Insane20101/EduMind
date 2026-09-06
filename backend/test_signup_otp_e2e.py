@@ -2,6 +2,8 @@ import os
 import sys
 import asyncio
 
+os.environ["USE_MOCK_DB"] = "true"
+
 sys.path.insert(0, os.path.dirname(__file__))
 
 from datetime import datetime, timedelta

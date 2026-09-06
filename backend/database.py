@@ -62,9 +62,46 @@ if USE_MOCK_DB:
             self.collection_name = collection_name
         
         async def find_one(self, query):
-            if self.collection_name == "users" and "enrollment" in query:
-                user = mock_db["users"].get(query["enrollment"])
-                return copy.deepcopy(user) if user else None
+            if self.collection_name == "users":
+                if not query:
+                    return None
+                for enrollment, user in mock_db["users"].items():
+                    matches = True
+                    for k, v in query.items():
+                        if k == "$or" and isinstance(v, list):
+                            or_match = False
+                            for cond in v:
+                                sub_match = True
+                                for sub_k, sub_v in cond.items():
+                                    val = user.get(sub_k)
+                                    if isinstance(sub_v, dict) and "$regex" in sub_v:
+                                        pattern = sub_v["$regex"]
+                                        flags = re.IGNORECASE if sub_v.get("$options") == "i" else 0
+                                        if not val or not re.search(pattern, str(val), flags):
+                                            sub_match = False
+                                            break
+                                    elif val != sub_v:
+                                        sub_match = False
+                                        break
+                                if sub_match:
+                                    or_match = True
+                                    break
+                            if not or_match:
+                                matches = False
+                                break
+                        else:
+                            val = user.get(k)
+                            if isinstance(v, dict) and "$regex" in v:
+                                pattern = v["$regex"]
+                                flags = re.IGNORECASE if v.get("$options") == "i" else 0
+                                if not val or not re.search(pattern, str(val), flags):
+                                    matches = False
+                                    break
+                            elif val != v:
+                                matches = False
+                                break
+                    if matches:
+                        return copy.deepcopy(user)
             return None
         
         async def insert_one(self, document):
@@ -93,6 +130,17 @@ if USE_MOCK_DB:
                         await save_mock_db()
                     return {"modified_count": 1}
             return {"modified_count": 0}
+
+        async def delete_many(self, query=None):
+            if self.collection_name == "users":
+                if not query:
+                    mock_db["users"].clear()
+                else:
+                    pattern = query.get("enrollment", {}).get("$regex", "") if isinstance(query.get("enrollment"), dict) else ""
+                    keys_to_del = [k for k in mock_db["users"].keys() if pattern and re.search(pattern, k, re.IGNORECASE)]
+                    for k in keys_to_del:
+                        del mock_db["users"][k]
+                await save_mock_db()
 
     class GenericMockCollection:
         def __init__(self, collection_name):
@@ -154,17 +202,25 @@ if USE_MOCK_DB:
                     self.deleted_count = count
             return DeleteResult(deleted_count)
 
+        async def delete_one(self, query=None):
+            return await self.delete_many(query)
+
 
         async def count_documents(self, query=None):
             return len([d for d in mock_db[self.collection_name] if self._matches(d, query)])
 
-        async def update_one(self, query, update):
+        async def update_one(self, query, update, upsert=False):
             for d in mock_db[self.collection_name]:
                 if self._matches(d, query):
                     if "$set" in update:
                         d.update(copy.deepcopy(update["$set"]))
                     await save_mock_db()
                     return {"modified_count": 1}
+            if upsert and "$set" in update:
+                doc = copy.deepcopy(update["$set"])
+                mock_db[self.collection_name].append(doc)
+                await save_mock_db()
+                return {"upserted_count": 1}
             return {"modified_count": 0}
 
     class MockDatabase:
