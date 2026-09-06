@@ -11,10 +11,16 @@ class UserCreate(BaseModel):
     middle_name: Optional[str] = None
     last_name: str
     password: str = Field(..., min_length=8)
+    otp_code: str = Field(..., min_length=6, max_length=6)
 
 class UserLogin(BaseModel):
     enrollment: str
     password: str
+
+class SendSignupOTPRequest(BaseModel):
+    enrollment: str
+    recovery_email: str
+    first_name: str
 
 class SendOTPRequest(BaseModel):
     enrollment: str

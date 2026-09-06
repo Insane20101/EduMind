@@ -14,8 +14,10 @@ __pycache__/
 
 # Local Vector Store & Heavy Local Data
 backend/chroma_data/
+backend/data/
 chroma_data/
 *.sqlite3
+
 *.pdf
 
 # Logs & Temporary Test Dumps

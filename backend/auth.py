@@ -8,7 +8,7 @@ from pymongo.errors import DuplicateKeyError
 
 from schemas import (
     UserCreate, UserLogin, UserUpdate, UserResponse, 
-    UserPasswordReset, SendOTPRequest, VerifyOTPResetPasswordRequest
+    UserPasswordReset, SendOTPRequest, SendSignupOTPRequest, VerifyOTPResetPasswordRequest
 )
 from database import db
 from jwt_utils import create_access_token, get_current_user
@@ -38,22 +38,111 @@ def mask_email(email: str) -> str:
         masked_name = name[0] + "*" * (len(name) - 2) + name[-1]
     return f"{masked_name}@{domain}"
 
+@router.post("/send-signup-otp")
+@limiter.limit("5/minute")
+async def send_signup_otp(request: Request, payload: SendSignupOTPRequest):
+    clean_enr = (payload.enrollment or "").strip().upper()
+    clean_rec_email = (payload.recovery_email or "").strip().lower()
+    first_name = (payload.first_name or "Student").strip()
+
+    if not clean_enr or not clean_rec_email:
+        raise HTTPException(status_code=400, detail="Both Enrollment Number and Recovery Email ID are required.")
+    
+    if not EMAIL_REGEX.match(clean_rec_email):
+        raise HTTPException(status_code=400, detail="Valid Recovery Email ID is required.")
+
+    validate_enrollment(clean_enr, "CSE")
+
+    # Early check 1: Enrollment already exists?
+    existing_enr = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
+    if existing_enr:
+        raise HTTPException(status_code=400, detail="Enrollment number already registered.")
+
+    # Early check 2: Email already registered?
+    existing_email = await db.users.find_one({
+        "$or": [
+            {"recovery_email": {"$regex": f"^{re.escape(clean_rec_email)}$", "$options": "i"}},
+            {"email": {"$regex": f"^{re.escape(clean_rec_email)}$", "$options": "i"}}
+        ]
+    })
+    if existing_email:
+        raise HTTPException(status_code=400, detail="Email address already registered.")
+
+    # Generate 6-digit OTP code
+    otp_code = str(random.randint(100000, 999999))
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+
+    # Upsert OTP record for signup
+    await db.signup_otps.update_one(
+        {"recovery_email": clean_rec_email},
+        {"$set": {
+            "enrollment": clean_enr,
+            "recovery_email": clean_rec_email,
+            "otp_code": otp_code,
+            "attempts": 0,
+            "expires_at": expires_at,
+            "created_at": datetime.utcnow()
+        }},
+        upsert=True
+    )
+
+    email_sent = send_resend_otp_email(clean_rec_email, first_name, otp_code, context="signup")
+    masked = mask_email(clean_rec_email)
+
+    return {
+        "message": f"6-digit verification code sent to {masked}",
+        "masked_email": masked,
+        "email_sent": email_sent
+    }
+
 @router.post("/signup")
 async def signup(user: UserCreate):
     validate_enrollment(user.enrollment, user.branch)
     
     clean_enr = user.enrollment.strip().upper()
     clean_rec_email = (user.recovery_email or "").strip().lower()
+    submitted_otp = (user.otp_code or "").strip()
 
     if not clean_rec_email or not EMAIL_REGEX.match(clean_rec_email):
         raise HTTPException(status_code=400, detail="Valid Recovery Email ID is required.")
     
-    # Check if enrollment already exists (case-insensitive)
+    if not submitted_otp or len(submitted_otp) != 6:
+        raise HTTPException(status_code=400, detail="6-digit verification code is required.")
+
+    # Verify pending OTP
+    otp_record = await db.signup_otps.find_one({"recovery_email": clean_rec_email})
+    if not otp_record:
+        raise HTTPException(status_code=400, detail="No pending verification code found for this email. Please click 'Resend Code'.")
+
+    if otp_record.get("expires_at") < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Verification code has expired. Please request a new code.")
+
+    if otp_record.get("attempts", 0) >= 5:
+        raise HTTPException(status_code=400, detail="Too many failed verification attempts. Please request a new verification code.")
+
+    if otp_record.get("otp_code") != submitted_otp:
+        await db.signup_otps.update_one(
+            {"_id": otp_record["_id"]},
+            {"$inc": {"attempts": 1}}
+        )
+        raise HTTPException(status_code=400, detail="Invalid verification code. Please check your email.")
+
+    # Check enrollment existence
     existing_enr = await db.users.find_one({"enrollment": {"$regex": f"^{re.escape(clean_enr)}$", "$options": "i"}})
     if existing_enr:
         raise HTTPException(status_code=400, detail="Enrollment number already registered.")
 
-    user_dict = user.dict(exclude={"password"})
+    # Check email existence
+    existing_email = await db.users.find_one({
+        "$or": [
+            {"recovery_email": {"$regex": f"^{re.escape(clean_rec_email)}$", "$options": "i"}},
+            {"email": {"$regex": f"^{re.escape(clean_rec_email)}$", "$options": "i"}}
+        ]
+    })
+    if existing_email:
+        raise HTTPException(status_code=400, detail="Email address already registered.")
+
+    user_dict = user.dict(exclude={"password", "otp_code"})
     user_dict["enrollment"] = clean_enr
     user_dict["recovery_email"] = clean_rec_email
     user_dict["branch"] = user_dict.get("branch", "CSE").upper()
@@ -62,14 +151,21 @@ async def signup(user: UserCreate):
     
     try:
         await db.users.insert_one(user_dict)
-    except DuplicateKeyError:
+    except DuplicateKeyError as e:
+        err_msg = str(e)
+        if "Email" in err_msg or "recovery_email" in err_msg:
+            raise HTTPException(status_code=400, detail="Email address already registered.")
         raise HTTPException(status_code=400, detail="Enrollment number already registered.")
     
+    # Clean up OTP record on success
+    await db.signup_otps.delete_one({"_id": otp_record["_id"]})
+
     user_dict.pop("password_hash", None)
     user_dict.pop("_id", None)
     
     token = create_access_token({"enrollment": user_dict["enrollment"]})
     return {"access_token": token, "user": user_dict}
+
 
 @router.post("/login")
 @limiter.limit("10/minute")

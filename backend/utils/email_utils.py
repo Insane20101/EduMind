@@ -6,9 +6,9 @@ logger = logging.getLogger(__name__)
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
-def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bool:
+def send_resend_otp_email(to_email: str, student_name: str, otp_code: str, context: str = "password_reset") -> bool:
     """
-    Sends a beautifully formatted HTML OTP email using Resend REST API.
+    Sends a beautifully formatted HTML OTP email using Resend REST API for signup verification or password reset.
     """
     raw_key = os.getenv("RESEND_API_KEY") or RESEND_API_KEY or ""
     resend_key = raw_key.strip().strip('"').strip("'")
@@ -24,6 +24,15 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bo
 
     # Resend default testing sender or custom verified domain
     from_email = os.getenv("RESEND_FROM_EMAIL", "EduMind Security <onboarding@resend.dev>")
+
+    if context == "signup":
+        badge_text = "Account Verification Request"
+        subject_line = f"[{otp_code}] EduMind Account Verification Code"
+        intro_text = "Welcome to EduMind! Please enter the 6-digit verification code below to verify your email address and complete registration:"
+    else:
+        badge_text = "Password Reset Request"
+        subject_line = f"[{otp_code}] EduMind Password Reset Security Code"
+        intro_text = "We received a request to reset the password for your EduMind student account. Enter the 6-digit verification code below to proceed:"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -45,11 +54,11 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bo
     <body>
         <div class="container">
             <div class="logo">🎓 EduMind AI Platform</div>
-            <div style="text-align: center;"><span class="badge">Password Reset Request</span></div>
+            <div style="text-align: center;"><span class="badge">{badge_text}</span></div>
             <div class="title">Verify Your Security Code</div>
             <div class="text">
                 Hello <strong>{student_name}</strong>,<br>
-                We received a request to reset the password for your EduMind student account. Enter the 6-digit verification code below to proceed:
+                {intro_text}
             </div>
             <div class="otp-box">
                 <div class="otp-code">{otp_code}</div>
@@ -68,14 +77,14 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bo
     payload = {
         "from": from_email,
         "to": [to_email],
-        "subject": f"[{otp_code}] EduMind Password Reset Security Code",
+        "subject": subject_line,
         "html": html_content
     }
 
     try:
         response = requests.post(url, headers=headers, json=payload, timeout=8)
         if response.status_code in [200, 201]:
-            logger.info(f"[RESEND EMAIL SUCCESS] Dispatched OTP code to {to_email}")
+            logger.info(f"[RESEND EMAIL SUCCESS] Dispatched OTP code ({context}) to {to_email}")
             return True
         else:
             logger.error(f"[RESEND EMAIL FAILED] Status {response.status_code}: {response.text}")
@@ -83,3 +92,4 @@ def send_resend_otp_email(to_email: str, student_name: str, otp_code: str) -> bo
     except Exception as e:
         logger.error(f"[RESEND EMAIL EXCEPTION] Failed to dispatch via Resend: {e}")
         return False
+

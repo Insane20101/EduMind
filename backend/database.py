@@ -69,10 +69,17 @@ if USE_MOCK_DB:
         
         async def insert_one(self, document):
             if self.collection_name == "users":
-                enrollment = document["enrollment"]
-                if enrollment in mock_db["users"]:
-                    from pymongo.errors import DuplicateKeyError
-                    raise DuplicateKeyError("Enrollment already exists")
+                enrollment = document.get("enrollment")
+                rec_email = (document.get("recovery_email") or document.get("email") or "").strip().lower()
+                from pymongo.errors import DuplicateKeyError
+                
+                for existing in mock_db["users"].values():
+                    if enrollment and existing.get("enrollment") == enrollment:
+                        raise DuplicateKeyError("Enrollment already exists")
+                    ex_email = (existing.get("recovery_email") or existing.get("email") or "").strip().lower()
+                    if rec_email and ex_email == rec_email:
+                        raise DuplicateKeyError("Email already registered")
+                
                 mock_db["users"][enrollment] = copy.deepcopy(document)
                 await save_mock_db()
             return None
@@ -169,6 +176,8 @@ if USE_MOCK_DB:
             self.admin_credentials = GenericMockCollection("admin_credentials")
             self.resources = GenericMockCollection("resources")
             self.playlists = GenericMockCollection("playlists")
+            self.otps = GenericMockCollection("otps")
+            self.signup_otps = GenericMockCollection("signup_otps")
 
     db = MockDatabase()
 
@@ -223,12 +232,38 @@ else:
 
     async def init_db():
         get_fs()
-        # Create unique index on enrollment
+        # Safe, idempotent index creation with legacy index option conflict resolution
         try:
-            await db.users.create_index("enrollment", unique=True)
+            existing_indexes = await db.users.index_information()
+            collation = {"locale": "en", "strength": 2}
+
+            # Drop uncollated legacy recovery_email index if option conflict exists
+            if "recovery_email_1" in existing_indexes and "collation" not in existing_indexes["recovery_email_1"]:
+                try:
+                    await db.users.drop_index("recovery_email_1")
+                except Exception:
+                    pass
+
+            # Drop uncollated legacy enrollment index if option conflict exists
+            if "enrollment_1" in existing_indexes and "collation" not in existing_indexes["enrollment_1"]:
+                try:
+                    await db.users.drop_index("enrollment_1")
+                except Exception:
+                    pass
+
+            await db.users.create_index("enrollment", unique=True, collation=collation)
+            await db.users.create_index("recovery_email", unique=True, collation=collation)
             await db.admin_credentials.create_index("admin_id", unique=True)
         except Exception:
-            pass
+            # Fallback to standard unique indexes if collation is unsupported by host version
+            try:
+                await db.users.create_index("enrollment", unique=True)
+                await db.users.create_index("recovery_email", unique=True)
+                await db.admin_credentials.create_index("admin_id", unique=True)
+            except Exception:
+                pass
+
+
 
     async def upload_file(filename: str, content: bytes, content_type: str = "application/octet-stream"):
         bucket = get_fs()

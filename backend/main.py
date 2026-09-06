@@ -28,7 +28,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import os
+import asyncio
+import logging
+from datetime import datetime
+import httpx
+
 from rag.vector_store import get_qdrant_client
+
+logger = logging.getLogger(__name__)
+
+async def keep_alive_pinger():
+    url = os.getenv("RENDER_EXTERNAL_URL")
+    if not url:
+        logger.info("[KEEP-ALIVE] RENDER_EXTERNAL_URL not set; skipping keep-alive pinger loop.")
+        return
+    
+    clean_url = url.rstrip('/')
+    keep_alive_url = f"{clean_url}/api/keep-alive"
+    logger.info(f"[KEEP-ALIVE] Starting self-pinging background task for {keep_alive_url}")
+    
+    await asyncio.sleep(60)
+    async with httpx.AsyncClient() as client:
+        while True:
+            try:
+                resp = await client.get(keep_alive_url, timeout=10.0)
+                logger.info(f"[KEEP-ALIVE] Ping to {keep_alive_url} returned status {resp.status_code}")
+            except Exception as e:
+                logger.warning(f"[KEEP-ALIVE] Ping failed: {e}")
+            await asyncio.sleep(660)
 
 @app.on_event("startup")
 async def startup_db_client():
@@ -36,6 +64,7 @@ async def startup_db_client():
     await seed_subjects_if_needed(db)
     # Fail loud if QDRANT_URL or QDRANT_API_KEY is not configured
     get_qdrant_client()
+    asyncio.create_task(keep_alive_pinger())
 
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 from routes.admin_auth import router as admin_auth_router
@@ -55,4 +84,12 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "ok", "message": "EduMind API is warm"}
+
+@app.get("/api/keep-alive")
+def keep_alive():
+    return {
+        "status": "alive",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "EduMind-Backend"
+    }
 

@@ -3,13 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock, Mail } from 'lucide-react';
+import { KeyRound, X, Loader2, Send, ShieldCheck, RefreshCw, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import EduMindLogo from '../components/EduMindLogo';
 
 import { getApiBaseUrl } from '../config';
 
 export default function Login() {
   const [formData, setFormData] = useState({ enrollment: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
   
   // Forgot Password Recovery State
   const [showResetModal, setShowResetModal] = useState(false);
@@ -143,14 +144,25 @@ export default function Login() {
                 <span>Forgot password?</span>
               </button>
             </div>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full p-2.5 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                className="w-full p-2.5 pr-10 border border-border-subtle rounded-lg bg-muted text-text-primary focus:outline-none focus:border-primary transition-colors text-sm"
+                value={formData.password}
+                onChange={(e) => setFormData({...formData, password: e.target.value})}
+                required
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors p-1"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <button
