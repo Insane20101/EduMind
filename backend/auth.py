@@ -1,12 +1,16 @@
 import re
 import random
+import logging
 from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, Depends, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from pymongo.errors import DuplicateKeyError
 
+logger = logging.getLogger(__name__)
+
 from schemas import (
+
     UserCreate, UserLogin, UserUpdate, UserResponse, 
     UserPasswordReset, SendOTPRequest, SendSignupOTPRequest, VerifyOTPResetPasswordRequest
 )
@@ -89,11 +93,18 @@ async def send_signup_otp(request: Request, payload: SendSignupOTPRequest):
     email_sent = send_resend_otp_email(clean_rec_email, first_name, otp_code, context="signup")
     masked = mask_email(clean_rec_email)
 
+    if not email_sent:
+        logger.warning(f"[SIGNUP OTP GENERATED] OTP code for {clean_rec_email}: {otp_code}")
+
+    msg = f"6-digit verification code sent to {masked}" if email_sent else f"Verification code generated for {masked}. (Email delivery note: check Resend API key & domain configuration)."
+
     return {
-        "message": f"6-digit verification code sent to {masked}",
+        "message": msg,
         "masked_email": masked,
         "email_sent": email_sent
     }
+
+
 
 @router.post("/signup")
 async def signup(user: UserCreate):
@@ -245,14 +256,21 @@ async def send_otp(request: Request, payload: SendOTPRequest):
     )
 
     student_name = user.get("first_name", "Student")
-    email_sent = send_resend_otp_email(registered_rec_email, student_name, otp_code)
-
+    email_sent = send_resend_otp_email(registered_rec_email, student_name, otp_code, context="password_reset")
     masked = mask_email(registered_rec_email)
+
+    if not email_sent:
+        logger.warning(f"[RESET OTP GENERATED] OTP code for {registered_rec_email}: {otp_code}")
+
+    msg = f"6-digit verification code sent to {masked}" if email_sent else f"Verification code generated for {masked}. (Email delivery note: check Resend API key & domain configuration)."
+
     return {
-        "message": f"6-digit verification code sent to {masked}",
+        "message": msg,
         "masked_email": masked,
         "email_sent": email_sent
     }
+
+
 
 @router.post("/verify-otp-reset-password")
 @limiter.limit("5/minute")
