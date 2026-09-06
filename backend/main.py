@@ -56,7 +56,7 @@ async def keep_alive_pinger():
                 logger.info(f"[KEEP-ALIVE] Ping to {keep_alive_url} returned status {resp.status_code}")
             except Exception as e:
                 logger.warning(f"[KEEP-ALIVE] Ping failed: {e}")
-            await asyncio.sleep(660)
+            await asyncio.sleep(300) # Ping every 5 minutes
 
 @app.on_event("startup")
 async def startup_db_client():
