@@ -114,17 +114,28 @@ export default function QuizGenerator({ onBack }) {
     setSubmitted(false);
     setIsSubmitting(false);
 
+    const url = `${getApiBaseUrl()}/api/subjects/${subjectId}/quiz/generate`;
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        unit_ids: selectedUnits,
+        difficulty: difficulty,
+        count: parseInt(count, 10),
+        user_id: "test_user"
+      })
+    };
+
     try {
-      const response = await fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/quiz/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          unit_ids: selectedUnits,
-          difficulty: difficulty,
-          count: parseInt(count, 10),
-          user_id: "test_user"
-        })
-      });
+      let response;
+      try {
+        response = await fetch(url, requestOptions);
+      } catch (firstFetchErr) {
+        // Retry once in case of server spin-down or momentary network hiccup
+        console.warn("First quiz generate request failed, retrying in 1.5s...", firstFetchErr);
+        await new Promise(res => setTimeout(res, 1500));
+        response = await fetch(url, requestOptions);
+      }
       
       let data;
       try {
@@ -142,8 +153,12 @@ export default function QuizGenerator({ onBack }) {
       
       setQuizData(data);
     } catch (err) {
-      console.error(err);
-      setErrorMsg(err.message || "Failed to connect to quiz generator service.");
+      console.error("Quiz generation error:", err);
+      const isNetworkErr = err.name === 'TypeError' || (err.message && (err.message.includes('Failed to fetch') || err.message.includes('fetch')));
+      const friendlyMsg = isNetworkErr
+        ? "Unable to connect to the Quiz Generator service. The server may be warming up — please try clicking Retry in a few seconds."
+        : (err.message || "Failed to connect to quiz generator service.");
+      setErrorMsg(friendlyMsg);
     } finally {
       setGenerating(false);
     }
@@ -351,9 +366,18 @@ export default function QuizGenerator({ onBack }) {
       </div>
       
       {errorMsg && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl flex items-start">
-          <AlertCircle className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
-          <p className="text-sm">{errorMsg}</p>
+        <div className="mb-6 bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-600" />
+            <p className="text-sm font-medium">{errorMsg}</p>
+          </div>
+          <button
+            onClick={handleGenerate}
+            disabled={generating}
+            className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 text-xs font-semibold rounded-lg transition-colors flex-shrink-0 disabled:opacity-50"
+          >
+            Retry
+          </button>
         </div>
       )}
       
