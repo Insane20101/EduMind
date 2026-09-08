@@ -15,7 +15,7 @@ def get_qdrant_client() -> QdrantClient:
             "FATAL: QDRANT_URL and QDRANT_API_KEY environment variables are strictly required for vector storage. "
             "Please configure them in backend/.env and Render environment settings."
         )
-    return QdrantClient(url=url, api_key=api_key)
+    return QdrantClient(url=url, api_key=api_key, timeout=30.0)
 
 def ensure_payload_indexes(client: QdrantClient, collection_name: str):
     """

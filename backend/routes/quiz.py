@@ -27,23 +27,28 @@ import os
 
 @quiz_router.post("/api/subjects/{subject_id}/quiz/generate")
 async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
-    # 1. Single-pass fast Vector Search from Qdrant Cloud for the subject
-    units_str = ", ".join(req.unit_ids) if req.unit_ids else "all units"
-    query_text = f"Generate {req.difficulty} difficulty multiple choice questions about {units_str} syllabus concepts and problems"
-    
-    qdrant_chunks = retrieve(
-        subject_id=subject_id,
-        unit_id=None,
-        query=query_text,
-        top_k=16
-    )
+    # 1. Native Qdrant Server-Side Payload Index Filtered Retrieval per Unit (KEYWORD Payload Index)
+    chunks_per_unit = min(3, max(2, 12 // len(req.unit_ids))) if req.unit_ids else 3
+
+    def fetch_unit_chunks(u_id):
+        return retrieve(
+            subject_id=subject_id,
+            unit_id=u_id,
+            query=f"Generate a {req.difficulty} difficulty multiple choice question about {u_id} syllabus concepts and problems",
+            top_k=chunks_per_unit
+        )
 
     all_retrieved_chunks = []
-    # Filter Qdrant chunks matching requested units (or allow if unit unassigned)
-    for c in qdrant_chunks:
-        c_unit = c.get("metadata", {}).get("unit")
-        if not c_unit or not req.unit_ids or c_unit in req.unit_ids:
-            all_retrieved_chunks.append(c)
+    if req.unit_ids:
+        unit_tasks = [asyncio.to_thread(fetch_unit_chunks, uid) for uid in req.unit_ids]
+        unit_results = await asyncio.gather(*unit_tasks, return_exceptions=True)
+        for res in unit_results:
+            if isinstance(res, list):
+                # Strict exclusion of unassigned or non-selected unit chunks
+                for c in res:
+                    c_unit = c.get("metadata", {}).get("unit")
+                    if c_unit and c_unit in req.unit_ids and c_unit != "unassigned":
+                        all_retrieved_chunks.append(c)
         
     # 1B. Local Question Bank / Syllabus Markdown scoped strictly to requested units
     qb_path, _ = get_subject_paths(subject_id)
@@ -54,7 +59,7 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
             local_chunks = chunk_markdown(qb_text, os.path.basename(qb_path), subject_id, "unknown", "question_bank")
             for lc in local_chunks:
                 chunk_unit = lc.get("metadata", {}).get("unit")
-                if not req.unit_ids or chunk_unit in req.unit_ids:
+                if chunk_unit and chunk_unit in req.unit_ids and chunk_unit != "unassigned":
                     all_retrieved_chunks.append({
                         "chunk_id": f"qbank_{lc['metadata'].get('question_id', uuid.uuid4().hex[:8])}",
                         "similarity": 0.95,
