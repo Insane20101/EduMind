@@ -5,12 +5,19 @@ import socket
 import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
 
 sys.stdout.reconfigure(encoding='utf-8')
+
+# Load environment variables from backend/.env
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+resolved_env_path = os.path.abspath(env_path)
+load_dotenv(dotenv_path=resolved_env_path, override=True)
 
 print("==========================================================================")
 print("🔍 BREVO SMTP & REST API DIRECT DIAGNOSTIC TEST")
 print("==========================================================================\n")
+print(f"Loaded .env file path: {resolved_env_path}\n")
 
 smtp_user = os.getenv("SMTP_USER", "").strip().strip('"').strip("'")
 raw_pass = os.getenv("SMTP_PASSWORD", "").strip().strip('"').strip("'")
@@ -24,12 +31,14 @@ except ValueError:
 
 sender_email = os.getenv("SENDER_EMAIL") or os.getenv("SMTP_FROM_EMAIL") or smtp_user or "akr20101@gmail.com"
 test_recipient = os.getenv("TEST_RECIPIENT", "akr20101@gmail.com")
+brevo_api_key = os.getenv("BREVO_API_KEY", "").strip().strip('"').strip("'")
 
 print(f"1. ENVIRONMENT CONFIGURATION CHECK:")
 print(f" - SMTP_SERVER : '{smtp_server}'")
 print(f" - SMTP_PORT   : {smtp_port}")
 print(f" - SMTP_USER   : '{smtp_user}'")
 print(f" - SMTP_PASS   : '{'*' * len(smtp_password)}' (Length: {len(smtp_password)})")
+print(f" - BREVO_API_KEY: '{'*' * len(brevo_api_key)}' (Length: {len(brevo_api_key)})")
 print(f" - SENDER_EMAIL: '{sender_email}'")
 print(f" - RECIPIENT   : '{test_recipient}'\n")
 
