@@ -114,15 +114,18 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
     except Exception as e_gen:
         logger.error(f"[SMTP GENERAL ERROR] Raw SMTP dispatch failed ({type(e_gen).__name__}): {e_gen}")
 
-    # 2. Brevo Transactional REST API Fallback (Port 443 HTTPS — Immune to Port Blocking)
-    api_key = os.getenv("BREVO_API_KEY") or smtp_password
-    if api_key:
+    # 2. Brevo Transactional REST API Fallback (Requires Brevo v3 API Key starting with xkeysib-)
+    brevo_api_key = os.getenv("BREVO_API_KEY", "").strip().strip('"').strip("'")
+    if not brevo_api_key and smtp_password.startswith("xkeysib-"):
+        brevo_api_key = smtp_password
+
+    if brevo_api_key:
         logger.info("[BREVO REST API] Attempting fallback HTTP REST API dispatch (https://api.brevo.com/v3/smtp/email)...")
         try:
             url = "https://api.brevo.com/v3/smtp/email"
             headers = {
                 "accept": "application/json",
-                "api-key": api_key,
+                "api-key": brevo_api_key,
                 "content-type": "application/json"
             }
             payload = {
@@ -157,6 +160,7 @@ def test_smtp_connection(to_email: str) -> dict:
         smtp_port = 587
 
     from_email = os.getenv("SENDER_EMAIL") or os.getenv("SMTP_FROM_EMAIL") or smtp_user or "akr20101@gmail.com"
+    brevo_api_key = os.getenv("BREVO_API_KEY", "").strip().strip('"').strip("'")
 
     diagnostics = {
         "smtp_server": smtp_server,
@@ -164,7 +168,8 @@ def test_smtp_connection(to_email: str) -> dict:
         "smtp_user": smtp_user,
         "from_email": from_email,
         "recipient": to_email,
-        "has_password": bool(smtp_password)
+        "has_smtp_password": bool(smtp_password),
+        "has_brevo_api_key": bool(brevo_api_key)
     }
 
     if not smtp_user:
@@ -193,29 +198,30 @@ def test_smtp_connection(to_email: str) -> dict:
         diagnostics["smtp_error"] = f"{type(e).__name__}: {str(e)}"
 
     # 2. Test Brevo REST API
-    api_key = os.getenv("BREVO_API_KEY") or smtp_password
-    try:
-        url = "https://api.brevo.com/v3/smtp/email"
-        headers = {
-            "accept": "application/json",
-            "api-key": api_key,
-            "content-type": "application/json"
-        }
-        payload = {
-            "sender": {"name": "EduMind Security", "email": from_email},
-            "to": [{"email": to_email}],
-            "subject": "[EduMind Test] Live REST API Diagnostics",
-            "htmlContent": "<p>Diagnostic REST API test.</p>"
-        }
-        res = requests.post(url, headers=headers, json=payload, timeout=10)
-        if res.status_code in [200, 201, 202]:
-            diagnostics["success"] = True
-            diagnostics["method"] = f"Brevo REST API (HTTP {res.status_code})"
-            return diagnostics
-        else:
-            diagnostics["api_error"] = f"Status {res.status_code}: {res.text}"
-    except Exception as e_api:
-        diagnostics["api_error"] = f"{type(e_api).__name__}: {str(e_api)}"
+    api_key = brevo_api_key or (smtp_password if smtp_password.startswith("xkeysib-") else None)
+    if api_key:
+        try:
+            url = "https://api.brevo.com/v3/smtp/email"
+            headers = {
+                "accept": "application/json",
+                "api-key": api_key,
+                "content-type": "application/json"
+            }
+            payload = {
+                "sender": {"name": "EduMind Security", "email": from_email},
+                "to": [{"email": to_email}],
+                "subject": "[EduMind Test] Live REST API Diagnostics",
+                "htmlContent": "<p>Diagnostic REST API test.</p>"
+            }
+            res = requests.post(url, headers=headers, json=payload, timeout=10)
+            if res.status_code in [200, 201, 202]:
+                diagnostics["success"] = True
+                diagnostics["method"] = f"Brevo REST API (HTTP {res.status_code})"
+                return diagnostics
+            else:
+                diagnostics["api_error"] = f"Status {res.status_code}: {res.text}"
+        except Exception as e_api:
+            diagnostics["api_error"] = f"{type(e_api).__name__}: {str(e_api)}"
 
     diagnostics["success"] = False
     return diagnostics
