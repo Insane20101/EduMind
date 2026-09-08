@@ -98,9 +98,20 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
             logger.info(f"[SMTP SUCCESS] Dispatched OTP email to {to_email} via Port {smtp_port}")
             return True
     except Exception as e_587:
-        logger.warning(f"[SMTP Port {smtp_port} Failed] {type(e_587).__name__}: {e_587}. Trying SSL Port 465...")
+        logger.warning(f"[SMTP Port {smtp_port} Failed] {type(e_587).__name__}: {e_587}. Trying Cloud Alternative Port 2525...")
 
-    # 2. Attempt Raw SMTP SSL (Port 465)
+    # 2. Attempt Raw SMTP (Port 2525 Cloud Alternative)
+    try:
+        with smtplib.SMTP(smtp_server, 2525, timeout=10) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(from_email, to_email, msg.as_string())
+            logger.info(f"[SMTP SUCCESS] Dispatched OTP email to {to_email} via Port 2525")
+            return True
+    except Exception as e_2525:
+        logger.warning(f"[SMTP Port 2525 Failed] {type(e_2525).__name__}: {e_2525}. Trying SSL Port 465...")
+
+    # 3. Attempt Raw SMTP SSL (Port 465)
     try:
         with smtplib.SMTP_SSL(smtp_server, 465, timeout=10) as server:
             server.login(smtp_user, smtp_password)
