@@ -130,10 +130,75 @@ async def get_playlists_for_students(subject_id: Optional[str] = None):
                     "unit": "Full Course",
                 })
 
-    return JSONResponse(
-        content=fallback_playlists,
-        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
-    )
+import xml.etree.ElementTree as ET
+
+
+@router.get("/playlist-items")
+async def get_playlist_items(list_id: str):
+    """
+    Fetches real YouTube video items (title, videoId, index, thumbnail) for a playlist ID using HTML regex & Atom RSS fallback.
+    """
+    if not list_id or not list_id.strip():
+        raise HTTPException(status_code=400, detail="list_id is required.")
+
+    list_id = list_id.strip()
+    videos = []
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+
+    # 1. Regex pattern matching for videoId and title in YouTube HTML
+    try:
+        url = f"https://www.youtube.com/playlist?list={list_id}"
+        r = requests.get(url, headers=headers, timeout=10)
+        if r.status_code == 200:
+            pattern = r'"playlistVideoRenderer":\s*({.*?"videoId":"(?P<id>[^"]+)".*?})'
+            matches = re.finditer(pattern, r.text)
+            seen_ids = set()
+            for m in matches:
+                vid_block = m.group(1)
+                vid_id = m.group("id")
+                if vid_id and vid_id not in seen_ids:
+                    seen_ids.add(vid_id)
+                    title_match = re.search(r'"title":\s*{\s*"runs":\s*\[\s*{\s*"text":\s*"(?P<title>[^"]+)"', vid_block)
+                    title = title_match.group("title") if title_match else f"Lecture Video #{len(videos)+1}"
+                    title = title.replace("\\u0026", "&").replace("\\'", "'").replace('\\"', '"')
+                    videos.append({
+                        "videoId": vid_id,
+                        "title": title,
+                        "index": len(videos) + 1,
+                        "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
+                    })
+    except Exception as exc:
+        logger.warning(f"YouTube HTML playlist parser note for {list_id}: {exc}")
+
+    # 2. Atom XML RSS Feed Fallback
+    if len(videos) == 0:
+        rss_url = f"https://www.youtube.com/feeds/videos.xml?playlist_id={list_id}"
+        try:
+            res_rss = requests.get(rss_url, headers=headers, timeout=10)
+            if res_rss.status_code == 200:
+                root = ET.fromstring(res_rss.text)
+                for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
+                    vid_id_el = entry.find('{http://www.youtube.com/xml/schemas/2015}videoId')
+                    title_el = entry.find('{http://www.youtube.com/xml/schemas/2015}title') or entry.find('{http://www.w3.org/2005/Atom}title')
+                    if vid_id_el is not None and vid_id_el.text:
+                        vid_id = vid_id_el.text
+                        title = title_el.text if title_el is not None else f"Lecture Video #{len(videos)+1}"
+                        videos.append({
+                            "videoId": vid_id,
+                            "title": title,
+                            "index": len(videos) + 1,
+                            "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
+                        })
+        except Exception as exc_rss:
+            logger.warning(f"YouTube RSS feed fallback note for {list_id}: {exc_rss}")
+
+    return {
+        "list_id": list_id,
+        "total_videos": len(videos),
+        "videos": videos
+    }
 
 
 @router.get("/file/{resource_id}")

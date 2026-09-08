@@ -227,7 +227,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     ? currentVideoObj.title
     : (currentPlaylist.title || `Lecture Video #${activeVideoIdx + 1}`);
 
-  const totalVideosCount = realVideos.length > 0 ? realVideos.length : (listId ? 20 : 1);
+  const totalVideosCount = realVideos.length > 0 ? realVideos.length : (listId ? 100 : 1);
 
   // Function to generate instant Video Summary
   const handleGenerateSummary = async () => {
