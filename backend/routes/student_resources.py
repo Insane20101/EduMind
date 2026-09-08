@@ -141,10 +141,10 @@ def fetch_youtube_playlist_videos(list_id: str):
     """
     Fetches all real YouTube video metadata (videoId, exact title, index, thumbnail) for a playlist ID.
     Supports:
-      1. Official YouTube Data API v3 (if YOUTUBE_DATA_API_KEY / YOUTUBE_API_KEY is configured in env).
+      0. Official YouTube Data API v3 (if YOUTUBE_DATA_API_KEY / YOUTUBE_API_KEY is configured in env).
+      1. yt-dlp Flat Playlist Extractor (No API key required, supports full 70+ videos on cloud servers).
       2. Direct Innertube API (Datacenter-proof POST API using public key & continuation tokens).
-      3. HTML ytInitialData JSON parser fallback.
-      4. Atom XML RSS Feed fallback as last resort.
+      3. Atom XML RSS Feed fallback as last resort.
     """
     if "list=" in list_id:
         match = re.search(r'[?&]list=([^&]+)', list_id)
@@ -201,6 +201,36 @@ def fetch_youtube_playlist_videos(list_id: str):
                 return videos
         except Exception as exc_api:
             logger.warning(f"YouTube Data API v3 fetch note for {list_id}: {exc_api}")
+
+    # ── Option 1: yt-dlp Flat Playlist Extractor (No API Key Needed!) ──────
+    try:
+        import yt_dlp
+        ydl_opts = {
+            'extract_flat': 'in_playlist',
+            'skip_download': True,
+            'quiet': True,
+            'no_warnings': True,
+            'socket_timeout': 10
+        }
+        playlist_url = f"https://www.youtube.com/playlist?list={list_id}"
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(playlist_url, download=False)
+            if info and 'entries' in info:
+                for entry in info['entries']:
+                    v_id = entry.get('id')
+                    title = entry.get('title')
+                    if v_id and title and v_id not in seen_ids:
+                        seen_ids.add(v_id)
+                        videos.append({
+                            "videoId": v_id,
+                            "title": title,
+                            "index": len(videos) + 1,
+                            "thumbnail": f"https://img.youtube.com/vi/{v_id}/hqdefault.jpg"
+                        })
+        if len(videos) > 0:
+            return videos
+    except Exception as exc_ytdlp:
+        logger.warning(f"yt-dlp extraction note for {list_id}: {exc_ytdlp}")
 
     # ── Option 1: Direct Innertube API & Recursive Extraction ──────────────
     def extract_from_json(obj):
