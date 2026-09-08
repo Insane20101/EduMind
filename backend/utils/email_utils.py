@@ -77,9 +77,11 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
     </html>
     """
 
+    from_email = os.getenv("SENDER_EMAIL") or os.getenv("SMTP_FROM_EMAIL") or smtp_user
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject_line
-    msg["From"] = f"EduMind Security <{smtp_user}>"
+    msg["From"] = f"EduMind Security <{from_email}>"
     msg["To"] = to_email
     msg.attach(MIMEText(html_content, "html"))
 
