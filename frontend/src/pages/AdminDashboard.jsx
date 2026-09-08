@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import { api } from '../services/api';
 import { useAppStore } from '../store/appStore';
 import EduMindLogo from '../components/EduMindLogo';
+import PdfViewerModal from '../components/PdfViewerModal';
+import { getApiBaseUrl } from '../config';
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 const Icon = ({ path, size = 20 }) => (
@@ -193,6 +195,7 @@ function ReviewTab() {
   const [busy, setBusy]           = useState({});    // resource_id → true
   const [rejectForm, setRejectForm] = useState(null); // resource_id
   const [rejectReason, setRejectReason] = useState('');
+  const [previewDoc, setPreviewDoc] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -238,6 +241,15 @@ function ReviewTab() {
     }
   };
 
+  const handleView = (r) => {
+    if (r.resource_type === 'playlist' || (r.url && r.url.includes('youtube'))) {
+      window.open(r.url, '_blank');
+    } else {
+      const targetUrl = r.resource_id ? `${getApiBaseUrl()}/api/resources/file/${r.resource_id}` : r.url;
+      setPreviewDoc({ title: r.title, url: targetUrl });
+    }
+  };
+
   return (
     <div className="adm-card">
       <div className="adm-row-between">
@@ -262,7 +274,9 @@ function ReviewTab() {
               <div className="adm-list-meta">
                 <span className="adm-list-title">{r.title}</span>
                 <span className="adm-list-sub">{r.subject_id} · {r.resource_type} · by <strong>{r.submitter_enrollment}</strong></span>
-                {r.url && <a href={r.url} target="_blank" rel="noopener noreferrer" className="adm-link">View submitted URL ↗</a>}
+                <button onClick={() => handleView(r)} className="adm-link text-left">
+                  Preview Document ↗
+                </button>
               </div>
               <div className="adm-list-actions">
                 {rejectForm === r.resource_id ? (
@@ -289,6 +303,14 @@ function ReviewTab() {
           ))}
         </div>
       )}
+
+      {previewDoc && (
+        <PdfViewerModal
+          title={previewDoc.title}
+          pdfUrl={previewDoc.url}
+          onClose={() => setPreviewDoc(null)}
+        />
+      )}
     </div>
   );
 }
@@ -299,6 +321,7 @@ function AllResourcesTab() {
   const [loading, setLoading]     = useState(true);
   const [filter, setFilter]       = useState('all');
   const [busy, setBusy]           = useState({});
+  const [previewDoc, setPreviewDoc] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -326,6 +349,15 @@ function AllResourcesTab() {
       toast.error(err.response?.data?.detail ?? 'Delete failed.');
     } finally {
       setBusy(b => ({ ...b, [id]: false }));
+    }
+  };
+
+  const handleView = (r) => {
+    if (r.resource_type === 'playlist' || (r.url && r.url.includes('youtube'))) {
+      window.open(r.url, '_blank');
+    } else {
+      const targetUrl = r.resource_id ? `${getApiBaseUrl()}/api/resources/file/${r.resource_id}` : r.url;
+      setPreviewDoc({ title: r.title, url: targetUrl });
     }
   };
 
@@ -364,7 +396,9 @@ function AllResourcesTab() {
                   <Badge status={r.status} />
                 </div>
                 <span className="adm-list-sub">{r.subject_id} · {r.resource_type} · {r.source === 'student' ? `by student ${r.submitter_enrollment}` : 'by admin'}</span>
-                {r.url && <a href={r.url} target="_blank" rel="noopener noreferrer" className="adm-link">View ↗</a>}
+                <button onClick={() => handleView(r)} className="adm-link text-left">
+                  View / Preview ↗
+                </button>
               </div>
               <div className="adm-list-actions">
                 <button className="adm-btn-danger-sm" onClick={() => remove(r.resource_id)} disabled={busy[r.resource_id]}>
@@ -374,6 +408,14 @@ function AllResourcesTab() {
             </div>
           ))}
         </div>
+      )}
+
+      {previewDoc && (
+        <PdfViewerModal
+          title={previewDoc.title}
+          pdfUrl={previewDoc.url}
+          onClose={() => setPreviewDoc(null)}
+        />
       )}
     </div>
   );

@@ -101,6 +101,7 @@ function SuggestForm({ subjectId }) {
                 >
                   <option value="note">Note / Study Material</option>
                   <option value="pyq">Previous Year Question</option>
+                  <option value="playlist">YouTube Playlist (Lectures)</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -109,7 +110,7 @@ function SuggestForm({ subjectId }) {
                 <input
                   required
                   className="w-full border border-blue-200 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
-                  placeholder="Unit 2 Notes"
+                  placeholder={resType === 'playlist' ? 'Complete Course Lectures Playlist' : 'Unit 2 Notes'}
                   value={title} onChange={e => setTitle(e.target.value)}
                 />
               </div>

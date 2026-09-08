@@ -270,12 +270,49 @@ async def approve_resource(
     current_admin: dict = Depends(get_current_admin_user)
 ):
     """Approve pending student resource and run single-task vector ingestion."""
+    import re
     doc = await db.resources.find_one({"resource_id": resource_id})
     if not doc:
         raise HTTPException(status_code=404, detail="Resource not found.")
     if doc["status"] != "pending":
         raise HTTPException(status_code=400, detail=f"Resource is already '{doc['status']}'.")
 
+    now = datetime.now(timezone.utc)
+    res_type = str(doc.get("resource_type", "")).lower()
+
+    # ── Special Handler: YouTube Playlist Approval ────────────────────────────
+    if res_type == "playlist" or "list=" in str(doc.get("url", "")):
+        url = doc.get("url") or ""
+        match = re.search(r'list=([A-Za-z0-9_-]+)', url)
+        playlist_id = match.group(1) if match else url.strip()
+        
+        if playlist_id:
+            playlist_doc = {
+                "playlist_id": playlist_id,
+                "subject_id": doc["subject_id"].upper(),
+                "title": doc.get("title", "Lecture Playlist"),
+                "channel_title": "Community Submitted",
+                "url": f"https://www.youtube.com/playlist?list={playlist_id}" if not url.startswith("http") else url,
+                "created_at": now
+            }
+            await db.playlists.update_one(
+                {"playlist_id": playlist_id, "subject_id": doc["subject_id"].upper()},
+                {"$set": playlist_doc},
+                upsert=True
+            )
+
+        await db.resources.update_one(
+            {"resource_id": resource_id},
+            {"$set": {
+                "status": "approved",
+                "reviewed_by": current_admin["admin_id"],
+                "reviewed_at": now,
+                "reject_reason": None
+            }}
+        )
+        return {"message": "Playlist approved and published to Lectures section.", "resource_id": resource_id}
+
+    # ── Standard Document Ingestion & Approval ────────────────────────────────
     filename = doc.get("filename") or (doc.get("title", "student_resource") + ".pdf")
     if not ingestion_queue.acquire_lock(filename):
         raise HTTPException(status_code=429, detail="An ingestion task is currently running! Please wait before approving.")
@@ -300,7 +337,6 @@ async def approve_resource(
             except Exception as e:
                 logger.warning(f"GridFS approval upload: {e}")
 
-        now = datetime.now(timezone.utc)
         update_set = {
             "status": "approved",
             "reviewed_by": current_admin["admin_id"],

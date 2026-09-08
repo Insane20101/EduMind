@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List
 import time
 import uuid
+import asyncio
 
 from utils.logger import get_logger
 from rag.retriever import retrieve
@@ -26,19 +27,23 @@ import os
 
 @quiz_router.post("/api/subjects/{subject_id}/quiz/generate")
 async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
-    # 1. Retrieve chunks scoped to all requested units
-    all_retrieved_chunks = []
-    chunks_per_unit = max(4, (req.count * 2) // len(req.unit_ids) if req.unit_ids else req.count * 2)
+    # 1. Single-pass fast Vector Search from Qdrant Cloud for the subject
+    units_str = ", ".join(req.unit_ids) if req.unit_ids else "all units"
+    query_text = f"Generate {req.difficulty} difficulty multiple choice questions about {units_str} syllabus concepts and problems"
     
-    # 1A. Vector Search from Qdrant Cloud scoped to requested units
-    for unit_id in req.unit_ids:
-        unit_chunks = retrieve(
-            subject_id=subject_id,
-            unit_id=unit_id,
-            query=f"Generate a {req.difficulty} difficulty multiple choice question about {unit_id} syllabus concepts and problems",
-            top_k=chunks_per_unit
-        )
-        all_retrieved_chunks.extend(unit_chunks)
+    qdrant_chunks = retrieve(
+        subject_id=subject_id,
+        unit_id=None,
+        query=query_text,
+        top_k=16
+    )
+
+    all_retrieved_chunks = []
+    # Filter Qdrant chunks matching requested units (or allow if unit unassigned)
+    for c in qdrant_chunks:
+        c_unit = c.get("metadata", {}).get("unit")
+        if not c_unit or not req.unit_ids or c_unit in req.unit_ids:
+            all_retrieved_chunks.append(c)
         
     # 1B. Local Question Bank / Syllabus Markdown scoped strictly to requested units
     qb_path, _ = get_subject_paths(subject_id)
@@ -49,7 +54,7 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
             local_chunks = chunk_markdown(qb_text, os.path.basename(qb_path), subject_id, "unknown", "question_bank")
             for lc in local_chunks:
                 chunk_unit = lc.get("metadata", {}).get("unit")
-                if chunk_unit in req.unit_ids:
+                if not req.unit_ids or chunk_unit in req.unit_ids:
                     all_retrieved_chunks.append({
                         "chunk_id": f"qbank_{lc['metadata'].get('question_id', uuid.uuid4().hex[:8])}",
                         "similarity": 0.95,
@@ -59,13 +64,15 @@ async def generate_quiz(subject_id: str, req: QuizGenerateRequest):
         except Exception as qb_err:
             logger.warning(f"Notice parsing local question bank for quiz: {qb_err}")
 
-    # Deduplicate chunks in case of overlap
+    # Deduplicate & cap to top-12 chunks for fast LLM generation
     seen_ids = set()
     unique_chunks = []
     for c in all_retrieved_chunks:
         if c["chunk_id"] not in seen_ids:
             seen_ids.add(c["chunk_id"])
             unique_chunks.append(c)
+            if len(unique_chunks) >= 12:
+                break
             
     required_chunks = req.count * 2
     retrieved_count = len(unique_chunks)
