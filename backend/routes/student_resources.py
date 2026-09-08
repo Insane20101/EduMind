@@ -210,7 +210,12 @@ def fetch_youtube_playlist_videos(list_id: str):
             'skip_download': True,
             'quiet': True,
             'no_warnings': True,
-            'socket_timeout': 10
+            'socket_timeout': 10,
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['ios', 'android', 'mweb', 'web']
+                }
+            }
         }
         playlist_url = f"https://www.youtube.com/playlist?list={list_id}"
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
