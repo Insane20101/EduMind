@@ -17,14 +17,14 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
     smtp_user = os.getenv("SMTP_USER", "").strip().strip('"').strip("'")
     raw_pass = os.getenv("SMTP_PASSWORD", "").strip().strip('"').strip("'")
     smtp_password = raw_pass.replace(" ", "")
-    smtp_server = os.getenv("SMTP_SERVER", "smtp-relay.brevo.com").strip()
+    smtp_server = os.getenv("SMTP_SERVER", "smtp-relay.brevo.com").strip().strip('"').strip("'")
     
     try:
-        smtp_port = int(os.getenv("SMTP_PORT", "587"))
+        smtp_port = int(os.getenv("SMTP_PORT", "587").strip().strip('"').strip("'"))
     except ValueError:
         smtp_port = 587
 
-    from_email = os.getenv("SENDER_EMAIL") or os.getenv("SMTP_FROM_EMAIL") or smtp_user or "akr20101@gmail.com"
+    from_email = (os.getenv("SENDER_EMAIL") or os.getenv("SMTP_FROM_EMAIL") or smtp_user or "akr20101@gmail.com").strip().strip('"').strip("'")
 
     if context == "signup":
         badge_text = "Account Verification Request"
@@ -80,13 +80,13 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
         logger.error("[SMTP CONFIG ERROR] Missing SMTP_USER or SMTP_PASSWORD environment variables.")
         return False
 
-    # 1. Attempt Raw SMTP (Port 587 STARTTLS)
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject_line
     msg["From"] = f"EduMind Security <{from_email}>"
     msg["To"] = to_email
     msg.attach(MIMEText(html_content, "html"))
 
+    # 1. Attempt Raw SMTP (Port 587 STARTTLS)
     try:
         logger.info(f"[SMTP] Connecting to {smtp_server}:{smtp_port} with user {smtp_user}...")
         with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
@@ -97,24 +97,20 @@ def send_smtp_otp_email(to_email: str, student_name: str, otp_code: str, context
             server.sendmail(from_email, to_email, msg.as_string())
             logger.info(f"[SMTP SUCCESS] Dispatched OTP email to {to_email} via Port {smtp_port}")
             return True
+    except Exception as e_587:
+        logger.warning(f"[SMTP Port {smtp_port} Failed] {type(e_587).__name__}: {e_587}. Trying SSL Port 465...")
 
-    except smtplib.SMTPAuthenticationError as e_auth:
-        logger.error(f"[SMTP AUTH ERROR] Code {e_auth.smtp_code}: {e_auth.smtp_error} - Check SMTP_USER / SMTP_PASSWORD.")
-    except (smtplib.SMTPConnectError, smtplib.SMTPServerDisconnected, socket.timeout, TimeoutError, OSError) as e_conn:
-        logger.warning(f"[SMTP CONNECT ERROR] TLS Port {smtp_port} error ({type(e_conn).__name__}): {e_conn}. Trying SSL 465...")
-        try:
-            with smtplib.SMTP_SSL(smtp_server, 465, timeout=10) as server:
-                server.login(smtp_user, smtp_password)
-                server.sendmail(from_email, to_email, msg.as_string())
-                logger.info(f"[SMTP SUCCESS] Dispatched OTP email to {to_email} via SSL Port 465")
-                return True
-        except Exception as e_ssl:
-            logger.error(f"[SMTP SSL ERROR] SSL Port 465 failed: {e_ssl}")
+    # 2. Attempt Raw SMTP SSL (Port 465)
+    try:
+        with smtplib.SMTP_SSL(smtp_server, 465, timeout=10) as server:
+            server.login(smtp_user, smtp_password)
+            server.sendmail(from_email, to_email, msg.as_string())
+            logger.info(f"[SMTP SUCCESS] Dispatched OTP email to {to_email} via SSL Port 465")
+            return True
+    except Exception as e_465:
+        logger.warning(f"[SMTP SSL Port 465 Failed] {type(e_465).__name__}: {e_465}. Trying Brevo REST API Fallback...")
 
-    except Exception as e_gen:
-        logger.error(f"[SMTP GENERAL ERROR] Raw SMTP dispatch failed ({type(e_gen).__name__}): {e_gen}")
-
-    # 2. Brevo Transactional REST API Fallback (Requires Brevo v3 API Key starting with xkeysib-)
+    # 3. Brevo Transactional REST API Fallback (Requires Brevo v3 API Key starting with xkeysib-)
     brevo_api_key = os.getenv("BREVO_API_KEY", "").strip().strip('"').strip("'")
     if not brevo_api_key and smtp_password.startswith("xkeysib-"):
         brevo_api_key = smtp_password
