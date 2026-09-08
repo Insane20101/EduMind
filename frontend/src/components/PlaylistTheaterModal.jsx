@@ -520,8 +520,8 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
           {/* Main Video Screen (Hidden in Full Screen Chat Mode) */}
           {!isChatFullScreen && (
             <div 
-              className="w-full lg:flex-1 flex flex-col bg-black relative min-w-0 flex-shrink-0 lg:flex-shrink"
-              style={isDesktop ? { width: `calc(100% - ${sidebarWidth}px)` } : {}}
+              className="w-full lg:flex-1 flex flex-col bg-black relative min-w-0 flex-shrink-0"
+              style={isDesktop ? { width: `calc(100% - ${sidebarWidth}px)`, flex: 'none' } : {}}
             >
               <div className="relative w-full aspect-video lg:aspect-auto lg:flex-1 flex items-center justify-center bg-black">
                 {embedUrl ? (
@@ -621,7 +621,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                 ? 'w-full h-full flex-1' 
                 : 'w-full flex-1 lg:h-full lg:flex-shrink-0 min-h-0'
             }`}
-            style={isChatFullScreen || !isDesktop ? {} : { width: `${sidebarWidth}px` }}
+            style={isChatFullScreen || !isDesktop ? {} : { width: `${sidebarWidth}px`, flex: 'none' }}
           >
             
             {/* Sidebar Tab Selector Header */}
