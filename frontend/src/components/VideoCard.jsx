@@ -22,13 +22,8 @@ export default function VideoCard({ item, onClick }) {
       onClick={onClick}
       className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden hover:shadow-lg transition-all group flex flex-col h-full cursor-pointer hover:-translate-y-0.5"
     >
-      <div className="aspect-video w-full bg-slate-900 relative flex items-center justify-center group overflow-hidden">
-        <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-indigo-950/30 transition-colors z-10" />
-        <img
-          src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop"
-          alt="Thumbnail"
-          className="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-300"
-        />
+      <div className="aspect-video w-full bg-black relative flex items-center justify-center group overflow-hidden">
+        <div className="absolute inset-0 bg-black group-hover:bg-slate-950 transition-colors z-10" />
         
         <div className="z-20 p-3 rounded-full bg-indigo-600/90 text-white shadow-xl group-hover:scale-110 group-hover:bg-indigo-600 transition-all">
           <PlayCircle size={36} className="fill-current text-white" />

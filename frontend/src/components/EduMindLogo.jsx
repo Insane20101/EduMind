@@ -4,7 +4,7 @@ export default function EduMindLogo({ size = 32, showText = true, textClass = "t
   return (
     <div className="flex items-center gap-2.5 select-none group">
       <div 
-        className="relative flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-600 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200"
+        className="relative flex items-center justify-center rounded-xl bg-black border border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-200"
         style={{ width: `${size}px`, height: `${size}px` }}
       >
         {/* Subtle SVG Glow effect */}
@@ -31,9 +31,6 @@ export default function EduMindLogo({ size = 32, showText = true, textClass = "t
         <span className={`${textClass} flex items-center`}>
           <span>Edu</span>
           <span className="text-indigo-600 font-extrabold">Mind</span>
-          <span className="ml-1 px-1.5 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200/60 hidden sm:inline-block">
-            AI
-          </span>
         </span>
       )}
     </div>

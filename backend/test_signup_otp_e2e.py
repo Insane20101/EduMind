@@ -1,6 +1,7 @@
 import os
 import sys
 import asyncio
+from unittest.mock import patch
 
 os.environ["USE_MOCK_DB"] = "true"
 
@@ -17,19 +18,38 @@ async def run_tests():
     await db.users.delete_many({"enrollment": {"$regex": "^2026"}})
     await db.signup_otps.delete_many({"recovery_email": {"$regex": "test\\.student"}})
     transport = ASGITransport(app=app)
+    
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         print("--- Running EduMind Signup OTP & Uniqueness E2E Tests ---")
         
-        # Test 1: Send OTP
-        r1 = await ac.post("/api/auth/send-signup-otp", json={
-            "enrollment": "2026TEST001",
-            "recovery_email": "test.student001@example.com",
-            "first_name": "Test"
-        })
-        print("[TEST 1] Send Signup OTP status:", r1.status_code, r1.json())
-        assert r1.status_code == 200, f"Expected 200, got {r1.status_code}"
+        # Test 0: Test Unauthenticated /api/auth/test-email (Should be rejected with 401)
+        r0 = await ac.get("/api/auth/test-email?to_email=test@example.com")
+        print("[TEST 0] Unauthenticated /test-email status:", r0.status_code)
+        assert r0.status_code == 401, f"Expected 401 Unauthorized for unprotected test-email, got {r0.status_code}"
 
-        # Fetch OTP
+        # Test 1a: SMTP Failure handling (When send_smtp_otp_email returns False)
+        with patch("auth.send_smtp_otp_email", return_value=False):
+            r1a = await ac.post("/api/auth/send-signup-otp", json={
+                "enrollment": "2026FAIL001",
+                "recovery_email": "test.fail001@example.com",
+                "first_name": "FailTest"
+            })
+            print("[TEST 1a] SMTP Failure Send Signup OTP status:", r1a.status_code, r1a.json())
+            assert r1a.status_code == 500, f"Expected 500 on SMTP failure, got {r1a.status_code}"
+            assert "Unable to send verification email" in r1a.json()["detail"]
+
+        # Test 1b: Successful Send OTP (Mocking SMTP success)
+        with patch("auth.send_smtp_otp_email", return_value=True):
+            r1 = await ac.post("/api/auth/send-signup-otp", json={
+                "enrollment": "2026TEST001",
+                "recovery_email": "test.student001@example.com",
+                "first_name": "Test"
+            })
+            print("[TEST 1b] Send Signup OTP status:", r1.status_code, r1.json())
+            assert r1.status_code == 200, f"Expected 200, got {r1.status_code}"
+            assert r1.json()["email_sent"] is True
+
+        # Fetch OTP from DB
         otp_rec = await db.signup_otps.find_one({"recovery_email": "test.student001@example.com"})
         assert otp_rec is not None, "OTP record not found in database"
         print("[TEST 1 SUCCESS] Generated OTP:", otp_rec["otp_code"])
@@ -90,13 +110,14 @@ async def run_tests():
         assert r5.json()["status"] == "alive"
 
         # Test 6: Direct /signup endpoint gate case-variant enrollment & email uniqueness
-        # Send OTP for new account
-        r6_otp = await ac.post("/api/auth/send-signup-otp", json={
-            "enrollment": "2026CASEGATED01",
-            "recovery_email": "case.gated@example.com",
-            "first_name": "GateTest"
-        })
-        assert r6_otp.status_code == 200
+        with patch("utils.email_utils.send_smtp_otp_email", return_value=True):
+            r6_otp = await ac.post("/api/auth/send-signup-otp", json={
+                "enrollment": "2026CASEGATED01",
+                "recovery_email": "case.gated@example.com",
+                "first_name": "GateTest"
+            })
+            assert r6_otp.status_code == 200
+        
         rec_gated = await db.signup_otps.find_one({"recovery_email": "case.gated@example.com"})
 
         # Submitting signup with case-variant duplicate enrollment (2026test001 vs 2026TEST001)
@@ -115,7 +136,6 @@ async def run_tests():
         assert "Enrollment number already registered" in r6_dup_enr.json()["detail"]
 
         # Test 6b: Direct Signup Case-Variant Email Duplicate Gate
-        # Insert temporary pending OTP for existing email test.student001@example.com
         await db.signup_otps.update_one(
             {"recovery_email": "test.student001@example.com"},
             {"$set": {
@@ -148,8 +168,5 @@ async def run_tests():
         print("==================================================")
 
 
-
 if __name__ == "__main__":
     asyncio.run(run_tests())
-
-

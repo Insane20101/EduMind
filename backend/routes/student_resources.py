@@ -40,7 +40,9 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB cap for student uploads
 
 
 import requests
-from fastapi.responses import @router.get("/")
+from fastapi.responses import Response, StreamingResponse
+
+@router.get("/")
 async def list_approved_resources(
     subject_id: Optional[str] = None,
     resource_type: Optional[str] = None,

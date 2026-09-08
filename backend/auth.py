@@ -15,9 +15,9 @@ from schemas import (
     UserPasswordReset, SendOTPRequest, SendSignupOTPRequest, VerifyOTPResetPasswordRequest
 )
 from database import db
-from jwt_utils import create_access_token, get_current_user
+from jwt_utils import create_access_token, get_current_user, get_current_admin_user
 from utils.security import hash_password, verify_password
-from utils.email_utils import send_resend_otp_email
+from utils.email_utils import send_smtp_otp_email
 
 router = APIRouter()
 ENROLL_REGEX = re.compile(r"^[A-Z0-9]{6,20}$", re.IGNORECASE)
@@ -90,18 +90,17 @@ async def send_signup_otp(request: Request, payload: SendSignupOTPRequest):
         upsert=True
     )
 
-    email_sent = send_resend_otp_email(clean_rec_email, first_name, otp_code, context="signup")
+    email_sent = send_smtp_otp_email(clean_rec_email, first_name, otp_code, context="signup")
     masked = mask_email(clean_rec_email)
 
     if not email_sent:
-        logger.warning(f"[SIGNUP OTP GENERATED] OTP code for {clean_rec_email}: {otp_code}")
-
-    msg = f"6-digit verification code sent to {masked}" if email_sent else f"Verification code generated for {masked}. (Email delivery note: check Resend API key & domain configuration)."
+        logger.error(f"[SIGNUP OTP FAILED] SMTP email dispatch failed for {clean_rec_email}")
+        raise HTTPException(status_code=500, detail="Unable to send verification email. Please try again.")
 
     return {
-        "message": msg,
+        "message": f"6-digit verification code sent to {masked}",
         "masked_email": masked,
-        "email_sent": email_sent
+        "email_sent": True
     }
 
 
@@ -256,18 +255,17 @@ async def send_otp(request: Request, payload: SendOTPRequest):
     )
 
     student_name = user.get("first_name", "Student")
-    email_sent = send_resend_otp_email(registered_rec_email, student_name, otp_code, context="password_reset")
+    email_sent = send_smtp_otp_email(registered_rec_email, student_name, otp_code, context="password_reset")
     masked = mask_email(registered_rec_email)
 
     if not email_sent:
-        logger.warning(f"[RESET OTP GENERATED] OTP code for {registered_rec_email}: {otp_code}")
-
-    msg = f"6-digit verification code sent to {masked}" if email_sent else f"Verification code generated for {masked}. (Email delivery note: check Resend API key & domain configuration)."
+        logger.error(f"[RESET OTP FAILED] SMTP email dispatch failed for {registered_rec_email}")
+        raise HTTPException(status_code=500, detail="Unable to send verification email. Please try again.")
 
     return {
-        "message": msg,
+        "message": f"6-digit verification code sent to {masked}",
         "masked_email": masked,
-        "email_sent": email_sent
+        "email_sent": True
     }
 
 
@@ -342,6 +340,6 @@ async def update_profile(user_update: UserUpdate, current_user: dict = Depends(g
     }
 
 @router.get("/test-email")
-async def test_email(to_email: str = "akr20101@gmail.com"):
+async def test_email(to_email: str = "akr20101@gmail.com", current_admin: dict = Depends(get_current_admin_user)):
     from utils.email_utils import test_smtp_connection
     return test_smtp_connection(to_email)
