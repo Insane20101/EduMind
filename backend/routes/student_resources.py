@@ -130,49 +130,208 @@ async def get_playlists_for_students(subject_id: Optional[str] = None):
                     "unit": "Full Course",
                 })
 
+import requests
 import xml.etree.ElementTree as ET
 
 
-@router.get("/playlist-items")
-async def get_playlist_items(list_id: str):
+def fetch_youtube_playlist_videos(list_id: str):
     """
-    Fetches real YouTube video items (title, videoId, index, thumbnail) for a playlist ID using HTML regex & Atom RSS fallback.
+    Real-time dynamic Youtube playlist scraper.
+    Extracts all real YouTube video metadata (videoId, exact title, index, thumbnail)
+    without capping at 15 items, supporting continuation tokens for 60+ to 1000+ items.
     """
-    if not list_id or not list_id.strip():
-        raise HTTPException(status_code=400, detail="list_id is required.")
-
+    if "list=" in list_id:
+        match = re.search(r'[?&]list=([^&]+)', list_id)
+        if match:
+            list_id = match.group(1)
+            
     list_id = list_id.strip()
     videos = []
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    }
+    seen_ids = set()
+    continuations = []
 
-    # 1. Regex pattern matching for videoId and title in YouTube HTML
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+    cookies = {"SOCS": "CAI"} # Bypass YouTube consent pages
+
+    def extract_from_json(obj):
+        if isinstance(obj, dict):
+            # Format A: playlistVideoRenderer
+            if "playlistVideoRenderer" in obj:
+                pvr = obj["playlistVideoRenderer"]
+                v_id = pvr.get("videoId")
+                runs = pvr.get("title", {}).get("runs", [])
+                t_text = runs[0].get("text") if runs else pvr.get("title", {}).get("simpleText")
+                if v_id and v_id not in seen_ids:
+                    seen_ids.add(v_id)
+                    videos.append({
+                        "videoId": v_id,
+                        "title": t_text or f"Lecture Video #{len(videos)+1}",
+                        "index": len(videos) + 1,
+                        "thumbnail": f"https://img.youtube.com/vi/{v_id}/hqdefault.jpg"
+                    })
+
+            # Format B: lockupViewModel (New YouTube Innertube layout)
+            elif "lockupViewModel" in obj:
+                lvm = obj["lockupViewModel"]
+                v_id = lvm.get("contentId")
+                t_text = None
+                meta = lvm.get("metadata", {}).get("lockupMetadataViewModel", {})
+                t_obj = meta.get("title", {})
+                if isinstance(t_obj, dict):
+                    t_text = t_obj.get("content")
+                
+                if not v_id:
+                    w_ep = lvm.get("rendererContext", {}).get("commandContext", {}).get("onTap", {}).get("innertubeCommand", {}).get("watchEndpoint", {})
+                    v_id = w_ep.get("videoId")
+
+                if v_id and v_id not in seen_ids:
+                    seen_ids.add(v_id)
+                    videos.append({
+                        "videoId": v_id,
+                        "title": t_text or f"Lecture Video #{len(videos)+1}",
+                        "index": len(videos) + 1,
+                        "thumbnail": f"https://img.youtube.com/vi/{v_id}/hqdefault.jpg"
+                    })
+
+            # Format C: gridVideoRenderer
+            elif "gridVideoRenderer" in obj:
+                gvr = obj["gridVideoRenderer"]
+                v_id = gvr.get("videoId")
+                runs = gvr.get("title", {}).get("runs", [])
+                t_text = runs[0].get("text") if runs else gvr.get("title", {}).get("simpleText")
+                if v_id and v_id not in seen_ids:
+                    seen_ids.add(v_id)
+                    videos.append({
+                        "videoId": v_id,
+                        "title": t_text or f"Lecture Video #{len(videos)+1}",
+                        "index": len(videos) + 1,
+                        "thumbnail": f"https://img.youtube.com/vi/{v_id}/hqdefault.jpg"
+                    })
+
+            # Continuation Token extraction
+            if "continuationCommand" in obj:
+                token = obj["continuationCommand"].get("token")
+                if token and token not in continuations:
+                    continuations.append(token)
+            elif "continuationItemRenderer" in obj:
+                cir = obj["continuationItemRenderer"]
+                c_cmd = cir.get("continuationEndpoint", {}).get("continuationCommand", {})
+                token = c_cmd.get("token")
+                if token and token not in continuations:
+                    continuations.append(token)
+
+            for v in obj.values():
+                extract_from_json(v)
+
+        elif isinstance(obj, list):
+            for item in obj:
+                extract_from_json(item)
+
+    # 1. Fetch main HTML page
+    html_text = ""
+    api_key = None
+    client_ver = "2.20240308.00.00"
     try:
         url = f"https://www.youtube.com/playlist?list={list_id}"
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, headers=headers, cookies=cookies, timeout=10)
         if r.status_code == 200:
-            pattern = r'"playlistVideoRenderer":\s*({.*?"videoId":"(?P<id>[^"]+)".*?})'
-            matches = re.finditer(pattern, r.text)
-            seen_ids = set()
-            for m in matches:
-                vid_block = m.group(1)
-                vid_id = m.group("id")
-                if vid_id and vid_id not in seen_ids:
-                    seen_ids.add(vid_id)
-                    title_match = re.search(r'"title":\s*{\s*"runs":\s*\[\s*{\s*"text":\s*"(?P<title>[^"]+)"', vid_block)
-                    title = title_match.group("title") if title_match else f"Lecture Video #{len(videos)+1}"
-                    title = title.replace("\\u0026", "&").replace("\\'", "'").replace('\\"', '"')
-                    videos.append({
-                        "videoId": vid_id,
-                        "title": title,
-                        "index": len(videos) + 1,
-                        "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
-                    })
-    except Exception as exc:
-        logger.warning(f"YouTube HTML playlist parser note for {list_id}: {exc}")
+            html_text = r.text
+            key_match = re.search(r'"INNERTUBE_API_KEY":\s*"([^"]+)"', html_text)
+            if key_match:
+                api_key = key_match.group(1)
+            ver_match = re.search(r'"INNERTUBE_CLIENT_VERSION":\s*"([^"]+)"', html_text)
+            if ver_match:
+                client_ver = ver_match.group(1)
+    except Exception as e:
+        logger.warning(f"Error fetching YouTube playlist HTML: {e}")
 
-    # 2. Atom XML RSS Feed Fallback
+    # 2. Extract from embedded ytInitialData JSON in HTML
+    if html_text:
+        match_data = re.search(r'var ytInitialData\s*=\s*({.*?});</script>', html_text, re.DOTALL)
+        if match_data:
+            try:
+                init_json = json.loads(match_data.group(1))
+                extract_from_json(init_json)
+            except Exception:
+                pass
+
+    # 3. Call Innertube browse API (Initial batch + continuations)
+    if api_key:
+        browse_url = f"https://www.youtube.com/youtubei/v1/browse?key={api_key}"
+        browse_id = f"VL{list_id}" if not list_id.startswith("VL") else list_id
+        
+        # If initial HTML didn't get videos, call browse API
+        if len(videos) == 0:
+            payload = {
+                "context": {
+                    "client": {
+                        "clientName": "WEB",
+                        "clientVersion": client_ver,
+                        "hl": "en",
+                        "gl": "US"
+                    }
+                },
+                "browseId": browse_id
+            }
+            try:
+                r_api = requests.post(browse_url, json=payload, headers=headers, timeout=10)
+                if r_api.status_code == 200:
+                    extract_from_json(r_api.json())
+            except Exception as e:
+                logger.warning(f"Innertube browse initial fetch error: {e}")
+
+        # Fetch continuations if available
+        curr_tokens = list(continuations)
+        page = 0
+        while curr_tokens and page < 15: # safety limit up to ~1500 videos
+            page += 1
+            token = curr_tokens.pop(0)
+            cont_payload = {
+                "context": {
+                    "client": {
+                        "clientName": "WEB",
+                        "clientVersion": client_ver,
+                        "hl": "en",
+                        "gl": "US"
+                    }
+                },
+                "continuation": token
+            }
+            try:
+                r_cont = requests.post(browse_url, json=cont_payload, headers=headers, timeout=10)
+                if r_cont.status_code == 200:
+                    c_data = r_cont.json()
+                    prev_cont_len = len(continuations)
+                    extract_from_json(c_data)
+                    for t in continuations[prev_cont_len:]:
+                        if t not in curr_tokens:
+                            curr_tokens.append(t)
+            except Exception as e:
+                logger.warning(f"Innertube continuation error: {e}")
+
+    # 4. Regex HTML fallback if videos still 0
+    if len(videos) == 0 and html_text:
+        pattern = r'"playlistVideoRenderer":\s*({.*?"videoId":"(?P<id>[^"]+)".*?})'
+        matches = re.finditer(pattern, html_text)
+        for m in matches:
+            vid_block = m.group(1)
+            vid_id = m.group("id")
+            if vid_id and vid_id not in seen_ids:
+                seen_ids.add(vid_id)
+                title_match = re.search(r'"title":\s*{\s*"runs":\s*\[\s*{\s*"text":\s*"(?P<title>[^"]+)"', vid_block)
+                title = title_match.group("title") if title_match else f"Lecture Video #{len(videos)+1}"
+                title = title.replace("\\u0026", "&").replace("\\'", "'").replace('\\"', '"')
+                videos.append({
+                    "videoId": vid_id,
+                    "title": title,
+                    "index": len(videos) + 1,
+                    "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
+                })
+
+    # 5. Atom XML RSS Feed Fallback as absolute last resort
     if len(videos) == 0:
         rss_url = f"https://www.youtube.com/feeds/videos.xml?playlist_id={list_id}"
         try:
@@ -184,15 +343,31 @@ async def get_playlist_items(list_id: str):
                     title_el = entry.find('{http://www.youtube.com/xml/schemas/2015}title') or entry.find('{http://www.w3.org/2005/Atom}title')
                     if vid_id_el is not None and vid_id_el.text:
                         vid_id = vid_id_el.text
-                        title = title_el.text if title_el is not None else f"Lecture Video #{len(videos)+1}"
-                        videos.append({
-                            "videoId": vid_id,
-                            "title": title,
-                            "index": len(videos) + 1,
-                            "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
-                        })
+                        if vid_id not in seen_ids:
+                            seen_ids.add(vid_id)
+                            title = title_el.text if title_el is not None else f"Lecture Video #{len(videos)+1}"
+                            videos.append({
+                                "videoId": vid_id,
+                                "title": title,
+                                "index": len(videos) + 1,
+                                "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
+                            })
         except Exception as exc_rss:
             logger.warning(f"YouTube RSS feed fallback note for {list_id}: {exc_rss}")
+
+    return videos
+
+
+@router.get("/playlist-items")
+async def get_playlist_items(list_id: str):
+    """
+    Fetches real YouTube video items (title, videoId, index, thumbnail) for a playlist ID in real-time.
+    Supports 60+ videos using multi-stage Innertube API scraping and continuation token pagination.
+    """
+    if not list_id or not list_id.strip():
+        raise HTTPException(status_code=400, detail="list_id is required.")
+
+    videos = fetch_youtube_playlist_videos(list_id)
 
     return {
         "list_id": list_id,
