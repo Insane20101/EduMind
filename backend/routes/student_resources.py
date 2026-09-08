@@ -76,7 +76,144 @@ async def list_approved_resources(
         headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
     )
 
-from database import upload_file
+from database import upload_file, get_file
+
+
+@router.get("/playlists")
+async def get_playlists_for_students(subject_id: Optional[str] = None):
+    """
+    Returns video course playlists for a subject (public student endpoint).
+    Falls back to embedded playlists in db.subjects if db.playlists collection is empty.
+    """
+    if not subject_id or not subject_id.strip():
+        cursor = db.playlists.find({})
+        docs = await cursor.to_list(length=None)
+        for d in docs:
+            d.pop("_id", None)
+        return JSONResponse(
+            content=docs,
+            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+        )
+
+    clean_sub_id = subject_id.strip().upper()
+    query = {"subject_id": {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}}
+    cursor = db.playlists.find(query)
+    docs = await cursor.to_list(length=None)
+    for d in docs:
+        d.pop("_id", None)
+
+    if docs:
+        return JSONResponse(
+            content=docs,
+            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+        )
+
+    # Fallback to embedded playlists in db.subjects document
+    subj = await db.subjects.find_one({"code": {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}})
+    fallback_playlists = []
+    if subj and subj.get("playlists"):
+        for index, item in enumerate(subj["playlists"]):
+            if isinstance(item, dict):
+                fallback_playlists.append({
+                    "playlist_id": f"seed-{clean_sub_id}-{index}",
+                    "subject_id": clean_sub_id,
+                    "title": item.get("title") or f"{subj.get('name', 'Course')} - {item.get('channel', 'Lectures')}",
+                    "url": item.get("url"),
+                    "unit": item.get("channel") or "Full Course",
+                })
+            elif isinstance(item, str):
+                fallback_playlists.append({
+                    "playlist_id": f"seed-{clean_sub_id}-{index}",
+                    "subject_id": clean_sub_id,
+                    "title": f"{subj.get('name', 'Course')} Lectures",
+                    "url": item,
+                    "unit": "Full Course",
+                })
+
+    return JSONResponse(
+        content=fallback_playlists,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+    )
+
+
+@router.get("/file/{resource_id}")
+async def stream_resource_file(resource_id: str):
+    """
+    Streams PDF file directly from MongoDB GridFS, cached bytes, or Cloudinary proxy with inline headers.
+    """
+    doc = await db.resources.find_one({
+        "$or": [
+            {"resource_id": resource_id},
+            {"cloud_file_id": resource_id},
+            {"cloudinary_public_id": resource_id}
+        ]
+    })
+    
+    # 1. GridFS Direct Lookup by file_id if doc not found by resource_id
+    if not doc:
+        file_obj = await get_file(resource_id)
+        if file_obj and file_obj.get("content"):
+            return Response(
+                content=file_obj["content"],
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": "inline; filename=\"document.pdf\"",
+                    "Cache-Control": "public, max-age=86400",
+                    "Access-Control-Allow-Origin": "*"
+                }
+            )
+        raise HTTPException(status_code=404, detail="Resource document not found.")
+
+    # 2. GridFS storage from document metadata
+    cloud_file_id = doc.get("cloud_file_id")
+    if cloud_file_id:
+        file_obj = await get_file(cloud_file_id)
+        if file_obj and file_obj.get("content"):
+            filename = file_obj.get("filename") or doc.get("filename") or doc.get("title", "document") + ".pdf"
+            return Response(
+                content=file_obj["content"],
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"inline; filename=\"{filename}\"",
+                    "Cache-Control": "public, max-age=86400",
+                    "Access-Control-Allow-Origin": "*"
+                }
+            )
+
+    # 3. File bytes cache
+    cached_bytes = doc.get("file_bytes_cache")
+    if cached_bytes:
+        filename = doc.get("filename") or doc.get("title", "document") + ".pdf"
+        return Response(
+            content=cached_bytes,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"inline; filename=\"{filename}\"",
+                "Cache-Control": "public, max-age=86400",
+                "Access-Control-Allow-Origin": "*"
+            }
+        )
+
+    # 4. Cloudinary or external URL proxy
+    target_url = doc.get("url") or doc.get("cloudinary_url")
+    if target_url and target_url.startswith("http"):
+        try:
+            resp = requests.get(target_url, timeout=15)
+            if resp.status_code == 200:
+                filename = doc.get("filename") or doc.get("title", "document") + ".pdf"
+                return Response(
+                    content=resp.content,
+                    media_type="application/pdf",
+                    headers={
+                        "Content-Disposition": f"inline; filename=\"{filename}\"",
+                        "Cache-Control": "public, max-age=86400",
+                        "Access-Control-Allow-Origin": "*"
+                    }
+                )
+        except Exception as exc:
+            logger.warning(f"Cloudinary proxy stream error for resource {resource_id}: {exc}")
+
+    raise HTTPException(status_code=404, detail="File content unavailable.")
 
 # ── Authenticated: student submits a resource ──────────────────────────────────
 
