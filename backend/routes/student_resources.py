@@ -62,6 +62,7 @@ async def list_approved_resources(
     docs = await cursor.to_list(length=None)
     for doc in docs:
         doc.pop("_id", None)
+        doc.pop("file_bytes_cache", None)
         rid = doc.get("resource_id")
         doc["file_url"] = f"/api/resources/file/{rid}"
         # For document/file resources, ensure URL routes to protected PDF file endpoint

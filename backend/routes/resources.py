@@ -349,7 +349,10 @@ async def approve_resource(
 
         await db.resources.update_one(
             {"resource_id": resource_id},
-            {"$set": update_set}
+            {
+                "$set": update_set,
+                "$unset": {"file_bytes_cache": ""}
+            }
         )
 
         ingestion_queue.release_lock(success=True, final_message=f"Approved and ingested '{filename}'.")
