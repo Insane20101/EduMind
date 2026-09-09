@@ -99,8 +99,8 @@ function SuggestForm({ subjectId }) {
                   className="w-full border border-blue-200 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
                   value={resType} onChange={e => setResType(e.target.value)}
                 >
-                  <option value="note">Note / Study Material</option>
-                  <option value="pyq">Previous Year Question</option>
+                  <option value="note">Notes</option>
+                  <option value="pyq">Previous Year Questions (PYQs)</option>
                   <option value="playlist">YouTube Playlist (Lectures)</option>
                   <option value="other">Other</option>
                 </select>
