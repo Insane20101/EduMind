@@ -54,14 +54,14 @@ export default function Signup() {
     setFormData({ ...formData, enrollment: val });
   };
 
-  const ENROLL_REGEX = /^(?=.*\d)[A-Za-z0-9\/-]{8,20}$/;
+  const ENROLL_REGEX = /^(19|20)\d{2}([A-Za-z]{2,4}\d{4}|\d{6})$/i;
 
   // Step 1: Request Signup OTP
   const handleRequestOtp = async (e) => {
     e.preventDefault();
     const cleanEnr = formData.enrollment.trim().toUpperCase();
     if (!ENROLL_REGEX.test(cleanEnr)) {
-      toast.error('Invalid Enrollment format. Must be 8-20 characters with digits (e.g. 2023CSD0517 or 2100970100045)');
+      toast.error('Invalid Enrollment / Roll Number format. Example: 2023CSD0517 or 2023021122');
       return;
     }
     if (formData.branch !== 'CSE') {

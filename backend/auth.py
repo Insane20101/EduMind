@@ -20,7 +20,7 @@ from utils.security import hash_password, verify_password
 from utils.email_utils import send_smtp_otp_email
 
 router = APIRouter()
-ENROLL_REGEX = re.compile(r"^(?=.*\d)[A-Za-z0-9\/-]{8,20}$")
+ENROLL_REGEX = re.compile(r"^(19|20)\d{2}([A-Za-z]{2,4}\d{4}|\d{6})$", re.IGNORECASE)
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
 limiter = Limiter(key_func=get_remote_address)
 
@@ -29,7 +29,7 @@ def validate_enrollment(enr: str, branch: str = None):
     if not clean_enr or not ENROLL_REGEX.match(clean_enr):
         raise HTTPException(
             status_code=400, 
-            detail="Invalid enrollment number format. Must be 8 to 20 characters, contain digits, and valid university format (e.g. 2023CSD0517 or 2100970100045)."
+            detail="Invalid Enrollment / Roll Number. Must be in valid format (e.g. 2023CSD0517 or 2023021122)."
         )
     return True
 
