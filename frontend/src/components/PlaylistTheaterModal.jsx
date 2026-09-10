@@ -113,6 +113,16 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
   const [aiLoading, setAiLoading] = useState(false);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const chatEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+
+  const autoScrollToBottom = (force = false) => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 120;
+    if (force || isNearBottom) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
 
   const currentPlaylist = playlists[activePlaylistIdx] || playlists[0] || {};
 
@@ -170,8 +180,10 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
 
   // Auto-scroll chat to bottom
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages, aiLoading, summaryLoading]);
+    if (sidebarTab === 'ai') {
+      autoScrollToBottom(true);
+    }
+  }, [sidebarTab, aiLoading, summaryLoading]);
 
   // Handle panel resizing via dragging splitter
   const handleMouseDown = (e) => {
@@ -321,7 +333,9 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let assistantText = '';
+      let networkText = '';
+      let displayedText = '';
+      let isDone = false;
 
       const assistantMsgId = Date.now() + 1;
       setChatMessages((prev) => [
@@ -330,33 +344,65 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
           id: assistantMsgId,
           role: 'assistant',
           content: '',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          isStreaming: true
         }
       ]);
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunkStr = decoder.decode(value);
-        const lines = chunkStr.split('\n');
+      // Micro-ticker dispenser (~22ms tick = 45fps) for silky smooth, relaxed line-by-line output
+      const ticker = setInterval(() => {
+        if (displayedText.length < networkText.length) {
+          const diff = networkText.length - displayedText.length;
+          const step = Math.max(2, Math.min(Math.ceil(diff / 3), 12));
+          displayedText = networkText.slice(0, displayedText.length + step);
 
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const rawData = line.replace('data: ', '').trim();
-            if (rawData === '[DONE]') break;
-            try {
-              const parsed = JSON.parse(rawData);
-              if (parsed.type === 'chunk' && parsed.text) {
-                assistantText += parsed.text;
-                setChatMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === assistantMsgId ? { ...msg, content: assistantText } : msg
-                  )
-                );
+          setChatMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMsgId ? { ...msg, content: displayedText, isStreaming: true } : msg
+            )
+          );
+          autoScrollToBottom(false);
+        } else if (isDone) {
+          clearInterval(ticker);
+          setChatMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMsgId ? { ...msg, content: networkText, isStreaming: false } : msg
+            )
+          );
+          autoScrollToBottom(true);
+        }
+      }, 22);
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            isDone = true;
+            break;
+          }
+          const chunkStr = decoder.decode(value);
+          const lines = chunkStr.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const rawData = line.replace('data: ', '').trim();
+              if (rawData === '[DONE]') {
+                isDone = true;
+                break;
               }
-            } catch (e) {}
+              try {
+                const parsed = JSON.parse(rawData);
+                if (parsed.type === 'chunk' && parsed.text) {
+                  networkText += parsed.text;
+                }
+              } catch (e) {}
+            }
           }
         }
+      } catch (e) {
+        console.error("Reader error:", e);
+      } finally {
+        isDone = true;
       }
     } catch (err) {
       console.warn('AI question stream error:', err);
@@ -846,7 +892,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                 </div>
 
                 {/* Messages & Chat History */}
-                <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+                <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
                   {chatMessages.length === 0 ? (
                     <div className="py-6 px-3 text-center flex flex-col items-center gap-3">
                       <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shadow-inner">
@@ -912,7 +958,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                                 rehypePlugins={[rehypeKatex, rehypeRaw]}
                                 components={MarkdownComponents}
                               >
-                                {preprocessMarkdownContent(msg.content)}
+                                {preprocessMarkdownContent(msg.content, msg.isStreaming)}
                               </ReactMarkdown>
 
                               {msg.grounded && (

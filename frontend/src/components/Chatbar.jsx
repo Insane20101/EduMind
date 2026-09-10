@@ -79,12 +79,22 @@ export default function Chatbar() {
   
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
+
+  const autoScrollToBottom = (force = false) => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 120;
+    if (force || isNearBottom) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     if (isChatDrawerOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      autoScrollToBottom(true);
     }
-  }, [messages, isLoading, isChatDrawerOpen]);
+  }, [isChatDrawerOpen]);
   
   const isLocked = !subject && chatContext !== 'All Subjects';
 
@@ -149,11 +159,14 @@ export default function Chatbar() {
             content: data.answer || data.response || "Analysis complete.",
             grounded: data.grounded,
             sources: data.sources,
-            ocrProcessed: true
+            ocrProcessed: true,
+            isStreaming: false
           }]);
+          autoScrollToBottom(true);
         } else {
           console.error("Error from chat API:", data);
-          setMessages(prev => [...prev, { role: 'ai', content: data.detail || "Sorry, I encountered an error." }]);
+          setMessages(prev => [...prev, { role: 'ai', content: data.detail || "Sorry, I encountered an error.", isStreaming: false }]);
+          autoScrollToBottom(true);
         }
       } else {
         // Streaming RAG Chat Endpoint with fallback
@@ -174,59 +187,103 @@ export default function Chatbar() {
             streamSuccess = true;
             const reader = res.body.getReader();
             const decoder = new TextDecoder('utf-8');
-            let accumulatedContent = '';
+            let networkContent = '';
+            let displayedContent = '';
             let grounded = false;
             let sources = [];
             let buffer = '';
+            let isDone = false;
 
-            // Add initial empty AI message container
+            // Add initial empty AI message container with isStreaming: true
             setMessages(prev => [...prev, {
               role: 'ai',
               content: '',
               grounded: false,
               sources: [],
-              ocrProcessed: false
+              ocrProcessed: false,
+              isStreaming: true
             }]);
 
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              buffer += decoder.decode(value, { stream: true });
+            // Micro-ticker dispenser interval (~22ms tick = 45fps) for relaxed line-by-line streaming
+            const ticker = setInterval(() => {
+              if (displayedContent.length < networkContent.length) {
+                const diff = networkContent.length - displayedContent.length;
+                const step = Math.max(2, Math.min(Math.ceil(diff / 3), 12));
+                displayedContent = networkContent.slice(0, displayedContent.length + step);
 
-              const parts = buffer.split('\n\n');
-              buffer = parts.pop() || '';
-
-              for (const part of parts) {
-                const trimmed = part.trim();
-                if (!trimmed.startsWith('data: ')) continue;
-                const dataStr = trimmed.slice(6);
-                if (dataStr === '[DONE]') break;
-
-                try {
-                  const parsed = JSON.parse(dataStr);
-                  if (parsed.type === 'metadata') {
-                    grounded = parsed.grounded;
-                    sources = parsed.sources || [];
-                  } else if (parsed.type === 'chunk' && parsed.text) {
-                    accumulatedContent += parsed.text;
-                    setMessages(prev => {
-                      const next = [...prev];
-                      const lastIdx = next.length - 1;
-                      if (lastIdx >= 0 && next[lastIdx].role === 'ai') {
-                        next[lastIdx] = {
-                          ...next[lastIdx],
-                          content: accumulatedContent,
-                          grounded: grounded,
-                          sources: sources
-                        };
-                      }
-                      return next;
-                    });
+                setMessages(prev => {
+                  const next = [...prev];
+                  const lastIdx = next.length - 1;
+                  if (lastIdx >= 0 && next[lastIdx].role === 'ai') {
+                    next[lastIdx] = {
+                      ...next[lastIdx],
+                      content: displayedContent,
+                      grounded,
+                      sources,
+                      isStreaming: true
+                    };
                   }
-                } catch (e) {
-                  console.error("Error parsing stream chunk:", e);
+                  return next;
+                });
+                autoScrollToBottom(false);
+              } else if (isDone) {
+                clearInterval(ticker);
+                setMessages(prev => {
+                  const next = [...prev];
+                  const lastIdx = next.length - 1;
+                  if (lastIdx >= 0 && next[lastIdx].role === 'ai') {
+                    next[lastIdx] = {
+                      ...next[lastIdx],
+                      content: networkContent,
+                      grounded,
+                      sources,
+                      isStreaming: false
+                    };
+                  }
+                  return next;
+                });
+                autoScrollToBottom(true);
+              }
+            }, 22);
+
+            try {
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                  isDone = true;
+                  break;
+                }
+                buffer += decoder.decode(value, { stream: true });
+
+                const parts = buffer.split('\n\n');
+                buffer = parts.pop() || '';
+
+                for (const part of parts) {
+                  const trimmed = part.trim();
+                  if (!trimmed.startsWith('data: ')) continue;
+                  const dataStr = trimmed.slice(6);
+                  if (dataStr === '[DONE]') {
+                    isDone = true;
+                    break;
+                  }
+
+                  try {
+                    const parsed = JSON.parse(dataStr);
+                    if (parsed.type === 'metadata') {
+                      grounded = parsed.grounded;
+                      sources = parsed.sources || [];
+                    } else if (parsed.type === 'chunk' && parsed.text) {
+                      networkContent += parsed.text;
+                    }
+                  } catch (e) {
+                    console.error("Error parsing stream chunk:", e);
+                  }
                 }
               }
+            } catch (err) {
+              console.error("Stream reader error:", err);
+            } finally {
+              isDone = true;
             }
           }
         } catch (e) {
@@ -368,7 +425,7 @@ export default function Chatbar() {
         </div>
 
         {/* Drawer Body - Messages */}
-        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar flex flex-col gap-4 bg-slate-50/40">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 custom-scrollbar flex flex-col gap-4 bg-slate-50/40">
           {messages.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center p-6 my-auto">
               <div className="h-14 w-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 shadow-inner">
@@ -444,7 +501,7 @@ export default function Chatbar() {
                       remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]} 
                       rehypePlugins={[rehypeKatex, rehypeRaw]}
                     >
-                      {preprocessMarkdownContent(formatTextSpacing(msg.content))}
+                      {preprocessMarkdownContent(formatTextSpacing(msg.content), msg.isStreaming)}
                     </ReactMarkdown>
                   </div>
                 </div>

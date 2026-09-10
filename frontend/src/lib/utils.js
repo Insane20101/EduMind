@@ -15,7 +15,7 @@ export function formatTextSpacing(text) {
  * auto-detects raw unfenced Mermaid blocks, and synthesizes fallback diagrams
  * if the text promises a diagram but lacks a ```mermaid code block.
  */
-export function preprocessMarkdownContent(content) {
+export function preprocessMarkdownContent(content, isStreaming = false) {
   if (!content || typeof content !== 'string') return content || '';
 
   let processed = content;
@@ -39,8 +39,9 @@ export function preprocessMarkdownContent(content) {
   }
 
   // 3. Fallback Auto-Diagram Synthesizer:
-  // If the text explicitly claims a diagram/flowchart is provided below but lacks any ```mermaid block:
-  if (!processed.includes('```mermaid')) {
+  // ONLY run when isStreaming is FALSE. While response text is actively streaming,
+  // speculative synthesis causes layout shifts, diagram popping, and height oscillations.
+  if (!isStreaming && !processed.includes('```mermaid')) {
     const claimsDiagramRegex = /(?:here's|here is|below is|represented in|block diagram of|flowchart of|diagram of)(?:[^\n]*?)(?:flowchart|diagram|block diagram)/i;
     
     if (claimsDiagramRegex.test(processed)) {
