@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import mermaid from 'mermaid';
 import { 
   ZoomIn, 
@@ -37,7 +38,7 @@ mermaid.initialize({
     htmlLabels: false,
     curve: 'basis',
     useMaxWidth: true,
-    padding: 25
+    padding: 20
   },
   securityLevel: 'loose',
 });
@@ -103,17 +104,26 @@ export default function Mermaid({ chart }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-  const applyUnfilledLightStyles = (container) => {
+  const applyUnfilledLightStyles = (container, isModal = false) => {
     if (!container) return;
     const svgEl = container.querySelector('svg');
     if (!svgEl) return;
 
     svgEl.style.maxWidth = '100%';
-    svgEl.style.height = 'auto';
     svgEl.style.margin = '0 auto';
-    svgEl.style.padding = '16px';
+    svgEl.style.padding = '12px';
     svgEl.style.background = '#ffffff';
     svgEl.style.overflow = 'visible';
+
+    if (isModal) {
+      svgEl.style.maxHeight = '65vh';
+      svgEl.style.maxWidth = '80vw';
+      svgEl.style.width = 'auto';
+      svgEl.style.height = 'auto';
+    } else {
+      svgEl.style.maxHeight = '340px';
+      svgEl.style.height = 'auto';
+    }
 
     // Expand viewBox padding so top & side nodes are NEVER clipped
     const currentViewBox = svgEl.getAttribute('viewBox');
@@ -133,8 +143,8 @@ export default function Mermaid({ chart }) {
         const w = parseFloat(rect.getAttribute('width'));
         const x = parseFloat(rect.getAttribute('x'));
         if (!isNaN(w) && !isNaN(x) && w > 0) {
-          rect.setAttribute('width', (w + 28).toString());
-          rect.setAttribute('x', (x - 14).toString());
+          rect.setAttribute('width', (w + 24).toString());
+          rect.setAttribute('x', (x - 12).toString());
         }
       }
     });
@@ -207,7 +217,7 @@ export default function Mermaid({ chart }) {
         setIsRendering(false);
         if (containerRef.current) {
           containerRef.current.innerHTML = res.svg;
-          applyUnfilledLightStyles(containerRef.current);
+          applyUnfilledLightStyles(containerRef.current, false);
         }
       })
       .catch(() => {
@@ -225,7 +235,7 @@ export default function Mermaid({ chart }) {
             setIsRendering(false);
             if (containerRef.current) {
               containerRef.current.innerHTML = res2.svg;
-              applyUnfilledLightStyles(containerRef.current);
+              applyUnfilledLightStyles(containerRef.current, false);
             }
           })
           .catch(() => {
@@ -268,27 +278,31 @@ export default function Mermaid({ chart }) {
   useEffect(() => {
     if (isModalOpen && modalContainerRef.current) {
       modalContainerRef.current.innerHTML = lastValidSvgRef.current || containerRef.current?.innerHTML || '';
-      applyUnfilledLightStyles(modalContainerRef.current);
+      applyUnfilledLightStyles(modalContainerRef.current, true);
     }
   }, [isModalOpen]);
 
-  // Handle ESC key to close modal
+  // Handle ESC key & keyboard zoom shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (!isModalOpen) return;
       if (e.key === 'Escape') setIsModalOpen(false);
+      if (e.key === '+' || e.key === '=') setZoom(z => Math.min(4.0, z + 0.15));
+      if (e.key === '-') setZoom(z => Math.max(0.3, z - 0.15));
+      if (e.key === '0' || e.key === 'r') { setZoom(1); setPan({ x: 0, y: 0 }); }
     };
     if (isModalOpen) window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isModalOpen]);
 
-  // Zoom & Pan Handlers for Modal
-  const handleZoomIn = () => setZoom(z => Math.min(4.0, z + 0.25));
-  const handleZoomOut = () => setZoom(z => Math.max(0.3, z - 0.25));
+  // Zoom & Pan Handlers for Modal - Relaxed smooth wheel sensitivity (1.06 factor)
+  const handleZoomIn = () => setZoom(z => Math.min(4.0, z + 0.20));
+  const handleZoomOut = () => setZoom(z => Math.max(0.3, z - 0.20));
   const handleResetZoom = () => { setZoom(1); setPan({ x: 0, y: 0 }); };
 
   const handleWheel = (e) => {
     e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.15 : 0.87;
+    const zoomFactor = e.deltaY < 0 ? 1.06 : 0.94;
     setZoom(z => Math.min(4.0, Math.max(0.3, z * zoomFactor)));
   };
 
@@ -353,13 +367,13 @@ export default function Mermaid({ chart }) {
 
         {/* Crisp White Render Area */}
         <div 
-          className="p-4 flex flex-col items-center justify-center w-full bg-white relative min-h-[100px] cursor-zoom-in group/canvas"
+          className="p-3 flex flex-col items-center justify-center w-full bg-white relative min-h-[100px] max-h-[380px] overflow-hidden cursor-zoom-in group/canvas"
           onClick={openModal}
         >
           {/* SVG Diagram Canvas */}
           <div 
             ref={containerRef} 
-            className="mermaid-render-area w-full flex justify-center text-slate-900 [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:bg-white" 
+            className="mermaid-render-area w-full flex justify-center text-slate-900 [&_svg]:max-h-[340px] [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:bg-white" 
           />
 
           {/* Click to expand hover overlay badge */}
@@ -409,74 +423,76 @@ export default function Mermaid({ chart }) {
         </div>
       </div>
 
-      {/* ── Interactive Fullscreen / Large Screen Modal ───────────────────────── */}
-      {isModalOpen && (
+      {/* ── Interactive Fullscreen / Large Screen Modal (Portal to body for guaranteed full screen visibility) ── */}
+      {isModalOpen && createPortal(
         <div 
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col animate-in fade-in duration-200"
+          className="fixed inset-0 z-[99999] bg-slate-950/90 backdrop-blur-md flex flex-col animate-in fade-in duration-200"
           onClick={() => setIsModalOpen(false)}
         >
-          {/* Modal Top Control Bar */}
+          {/* Modal Top Control Bar - Guaranteed 100% visible on all viewports */}
           <div 
-            className="flex items-center justify-between px-6 py-4 bg-slate-900/90 border-b border-slate-800 text-white z-10"
+            className="flex items-center justify-between px-4 sm:px-6 py-3 bg-slate-900/95 border-b border-slate-800 text-white z-50 shrink-0 gap-2 flex-wrap sm:flex-nowrap"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse" />
-              <div>
-                <h4 className="text-sm font-bold text-slate-100">Flowchart &amp; Diagram Inspector</h4>
-                <p className="text-xs text-slate-400">Use mouse wheel to zoom • Click &amp; drag to pan across screen</p>
+            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse shrink-0" />
+              <div className="min-w-0">
+                <h4 className="text-xs sm:text-sm font-bold text-slate-100 truncate">Flowchart &amp; Diagram Inspector</h4>
+                <p className="text-[10px] sm:text-xs text-slate-400 truncate hidden sm:block">
+                  Use mouse wheel to zoom • Click &amp; drag to pan across screen
+                </p>
               </div>
             </div>
 
-            {/* Controls Bar */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-800 px-3 py-1 rounded-lg">
+            {/* Controls Bar - Always visible, never cut off */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-800/80 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg">
                 {Math.round(zoom * 100)}%
               </span>
 
               <button
                 type="button"
                 onClick={handleZoomIn}
-                className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
-                title="Zoom In (+25%)"
+                className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
+                title="Zoom In (+20%)"
               >
-                <ZoomIn size={16} />
+                <ZoomIn size={15} />
               </button>
 
               <button
                 type="button"
                 onClick={handleZoomOut}
-                className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
-                title="Zoom Out (-25%)"
+                className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
+                title="Zoom Out (-20%)"
               >
-                <ZoomOut size={16} />
+                <ZoomOut size={15} />
               </button>
 
               <button
                 type="button"
                 onClick={handleResetZoom}
-                className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
+                className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700"
                 title="Reset Zoom & Position"
               >
-                <RotateCcw size={16} />
+                <RotateCcw size={15} />
               </button>
 
-              <div className="h-5 w-px bg-slate-800 mx-1" />
+              <div className="h-4 w-px bg-slate-800 mx-0.5" />
 
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 text-slate-400 hover:text-white hover:bg-rose-500/20 hover:border-rose-500/40 rounded-lg transition-colors border border-slate-700"
+                className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-lg transition-colors"
                 title="Close Fullscreen (Esc)"
               >
-                <X size={18} />
+                <X size={17} />
               </button>
             </div>
           </div>
 
           {/* Interactive Zoomable & Pannable Canvas Container */}
           <div 
-            className="flex-1 w-full h-full overflow-hidden flex items-center justify-center p-8 select-none relative cursor-grab active:cursor-grabbing bg-slate-900/50"
+            className="flex-1 w-full h-full overflow-hidden flex items-center justify-center p-4 sm:p-8 select-none relative cursor-grab active:cursor-grabbing bg-slate-900/60"
             onClick={(e) => e.stopPropagation()}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
@@ -485,7 +501,7 @@ export default function Mermaid({ chart }) {
             onMouseLeave={handleMouseUp}
           >
             <div 
-              className="transition-transform duration-75 ease-out flex items-center justify-center"
+              className="transition-transform duration-75 ease-out flex items-center justify-center max-w-full max-h-full"
               style={{
                 transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
                 transformOrigin: 'center center'
@@ -493,18 +509,20 @@ export default function Mermaid({ chart }) {
             >
               <div 
                 ref={modalContainerRef} 
-                className="bg-white p-8 rounded-2xl shadow-2xl border border-slate-200 max-w-none [&_svg]:max-w-none [&_svg]:bg-white"
+                className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border border-slate-200 max-w-[85vw] max-h-[70vh] flex items-center justify-center overflow-hidden [&_svg]:max-h-[65vh] [&_svg]:max-w-[80vw] [&_svg]:w-auto [&_svg]:h-auto [&_svg]:bg-white"
               />
             </div>
 
             {/* Floating Navigation Hint */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/80 border border-slate-800 text-slate-400 text-xs px-4 py-1.5 rounded-full backdrop-blur-md flex items-center gap-2 pointer-events-none shadow-lg">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/90 border border-slate-800 text-slate-300 text-xs px-4 py-1.5 rounded-full backdrop-blur-md flex items-center gap-2 pointer-events-none shadow-xl">
               <Move size={14} className="text-indigo-400" />
-              <span>Drag to Pan • Mouse Wheel to Zoom</span>
+              <span>Drag to Pan • Mouse Wheel to Zoom • Press Esc to Close</span>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
 }
+
