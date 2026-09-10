@@ -12,8 +12,38 @@ import Mermaid from './Mermaid';
 import { getApiBaseUrl } from '../config';
 
 const MarkdownComponents = {
+  p: ({node, ...props}) => {
+    let textContent = '';
+    React.Children.forEach(props.children, child => {
+      if (typeof child === 'string') textContent += child;
+    });
+    const match = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
+    if (match) {
+      return (
+        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-200/80 flex items-start gap-2.5">
+          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-blue-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
+            {match[1]}
+          </span>
+          {match[2] && <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">{match[2]}</span>}
+        </div>
+      );
+    }
+    return <p className="my-3.5 text-sm text-slate-800 leading-relaxed font-normal" {...props} />;
+  },
+  ul: ({node, ...props}) => (
+    <ul className="list-disc pl-5 my-3 space-y-2 text-sm text-slate-800 leading-relaxed" {...props} />
+  ),
+  ol: ({node, ...props}) => (
+    <ol className="list-decimal pl-5 my-3 space-y-2 text-sm text-slate-800 leading-relaxed font-medium" {...props} />
+  ),
+  li: ({node, ...props}) => (
+    <li className="my-1.5 text-sm text-slate-800 leading-relaxed" {...props} />
+  ),
+  strong: ({node, ...props}) => (
+    <strong className="font-extrabold text-slate-900" {...props} />
+  ),
   table: ({node, ...props}) => (
-    <div className="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-2xs">
+    <div className="overflow-x-auto my-4 rounded-xl border border-slate-200 shadow-2xs">
       <table className="min-w-full divide-y divide-slate-200 text-xs text-left" {...props} />
     </div>
   ),
@@ -29,25 +59,38 @@ const MarkdownComponents = {
   tr: ({node, ...props}) => (
     <tr className="hover:bg-blue-50/40 transition-colors" {...props} />
   ),
-  h1: ({node, ...props}) => <h1 className="text-xl font-bold mt-4 mb-2 text-slate-800 border-b pb-1" {...props} />,
-  h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-4 mb-2 text-slate-800" {...props} />,
+  h1: ({node, ...props}) => <h1 className="text-xl font-bold mt-5 mb-2.5 text-slate-900 border-b pb-1.5" {...props} />,
+  h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-5 mb-2.5 text-slate-900" {...props} />,
   h3: ({node, ...props}) => {
     let textContent = '';
     React.Children.forEach(props.children, child => {
       if (typeof child === 'string') textContent += child;
     });
-    const match = textContent.match(/^(Step\s*\d+)\s*(?:—|-)?\s*(.*)/i);
-    if (match) {
+
+    const qMatch = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
+    if (qMatch) {
       return (
-        <div className="mt-5 mb-2.5 flex items-center">
-          <span className="text-xs font-bold px-2 py-1 rounded bg-blue-100 text-blue-800 mr-2.5 border border-blue-200 uppercase tracking-wider">
-            {match[1]}
+        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-200/80 flex items-start gap-2.5">
+          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-blue-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
+            {qMatch[1]}
           </span>
-          {match[2] && <span className="text-sm font-semibold text-slate-800 leading-none">{match[2]}</span>}
+          {qMatch[2] && <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">{qMatch[2]}</span>}
         </div>
       );
     }
-    return <h3 className="text-base font-bold mt-3 mb-1.5 text-slate-800" {...props} />;
+
+    const stepMatch = textContent.match(/^(Step\s*\d+)\s*(?:—|-)?\s*(.*)/i);
+    if (stepMatch) {
+      return (
+        <div className="mt-5 mb-2.5 flex items-center">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-100 text-blue-800 mr-2.5 border border-blue-200 uppercase tracking-wider">
+            {stepMatch[1]}
+          </span>
+          {stepMatch[2] && <span className="text-sm font-bold text-slate-900 leading-none">{stepMatch[2]}</span>}
+        </div>
+      );
+    }
+    return <h3 className="text-base font-bold mt-4 mb-2 text-slate-900" {...props} />;
   },
   code({node, inline, className, children, ...props}) {
     const match = /language-(\w+)/.exec(className || '');

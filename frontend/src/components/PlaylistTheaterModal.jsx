@@ -16,26 +16,41 @@ import { getApiBaseUrl } from '../config';
 import 'katex/dist/katex.min.css';
 
 const MarkdownComponents = {
-  p: ({node, ...props}) => (
-    <p className="my-2.5 text-xs text-slate-200 leading-relaxed font-normal" {...props} />
-  ),
+  p: ({node, ...props}) => {
+    let textContent = '';
+    React.Children.forEach(props.children, child => {
+      if (typeof child === 'string') textContent += child;
+    });
+    const match = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
+    if (match) {
+      return (
+        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-800/80 flex items-start gap-2.5">
+          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-indigo-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
+            {match[1]}
+          </span>
+          {match[2] && <span className="text-sm sm:text-base font-extrabold text-slate-100 leading-snug">{match[2]}</span>}
+        </div>
+      );
+    }
+    return <p className="my-3.5 text-xs text-slate-200 leading-relaxed font-normal" {...props} />;
+  },
   ul: ({node, ...props}) => (
-    <ul className="list-disc pl-5 my-2.5 space-y-1.5 text-xs text-slate-200 leading-relaxed" {...props} />
+    <ul className="list-disc pl-5 my-3 space-y-2 text-xs text-slate-200 leading-relaxed" {...props} />
   ),
   ol: ({node, ...props}) => (
-    <ol className="list-decimal pl-5 my-2.5 space-y-1.5 text-xs text-slate-200 leading-relaxed font-medium" {...props} />
+    <ol className="list-decimal pl-5 my-3 space-y-2 text-xs text-slate-200 leading-relaxed font-medium" {...props} />
   ),
   li: ({node, ...props}) => (
-    <li className="my-1 text-xs text-slate-200 leading-relaxed" {...props} />
+    <li className="my-1.5 text-xs text-slate-200 leading-relaxed" {...props} />
   ),
   strong: ({node, ...props}) => (
-    <strong className="font-bold text-indigo-200" {...props} />
+    <strong className="font-extrabold text-indigo-200" {...props} />
   ),
   blockquote: ({node, ...props}) => (
-    <blockquote className="border-l-2 border-indigo-500/80 pl-3 py-1 my-2.5 bg-slate-950/70 text-slate-300 italic text-xs rounded-r-lg" {...props} />
+    <blockquote className="border-l-2 border-indigo-500/80 pl-3 py-1.5 my-3 bg-slate-950/70 text-slate-300 italic text-xs rounded-r-lg" {...props} />
   ),
   table: ({node, ...props}) => (
-    <div className="overflow-x-auto my-3 rounded-xl border border-slate-700/60 bg-slate-950/80 shadow-2xs">
+    <div className="overflow-x-auto my-4 rounded-xl border border-slate-700/60 bg-slate-950/80 shadow-2xs">
       <table className="min-w-full divide-y divide-slate-700 text-xs text-left" {...props} />
     </div>
   ),
@@ -51,11 +66,42 @@ const MarkdownComponents = {
   tr: ({node, ...props}) => (
     <tr className="hover:bg-slate-800/50 transition-colors" {...props} />
   ),
-  h1: ({node, ...props}) => <h1 className="text-sm font-bold mt-4 mb-2 text-slate-100 border-b border-slate-800 pb-1" {...props} />,
-  h2: ({node, ...props}) => <h2 className="text-xs font-bold mt-3.5 mb-1.5 text-indigo-200" {...props} />,
-  h3: ({node, ...props}) => <h3 className="text-xs font-bold mt-3 mb-1 text-indigo-300 flex items-center gap-1.5" {...props} />,
-  h4: ({node, ...props}) => <h4 className="text-[11px] font-bold uppercase tracking-wider mt-2 mb-1 text-indigo-400" {...props} />,
-  hr: ({node, ...props}) => <hr className="my-3 border-slate-800/80" {...props} />,
+  h1: ({node, ...props}) => <h1 className="text-base font-bold mt-5 mb-2.5 text-slate-100 border-b border-slate-800 pb-1.5" {...props} />,
+  h2: ({node, ...props}) => <h2 className="text-sm font-bold mt-4 mb-2 text-indigo-200" {...props} />,
+  h3: ({node, ...props}) => {
+    let textContent = '';
+    React.Children.forEach(props.children, child => {
+      if (typeof child === 'string') textContent += child;
+    });
+
+    const qMatch = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
+    if (qMatch) {
+      return (
+        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-800/80 flex items-start gap-2.5">
+          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-indigo-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
+            {qMatch[1]}
+          </span>
+          {qMatch[2] && <span className="text-sm sm:text-base font-extrabold text-slate-100 leading-snug">{qMatch[2]}</span>}
+        </div>
+      );
+    }
+
+    const stepMatch = textContent.match(/^(Step\s*\d+)\s*(?:—|-)?\s*(.*)/i);
+    if (stepMatch) {
+      return (
+        <div className="mt-5 mb-2.5 flex items-center">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 mr-2.5 uppercase tracking-wider">
+            {stepMatch[1]}
+          </span>
+          {stepMatch[2] && <span className="text-xs font-bold text-slate-100 leading-none">{stepMatch[2]}</span>}
+        </div>
+      );
+    }
+
+    return <h3 className="text-xs font-bold mt-3.5 mb-1.5 text-indigo-300 flex items-center gap-1.5" {...props} />;
+  },
+  h4: ({node, ...props}) => <h4 className="text-[11px] font-bold uppercase tracking-wider mt-3 mb-1.5 text-indigo-400" {...props} />,
+  hr: ({node, ...props}) => <hr className="my-4 border-slate-800/80" {...props} />,
   code({node, inline, className, children, ...props}) {
     const match = /language-(\w+)/.exec(className || '');
     if (!inline && match && match[1] === 'mermaid') {
@@ -66,7 +112,7 @@ const MarkdownComponents = {
         {children}
       </code>
     ) : (
-      <pre className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono overflow-x-auto text-indigo-200 my-2.5 leading-relaxed whitespace-pre-wrap">
+      <pre className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono overflow-x-auto text-indigo-200 my-3 leading-relaxed whitespace-pre-wrap">
         <code className={className} {...props}>{children}</code>
       </pre>
     );
