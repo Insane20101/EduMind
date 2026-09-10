@@ -20,14 +20,17 @@ from utils.security import hash_password, verify_password
 from utils.email_utils import send_smtp_otp_email
 
 router = APIRouter()
-ENROLL_REGEX = re.compile(r"^[A-Z0-9]{6,20}$", re.IGNORECASE)
+ENROLL_REGEX = re.compile(r"^(?=.*\d)[A-Za-z0-9\/-]{8,20}$")
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
 limiter = Limiter(key_func=get_remote_address)
 
-def validate_enrollment(enr: str, branch: str):
+def validate_enrollment(enr: str, branch: str = None):
     clean_enr = (enr or "").strip()
     if not clean_enr or not ENROLL_REGEX.match(clean_enr):
-        raise HTTPException(status_code=400, detail="Invalid enrollment format. Must be 6-20 alphanumeric characters.")
+        raise HTTPException(
+            status_code=400, 
+            detail="Invalid enrollment number format. Must be 8 to 20 characters, contain digits, and valid university format (e.g. 2023CSD0517 or 2100970100045)."
+        )
     return True
 
 def mask_email(email: str) -> str:

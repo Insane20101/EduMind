@@ -4,6 +4,7 @@ Handles uploads, playlists, student community submissions, vector knowledge base
 """
 
 import os
+import re
 import uuid
 import logging
 import traceback
@@ -325,25 +326,27 @@ async def approve_resource(
     res_type = str(doc.get("resource_type", "")).lower()
 
     # ── Special Handler: YouTube Playlist Approval ────────────────────────────
-    if res_type == "playlist" or "list=" in str(doc.get("url", "")):
+    if res_type == "playlist" or "list=" in str(doc.get("url", "")) or "youtube.com" in str(doc.get("url", "")) or "youtu.be" in str(doc.get("url", "")):
         url = doc.get("url") or ""
         match = re.search(r'list=([A-Za-z0-9_-]+)', url)
-        playlist_id = match.group(1) if match else url.strip()
+        playlist_id = match.group(1) if match else (doc.get("resource_id") or str(uuid.uuid4()))
         
-        if playlist_id:
-            playlist_doc = {
-                "playlist_id": playlist_id,
-                "subject_id": doc["subject_id"].upper(),
-                "title": doc.get("title", "Lecture Playlist"),
-                "channel_title": "Community Submitted",
-                "url": f"https://www.youtube.com/playlist?list={playlist_id}" if not url.startswith("http") else url,
-                "created_at": now
-            }
-            await db.playlists.update_one(
-                {"playlist_id": playlist_id, "subject_id": doc["subject_id"].upper()},
-                {"$set": playlist_doc},
-                upsert=True
-            )
+        playlist_doc = {
+            "playlist_id": playlist_id,
+            "resource_id": doc.get("resource_id"),
+            "subject_id": doc["subject_id"].upper(),
+            "title": doc.get("title", "Lecture Playlist"),
+            "channel_title": "Community Submitted",
+            "url": url if url.startswith("http") else f"https://www.youtube.com/playlist?list={playlist_id}",
+            "created_at": now,
+            "updated_at": now,
+            "source": "community"
+        }
+        await db.playlists.update_one(
+            {"$or": [{"playlist_id": playlist_id}, {"resource_id": doc.get("resource_id")}]},
+            {"$set": playlist_doc},
+            upsert=True
+        )
 
         await db.resources.update_one(
             {"resource_id": resource_id},
@@ -486,23 +489,103 @@ async def get_playlists(
     subject_id: Optional[str] = None,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Fetch video course playlists from MongoDB db.playlists with subject names & timestamps."""
-
-    query = {}
-    if subject_id and subject_id.upper() != "ALL":
-        query["subject_id"] = subject_id.upper()
-
+    """Fetch all video course playlists (from db.playlists, approved db.resources, and db.subjects seed playlists)."""
     name_map = await get_subject_name_map()
-    cursor = db.playlists.find(query).sort("created_at", -1)
-    docs = await cursor.to_list(length=None)
-    for d in docs:
+    all_playlists = []
+    seen_keys = set()
+
+    clean_sub_id = subject_id.strip().upper() if subject_id and subject_id.strip() and subject_id.upper() != "ALL" else None
+
+    # 1. Fetch from db.playlists collection
+    query1 = {}
+    if clean_sub_id:
+        query1["subject_id"] = clean_sub_id
+
+    cursor1 = db.playlists.find(query1).sort("created_at", -1)
+    docs1 = await cursor1.to_list(length=None)
+    for d in docs1:
         d.pop("_id", None)
         sub_code = d.get("subject_id", "").upper()
-        d["subject_name"] = name_map.get(sub_code) or sub_code
-        for field in ("created_at", "updated_at"):
-            if isinstance(d.get(field), datetime):
-                d[field] = d[field].isoformat()
-    return docs
+        url = d.get("url") or ""
+        title = d.get("title") or ""
+        key = (sub_code, (url.strip() or title.strip()).lower())
+        if key not in seen_keys:
+            seen_keys.add(key)
+            d["subject_name"] = name_map.get(sub_code) or sub_code
+            d["source"] = d.get("source", "admin")
+            for field in ("created_at", "updated_at"):
+                if isinstance(d.get(field), datetime):
+                    d[field] = d[field].isoformat()
+            all_playlists.append(d)
+
+    # 2. Fetch approved playlist resources from db.resources collection
+    query2 = {"status": "approved", "resource_type": "playlist"}
+    if clean_sub_id:
+        query2["subject_id"] = clean_sub_id
+
+    cursor2 = db.resources.find(query2).sort("uploaded_at", -1)
+    docs2 = await cursor2.to_list(length=None)
+    for r in docs2:
+        sub_code = r.get("subject_id", "").upper()
+        url = r.get("url") or ""
+        title = r.get("title") or ""
+        key = (sub_code, (url.strip() or title.strip()).lower())
+        if key not in seen_keys:
+            seen_keys.add(key)
+            match = re.search(r'list=([A-Za-z0-9_-]+)', url)
+            playlist_id = match.group(1) if match else r.get("resource_id")
+            uploaded_at_str = r.get("uploaded_at").isoformat() if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
+            all_playlists.append({
+                "playlist_id": playlist_id,
+                "subject_id": sub_code,
+                "subject_name": name_map.get(sub_code) or sub_code,
+                "title": title,
+                "url": url,
+                "unit": "Community Playlist",
+                "created_at": uploaded_at_str,
+                "source": "community",
+                "resource_id": r.get("resource_id")
+            })
+
+    # 3. Fetch prebuilt seed playlists from db.subjects collection
+    query3 = {"playlists": {"$exists": True, "$ne": []}}
+    if clean_sub_id:
+        query3["code"] = clean_sub_id
+
+    cursor3 = db.subjects.find(query3)
+    subj_docs = await cursor3.to_list(length=None)
+    for subj in subj_docs:
+        sub_code = subj.get("code", "").upper()
+        subj_name = subj.get("name", sub_code)
+        for idx, item in enumerate(subj.get("playlists", [])):
+            if isinstance(item, dict):
+                title = item.get("title") or f"{subj_name} - {item.get('channel', 'Lectures')}"
+                url = item.get("url") or ""
+                unit = item.get("channel") or "Full Course"
+            elif isinstance(item, str):
+                title = f"{subj_name} Course Playlist"
+                url = item
+                unit = "Full Course"
+            else:
+                continue
+
+            key = (sub_code, (url.strip() or title.strip()).lower())
+            if key not in seen_keys and url:
+                seen_keys.add(key)
+                match = re.search(r'list=([A-Za-z0-9_-]+)', url)
+                playlist_id = match.group(1) if match else f"seed-{sub_code}-{idx}"
+                all_playlists.append({
+                    "playlist_id": playlist_id,
+                    "subject_id": sub_code,
+                    "subject_name": subj_name,
+                    "title": title,
+                    "url": url,
+                    "unit": unit,
+                    "created_at": None,
+                    "source": "seed"
+                })
+
+    return all_playlists
 
 
 @router.post("/playlists")
@@ -522,7 +605,9 @@ async def update_playlist(
         "url": playlist_url,
         "unit": unit,
         "updated_at": datetime.now(timezone.utc).isoformat(),
-        "updated_by": current_admin["admin_id"]
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_by": current_admin["admin_id"],
+        "source": "admin"
     }
     await db.playlists.insert_one(doc)
     doc.pop("_id", None)
@@ -534,11 +619,32 @@ async def delete_playlist(
     playlist_id: str,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Admin deletes a playlist entry."""
-    res = await db.playlists.delete_many({"playlist_id": playlist_id})
-    if res.deleted_count == 0:
+    """Admin deletes a playlist entry from db.playlists, db.resources, or seed playlists in db.subjects."""
+    res1 = await db.playlists.delete_many({"$or": [{"playlist_id": playlist_id}, {"resource_id": playlist_id}]})
+    res2 = await db.resources.delete_many({"$or": [{"resource_id": playlist_id}, {"url": {"$regex": re.escape(playlist_id)}}]})
+
+    # Check if seed playlist or URL matching seed playlist
+    res3_count = 0
+    cursor = db.subjects.find({"playlists": {"$exists": True, "$ne": []}})
+    subj_docs = await cursor.to_list(length=None)
+    for s in subj_docs:
+        new_pls = []
+        modified = False
+        for idx, p in enumerate(s.get("playlists", [])):
+            p_url = p.get("url") if isinstance(p, dict) else p
+            seed_key = f"seed-{s.get('code')}-{idx}"
+            if seed_key == playlist_id or p_url == playlist_id or (p_url and playlist_id in p_url):
+                modified = True
+            else:
+                new_pls.append(p)
+        if modified:
+            await db.subjects.update_one({"_id": s["_id"]}, {"$set": {"playlists": new_pls}})
+            res3_count += 1
+
+    total_deleted = res1.deleted_count + res2.deleted_count + res3_count
+    if total_deleted == 0:
         raise HTTPException(status_code=404, detail="Playlist entry not found.")
-    return {"message": "Playlist deleted.", "playlist_id": playlist_id}
+    return {"message": "Playlist deleted successfully.", "playlist_id": playlist_id}
 
 
 # ── Vector Knowledge Base Curator Endpoints ────────────────────────────────────

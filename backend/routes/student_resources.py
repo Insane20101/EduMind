@@ -84,52 +84,103 @@ from database import upload_file, get_file
 async def get_playlists_for_students(subject_id: Optional[str] = None):
     """
     Returns video course playlists for a subject (public student endpoint).
-    Falls back to embedded playlists in db.subjects if db.playlists collection is empty.
+    Merges dynamic db.playlists, approved resource playlists, AND prebuilt seed playlists from db.subjects.
     """
-    if not subject_id or not subject_id.strip():
-        cursor = db.playlists.find({})
-        docs = await cursor.to_list(length=None)
-        for d in docs:
-            d.pop("_id", None)
-        return JSONResponse(
-            content=docs,
-            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
-        )
+    all_playlists = []
+    seen_keys = set()  # (subject_id, url_or_title)
 
-    clean_sub_id = subject_id.strip().upper()
-    query = {"subject_id": {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}}
-    cursor = db.playlists.find(query)
-    docs = await cursor.to_list(length=None)
-    for d in docs:
+    clean_sub_id = subject_id.strip().upper() if subject_id and subject_id.strip() else None
+
+    # 1. Fetch from db.playlists collection
+    query1 = {}
+    if clean_sub_id:
+        query1["subject_id"] = {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}
+
+    cursor1 = db.playlists.find(query1).sort("created_at", -1)
+    docs1 = await cursor1.to_list(length=None)
+    for d in docs1:
         d.pop("_id", None)
+        sub_code = d.get("subject_id", "").upper()
+        url = d.get("url") or ""
+        title = d.get("title") or ""
+        key = (sub_code, (url.strip() or title.strip()).lower())
+        if key not in seen_keys:
+            seen_keys.add(key)
+            d["source"] = d.get("source", "admin")
+            for field in ("created_at", "updated_at"):
+                if isinstance(d.get(field), datetime):
+                    d[field] = d[field].isoformat()
+            all_playlists.append(d)
 
-    if docs:
-        return JSONResponse(
-            content=docs,
-            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
-        )
+    # 2. Fetch approved playlist resources from db.resources collection
+    query2 = {"status": "approved", "resource_type": "playlist"}
+    if clean_sub_id:
+        query2["subject_id"] = {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}
 
-    # Fallback to embedded playlists in db.subjects document
-    subj = await db.subjects.find_one({"code": {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}})
-    fallback_playlists = []
-    if subj and subj.get("playlists"):
-        for index, item in enumerate(subj["playlists"]):
+    cursor2 = db.resources.find(query2).sort("uploaded_at", -1)
+    docs2 = await cursor2.to_list(length=None)
+    for r in docs2:
+        sub_code = r.get("subject_id", "").upper()
+        url = r.get("url") or ""
+        title = r.get("title") or ""
+        key = (sub_code, (url.strip() or title.strip()).lower())
+        if key not in seen_keys:
+            seen_keys.add(key)
+            match = re.search(r'list=([A-Za-z0-9_-]+)', url)
+            playlist_id = match.group(1) if match else r.get("resource_id")
+            uploaded_at_str = r.get("uploaded_at").isoformat() if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
+            all_playlists.append({
+                "playlist_id": playlist_id,
+                "subject_id": sub_code,
+                "title": title,
+                "url": url,
+                "unit": "Community Playlist",
+                "created_at": uploaded_at_str,
+                "source": "community",
+                "resource_id": r.get("resource_id")
+            })
+
+    # 3. Fetch prebuilt seed playlists from db.subjects collection
+    query3 = {"playlists": {"$exists": True, "$ne": []}}
+    if clean_sub_id:
+        query3["code"] = {"$regex": f"^{re.escape(clean_sub_id)}$", "$options": "i"}
+
+    cursor3 = db.subjects.find(query3)
+    subj_docs = await cursor3.to_list(length=None)
+    for subj in subj_docs:
+        sub_code = subj.get("code", "").upper()
+        subj_name = subj.get("name", sub_code)
+        for idx, item in enumerate(subj.get("playlists", [])):
             if isinstance(item, dict):
-                fallback_playlists.append({
-                    "playlist_id": f"seed-{clean_sub_id}-{index}",
-                    "subject_id": clean_sub_id,
-                    "title": item.get("title") or f"{subj.get('name', 'Course')} - {item.get('channel', 'Lectures')}",
-                    "url": item.get("url"),
-                    "unit": item.get("channel") or "Full Course",
-                })
+                title = item.get("title") or f"{subj_name} - {item.get('channel', 'Lectures')}"
+                url = item.get("url") or ""
+                unit = item.get("channel") or "Full Course"
             elif isinstance(item, str):
-                fallback_playlists.append({
-                    "playlist_id": f"seed-{clean_sub_id}-{index}",
-                    "subject_id": clean_sub_id,
-                    "title": f"{subj.get('name', 'Course')} Lectures",
-                    "url": item,
-                    "unit": "Full Course",
+                title = f"{subj_name} Course Playlist"
+                url = item
+                unit = "Full Course"
+            else:
+                continue
+
+            key = (sub_code, (url.strip() or title.strip()).lower())
+            if key not in seen_keys and url:
+                seen_keys.add(key)
+                match = re.search(r'list=([A-Za-z0-9_-]+)', url)
+                playlist_id = match.group(1) if match else f"seed-{sub_code}-{idx}"
+                all_playlists.append({
+                    "playlist_id": playlist_id,
+                    "subject_id": sub_code,
+                    "title": title,
+                    "url": url,
+                    "unit": unit,
+                    "created_at": None,
+                    "source": "seed"
                 })
+
+    return JSONResponse(
+        content=all_playlists,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
+    )
 
 import requests
 import xml.etree.ElementTree as ET
