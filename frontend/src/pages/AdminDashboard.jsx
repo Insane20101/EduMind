@@ -22,8 +22,41 @@ const KeyIcon       = () => <Icon path="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.77
 const InboxIcon     = () => <Icon path="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />;
 const FilesIcon     = () => <Icon path="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8" />;
 const LogoutIcon    = () => <Icon path="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />;
+const ChartIcon     = () => <Icon path="M18 20V10M12 20V4M6 20v-6" />;
+const ClockIcon     = () => <Icon path="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />;
 
-// ── Shared helpers ─────────────────────────────────────────────────────────────
+// ── Shared helpers & Constants ──────────────────────────────────────────────────
+const SUBJECT_OPTIONS = [
+  { id: '', name: 'All Subjects' },
+  { id: 'CS301', name: 'Operating Systems (CS301)' },
+  { id: 'CS302', name: 'Database Management Systems (CS302)' },
+  { id: 'CS303', name: 'Computer Networks (CS303)' },
+  { id: 'BCS-401', name: 'Operating System (BCS-401)' },
+  { id: 'BCS-402', name: 'Cryptography and Information Security (BCS-402)' },
+  { id: 'BSM-104', name: 'Linear Algebra & Calculus (BSM-104)' },
+  { id: 'KCS-501', name: 'Database Management System (KCS-501)' },
+  { id: 'KCS-502', name: 'Compiler Design (KCS-502)' },
+  { id: 'KCS-503', name: 'Design and Analysis of Algorithms (KCS-503)' },
+];
+
+const formatDate = (isoStr) => {
+  if (!isoStr) return null;
+  try {
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return isoStr;
+    return d.toLocaleString('en-US', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } catch {
+    return isoStr;
+  }
+};
+
 const Badge = ({ status }) => {
   const map = {
     approved: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
@@ -40,6 +73,136 @@ const Badge = ({ status }) => {
 const Spinner = () => (
   <div className="adm-spinner" />
 );
+
+// ── Tab: Live Analytics & Overview ──────────────────────────────────────────────
+function OverviewTab() {
+  const [stats, setStats]     = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadStats = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get('/admin/resources/stats');
+      setStats(res.data);
+    } catch {
+      toast.error('Failed to fetch live analytics.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadStats(); }, []);
+
+  if (loading) {
+    return <div className="adm-card flex items-center justify-center p-12"><Spinner /></div>;
+  }
+
+  const s = stats || {};
+
+  return (
+    <div className="space-y-6">
+      <div className="adm-card">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+          <div>
+            <h2 className="adm-section-title text-xl font-bold flex items-center gap-2">
+              <span className="text-indigo-400">📊</span> Live Tracking &amp; Analytics
+            </h2>
+            <p className="adm-section-sub">Real-time breakdown of users, study resources, vector database items &amp; pending reviews.</p>
+          </div>
+          <button className="adm-btn-ghost flex items-center gap-2" onClick={loadStats}>
+            <span>Refresh Analytics</span>
+          </button>
+        </div>
+
+        {/* Live Metrics Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Total Users */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-indigo-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Total Users</span>
+              <span className="text-indigo-400 text-base">👥</span>
+            </div>
+            <div className="text-3xl font-extrabold text-white font-mono">{s.total_users ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">Registered student accounts</div>
+          </div>
+
+          {/* Active Users */}
+          <div className="bg-emerald-500/5 border border-emerald-500/30 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-emerald-500/60 transition-all">
+            <div className="flex items-center justify-between text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Active Users</span>
+              <span className="flex h-2.5 w-2.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+            </div>
+            <div className="text-3xl font-extrabold text-emerald-300 font-mono">{s.active_users ?? 0}</div>
+            <div className="text-[11px] text-emerald-400/70 mt-2">Verified &amp; active logins</div>
+          </div>
+
+          {/* Total Notes / PDFs */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-blue-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Total PDFs / Notes</span>
+              <span className="text-blue-400 text-base">📄</span>
+            </div>
+            <div className="text-3xl font-extrabold text-blue-400 font-mono">{s.total_notes ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">Approved study notes</div>
+          </div>
+
+          {/* Total PYQs */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-purple-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Total PYQs</span>
+              <span className="text-purple-400 text-base">📝</span>
+            </div>
+            <div className="text-3xl font-extrabold text-purple-400 font-mono">{s.total_pyqs ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">Previous year question papers</div>
+          </div>
+
+          {/* Total Playlists */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-pink-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Total Playlists</span>
+              <span className="text-pink-400 text-base">🎬</span>
+            </div>
+            <div className="text-3xl font-extrabold text-pink-400 font-mono">{s.total_playlists ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">YouTube course playlists</div>
+          </div>
+
+          {/* Total Video Lectures */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-red-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Total Lectures</span>
+              <span className="text-red-400 text-base">🎥</span>
+            </div>
+            <div className="text-3xl font-extrabold text-red-400 font-mono">{s.total_lectures ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">Playlists + Video links</div>
+          </div>
+
+          {/* Pending Reviews */}
+          <div className="bg-amber-500/5 border border-amber-500/30 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-amber-500/60 transition-all">
+            <div className="flex items-center justify-between text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Pending Approvals</span>
+              <span className="text-amber-400 text-base">⏳</span>
+            </div>
+            <div className="text-3xl font-extrabold text-amber-300 font-mono">{s.pending_reviews ?? 0}</div>
+            <div className="text-[11px] text-amber-400/70 mt-2">Awaiting admin review</div>
+          </div>
+
+          {/* Approved Resources Total */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:border-emerald-500/40 transition-all">
+            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Approved Resources</span>
+              <span className="text-emerald-400 text-base">✅</span>
+            </div>
+            <div className="text-3xl font-extrabold text-emerald-400 font-mono">{s.total_resources ?? 0}</div>
+            <div className="text-[11px] text-slate-500 mt-2">Total published resources</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ── Tab: Upload Resource ────────────────────────────────────────────────────────
 function UploadTab() {
@@ -69,7 +232,7 @@ function UploadTab() {
 
     try {
       const fd = new FormData();
-      fd.append('subject_id',   form.subject_id);
+      fd.append('subject_id',   form.subject_id.trim().toUpperCase());
       fd.append('resource_type', form.resource_type);
       fd.append('title',        form.title);
       fd.append('file',         file);
@@ -147,16 +310,19 @@ function UploadTab() {
         <div className="adm-grid-2">
           <div className="adm-field">
             <label className="adm-label">Subject ID *</label>
-            <input className="adm-input" required placeholder="e.g. CS301" value={form.subject_id}
-              disabled={isIngestingActive}
-              onChange={e => set('subject_id', e.target.value)} />
+            <select className="adm-input" required value={form.subject_id} disabled={isIngestingActive} onChange={e => set('subject_id', e.target.value)}>
+              <option value="">Select Subject</option>
+              {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
           </div>
           <div className="adm-field">
             <label className="adm-label">Resource Type *</label>
             <select className="adm-input" value={form.resource_type} disabled={isIngestingActive} onChange={e => set('resource_type', e.target.value)}>
-              <option value="note">Note</option>
-              <option value="pyq">Previous Year Question</option>
-              <option value="other">Other</option>
+              <option value="note">Note (PDF)</option>
+              <option value="pyq">Previous Year Question (PYQ)</option>
+              <option value="other">Other Study Material</option>
             </select>
           </div>
         </div>
@@ -190,17 +356,20 @@ function UploadTab() {
 
 // ── Tab: Review Pending ────────────────────────────────────────────────────────
 function ReviewTab() {
-  const [resources, setResources] = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [busy, setBusy]           = useState({});    // resource_id → true
-  const [rejectForm, setRejectForm] = useState(null); // resource_id
-  const [rejectReason, setRejectReason] = useState('');
-  const [previewDoc, setPreviewDoc] = useState(null);
+  const [resources, setResources]           = useState([]);
+  const [loading, setLoading]               = useState(true);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [busy, setBusy]                     = useState({});    // resource_id → true
+  const [rejectForm, setRejectForm]         = useState(null); // resource_id
+  const [rejectReason, setRejectReason]     = useState('');
+  const [previewDoc, setPreviewDoc]         = useState(null);
 
   const load = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/admin/resources/?status=pending');
+      const params = new URLSearchParams({ status: 'pending' });
+      if (selectedSubject) params.append('subject_id', selectedSubject);
+      const res = await api.get(`/admin/resources/?${params.toString()}`);
       setResources(res.data);
     } catch {
       toast.error('Failed to load pending resources.');
@@ -209,13 +378,13 @@ function ReviewTab() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [selectedSubject]);
 
   const approve = async (id) => {
     setBusy(b => ({ ...b, [id]: true }));
     try {
       await api.post(`/admin/resources/${id}/approve`);
-      toast.success('Approved!');
+      toast.success('Approved & Ingested!');
       setResources(r => r.filter(x => x.resource_id !== id));
     } catch (err) {
       toast.error(err.response?.data?.detail ?? 'Failed to approve.');
@@ -251,13 +420,24 @@ function ReviewTab() {
   };
 
   return (
-    <div className="adm-card">
+    <div className="adm-card space-y-6">
       <div className="adm-row-between">
         <div>
-          <h2 className="adm-section-title">Pending Suggestions</h2>
-          <p className="adm-section-sub">Student-submitted resources awaiting your review.</p>
+          <h2 className="adm-section-title">Pending Suggestions Review</h2>
+          <p className="adm-section-sub">Student-submitted resources awaiting your review and approval for ingestion.</p>
         </div>
-        <button className="adm-btn-ghost" onClick={load}>Refresh</button>
+        <div className="flex items-center gap-3">
+          <select 
+            className="adm-input adm-input-sm max-w-xs" 
+            value={selectedSubject} 
+            onChange={e => setSelectedSubject(e.target.value)}
+          >
+            {SUBJECT_OPTIONS.map(s => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
+          <button className="adm-btn-ghost" onClick={load}>Refresh</button>
+        </div>
       </div>
 
       {loading ? (
@@ -265,42 +445,66 @@ function ReviewTab() {
       ) : resources.length === 0 ? (
         <div className="adm-empty">
           <InboxIcon />
-          <p>No pending submissions — you're all caught up!</p>
+          <p>No pending submissions for this filter — you're all caught up!</p>
         </div>
       ) : (
         <div className="adm-list">
-          {resources.map(r => (
-            <div key={r.resource_id} className="adm-list-item">
-              <div className="adm-list-meta">
-                <span className="adm-list-title">{r.title}</span>
-                <span className="adm-list-sub">{r.subject_id} · {r.resource_type} · by <strong>{r.submitter_enrollment}</strong></span>
-                <button onClick={() => handleView(r)} className="adm-link text-left">
-                  Preview Document ↗
-                </button>
-              </div>
-              <div className="adm-list-actions">
-                {rejectForm === r.resource_id ? (
-                  <div className="adm-reject-inline">
-                    <input className="adm-input adm-input-sm" placeholder="Reason (optional)"
-                      value={rejectReason} onChange={e => setRejectReason(e.target.value)} />
-                    <button className="adm-btn-danger-sm" onClick={() => reject(r.resource_id)} disabled={busy[r.resource_id]}>
-                      {busy[r.resource_id] ? <Spinner /> : 'Confirm'}
-                    </button>
-                    <button className="adm-btn-ghost-sm" onClick={() => { setRejectForm(null); setRejectReason(''); }}>Cancel</button>
+          {resources.map(r => {
+            const timeStr = formatDate(r.uploaded_at) || r.uploaded_at_formatted;
+            const fullSubjectName = r.subject_name ? `${r.subject_name} (${r.subject_id})` : r.subject_id;
+            return (
+              <div key={r.resource_id} className="adm-list-item">
+                <div className="adm-list-meta space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="adm-list-title">{r.title}</span>
+                    <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 uppercase">
+                      {r.resource_type === 'note' ? 'PDF Note' : r.resource_type === 'pyq' ? 'PYQ' : r.resource_type}
+                    </span>
                   </div>
-                ) : (
-                  <>
-                    <button className="adm-btn-approve" onClick={() => approve(r.resource_id)} disabled={busy[r.resource_id]}>
-                      {busy[r.resource_id] ? <Spinner /> : <><CheckIcon /><span>Approve</span></>}
-                    </button>
-                    <button className="adm-btn-reject" onClick={() => setRejectForm(r.resource_id)} disabled={busy[r.resource_id]}>
-                      <XIcon /><span>Reject</span>
-                    </button>
-                  </>
-                )}
+
+                  <div className="adm-list-sub flex items-center gap-3 flex-wrap text-xs text-slate-400">
+                    <span className="font-semibold text-indigo-300">{fullSubjectName}</span>
+                    <span>•</span>
+                    <span>by <strong>{r.submitter_enrollment || 'Student'}</strong></span>
+                    {timeStr && (
+                      <>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-slate-400">
+                          <ClockIcon size={13} /> Uploaded: {timeStr}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  <button onClick={() => handleView(r)} className="adm-link text-left pt-1 inline-block">
+                    Preview Document ↗
+                  </button>
+                </div>
+
+                <div className="adm-list-actions">
+                  {rejectForm === r.resource_id ? (
+                    <div className="adm-reject-inline">
+                      <input className="adm-input adm-input-sm" placeholder="Reason (optional)"
+                        value={rejectReason} onChange={e => setRejectReason(e.target.value)} />
+                      <button className="adm-btn-danger-sm" onClick={() => reject(r.resource_id)} disabled={busy[r.resource_id]}>
+                        {busy[r.resource_id] ? <Spinner /> : 'Confirm'}
+                      </button>
+                      <button className="adm-btn-ghost-sm" onClick={() => { setRejectForm(null); setRejectReason(''); }}>Cancel</button>
+                    </div>
+                  ) : (
+                    <>
+                      <button className="adm-btn-approve" onClick={() => approve(r.resource_id)} disabled={busy[r.resource_id]}>
+                        {busy[r.resource_id] ? <Spinner /> : <><CheckIcon /><span>Approve &amp; Ingest</span></>}
+                      </button>
+                      <button className="adm-btn-reject" onClick={() => setRejectForm(r.resource_id)} disabled={busy[r.resource_id]}>
+                        <XIcon /><span>Reject</span>
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -317,17 +521,23 @@ function ReviewTab() {
 
 // ── Tab: All Resources ──────────────────────────────────────────────────────────
 function AllResourcesTab() {
-  const [resources, setResources] = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [filter, setFilter]       = useState('all');
-  const [busy, setBusy]           = useState({});
-  const [previewDoc, setPreviewDoc] = useState(null);
+  const [resources, setResources]           = useState([]);
+  const [loading, setLoading]               = useState(true);
+  const [filterStatus, setFilterStatus]     = useState('all');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedType, setSelectedType]     = useState('all');
+  const [busy, setBusy]                     = useState({});
+  const [previewDoc, setPreviewDoc]         = useState(null);
 
   const load = async () => {
     setLoading(true);
     try {
-      const params = filter !== 'all' ? `?status=${filter}` : '';
-      const res = await api.get(`/admin/resources/${params}`);
+      const params = new URLSearchParams();
+      if (filterStatus !== 'all') params.append('status', filterStatus);
+      if (selectedSubject) params.append('subject_id', selectedSubject);
+      if (selectedType !== 'all') params.append('resource_type', selectedType);
+      
+      const res = await api.get(`/admin/resources/?${params.toString()}`);
       setResources(res.data);
     } catch {
       toast.error('Failed to load resources.');
@@ -336,7 +546,7 @@ function AllResourcesTab() {
     }
   };
 
-  useEffect(() => { load(); }, [filter]);
+  useEffect(() => { load(); }, [filterStatus, selectedSubject, selectedType]);
 
   const remove = async (id) => {
     if (!window.confirm('Permanently delete this resource?')) return;
@@ -361,18 +571,58 @@ function AllResourcesTab() {
     }
   };
 
-  const FILTERS = ['all', 'approved', 'pending', 'rejected'];
+  const STATUS_PILLS = ['all', 'approved', 'pending', 'rejected'];
+  const TYPE_OPTIONS = [
+    { id: 'all', label: 'All Resource Types' },
+    { id: 'note', label: 'PDF Notes' },
+    { id: 'pyq', label: 'PYQs' },
+    { id: 'playlist', label: 'Playlists' },
+    { id: 'other', label: 'Other Study Material' }
+  ];
 
   return (
-    <div className="adm-card">
-      <div className="adm-row-between">
-        <div>
-          <h2 className="adm-section-title">All Resources</h2>
-          <p className="adm-section-sub">Browse, filter and manage every resource in the system.</p>
+    <div className="adm-card space-y-6">
+      <div>
+        <h2 className="adm-section-title">All Resources &amp; Material Directory</h2>
+        <p className="adm-section-sub">Browse, filter by subject, resource type, or status, and manage every resource in the system.</p>
+      </div>
+
+      {/* Filters bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Subject selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-400 uppercase">Subject:</span>
+            <select 
+              className="adm-input adm-input-sm max-w-xs" 
+              value={selectedSubject} 
+              onChange={e => setSelectedSubject(e.target.value)}
+            >
+              {SUBJECT_OPTIONS.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Resource type selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-400 uppercase">Type:</span>
+            <select 
+              className="adm-input adm-input-sm" 
+              value={selectedType} 
+              onChange={e => setSelectedType(e.target.value)}
+            >
+              {TYPE_OPTIONS.map(t => (
+                <option key={t.id} value={t.id}>{t.label}</option>
+              ))}
+            </select>
+          </div>
         </div>
+
+        {/* Status Pills */}
         <div className="adm-filter-pills">
-          {FILTERS.map(f => (
-            <button key={f} className={`adm-pill ${filter === f ? 'adm-pill-active' : ''}`} onClick={() => setFilter(f)}>
+          {STATUS_PILLS.map(f => (
+            <button key={f} className={`adm-pill ${filterStatus === f ? 'adm-pill-active' : ''}`} onClick={() => setFilterStatus(f)}>
               {f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
           ))}
@@ -384,29 +634,57 @@ function AllResourcesTab() {
       ) : resources.length === 0 ? (
         <div className="adm-empty">
           <FilesIcon />
-          <p>No resources found for this filter.</p>
+          <p>No resources found for this filter combination.</p>
         </div>
       ) : (
         <div className="adm-list">
-          {resources.map(r => (
-            <div key={r.resource_id} className="adm-list-item">
-              <div className="adm-list-meta">
-                <div className="adm-list-title-row">
-                  <span className="adm-list-title">{r.title}</span>
-                  <Badge status={r.status} />
+          {resources.map(r => {
+            const timeStr = formatDate(r.uploaded_at) || r.uploaded_at_formatted;
+            const reviewedStr = formatDate(r.reviewed_at) || r.reviewed_at_formatted;
+            const fullSubjectName = r.subject_name ? `${r.subject_name} (${r.subject_id})` : r.subject_id;
+            return (
+              <div key={r.resource_id} className="adm-list-item">
+                <div className="adm-list-meta space-y-1">
+                  <div className="adm-list-title-row">
+                    <span className="adm-list-title">{r.title}</span>
+                    <Badge status={r.status} />
+                    <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 uppercase">
+                      {r.resource_type === 'note' ? 'PDF Note' : r.resource_type === 'pyq' ? 'PYQ' : r.resource_type}
+                    </span>
+                  </div>
+
+                  <div className="adm-list-sub flex items-center gap-3 flex-wrap text-xs text-slate-400">
+                    <span className="font-semibold text-indigo-300">{fullSubjectName}</span>
+                    <span>•</span>
+                    <span>{r.source === 'student' ? `by Student (${r.submitter_enrollment || 'Unknown'})` : 'by Admin'}</span>
+                    {timeStr && (
+                      <>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-slate-400">
+                          <ClockIcon size={13} /> {timeStr}
+                        </span>
+                      </>
+                    )}
+                    {reviewedStr && r.status === 'approved' && (
+                      <>
+                        <span>•</span>
+                        <span className="text-emerald-400/80">Approved: {reviewedStr}</span>
+                      </>
+                    )}
+                  </div>
+
+                  <button onClick={() => handleView(r)} className="adm-link text-left pt-1 inline-block">
+                    View / Preview ↗
+                  </button>
                 </div>
-                <span className="adm-list-sub">{r.subject_id} · {r.resource_type} · {r.source === 'student' ? `by student ${r.submitter_enrollment}` : 'by admin'}</span>
-                <button onClick={() => handleView(r)} className="adm-link text-left">
-                  View / Preview ↗
-                </button>
+                <div className="adm-list-actions">
+                  <button className="adm-btn-danger-sm" onClick={() => remove(r.resource_id)} disabled={busy[r.resource_id]}>
+                    {busy[r.resource_id] ? <Spinner /> : <><TrashIcon /><span>Delete</span></>}
+                  </button>
+                </div>
               </div>
-              <div className="adm-list-actions">
-                <button className="adm-btn-danger-sm" onClick={() => remove(r.resource_id)} disabled={busy[r.resource_id]}>
-                  {busy[r.resource_id] ? <Spinner /> : <><TrashIcon /><span>Delete</span></>}
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -421,17 +699,19 @@ function AllResourcesTab() {
   );
 }
 
-// ── Tab: Playlists Control ──────────────────────────────────────────────────
+// ── Tab: Active Playlists Control ──────────────────────────────────────────────
 function PlaylistsTab() {
-  const [playlists, setPlaylists] = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [form, setForm]           = useState({ subject_id: '', title: '', playlist_url: '', unit: 'Unit 1' });
-  const [saving, setSaving]       = useState(false);
+  const [playlists, setPlaylists]           = useState([]);
+  const [loading, setLoading]               = useState(true);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [form, setForm]                     = useState({ subject_id: '', title: '', playlist_url: '', unit: 'Unit 1' });
+  const [saving, setSaving]                 = useState(false);
 
   const load = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/admin/resources/playlists');
+      const params = selectedSubject ? `?subject_id=${selectedSubject}` : '';
+      const res = await api.get(`/admin/resources/playlists${params}`);
       setPlaylists(res.data);
     } catch {
       toast.error('Failed to load playlists.');
@@ -440,14 +720,14 @@ function PlaylistsTab() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [selectedSubject]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
       const fd = new FormData();
-      fd.append('subject_id', form.subject_id);
+      fd.append('subject_id', form.subject_id.trim().toUpperCase());
       fd.append('title', form.title);
       fd.append('playlist_url', form.playlist_url);
       fd.append('unit', form.unit);
@@ -476,15 +756,26 @@ function PlaylistsTab() {
   return (
     <div className="adm-card space-y-6">
       <div>
-        <h2 className="adm-section-title">Subject Video Playlists Manager</h2>
-        <p className="adm-section-sub">Add and manage YouTube video course playlists per subject in MongoDB.</p>
+        <h2 className="adm-section-title">Active Playlists &amp; Video Courses Manager</h2>
+        <p className="adm-section-sub">Add and manage active YouTube video course playlists per subject in MongoDB.</p>
       </div>
 
-      <form onSubmit={handleAdd} className="adm-form">
+      <form onSubmit={handleAdd} className="adm-form p-4 bg-slate-900/60 rounded-xl border border-slate-800">
+        <h3 className="text-sm font-bold text-slate-200 mb-1">Add New YouTube Playlist</h3>
         <div className="adm-grid-2">
           <div className="adm-field">
             <label className="adm-label">Subject ID *</label>
-            <input className="adm-input" required placeholder="BSM-104" value={form.subject_id} onChange={e => setForm(f => ({...f, subject_id: e.target.value}))} />
+            <select 
+              className="adm-input" 
+              required 
+              value={form.subject_id} 
+              onChange={e => setForm(f => ({...f, subject_id: e.target.value}))}
+            >
+              <option value="">Select Subject</option>
+              {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
           </div>
           <div className="adm-field">
             <label className="adm-label">Unit Tag</label>
@@ -494,7 +785,7 @@ function PlaylistsTab() {
         <div className="adm-grid-2">
           <div className="adm-field">
             <label className="adm-label">Playlist Title *</label>
-            <input className="adm-input" required placeholder="Complete Linear Algebra Video Course" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
+            <input className="adm-input" required placeholder="Complete Video Course" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
           </div>
           <div className="adm-field">
             <label className="adm-label">YouTube Playlist URL *</label>
@@ -506,20 +797,53 @@ function PlaylistsTab() {
         </button>
       </form>
 
-      <div className="border-t border-slate-800 pt-6">
-        <h3 className="text-sm font-semibold text-slate-300 mb-4">Active Playlists</h3>
-        {loading ? <Spinner /> : playlists.length === 0 ? <p className="text-xs text-slate-500">No playlists added yet.</p> : (
+      <div className="border-t border-slate-800 pt-6 space-y-4">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h3 className="text-base font-bold text-slate-200">Active Playlists List</h3>
+
+          {/* Subject Filter */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-400 uppercase">Filter Subject:</span>
+            <select 
+              className="adm-input adm-input-sm max-w-xs" 
+              value={selectedSubject} 
+              onChange={e => setSelectedSubject(e.target.value)}
+            >
+              {SUBJECT_OPTIONS.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {loading ? <Spinner /> : playlists.length === 0 ? <p className="text-xs text-slate-500">No playlists found for this filter.</p> : (
           <div className="adm-list">
-            {playlists.map(p => (
-              <div key={p.playlist_id} className="adm-list-item">
-                <div className="adm-list-meta">
-                  <span className="adm-list-title">{p.title}</span>
-                  <span className="adm-list-sub">{p.subject_id} · {p.unit}</span>
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="adm-link">{p.url} ↗</a>
+            {playlists.map(p => {
+              const timeStr = formatDate(p.created_at) || p.created_at_formatted;
+              const fullSubjectName = p.subject_name ? `${p.subject_name} (${p.subject_id})` : p.subject_id;
+              return (
+                <div key={p.playlist_id} className="adm-list-item">
+                  <div className="adm-list-meta space-y-1">
+                    <span className="adm-list-title">{p.title}</span>
+                    <div className="adm-list-sub flex items-center gap-3 flex-wrap text-xs text-slate-400">
+                      <span className="font-semibold text-indigo-300">{fullSubjectName}</span>
+                      <span>•</span>
+                      <span className="bg-slate-800 px-2 py-0.5 rounded text-slate-300 border border-slate-700">{p.unit || 'General'}</span>
+                      {timeStr && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1 text-slate-400">
+                            <ClockIcon size={13} /> Added: {timeStr}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="adm-link inline-block pt-1">{p.url} ↗</a>
+                  </div>
+                  <button className="adm-btn-danger-sm" onClick={() => handleDelete(p.playlist_id)}>Delete</button>
                 </div>
-                <button className="adm-btn-danger-sm" onClick={() => handleDelete(p.playlist_id)}>Delete</button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -604,12 +928,15 @@ function VectorCuratorTab() {
       <form onSubmit={handleInspectSubmit} className="adm-grid-2">
         <div className="adm-field">
           <label className="adm-label">Subject Collection ID *</label>
-          <input 
-            className="adm-input font-mono uppercase" 
-            placeholder="e.g. BCS-401, BSM-104" 
+          <select 
+            className="adm-input" 
             value={subjectId} 
-            onChange={e => setSubjectId(e.target.value.toUpperCase())} 
-          />
+            onChange={e => setSubjectId(e.target.value.toUpperCase())}
+          >
+            {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
         </div>
         <div className="flex items-end">
           <button type="submit" className="adm-btn-ghost w-full">Inspect Collection Chunks</button>
@@ -714,6 +1041,7 @@ function SettingsTab() {
 
 // ── Main Dashboard ─────────────────────────────────────────────────────────────
 const TABS = [
+  { id: 'overview',  label: 'Analytics', icon: <ChartIcon />,   component: OverviewTab },
   { id: 'upload',    label: 'Upload',    icon: <UploadIcon />,  component: UploadTab },
   { id: 'playlists', label: 'Playlists', icon: <FilesIcon />,   component: PlaylistsTab },
   { id: 'vector',    label: 'Curator',   icon: <KeyIcon />,     component: VectorCuratorTab },
@@ -722,17 +1050,16 @@ const TABS = [
   { id: 'settings',  label: 'Settings',  icon: <KeyIcon />,     component: SettingsTab },
 ];
 
-
 export default function AdminDashboard() {
   const { logout } = useAdminAuth();
   const navigate   = useNavigate();
-  const [active, setActive] = useState('upload');
+  const [active, setActive] = useState('overview');
 
   useEffect(() => {
-    document.title = "EduMind Admin — Management Portal";
+    document.title = "EduMind Admin — Analytics & Management Portal";
   }, []);
 
-  const ActiveTab = TABS.find(t => t.id === active)?.component ?? UploadTab;
+  const ActiveTab = TABS.find(t => t.id === active)?.component ?? OverviewTab;
 
   const handleLogout = () => { logout(); navigate('/admin/login'); };
 

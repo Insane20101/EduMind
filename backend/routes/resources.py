@@ -229,30 +229,74 @@ async def admin_upload_resource(
         raise HTTPException(status_code=500, detail=f"Ingestion failed: [{type(e).__name__}] {str(e)}")
 
 
+async def get_subject_name_map() -> dict:
+    """Helper to return mapping of uppercase subject_id code -> full subject name."""
+    name_map = {}
+    try:
+        cursor = db.subjects.find({})
+        subjects = await cursor.to_list(length=None)
+        for s in subjects:
+            code = s.get("code")
+            name = s.get("name")
+            if code and name:
+                name_map[code.strip().upper()] = name.strip()
+    except Exception as e:
+        logger.warning(f"Error fetching subject name map: {e}")
+    return name_map
+
+
+@router.get("/stats")
+async def get_admin_stats(current_admin: dict = Depends(get_current_admin_user)):
+    """Live analytics tracking metrics for Admin Dashboard Overview."""
+    total_users = await db.users.count_documents({})
+    active_users = await db.users.count_documents({"status": {"$ne": "disabled"}})
+    total_notes = await db.resources.count_documents({"resource_type": "note", "status": "approved"})
+    total_pyqs = await db.resources.count_documents({"resource_type": "pyq", "status": "approved"})
+    total_playlists = await db.playlists.count_documents({})
+    pending_reviews = await db.resources.count_documents({"status": "pending"})
+    total_resources = await db.resources.count_documents({"status": "approved"})
+
+    return {
+        "total_users": total_users,
+        "active_users": active_users,
+        "total_notes": total_notes,
+        "total_pyqs": total_pyqs,
+        "total_playlists": total_playlists,
+        "pending_reviews": pending_reviews,
+        "total_resources": total_resources
+    }
+
+
 @router.get("/")
 async def admin_list_resources(
     status: Optional[str] = None,
     subject_id: Optional[str] = None,
+    resource_type: Optional[str] = None,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """List resources filtered by status and/or subject."""
+    """List resources filtered by status, subject, and/or resource_type."""
     query = {}
-    if status:
-        query["status"] = status
-    if subject_id:
+    if status and status.lower() != "all":
+        query["status"] = status.lower()
+    if subject_id and subject_id.upper() != "ALL":
         query["subject_id"] = subject_id.upper()
+    if resource_type and resource_type.lower() != "all":
+        query["resource_type"] = resource_type.lower()
 
-    cursor = db.resources.find(query)
+    name_map = await get_subject_name_map()
+
+    cursor = db.resources.find(query).sort("uploaded_at", -1)
     docs = await cursor.to_list(length=None)
     for doc in docs:
         doc.pop("_id", None)
         doc.pop("file_bytes_cache", None)
         rid = doc.get("resource_id")
+        sub_code = doc.get("subject_id", "").upper()
+        doc["subject_name"] = name_map.get(sub_code) or sub_code
         doc["file_url"] = f"/api/resources/file/{rid}"
         if not doc.get("url"):
             doc["url"] = f"/api/resources/file/{rid}"
         for field in ("uploaded_at", "reviewed_at"):
-
             if isinstance(doc.get(field), datetime):
                 doc[field] = doc[field].isoformat()
     return docs
@@ -442,15 +486,22 @@ async def get_playlists(
     subject_id: Optional[str] = None,
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Fetch video course playlists from MongoDB db.playlists."""
+    """Fetch video course playlists from MongoDB db.playlists with subject names & timestamps."""
 
     query = {}
-    if subject_id:
+    if subject_id and subject_id.upper() != "ALL":
         query["subject_id"] = subject_id.upper()
-    cursor = db.playlists.find(query)
+
+    name_map = await get_subject_name_map()
+    cursor = db.playlists.find(query).sort("created_at", -1)
     docs = await cursor.to_list(length=None)
     for d in docs:
         d.pop("_id", None)
+        sub_code = d.get("subject_id", "").upper()
+        d["subject_name"] = name_map.get(sub_code) or sub_code
+        for field in ("created_at", "updated_at"):
+            if isinstance(d.get(field), datetime):
+                d[field] = d[field].isoformat()
     return docs
 
 
