@@ -20,24 +20,24 @@ const MarkdownComponents = {
     const match = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
     if (match) {
       return (
-        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-200/80 flex items-start gap-2.5">
-          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-blue-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
-            {match[1]}
+        <div className="mt-6 mb-3 pt-3 border-t border-slate-200/80 flex items-baseline gap-2">
+          <span className="text-base sm:text-lg font-extrabold text-blue-600 shrink-0">
+            {match[1]}.
           </span>
           {match[2] && <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">{match[2]}</span>}
         </div>
       );
     }
-    return <p className="my-3.5 text-sm text-slate-800 leading-relaxed font-normal" {...props} />;
+    return <p className="my-3 text-sm leading-relaxed font-normal" {...props} />;
   },
   ul: ({node, ...props}) => (
-    <ul className="list-disc pl-5 my-3 space-y-2 text-sm text-slate-800 leading-relaxed" {...props} />
+    <ul className="list-disc pl-5 my-3 space-y-1.5 text-sm leading-relaxed" {...props} />
   ),
   ol: ({node, ...props}) => (
-    <ol className="list-decimal pl-5 my-3 space-y-2 text-sm text-slate-800 leading-relaxed font-medium" {...props} />
+    <ol className="list-decimal pl-5 my-3 space-y-1.5 text-sm leading-relaxed font-medium" {...props} />
   ),
   li: ({node, ...props}) => (
-    <li className="my-1.5 text-sm text-slate-800 leading-relaxed" {...props} />
+    <li className="my-1 text-sm leading-relaxed" {...props} />
   ),
   strong: ({node, ...props}) => (
     <strong className="font-extrabold text-slate-900" {...props} />
@@ -70,9 +70,9 @@ const MarkdownComponents = {
     const qMatch = textContent.match(/^(Q\.?\s*\d+|Question\s*\d+|Q\d+)[.:—\-]?\s*(.*)/i);
     if (qMatch) {
       return (
-        <div className="mt-6 mb-3.5 pt-3 border-t border-slate-200/80 flex items-start gap-2.5">
-          <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-blue-600 text-white shadow-2xs uppercase tracking-wide shrink-0 mt-0.5">
-            {qMatch[1]}
+        <div className="mt-6 mb-3 pt-3 border-t border-slate-200/80 flex items-baseline gap-2">
+          <span className="text-base sm:text-lg font-extrabold text-blue-600 shrink-0">
+            {qMatch[1]}.
           </span>
           {qMatch[2] && <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">{qMatch[2]}</span>}
         </div>
@@ -82,8 +82,8 @@ const MarkdownComponents = {
     const stepMatch = textContent.match(/^(Step\s*\d+)\s*(?:—|-)?\s*(.*)/i);
     if (stepMatch) {
       return (
-        <div className="mt-5 mb-2.5 flex items-center">
-          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-100 text-blue-800 mr-2.5 border border-blue-200 uppercase tracking-wider">
+        <div className="mt-5 mb-2.5 flex items-center gap-2">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             {stepMatch[1]}
           </span>
           {stepMatch[2] && <span className="text-sm font-bold text-slate-900 leading-none">{stepMatch[2]}</span>}
