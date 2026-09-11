@@ -14,18 +14,46 @@ from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-def infer_question_marks_with_source(question_text: str) -> (int, str):
+def extract_question_stem(text: str) -> str:
     """
-    Infers mark weightings (2, 3, 5 marks) from question text using explicit exam mark tags,
-    analytical question heuristics, and calibrated word-length fallbacks.
+    Extracts strictly the Question Stem portion of a chunk, stripping solution text,
+    answer blocks, section headers, and metadata tags to prevent solution verbosity bias.
+    """
+    if not text:
+        return ""
+    
+    delimiters = [
+        r'\n\s*#*\s*solution',
+        r'\n\s*#*\s*answer',
+        r'\n\s*\*\*solution',
+        r'\n\s*detailed solution',
+        r'\n\s*explanation:',
+        r'\n\s*###\s*section',
+        r'\n\s*---\s*##'
+    ]
+    stem = text
+    for delim in delimiters:
+        parts = re.split(delim, stem, flags=re.IGNORECASE)
+        if len(parts) > 1 and len(parts[0].strip()) > 10:
+            stem = parts[0]
+            break
+            
+    # Strip metadata header badges like **[Unit I | Topic: ... | Difficulty: ...]**
+    stem_clean = re.sub(r'\*\*\[.*?\]\*\*', '', stem).strip()
+    return stem_clean if len(stem_clean) > 5 else stem.strip()
+
+def infer_question_marks_with_source(text: str) -> (int, str):
+    """
+    Infers mark weightings (2, 3, 5 marks) strictly from the extracted Question Stem
+    using explicit mark tags, analytical keywords, and stem-length fallbacks.
     Returns (inferred_mark: int, rule_source: str).
     """
-    if not question_text or not isinstance(question_text, str):
-        return 2, "default_fallback"
+    if not text or not isinstance(text, str):
+        return 2, "stem_length_fallback"
 
-    text = question_text.strip()
-    lowered = text.lower()
-    words = text.split()
+    stem = extract_question_stem(text)
+    lowered = stem.lower()
+    words = stem.split()
     wlen = len(words)
 
     # 1. Explicit Mark Regex Matching (Highest Precision)
@@ -39,22 +67,17 @@ def infer_question_marks_with_source(question_text: str) -> (int, str):
     # 2. Structural & Analytical Heuristics
     has_multiple_parts = len(re.findall(r'\([a-d|i-v]+\)', lowered)) >= 2 or ("(a)" in lowered and "(b)" in lowered)
     has_analytical_keywords = any(kw in lowered for kw in [
-        "explain the working", "derive", "draw the", "architecture",
-        "calculate", "master theorem", "time complexity", "reliability",
-        "prove that", "write short notes on any two", "fault tolerance"
+        "explain", "derive", "draw", "architecture", "calculate",
+        "master theorem", "time complexity", "reliability", "prove",
+        "compare", "analyze", "write short notes", "fault tolerance"
     ])
 
-    if has_analytical_keywords or has_multiple_parts:
-        m = 5 if wlen > 35 else 3
-        return m, "analytical_keyword"
-
-    # 3. Calibrated Word-Count Fallback
-    if wlen > 60:
-        return 5, "word_count_fallback"
-    elif wlen > 30:
-        return 3, "word_count_fallback"
+    if has_multiple_parts or (has_analytical_keywords and wlen > 25) or wlen > 35:
+        return 5, "analytical_keyword"
+    elif has_analytical_keywords or wlen > 15:
+        return 3, "analytical_keyword"
     else:
-        return 2, "word_count_fallback"
+        return 2, "stem_length_fallback"
 
 def is_question_chunk(payload: Dict[str, Any]) -> bool:
     """Checks if a vector point payload belongs to a Question Bank or PYQ document."""
@@ -71,7 +94,7 @@ def is_question_chunk(payload: Dict[str, Any]) -> bool:
     return False
 
 def run_marks_migration(dry_run: bool = True):
-    print("=== EduMind Qdrant Question Bank & PYQ Marks Tagging Migration (2 / 3 / 5 Marks) ===")
+    print("=== EduMind Qdrant Question Bank Marks Tagging Migration (Question Stem Isolated) ===")
     print(f"Mode: {'DRY-RUN (Preview Only)' if dry_run else 'PRODUCTION WRITE'}\n")
 
     client = get_qdrant_client()
@@ -85,7 +108,7 @@ def run_marks_migration(dry_run: bool = True):
 
     print(f"Auditing {len(all_collections)} Qdrant Cloud subject collections (Full Offset Pagination)...")
 
-    rule_sources = {"explicit_regex": 0, "analytical_keyword": 0, "word_count_fallback": 0}
+    rule_sources = {"explicit_regex": 0, "analytical_keyword": 0, "stem_length_fallback": 0}
     stats = {2: 0, 3: 0, 5: 0}
     sample_audit = []
     total_evaluated = 0
@@ -117,7 +140,8 @@ def run_marks_migration(dry_run: bool = True):
 
                     if len(sample_audit) < 25:
                         fn = payload.get("source_filename") or "Question Bank Chunk"
-                        clean_snip = text[:80].replace("\n", " ").strip()
+                        stem = extract_question_stem(text)
+                        clean_snip = stem[:80].replace("\n", " ").strip()
                         sample_audit.append({
                             "point_id": str(pt.id),
                             "subject": col,
@@ -133,13 +157,13 @@ def run_marks_migration(dry_run: bool = True):
                 logger.warning(f"Error processing collection {col}: {err}")
                 break
 
-    print("\n--- RULE MATCHING BREAKDOWN ---")
+    print("\n--- RULE MATCHING BREAKDOWN (QUESTION STEM ISOLATED) ---")
     ex_cnt = rule_sources["explicit_regex"]
     an_cnt = rule_sources["analytical_keyword"]
-    fb_cnt = rule_sources["word_count_fallback"]
+    fb_cnt = rule_sources["stem_length_fallback"]
     print(f"  - Explicit Mark-Stamp Regex:    {ex_cnt} ({ex_cnt/total_evaluated*100:.1f}%)")
     print(f"  - Analytical/Structural Rules:   {an_cnt} ({an_cnt/total_evaluated*100:.1f}%)")
-    print(f"  - Calibrated Length Fallback:   {fb_cnt} ({fb_cnt/total_evaluated*100:.1f}%)")
+    print(f"  - Stem Length Fallback:         {fb_cnt} ({fb_cnt/total_evaluated*100:.1f}%)")
 
     print("\n--- INFERRED MARKS DISTRIBUTION SUMMARY (PURE QUESTION BANK CORPUS) ---")
     print(f"  - 2-Mark Questions (Basic/Short):     {stats[2]} ({stats[2]/total_evaluated*100:.1f}%)")
@@ -151,7 +175,7 @@ def run_marks_migration(dry_run: bool = True):
     print(f"  - 2-Mark: {bsm_stats[2]} | 3-Mark: {bsm_stats[3]} | 5-Mark: {bsm_stats[5]}")
 
     print("\n--- SAMPLE AUDIT TABLE (Human Review Sample) ---")
-    print(f"{'Subject':<10} | {'Marks':<5} | {'Rule Source':<20} | {'Question Snippet'}")
+    print(f"{'Subject':<10} | {'Marks':<5} | {'Rule Source':<20} | {'Question Stem Snippet'}")
     print("-" * 105)
     for sample in sample_audit[:25]:
         clean_snippet = sample['snippet'].encode('ascii', 'ignore').decode('ascii')
