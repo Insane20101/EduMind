@@ -6,7 +6,9 @@ import { api } from '../services/api';
 import { useAppStore } from '../store/appStore';
 import EduMindLogo from '../components/EduMindLogo';
 import PdfViewerModal from '../components/PdfViewerModal';
+import MermaidViewer from '../components/MermaidViewer';
 import { getApiBaseUrl } from '../config';
+
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 const Icon = ({ path, size = 20 }) => (
@@ -1253,6 +1255,200 @@ function SettingsTab() {
   );
 }
 
+// ── Tab: AI Content Review Queue (Human Review Safeguard) ────────────────────
+function SynthesizedReviewTab() {
+  const [assets, setAssets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState({});
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState('');
+
+  const loadPendingAssets = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get('/admin/resources/synthesized-assets/pending');
+      setAssets(res.data || []);
+    } catch {
+      toast.error('Failed to load pending AI assets.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadPendingAssets(); }, []);
+
+  const handleApprove = async (id) => {
+    setBusy(b => ({ ...b, [id]: true }));
+    try {
+      await api.post(`/admin/resources/synthesized-assets/${id}/approve`);
+      toast.success('AI Asset Approved & Published for Students!');
+      setAssets(arr => arr.filter(a => a._id !== id));
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Approval failed.');
+    } finally {
+      setBusy(b => ({ ...b, [id]: false }));
+    }
+  };
+
+  const handleReject = async (id) => {
+    setBusy(b => ({ ...b, [id]: true }));
+    try {
+      await api.post(`/admin/resources/synthesized-assets/${id}/reject`);
+      toast.success('Asset Rejected.');
+      setAssets(arr => arr.filter(a => a._id !== id));
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Rejection failed.');
+    } finally {
+      setBusy(b => ({ ...b, [id]: false }));
+    }
+  };
+
+  const handleSingleActionEditAndApprove = async (id) => {
+    setBusy(b => ({ ...b, [id]: true }));
+    try {
+      let parsed;
+      try {
+        parsed = JSON.parse(editContent);
+      } catch {
+        toast.error("Invalid JSON format in content edit field.");
+        setBusy(b => ({ ...b, [id]: false }));
+        return;
+      }
+      await api.put(`/admin/resources/synthesized-assets/${id}`, { content: parsed });
+      toast.success("Edited and Approved in a single action!");
+      setAssets(arr => arr.filter(a => a._id !== id));
+      setEditingId(null);
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? "Save & Approve failed.");
+    } finally {
+      setBusy(b => ({ ...b, [id]: false }));
+    }
+  };
+
+  return (
+    <div className="adm-card space-y-6">
+      <div className="adm-row-between">
+        <div>
+          <h2 className="adm-section-title flex items-center gap-2">
+            <span>🛡️</span> AI Content Approval Queue
+          </h2>
+          <p className="adm-section-sub">Inspect, edit, and approve synthesized hints, Mermaid diagrams, and Cram memory hooks before students can view them.</p>
+        </div>
+        <button className="adm-btn-ghost" onClick={loadPendingAssets}>Refresh Queue</button>
+      </div>
+
+      {loading ? (
+        <div className="adm-empty"><Spinner /></div>
+      ) : assets.length === 0 ? (
+        <div className="adm-empty">
+          <span className="text-3xl">✨</span>
+          <p>No AI synthesized assets pending review — all clear!</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {assets.map(asset => (
+            <div key={asset._id} className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-3">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-indigo-400">{asset.subject_id}</span>
+                  <span className="text-xs text-slate-400 font-semibold">{asset.unit}</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                    {asset.asset_type}
+                  </span>
+                </div>
+                <span className="text-xs text-slate-500">{formatDate(asset.created_at)}</span>
+              </div>
+
+              <div className="text-sm font-semibold text-slate-200">{asset.topic}</div>
+
+              {/* Render content snippet / Mermaid preview */}
+              {asset.asset_type === 'diagram' && asset.content?.mermaid_code && (
+                <MermaidViewer chartCode={asset.content.mermaid_code} title="Generated Diagram Preview" />
+              )}
+
+              {asset.asset_type === 'hint' && asset.content?.hints && (
+                <div className="space-y-1 bg-slate-950 p-3 rounded-lg text-xs font-mono text-slate-300">
+                  {asset.content.hints.map((h, i) => (
+                    <div key={i}><strong className="text-cyan-400">Step {i+1}:</strong> {h}</div>
+                  ))}
+                </div>
+              )}
+
+              {/* Qdrant Citation Integrity Check */}
+              <div className="text-xs text-slate-400 flex items-center gap-2">
+                <span className="font-semibold text-slate-300">Grounded Citations:</span>
+                {asset.citations && asset.citations.length ? (
+                  asset.citations.map(c => (
+                    <span key={c} className="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded font-mono text-[10px]">
+                      {c}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-amber-400/80">No citation IDs linked</span>
+                )}
+              </div>
+
+              {/* Inline Single-Action Edit Form */}
+              {editingId === asset._id ? (
+                <div className="space-y-2 border-t border-slate-800 pt-3">
+                  <label className="text-xs font-semibold text-indigo-300">Edit JSON Content before Approval:</label>
+                  <textarea
+                    rows={6}
+                    className="adm-input font-mono text-xs"
+                    value={editContent}
+                    onChange={e => setEditContent(e.target.value)}
+                  />
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      className="adm-btn-ghost-sm"
+                      onClick={() => setEditingId(null)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="adm-btn-approve"
+                      onClick={() => handleSingleActionEditAndApprove(asset._id)}
+                      disabled={busy[asset._id]}
+                    >
+                      {busy[asset._id] ? <Spinner /> : "Save & Approve Single-Action"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-end gap-2 border-t border-slate-800 pt-3">
+                  <button
+                    className="adm-btn-ghost-sm"
+                    onClick={() => {
+                      setEditingId(asset._id);
+                      setEditContent(JSON.stringify(asset.content, null, 2));
+                    }}
+                  >
+                    Edit Content
+                  </button>
+                  <button
+                    className="adm-btn-reject"
+                    onClick={() => handleReject(asset._id)}
+                    disabled={busy[asset._id]}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    className="adm-btn-approve"
+                    onClick={() => handleApprove(asset._id)}
+                    disabled={busy[asset._id]}
+                  >
+                    {busy[asset._id] ? <Spinner /> : "Approve & Publish"}
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Dashboard ─────────────────────────────────────────────────────────────
 const TABS = [
   { id: 'overview',  label: 'Analytics', icon: <ChartIcon />,   component: OverviewTab },
@@ -1260,9 +1456,11 @@ const TABS = [
   { id: 'playlists', label: 'Playlists', icon: <FilesIcon />,   component: PlaylistsTab },
   { id: 'vector',    label: 'Curator',   icon: <KeyIcon />,     component: VectorCuratorTab },
   { id: 'review',    label: 'Review',    icon: <InboxIcon />,   component: ReviewTab },
+  { id: 'ai-review', label: 'AI Queue',  icon: <InboxIcon />,   component: SynthesizedReviewTab },
   { id: 'all',       label: 'Resources', icon: <FilesIcon />,   component: AllResourcesTab },
   { id: 'settings',  label: 'Settings',  icon: <KeyIcon />,     component: SettingsTab },
 ];
+
 
 export default function AdminDashboard() {
   const { logout } = useAdminAuth();

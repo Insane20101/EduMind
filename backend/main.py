@@ -74,8 +74,11 @@ app.include_router(student_resources_router, prefix="/api/resources", tags=["res
 app.include_router(subjects_router, prefix="/api/subjects", tags=["subjects"])
 app.include_router(chat_router, prefix="/api/chat", tags=["chat"])
 app.include_router(practice_router, tags=["practice"])
+from routes.practice_routes import router as practice_intel_router
+app.include_router(practice_intel_router, prefix="/api/practice", tags=["practice-intel"])
 app.include_router(quiz_router, tags=["quiz"])
 app.include_router(performance_router, tags=["performance"])
+
 
 @app.get("/")
 def root():
