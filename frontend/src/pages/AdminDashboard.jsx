@@ -24,6 +24,7 @@ const FilesIcon     = () => <Icon path="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h1
 const LogoutIcon    = () => <Icon path="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />;
 const ChartIcon     = () => <Icon path="M18 20V10M12 20V4M6 20v-6" />;
 const ClockIcon     = () => <Icon path="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />;
+const SearchIcon    = () => <Icon path="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />;
 
 // ── Shared helpers & Constants ──────────────────────────────────────────────────
 const SUBJECT_OPTIONS = [
@@ -309,13 +310,22 @@ function UploadTab() {
       <form onSubmit={handleSubmit} className="adm-form">
         <div className="adm-grid-2">
           <div className="adm-field">
-            <label className="adm-label">Subject ID *</label>
-            <select className="adm-input" required value={form.subject_id} disabled={isIngestingActive} onChange={e => set('subject_id', e.target.value)}>
-              <option value="">Select Subject</option>
+            <label className="adm-label">Subject ID / Code *</label>
+            <input 
+              type="text"
+              list="upload-subject-options"
+              className="adm-input" 
+              required 
+              placeholder="Type or select Subject Code (e.g. BCS-401)"
+              value={form.subject_id} 
+              disabled={isIngestingActive} 
+              onChange={e => set('subject_id', e.target.value.toUpperCase())}
+            />
+            <datalist id="upload-subject-options">
               {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
-            </select>
+            </datalist>
           </div>
           <div className="adm-field">
             <label className="adm-label">Resource Type *</label>
@@ -358,7 +368,7 @@ function UploadTab() {
 function ReviewTab() {
   const [resources, setResources]           = useState([]);
   const [loading, setLoading]               = useState(true);
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [subjectSearch, setSubjectSearch]   = useState('');
   const [busy, setBusy]                     = useState({});    // resource_id → true
   const [rejectForm, setRejectForm]         = useState(null); // resource_id
   const [rejectReason, setRejectReason]     = useState('');
@@ -367,9 +377,7 @@ function ReviewTab() {
   const load = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ status: 'pending' });
-      if (selectedSubject) params.append('subject_id', selectedSubject);
-      const res = await api.get(`/admin/resources/?${params.toString()}`);
+      const res = await api.get('/admin/resources/?status=pending');
       setResources(res.data);
     } catch {
       toast.error('Failed to load pending resources.');
@@ -378,7 +386,7 @@ function ReviewTab() {
     }
   };
 
-  useEffect(() => { load(); }, [selectedSubject]);
+  useEffect(() => { load(); }, []);
 
   const approve = async (id) => {
     setBusy(b => ({ ...b, [id]: true }));
@@ -419,6 +427,16 @@ function ReviewTab() {
     }
   };
 
+  const filteredResources = resources.filter(r => {
+    if (!subjectSearch.trim()) return true;
+    const q = subjectSearch.trim().toLowerCase();
+    const sId = (r.subject_id || '').toLowerCase();
+    const sName = (r.subject_name || '').toLowerCase();
+    const title = (r.title || '').toLowerCase();
+    const submitter = (r.submitter_enrollment || '').toLowerCase();
+    return sId.includes(q) || sName.includes(q) || title.includes(q) || submitter.includes(q);
+  });
+
   return (
     <div className="adm-card space-y-6">
       <div className="adm-row-between">
@@ -426,30 +444,43 @@ function ReviewTab() {
           <h2 className="adm-section-title">Pending Suggestions Review</h2>
           <p className="adm-section-sub">Student-submitted resources awaiting your review and approval for ingestion.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <select 
-            className="adm-input adm-input-sm max-w-xs" 
-            value={selectedSubject} 
-            onChange={e => setSelectedSubject(e.target.value)}
-          >
-            {SUBJECT_OPTIONS.map(s => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Subject Code / Name Search Bar */}
+          <div className="relative min-w-[240px] max-w-xs">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <SearchIcon />
+            </div>
+            <input 
+              type="text" 
+              className="adm-input adm-input-sm pl-9 pr-8" 
+              placeholder="Search Subject Code (BCS-401) or Name..." 
+              value={subjectSearch} 
+              onChange={e => setSubjectSearch(e.target.value)}
+            />
+            {subjectSearch && (
+              <button 
+                type="button" 
+                onClick={() => setSubjectSearch('')} 
+                className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-200"
+              >
+                <XIcon />
+              </button>
+            )}
+          </div>
           <button className="adm-btn-ghost" onClick={load}>Refresh</button>
         </div>
       </div>
 
       {loading ? (
         <div className="adm-empty"><Spinner /></div>
-      ) : resources.length === 0 ? (
+      ) : filteredResources.length === 0 ? (
         <div className="adm-empty">
           <InboxIcon />
-          <p>No pending submissions for this filter — you're all caught up!</p>
+          <p>{subjectSearch ? `No pending submissions matching "${subjectSearch}".` : "No pending submissions for this filter — you're all caught up!"}</p>
         </div>
       ) : (
         <div className="adm-list">
-          {resources.map(r => {
+          {filteredResources.map(r => {
             const timeStr = formatDate(r.uploaded_at) || r.uploaded_at_formatted;
             const fullSubjectName = r.subject_name ? `${r.subject_name} (${r.subject_id})` : r.subject_id;
             return (
@@ -524,7 +555,7 @@ function AllResourcesTab() {
   const [resources, setResources]           = useState([]);
   const [loading, setLoading]               = useState(true);
   const [filterStatus, setFilterStatus]     = useState('all');
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [subjectSearch, setSubjectSearch]   = useState('');
   const [selectedType, setSelectedType]     = useState('all');
   const [busy, setBusy]                     = useState({});
   const [previewDoc, setPreviewDoc]         = useState(null);
@@ -534,7 +565,6 @@ function AllResourcesTab() {
     try {
       const params = new URLSearchParams();
       if (filterStatus !== 'all') params.append('status', filterStatus);
-      if (selectedSubject) params.append('subject_id', selectedSubject);
       if (selectedType !== 'all') params.append('resource_type', selectedType);
       
       const res = await api.get(`/admin/resources/?${params.toString()}`);
@@ -546,7 +576,7 @@ function AllResourcesTab() {
     }
   };
 
-  useEffect(() => { load(); }, [filterStatus, selectedSubject, selectedType]);
+  useEffect(() => { load(); }, [filterStatus, selectedType]);
 
   const remove = async (id) => {
     if (!window.confirm('Permanently delete this resource?')) return;
@@ -571,6 +601,16 @@ function AllResourcesTab() {
     }
   };
 
+  const filteredResources = resources.filter(r => {
+    if (!subjectSearch.trim()) return true;
+    const q = subjectSearch.trim().toLowerCase();
+    const sId = (r.subject_id || '').toLowerCase();
+    const sName = (r.subject_name || '').toLowerCase();
+    const title = (r.title || '').toLowerCase();
+    const submitter = (r.submitter_enrollment || '').toLowerCase();
+    return sId.includes(q) || sName.includes(q) || title.includes(q) || submitter.includes(q);
+  });
+
   const STATUS_PILLS = ['all', 'approved', 'pending', 'rejected'];
   const TYPE_OPTIONS = [
     { id: 'all', label: 'All Resource Types' },
@@ -584,24 +624,33 @@ function AllResourcesTab() {
     <div className="adm-card space-y-6">
       <div>
         <h2 className="adm-section-title">All Resources &amp; Material Directory</h2>
-        <p className="adm-section-sub">Browse, filter by subject, resource type, or status, and manage every resource in the system.</p>
+        <p className="adm-section-sub">Browse, filter by subject code or name, resource type, or status, and manage every resource in the system.</p>
       </div>
 
       {/* Filters bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-900/60 rounded-xl border border-slate-800">
         <div className="flex flex-wrap items-center gap-3">
-          {/* Subject selector */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Subject:</span>
-            <select 
-              className="adm-input adm-input-sm max-w-xs" 
-              value={selectedSubject} 
-              onChange={e => setSelectedSubject(e.target.value)}
-            >
-              {SUBJECT_OPTIONS.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
+          {/* Subject Code / Name Live Search Bar */}
+          <div className="relative min-w-[240px] max-w-xs">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <SearchIcon />
+            </div>
+            <input 
+              type="text" 
+              className="adm-input adm-input-sm pl-9 pr-8" 
+              placeholder="Search Subject Code (BCS-401) or Name..." 
+              value={subjectSearch} 
+              onChange={e => setSubjectSearch(e.target.value)}
+            />
+            {subjectSearch && (
+              <button 
+                type="button" 
+                onClick={() => setSubjectSearch('')} 
+                className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-200"
+              >
+                <XIcon />
+              </button>
+            )}
           </div>
 
           {/* Resource type selector */}
@@ -631,14 +680,14 @@ function AllResourcesTab() {
 
       {loading ? (
         <div className="adm-empty"><Spinner /></div>
-      ) : resources.length === 0 ? (
+      ) : filteredResources.length === 0 ? (
         <div className="adm-empty">
           <FilesIcon />
-          <p>No resources found for this filter combination.</p>
+          <p>{subjectSearch ? `No resources found matching "${subjectSearch}".` : 'No resources found for this filter combination.'}</p>
         </div>
       ) : (
         <div className="adm-list">
-          {resources.map(r => {
+          {filteredResources.map(r => {
             const timeStr = formatDate(r.uploaded_at) || r.uploaded_at_formatted;
             const reviewedStr = formatDate(r.reviewed_at) || r.reviewed_at_formatted;
             const fullSubjectName = r.subject_name ? `${r.subject_name} (${r.subject_id})` : r.subject_id;
@@ -703,15 +752,14 @@ function AllResourcesTab() {
 function PlaylistsTab() {
   const [playlists, setPlaylists]           = useState([]);
   const [loading, setLoading]               = useState(true);
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [subjectSearch, setSubjectSearch]   = useState('');
   const [form, setForm]                     = useState({ subject_id: '', title: '', playlist_url: '', unit: 'Unit 1' });
   const [saving, setSaving]                 = useState(false);
 
   const load = async () => {
     setLoading(true);
     try {
-      const params = selectedSubject ? `?subject_id=${selectedSubject}` : '';
-      const res = await api.get(`/admin/resources/playlists${params}`);
+      const res = await api.get('/admin/resources/playlists');
       setPlaylists(res.data);
     } catch {
       toast.error('Failed to load playlists.');
@@ -720,7 +768,7 @@ function PlaylistsTab() {
     }
   };
 
-  useEffect(() => { load(); }, [selectedSubject]);
+  useEffect(() => { load(); }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -753,6 +801,16 @@ function PlaylistsTab() {
     }
   };
 
+  const filteredPlaylists = playlists.filter(p => {
+    if (!subjectSearch.trim()) return true;
+    const q = subjectSearch.trim().toLowerCase();
+    const sId = (p.subject_id || '').toLowerCase();
+    const sName = (p.subject_name || '').toLowerCase();
+    const title = (p.title || '').toLowerCase();
+    const unit = (p.unit || '').toLowerCase();
+    return sId.includes(q) || sName.includes(q) || title.includes(q) || unit.includes(q);
+  });
+
   return (
     <div className="adm-card space-y-6">
       <div>
@@ -764,18 +822,21 @@ function PlaylistsTab() {
         <h3 className="text-sm font-bold text-slate-200 mb-1">Add New YouTube Playlist</h3>
         <div className="adm-grid-2">
           <div className="adm-field">
-            <label className="adm-label">Subject ID *</label>
-            <select 
+            <label className="adm-label">Subject ID / Code *</label>
+            <input 
+              type="text"
+              list="playlist-subject-options"
               className="adm-input" 
               required 
+              placeholder="Type or select Subject Code (e.g. BCS-401)"
               value={form.subject_id} 
-              onChange={e => setForm(f => ({...f, subject_id: e.target.value}))}
-            >
-              <option value="">Select Subject</option>
+              onChange={e => setForm(f => ({ ...f, subject_id: e.target.value.toUpperCase() }))}
+            />
+            <datalist id="playlist-subject-options">
               {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
-            </select>
+            </datalist>
           </div>
           <div className="adm-field">
             <label className="adm-label">Unit Tag</label>
@@ -801,24 +862,37 @@ function PlaylistsTab() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <h3 className="text-base font-bold text-slate-200">Active Playlists List</h3>
 
-          {/* Subject Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Filter Subject:</span>
-            <select 
-              className="adm-input adm-input-sm max-w-xs" 
-              value={selectedSubject} 
-              onChange={e => setSelectedSubject(e.target.value)}
-            >
-              {SUBJECT_OPTIONS.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
+          {/* Subject Code / Name Search Bar */}
+          <div className="relative min-w-[240px] max-w-xs">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <SearchIcon />
+            </div>
+            <input 
+              type="text" 
+              className="adm-input adm-input-sm pl-9 pr-8" 
+              placeholder="Search Subject Code (BCS-401) or Name..." 
+              value={subjectSearch} 
+              onChange={e => setSubjectSearch(e.target.value)}
+            />
+            {subjectSearch && (
+              <button 
+                type="button" 
+                onClick={() => setSubjectSearch('')} 
+                className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-200"
+              >
+                <XIcon />
+              </button>
+            )}
           </div>
         </div>
 
-        {loading ? <Spinner /> : playlists.length === 0 ? <p className="text-xs text-slate-500">No playlists found for this filter.</p> : (
+        {loading ? <Spinner /> : filteredPlaylists.length === 0 ? (
+          <p className="text-xs text-slate-500">
+            {subjectSearch ? `No playlists found matching "${subjectSearch}".` : 'No playlists found.'}
+          </p>
+        ) : (
           <div className="adm-list">
-            {playlists.map(p => {
+            {filteredPlaylists.map(p => {
               const timeStr = formatDate(p.created_at) || p.created_at_formatted;
               const fullSubjectName = p.subject_name ? `${p.subject_name} (${p.subject_id})` : p.subject_id;
               return (
@@ -927,16 +1001,21 @@ function VectorCuratorTab() {
 
       <form onSubmit={handleInspectSubmit} className="adm-grid-2">
         <div className="adm-field">
-          <label className="adm-label">Subject Collection ID *</label>
-          <select 
+          <label className="adm-label">Subject Collection ID / Code *</label>
+          <input 
+            type="text"
+            list="vector-subject-options"
             className="adm-input" 
+            required 
+            placeholder="Type or select Subject Code (e.g. BCS-401)"
             value={subjectId} 
             onChange={e => setSubjectId(e.target.value.toUpperCase())}
-          >
+          />
+          <datalist id="vector-subject-options">
             {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
               <option key={s.id} value={s.id}>{s.name}</option>
             ))}
-          </select>
+          </datalist>
         </div>
         <div className="flex items-end">
           <button type="submit" className="adm-btn-ghost w-full">Inspect Collection Chunks</button>
