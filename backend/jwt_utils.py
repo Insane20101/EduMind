@@ -1,3 +1,4 @@
+from typing import Optional
 import os
 import jwt
 from datetime import datetime, timedelta
@@ -10,6 +11,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 7
 
 security = HTTPBearer()
+security_optional = HTTPBearer(auto_error=False)
 
 def create_access_token(data: dict, expires_delta: timedelta = None, additional_claims: dict = None):
     to_encode = data.copy()
@@ -60,4 +62,22 @@ async def get_current_admin_user(payload: dict = Security(verify_token)):
         admin_user = {"admin_id": admin_id}
         
     return admin_user
+
+
+async def get_current_user_optional(credentials: Optional[HTTPAuthorizationCredentials] = Security(security_optional)):
+    if not credentials:
+        return None
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        if payload.get("token_type") == "admin":
+            return None
+        enrollment = payload.get("enrollment")
+        if not enrollment:
+            return None
+        user = await db.users.find_one({"enrollment": enrollment})
+        return user
+    except Exception:
+        return None
+
 
