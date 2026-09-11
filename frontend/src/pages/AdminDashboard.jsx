@@ -205,13 +205,43 @@ function OverviewTab() {
   );
 }
 
-// ── Tab: Upload Resource ────────────────────────────────────────────────────────
+// ── Tab: Upload Resource (Category-Driven Ingestion) ──────────────────────────
 function UploadTab() {
-  const [form, setForm]       = useState({ subject_id: '', resource_type: 'note', title: '' });
-  const [file, setFile]       = useState(null);
-  const [loading, setLoading] = useState(false);
-  const fileRef               = useRef();
+  const [categories, setCategories] = useState({
+    notes: { category_key: 'notes', chunk_type: 'note', accepted_formats: ['.pdf', '.md'], requires_unit: false, description: 'Study notes & textbook material (.pdf, .md)' },
+    pyq: { category_key: 'pyq', chunk_type: 'pyq', accepted_formats: ['.pdf'], requires_unit: false, description: 'Previous Year Question papers (.pdf)' },
+    question_bank: { category_key: 'question_bank', chunk_type: 'question_bank', accepted_formats: ['.md'], requires_unit: true, description: 'Tagged question banks with [Unit | Topic | Type | Difficulty] headers (.md)' },
+    transcript: { category_key: 'transcript', chunk_type: 'transcript', accepted_formats: ['.txt'], requires_unit: false, description: 'Video & lecture transcripts (.txt)' }
+  });
+  const [categoryKey, setCategoryKey] = useState('notes');
+  const [form, setForm]               = useState({ subject_id: '', title: '', unit_id: 'Unit 1' });
+  const [file, setFile]               = useState(null);
+  const [loading, setLoading]         = useState(false);
+  const [historyLog, setHistoryLog]   = useState([]);
+  const fileRef                       = useRef();
   const { ingestionState, setIngestionState } = useAppStore();
+
+  const loadCategoriesAndHistory = async () => {
+    try {
+      const res = await api.get('/admin/resources/content-categories');
+      if (res.data) setCategories(res.data);
+    } catch {
+      // Use fallback defaults
+    }
+    try {
+      const hRes = await api.get('/admin/resources/ingestion-history');
+      if (hRes.data) setHistoryLog(hRes.data);
+    } catch {
+      // ignore history error
+    }
+  };
+
+  useEffect(() => {
+    loadCategoriesAndHistory();
+  }, []);
+
+  const activeCategory = categories[categoryKey] || categories['notes'];
+  const acceptedExts = (activeCategory.accepted_formats || ['.pdf', '.md']).join(',');
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -226,7 +256,7 @@ function UploadTab() {
     setIngestionState({ 
       status: 'processing', 
       progress: 15, 
-      message: 'Uploading document & starting Google AI OCR parsing...', 
+      message: `Uploading & processing ${activeCategory.chunk_type} document...`, 
       locked: true,
       filename: file.name
     });
@@ -234,31 +264,41 @@ function UploadTab() {
     try {
       const fd = new FormData();
       fd.append('subject_id',   form.subject_id.trim().toUpperCase());
-      fd.append('resource_type', form.resource_type);
+      fd.append('category_key', categoryKey);
+      fd.append('resource_type', activeCategory.chunk_type);
       fd.append('title',        form.title);
+      if (activeCategory.requires_unit || form.unit_id) {
+        fd.append('unit_id',    form.unit_id);
+      }
       fd.append('file',         file);
       
-      setIngestionState({ progress: 50, message: 'Extracting text and equations with Google AI OCR...' });
+      setIngestionState({ progress: 50, message: 'Extracting text and chunking with schema version v1...' });
       
-      await api.post('/admin/resources/upload', fd, {
+      const res = await api.post('/admin/resources/upload', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      
-      setIngestionState({ progress: 90, message: 'Ingesting vector chunks into Qdrant Vector Database...' });
-      
-      setTimeout(() => {
-        setIngestionState({ 
-          status: 'idle', 
-          progress: 100, 
-          message: 'Ingestion completed successfully!', 
-          locked: false,
-          filename: ''
-        });
-        toast.success('Resource uploaded, processed with Google AI OCR, and approved!');
-        setForm({ subject_id: '', resource_type: 'note', title: '' });
-        setFile(null);
-        if (fileRef.current) fileRef.current.value = '';
-      }, 1000);
+
+      if (res.data?.status === 'idempotent_skip') {
+        toast.success(res.data.message);
+        setIngestionState({ status: 'idle', progress: 100, message: res.data.message, locked: false, filename: '' });
+      } else {
+        setIngestionState({ progress: 90, message: 'Upserting vector chunks with Qdrant schema_version=1...' });
+        setTimeout(() => {
+          setIngestionState({ 
+            status: 'idle', 
+            progress: 100, 
+            message: 'Ingestion completed successfully!', 
+            locked: false,
+            filename: ''
+          });
+          toast.success(`Category '${categoryKey}' resource ingested successfully!`);
+        }, 800);
+      }
+
+      setForm(f => ({ ...f, title: '' }));
+      setFile(null);
+      if (fileRef.current) fileRef.current.value = '';
+      loadCategoriesAndHistory();
 
     } catch (err) {
       setIngestionState({ 
@@ -276,90 +316,185 @@ function UploadTab() {
   const isIngestingActive = ingestionState.locked || loading;
 
   return (
-    <div className="adm-card">
-      <h2 className="adm-section-title">Upload Resource &amp; Ingest to RAG</h2>
-      <p className="adm-section-sub">Uploaded files are auto-processed with Google AI OCR, vector-embedded into Qdrant Vector Database, and published to students.</p>
+    <div className="space-y-6">
+      <div className="adm-card">
+        <h2 className="adm-section-title">Category-Driven Resource Upload &amp; Ingestion</h2>
+        <p className="adm-section-sub">Registry-configured content ingestion pipeline with SHA-256 idempotency and v1 schema versioning.</p>
 
-      {/* ── Active Ingestion & Locking Banner Alert ───────────────────── */}
-      {isIngestingActive && (
-        <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 space-y-3 shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 font-semibold text-sm text-amber-200">
-              <span className="animate-pulse">🔒</span>
-              <span>Ingestion in Progress: Do not upload any other document right now.</span>
+        {/* ── Active Ingestion & Locking Banner Alert ───────────────────── */}
+        {isIngestingActive && (
+          <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 space-y-3 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 font-semibold text-sm text-amber-200">
+                <span className="animate-pulse">🔒</span>
+                <span>Ingestion in Progress: Single-task lock active. Do not trigger parallel uploads.</span>
+              </div>
+              <span className="text-xs font-mono font-bold bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-500/30">
+                {ingestionState.progress || 25}%
+              </span>
             </div>
-            <span className="text-xs font-mono font-bold bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-500/30">
-              {ingestionState.progress || 25}%
-            </span>
+
+            {/* Progress Bar */}
+            <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-amber-500/20">
+              <div 
+                className="bg-gradient-to-r from-amber-500 to-yellow-400 h-2.5 rounded-full transition-all duration-500 ease-out shadow-sm"
+                style={{ width: `${ingestionState.progress || 25}%` }}
+              />
+            </div>
+
+            <p className="text-xs text-amber-300/80 font-mono">
+              Status: {ingestionState.message || 'Processing document & vector chunks...'}
+            </p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="adm-form">
+          <div className="adm-grid-2">
+            <div className="adm-field">
+              <label className="adm-label">Subject ID / Code *</label>
+              <input 
+                type="text"
+                list="upload-subject-options"
+                className="adm-input" 
+                required 
+                placeholder="Type or select Subject Code (e.g. BCS-401)"
+                value={form.subject_id} 
+                disabled={isIngestingActive} 
+                onChange={e => set('subject_id', e.target.value.toUpperCase())}
+              />
+              <datalist id="upload-subject-options">
+                {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </datalist>
+            </div>
+
+            <div className="adm-field">
+              <label className="adm-label">Content Category *</label>
+              <select 
+                className="adm-input" 
+                value={categoryKey} 
+                disabled={isIngestingActive} 
+                onChange={e => setCategoryKey(e.target.value)}
+              >
+                {Object.entries(categories)
+                  .filter(([_, cat]) => !cat.input_type || cat.input_type === 'file_upload')
+                  .map(([key, cat]) => (
+                    <option key={key} value={key}>
+                      {key.toUpperCase()} ({cat.chunk_type})
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
 
-          {/* Progress Bar */}
-          <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-amber-500/20">
+          {/* Category Description Banner */}
+          <div className="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-xs text-indigo-300 flex items-start gap-2">
+            <span className="text-sm">💡</span>
+            <div>
+              <span className="font-semibold">{categoryKey.toUpperCase()}: </span>
+              <span>{activeCategory.description}</span>
+            </div>
+          </div>
+
+          <div className="adm-grid-2">
+            <div className="adm-field">
+              <label className="adm-label">Title *</label>
+              <input 
+                className="adm-input" 
+                required 
+                placeholder="Unit 1 – Complete Study Material" 
+                value={form.title}
+                disabled={isIngestingActive}
+                onChange={e => set('title', e.target.value)} 
+              />
+            </div>
+
+            {activeCategory.requires_unit ? (
+              <div className="adm-field">
+                <label className="adm-label">Unit Selector * <span className="text-amber-400">(Required for {categoryKey})</span></label>
+                <input 
+                  className="adm-input" 
+                  required 
+                  placeholder="Unit 1" 
+                  value={form.unit_id}
+                  disabled={isIngestingActive}
+                  onChange={e => set('unit_id', e.target.value)} 
+                />
+              </div>
+            ) : (
+              <div className="adm-field">
+                <label className="adm-label">Unit Tag <span className="adm-optional">(Optional)</span></label>
+                <input 
+                  className="adm-input" 
+                  placeholder="Unit 1 (default: unassigned)" 
+                  value={form.unit_id}
+                  disabled={isIngestingActive}
+                  onChange={e => set('unit_id', e.target.value)} 
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="adm-field">
+            <label className="adm-label">File * ({acceptedExts} — SHA-256 Idempotency Enabled)</label>
             <div 
-              className="bg-gradient-to-r from-amber-500 to-yellow-400 h-2.5 rounded-full transition-all duration-500 ease-out shadow-sm"
-              style={{ width: `${ingestionState.progress || 25}%` }}
-            />
-          </div>
-
-          <p className="text-xs text-amber-300/80 font-mono">
-            Status: {ingestionState.message || 'Current ingestion and updation is happening...'}
-          </p>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="adm-form">
-        <div className="adm-grid-2">
-          <div className="adm-field">
-            <label className="adm-label">Subject ID / Code *</label>
+              className={`adm-file-drop ${isIngestingActive ? 'opacity-50 cursor-not-allowed' : ''}`} 
+              onClick={() => !isIngestingActive && fileRef.current.click()}
+            >
+              <UploadIcon />
+              <span>{file ? file.name : `Click to choose file (${acceptedExts})`}</span>
+              {file && <span className="adm-file-size">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>}
+            </div>
             <input 
-              type="text"
-              list="upload-subject-options"
-              className="adm-input" 
-              required 
-              placeholder="Type or select Subject Code (e.g. BCS-401)"
-              value={form.subject_id} 
-              disabled={isIngestingActive} 
-              onChange={e => set('subject_id', e.target.value.toUpperCase())}
+              ref={fileRef} 
+              type="file" 
+              accept={acceptedExts} 
+              className="hidden"
+              disabled={isIngestingActive}
+              onChange={e => setFile(e.target.files[0] ?? null)} 
             />
-            <datalist id="upload-subject-options">
-              {SUBJECT_OPTIONS.filter(s => s.id).map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </datalist>
           </div>
-          <div className="adm-field">
-            <label className="adm-label">Resource Type *</label>
-            <select className="adm-input" value={form.resource_type} disabled={isIngestingActive} onChange={e => set('resource_type', e.target.value)}>
-              <option value="note">Note (PDF)</option>
-              <option value="pyq">Previous Year Question (PYQ)</option>
-              <option value="other">Other Study Material</option>
-            </select>
+
+          <button type="submit" className="adm-btn-primary" disabled={isIngestingActive}>
+            {isIngestingActive ? <Spinner /> : <><UploadIcon /><span>Upload &amp; Ingest to RAG</span></>}
+          </button>
+        </form>
+      </div>
+
+      {/* ── Ingestion History Log Panel ─────────────────────────────────── */}
+      <div className="adm-card space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-bold text-slate-200">Admin Ingestion History Log</h3>
+          <button className="adm-btn-ghost-sm" onClick={loadCategoriesAndHistory}>Refresh History</button>
+        </div>
+
+        {historyLog.length === 0 ? (
+          <p className="text-xs text-slate-500">No recent ingestion log entries recorded.</p>
+        ) : (
+          <div className="adm-list max-h-72 overflow-y-auto pr-1">
+            {historyLog.map(log => (
+              <div key={log.log_id || log.timestamp} className="adm-list-item">
+                <div className="adm-list-meta space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-indigo-300 text-xs">{log.subject_id}</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase bg-slate-800 text-slate-300 border border-slate-700">
+                      {log.category_key || log.chunk_type}
+                    </span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${log.status === 'success' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'}`}>
+                      {log.status}
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">
+                    File: <span className="text-slate-200">{log.filename}</span> • {log.chunk_count} chunks • {formatDate(log.timestamp)}
+                  </div>
+                  {log.error && <p className="text-xs text-rose-400">{log.error}</p>}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-        <div className="adm-field">
-          <label className="adm-label">Title *</label>
-          <input className="adm-input" required placeholder="Unit 1 – Introduction to OS" value={form.title}
-            disabled={isIngestingActive}
-            onChange={e => set('title', e.target.value)} />
-        </div>
-        <div className="adm-field">
-          <label className="adm-label">File * (PDF, JPG, PNG — Google AI OCR Enabled)</label>
-          <div 
-            className={`adm-file-drop ${isIngestingActive ? 'opacity-50 cursor-not-allowed' : ''}`} 
-            onClick={() => !isIngestingActive && fileRef.current.click()}
-          >
-            <UploadIcon />
-            <span>{file ? file.name : 'Click to choose file'}</span>
-            {file && <span className="adm-file-size">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>}
-          </div>
-          <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png,.webp" className="hidden"
-            disabled={isIngestingActive}
-            onChange={e => setFile(e.target.files[0] ?? null)} />
-        </div>
-        <button type="submit" className="adm-btn-primary" disabled={isIngestingActive}>
-          {isIngestingActive ? <Spinner /> : <><UploadIcon /><span>Upload, Process &amp; Ingest</span></>}
-        </button>
-      </form>
+        )}
+      </div>
     </div>
   );
 }

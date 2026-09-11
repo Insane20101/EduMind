@@ -9,6 +9,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from rag.vector_store import upsert_chunks
 from rag.chunker import chunk_markdown, chunk_transcript
+from rag.content_categories import get_category_config, SCHEMA_VERSION
 
 
 logger = logging.getLogger(__name__)
@@ -170,14 +171,26 @@ def ingest_document(
     filename: str,
     subject_id: str,
     unit_id: Optional[str] = None,
-    resource_type: str = "note"
+    category_key: str = "notes",
+    resource_type: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     SINGLE UNIFIED INGESTION PIPELINE
-    Used by bulk ingestion, admin vector curation, and student upload approvals.
+    Configured via Content Category Registry (backend/rag/content_categories.py).
+    Stamps chunk_type, subject_id, unit, and schema_version on every Qdrant point.
     """
     if not subject_id or not subject_id.strip():
         raise ValueError("subject_id is mandatory for vector ingestion.")
+
+    # Backward compatibility mapping for legacy resource_type callers
+    effective_category = category_key
+    if resource_type and (not category_key or category_key == "notes"):
+        rt_map = {"note": "notes", "notes": "notes", "pyq": "pyq", "question_bank": "question_bank", "transcript": "transcript"}
+        effective_category = rt_map.get(resource_type.lower(), resource_type)
+
+    # Validate category key against Content Category Registry (raises ValueError if unknown)
+    cat_config = get_category_config(effective_category)
+    chunk_type = cat_config["chunk_type"]
 
     subject_id = subject_id.strip().upper()
     effective_unit = unit_id.strip() if (unit_id and unit_id.strip()) else "unassigned"
@@ -200,7 +213,7 @@ def ingest_document(
     documents: List[Document] = []
     has_qbank_tags = bool(re.search(r'Q\d+:', raw_text) and ("Topic:" in raw_text or "Unit" in raw_text))
 
-    if has_qbank_tags and ext in ["md", "txt"]:
+    if (has_qbank_tags or cat_config["chunker"] == "tagged_question_boundary") and ext in ["md", "txt"]:
         # Structured question bank tagged format -> Use chunk_markdown from chunker.py
         raw_chunks = chunk_markdown(raw_text, source_file=filename, subject_id=subject_id, semester="Semester-3", source_type="markdown")
         for rc in raw_chunks:
@@ -209,11 +222,14 @@ def ingest_document(
             if not meta.get("unit") or meta.get("unit") == "unassigned":
                 meta["unit"] = effective_unit
             meta["source_filename"] = filename
-            meta["resource_type"] = resource_type
+            meta["chunk_type"] = chunk_type
+            meta["category_key"] = cat_config["category_key"]
+            meta["schema_version"] = SCHEMA_VERSION
+            meta["resource_type"] = chunk_type
             documents.append(Document(page_content=rc.get("text", ""), metadata=meta))
 
     else:
-        # Untagged generic prose (PDFs, Markdown notes, student uploads) -> Use RecursiveCharacterTextSplitter
+        # Untagged generic prose (PDFs, Markdown notes, transcripts) -> Use RecursiveCharacterTextSplitter
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         chunks = text_splitter.split_text(raw_text)
         is_placeholder_doc = ("is available for inline viewing and download" in raw_text or "Document placeholder metadata" in raw_text)
@@ -224,7 +240,10 @@ def ingest_document(
                 "subject_id": subject_id,
                 "unit": effective_unit,
                 "source_filename": filename,
-                "resource_type": resource_type,
+                "chunk_type": chunk_type,
+                "category_key": cat_config["category_key"],
+                "schema_version": SCHEMA_VERSION,
+                "resource_type": chunk_type,
                 "is_placeholder": is_placeholder_doc
             }
             documents.append(Document(page_content=chunk_str, metadata=meta))
@@ -236,12 +255,15 @@ def ingest_document(
     chunks_to_upsert = [{"text": d.page_content, "metadata": d.metadata} for d in documents]
     upsert_chunks(chunks_to_upsert)
 
-    logger.info(f"Ingested {len(documents)} chunks for file '{filename}' into subject collection '{subject_id}' (unit: '{effective_unit}').")
+    logger.info(f"Ingested {len(documents)} chunks for file '{filename}' into subject collection '{subject_id}' (category: '{cat_config['category_key']}', chunk_type: '{chunk_type}', unit: '{effective_unit}', v{SCHEMA_VERSION}).")
 
     return {
         "status": "success",
         "subject_id": subject_id,
         "unit": effective_unit,
         "filename": filename,
+        "category_key": cat_config["category_key"],
+        "chunk_type": chunk_type,
+        "schema_version": SCHEMA_VERSION,
         "chunk_count": len(documents)
     }

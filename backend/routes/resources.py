@@ -137,40 +137,85 @@ async def student_community_upload(
     return doc
 
 
+@router.get("/content-categories")
+async def get_content_categories():
+    """Public endpoint returning category registry for category-driven upload UI."""
+    return CONTENT_CATEGORIES
+
+
+@router.get("/ingestion-history")
+async def get_ingestion_history(current_admin: dict = Depends(get_current_admin_user)):
+    """Surfaces recent admin ingestion history log (last 50 uploads)."""
+    try:
+        cursor = db.ingestion_log.find({}).sort("timestamp", -1).limit(50)
+        logs = await cursor.to_list(length=50)
+        for l in logs:
+            l.pop("_id", None)
+            if isinstance(l.get("timestamp"), datetime):
+                l["timestamp"] = l["timestamp"].isoformat()
+        return logs
+    except Exception as e:
+        logger.warning(f"Error fetching ingestion history log: {e}")
+        return []
+
+
 # ── Admin Resource Endpoints ───────────────────────────────────────────────────
 
 @router.post("/upload")
 async def admin_upload_resource(
     subject_id: str = Form(...),
-    resource_type: str = Form(...),
     title: str = Form(...),
     file: UploadFile = File(...),
+    category_key: Optional[str] = Form(None),
+    resource_type: Optional[str] = Form(None),
+    unit_id: Optional[str] = Form(None),
     current_admin: dict = Depends(get_current_admin_user)
 ):
-    """Admin uploads resource — automatically acquires single-task lock and ingests to ChromaDB."""
-    filename = file.filename or "admin_resource"
+    """Admin uploads resource — category-driven, idempotent (SHA-256), single-task locked, logged."""
+    effective_category = (category_key or resource_type or "notes").strip().lower()
+    cat_config = get_category_config(effective_category)
+
+    filename = file.filename or f"resource_{effective_category}"
     ext = filename.split(".")[-1].lower() if "." in filename else ""
 
     if ext not in ALLOWED_EXTENSIONS:
-        raise HTTPException(status_code=400, detail="Unsupported file format.")
+        raise HTTPException(status_code=400, detail=f"Unsupported file extension '.{ext}'. Allowed: {ALLOWED_EXTENSIONS}")
+
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, detail="File exceeds 15 MB limit.")
+
+    file_hash = hashlib.sha256(content).hexdigest()
+    clean_subj = subject_id.strip().upper()
+
+    # Idempotency Check: check if identical file hash already ingested for this subject
+    existing_resource = await db.resources.find_one({
+        "subject_id": clean_subj,
+        "file_hash": file_hash
+    })
+    if existing_resource:
+        logger.info(f"Idempotency hit: '{filename}' (hash {file_hash[:8]}) already ingested for {clean_subj}.")
+        return {
+            "status": "idempotent_skip",
+            "message": f"File '{filename}' has already been ingested for subject {clean_subj}. Skipped duplicate ingestion.",
+            "resource_id": existing_resource.get("resource_id"),
+            "subject_id": clean_subj,
+            "filename": filename
+        }
 
     if not ingestion_queue.acquire_lock(filename):
         raise HTTPException(status_code=429, detail="An ingestion task is currently in progress! Please wait until it completes.")
 
     try:
-        content = await file.read()
-        if len(content) > MAX_FILE_SIZE:
-            raise HTTPException(status_code=413, detail="File exceeds 15 MB limit.")
+        ingestion_queue.update_progress(30, f"Running category-driven ingestion for '{filename}' ({effective_category})...")
 
-        ingestion_queue.update_progress(30, f"Running unified ingestion for '{filename}'...")
-
-        # Ingest to ChromaDB via unified single ingestion pipeline
+        # Ingest via unified single ingestion pipeline using category config
         ingest_summary = ingest_document(
             content_bytes=content,
             filename=filename,
-            subject_id=subject_id,
-            unit_id=None,
-            resource_type=resource_type
+            subject_id=clean_subj,
+            unit_id=unit_id,
+            category_key=effective_category
         )
 
         ingestion_queue.update_progress(70, "Uploading resource to Cloudinary CDN...")
@@ -179,7 +224,7 @@ async def admin_upload_resource(
         public_id = None
         try:
             if os.getenv("CLOUDINARY_CLOUD_NAME"):
-                folder = f"edumind/{subject_id}/{resource_type}"
+                folder = f"edumind/{clean_subj}/{effective_category}"
                 res_type = "raw" if ext == "pdf" else "auto"
                 upload_result = cloudinary.uploader.upload(
                     content,
@@ -196,16 +241,19 @@ async def admin_upload_resource(
         resource_id = str(uuid.uuid4())
         now = datetime.now(timezone.utc)
 
-        # Store file in MongoDB GridFS / Cloud DB (No local disk storage)
+        # Store file in MongoDB GridFS fallback
         cloud_file_id = await upload_file(filename, content, "application/pdf")
 
         doc = {
             "resource_id": resource_id,
             "cloud_file_id": cloud_file_id,
-            "subject_id": subject_id.upper(),
-            "resource_type": resource_type,
+            "subject_id": clean_subj,
+            "unit": unit_id or "unassigned",
+            "category_key": effective_category,
+            "resource_type": cat_config["chunk_type"],
             "title": title,
             "filename": filename,
+            "file_hash": file_hash,
             "url": url,
             "cloudinary_public_id": public_id,
             "status": "approved",
@@ -219,13 +267,45 @@ async def admin_upload_resource(
             "ingest_summary": ingest_summary
         }
         await db.resources.insert_one(doc)
-        doc.pop("_id", None)
 
+        # Log to db.ingestion_log for admin UI history panel
+        log_entry = {
+            "log_id": str(uuid.uuid4()),
+            "subject_id": clean_subj,
+            "category_key": effective_category,
+            "chunk_type": cat_config["chunk_type"],
+            "filename": filename,
+            "file_hash": file_hash,
+            "chunk_count": ingest_summary.get("chunk_count", 0),
+            "timestamp": now,
+            "status": "success",
+            "error": None
+        }
+        await db.ingestion_log.insert_one(log_entry)
+
+        doc.pop("_id", None)
         ingestion_queue.release_lock(success=True, final_message=f"Successfully ingested '{filename}' ({ingest_summary['chunk_count']} chunks).")
         return doc
     except Exception as e:
         tb_str = traceback.format_exc()
         logger.error(f"ADMIN UPLOAD EXCEPTION: [{type(e).__name__}] {str(e)}\n{tb_str}")
+
+        try:
+            await db.ingestion_log.insert_one({
+                "log_id": str(uuid.uuid4()),
+                "subject_id": clean_subj,
+                "category_key": effective_category,
+                "chunk_type": cat_config.get("chunk_type", "unknown"),
+                "filename": filename,
+                "file_hash": file_hash,
+                "chunk_count": 0,
+                "timestamp": datetime.now(timezone.utc),
+                "status": "failed",
+                "error": f"[{type(e).__name__}] {str(e)}"
+            })
+        except Exception:
+            pass
+
         ingestion_queue.release_lock(success=False, final_message=f"Ingestion error: [{type(e).__name__}] {str(e)}")
         raise HTTPException(status_code=500, detail=f"Ingestion failed: [{type(e).__name__}] {str(e)}")
 

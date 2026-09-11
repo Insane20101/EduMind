@@ -19,14 +19,26 @@ def get_qdrant_client() -> QdrantClient:
 
 def ensure_payload_indexes(client: QdrantClient, collection_name: str):
     """
-    Ensures keyword payload indexes exist on critical filter fields for a Qdrant collection.
+    Ensures keyword and integer payload indexes exist on critical filter fields for a Qdrant collection.
     """
-    for field in ("unit", "source_filename", "resource_id", "source_file"):
+    keyword_fields = ("subject_id", "unit", "chunk_type", "category_key", "resource_type", "source_filename", "resource_id", "source_file")
+    for field in keyword_fields:
         try:
             client.create_payload_index(
                 collection_name=collection_name,
                 field_name=field,
                 field_schema=models.PayloadSchemaType.KEYWORD
+            )
+        except Exception:
+            pass
+
+    integer_fields = ("schema_version", "marks")
+    for field in integer_fields:
+        try:
+            client.create_payload_index(
+                collection_name=collection_name,
+                field_name=field,
+                field_schema=models.PayloadSchemaType.INTEGER
             )
         except Exception:
             pass
