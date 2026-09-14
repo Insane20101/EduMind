@@ -6,6 +6,35 @@ export default function PdfViewerModal({ title, pdfUrl, onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [useFallback, setUseFallback] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      setIsMobile(mobile);
+    };
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleOpenExternal = (e) => {
+    if (e) e.preventDefault();
+    if (!pdfUrl) return;
+    window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  useEffect(() => {
+    if (isMobile && pdfUrl) {
+      try {
+        window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      } catch (e) {
+        console.log('Mobile auto-open notice:', e);
+      }
+    }
+  }, [isMobile, pdfUrl]);
 
   useEffect(() => {
     // Anti-save / anti-print key listeners
@@ -85,11 +114,12 @@ export default function PdfViewerModal({ title, pdfUrl, onClose }) {
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-indigo-300 hover:text-white bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 rounded-lg transition-all"
+              onClick={handleOpenExternal}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/40 rounded-lg transition-all shadow-sm flex-shrink-0"
               title="Open document directly in browser tab"
             >
-              <ExternalLink size={13} />
-              <span className="hidden sm:inline">Open in Tab</span>
+              <ExternalLink size={14} />
+              <span className="inline">Open in Tab ↗</span>
             </a>
 
             <button
@@ -107,39 +137,65 @@ export default function PdfViewerModal({ title, pdfUrl, onClose }) {
           className="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden"
           onContextMenu={(e) => e.preventDefault()}
         >
-          {loading && (
+          {loading && !isMobile && (
             <div className="flex flex-col items-center gap-3 text-slate-400 p-6 text-center">
               <Loader2 size={32} className="animate-spin text-indigo-500" />
               <p className="text-sm font-medium">Loading document securely from EduMind Cloud...</p>
             </div>
           )}
 
-          {error && (
+          {error && !isMobile && (
             <div className="flex flex-col items-center gap-3 text-red-400 max-w-md text-center p-6 bg-slate-900 border border-slate-800 rounded-xl">
               <AlertCircle size={36} />
               <h4 className="text-base font-semibold text-slate-200">Unable to View Document</h4>
               <p className="text-xs text-slate-400 mb-2">{error}</p>
-              <a
-                href={pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5"
+              <button
+                onClick={handleOpenExternal}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <ExternalLink size={14} />
                 <span>Open Document Directly</span>
-              </a>
+              </button>
             </div>
           )}
 
-          {!loading && !error && (
-            <div className="w-full h-full relative">
-              <iframe
-                src={`${targetViewerUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-                title={title || 'PDF Document Viewer'}
-                className="w-full h-full border-0 bg-white"
-                onError={() => setUseFallback(true)}
-              />
+          {isMobile ? (
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-slate-950/90 text-slate-200">
+              <div className="w-20 h-20 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center mb-5 text-indigo-400 shadow-inner">
+                <FileText size={40} />
+              </div>
+              
+              <h4 className="text-base sm:text-lg font-bold text-slate-100 mb-2 max-w-sm leading-snug">
+                {title || 'Document Preview'}
+              </h4>
+
+              <p className="text-xs text-slate-400 mb-6 max-w-xs leading-relaxed">
+                Mobile view mode active. Tap below to open the full document directly in Google Chrome / Browser tab.
+              </p>
+
+              <button
+                onClick={handleOpenExternal}
+                className="w-full max-w-xs sm:max-w-md py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2.5 transition-all transform active:scale-95 border border-indigo-400/40 cursor-pointer"
+              >
+                <ExternalLink size={18} />
+                <span>Open Document Directly</span>
+              </button>
+              
+              <span className="text-[11px] text-slate-500 mt-4 flex items-center gap-1">
+                <Lock size={10} className="text-emerald-400" /> Protected EduMind Cloud View
+              </span>
             </div>
+          ) : (
+            !loading && !error && (
+              <div className="w-full h-full relative">
+                <iframe
+                  src={`${targetViewerUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                  title={title || 'PDF Document Viewer'}
+                  className="w-full h-full border-0 bg-white"
+                  onError={() => setUseFallback(true)}
+                />
+              </div>
+            )
           )}
 
           {/* Security Overlay */}

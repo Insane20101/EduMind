@@ -557,10 +557,15 @@ function ReviewTab() {
 
   const handleView = (r) => {
     if (r.resource_type === 'playlist' || (r.url && r.url.includes('youtube'))) {
-      window.open(r.url, '_blank');
+      window.open(r.url, '_blank', 'noopener,noreferrer');
     } else {
       const targetUrl = r.resource_id ? `${getApiBaseUrl()}/api/resources/file/${r.resource_id}` : r.url;
-      setPreviewDoc({ title: r.title, url: targetUrl });
+      const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+      if (isMobile) {
+        window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        setPreviewDoc({ title: r.title, url: targetUrl });
+      }
     }
   };
 
@@ -731,10 +736,15 @@ function AllResourcesTab() {
 
   const handleView = (r) => {
     if (r.resource_type === 'playlist' || (r.url && r.url.includes('youtube'))) {
-      window.open(r.url, '_blank');
+      window.open(r.url, '_blank', 'noopener,noreferrer');
     } else {
       const targetUrl = r.resource_id ? `${getApiBaseUrl()}/api/resources/file/${r.resource_id}` : r.url;
-      setPreviewDoc({ title: r.title, url: targetUrl });
+      const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+      if (isMobile) {
+        window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        setPreviewDoc({ title: r.title, url: targetUrl });
+      }
     }
   };
 
