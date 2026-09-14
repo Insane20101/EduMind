@@ -45,7 +45,11 @@ const SUBJECT_OPTIONS = [
 const formatDate = (isoStr) => {
   if (!isoStr) return null;
   try {
-    const d = new Date(isoStr);
+    let s = String(isoStr).trim();
+    if (s.includes('T') && !s.endsWith('Z') && !s.includes('+') && !/T.*\d{2}-\d{2}/.test(s)) {
+      s += 'Z';
+    }
+    const d = new Date(s);
     if (isNaN(d.getTime())) return isoStr;
     return d.toLocaleString('en-US', {
       day: '2-digit',
@@ -202,6 +206,42 @@ function OverviewTab() {
             <div className="text-[11px] text-slate-500 mt-2">Total published resources</div>
           </div>
         </div>
+
+        {/* Subject Live Tracking & Activity Table */}
+        {s.subject_tracking && Object.keys(s.subject_tracking).length > 0 && (
+          <div className="mt-8 pt-6 border-t border-slate-800">
+            <h3 className="text-sm font-bold text-slate-200 mb-3 flex items-center gap-2">
+              <span className="text-indigo-400">📌</span> Subject Resource Live Tracking
+            </h3>
+            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-800 text-slate-400 font-semibold uppercase text-[10px] bg-slate-900/90">
+                    <th className="py-3 px-4">Subject Code</th>
+                    <th className="py-3 px-4">PDF Notes</th>
+                    <th className="py-3 px-4">PYQs</th>
+                    <th className="py-3 px-4">Total Approved</th>
+                    <th className="py-3 px-4">Latest Upload Activity</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                  {Object.entries(s.subject_tracking).map(([subCode, data]) => (
+                    <tr key={subCode} className="hover:bg-slate-900/50 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold text-indigo-300">{subCode}</td>
+                      <td className="py-3 px-4">{data.notes}</td>
+                      <td className="py-3 px-4">{data.pyqs}</td>
+                      <td className="py-3 px-4 font-semibold text-emerald-400">{data.total}</td>
+                      <td className="py-3 px-4 text-slate-400 flex items-center gap-1.5">
+                        <ClockIcon size={12} className="text-slate-500" />
+                        <span>{formatDate(data.last_uploaded) || 'No activity recorded'}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

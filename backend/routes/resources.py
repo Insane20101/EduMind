@@ -46,6 +46,14 @@ ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png", "webp", "md", "txt"}
 MAX_FILE_SIZE = 15 * 1024 * 1024  # 15 MB
 
 
+def format_iso(dt):
+    if isinstance(dt, datetime):
+        if dt.tzinfo is None:
+            return dt.isoformat() + "Z"
+        return dt.isoformat()
+    return dt
+
+
 async def get_resources_for_subject(subject_id: str, resource_type: str) -> list:
     """Return approved resources for a subject, filtered by type."""
     cursor = db.resources.find(
@@ -56,7 +64,7 @@ async def get_resources_for_subject(subject_id: str, resource_type: str) -> list
         doc.pop("_id", None)
         for field in ("uploaded_at", "reviewed_at"):
             if isinstance(doc.get(field), datetime):
-                doc[field] = doc[field].isoformat()
+                doc[field] = format_iso(doc.get(field))
     return docs
 
 
@@ -152,7 +160,7 @@ async def get_ingestion_history(current_admin: dict = Depends(get_current_admin_
         for l in logs:
             l.pop("_id", None)
             if isinstance(l.get("timestamp"), datetime):
-                l["timestamp"] = l["timestamp"].isoformat()
+                l["timestamp"] = format_iso(l.get("timestamp"))
         return logs
     except Exception as e:
         logger.warning(f"Error fetching ingestion history log: {e}")
@@ -334,8 +342,41 @@ async def get_admin_stats(current_admin: dict = Depends(get_current_admin_user))
     total_notes = await db.resources.count_documents({"resource_type": "note", "status": "approved"})
     total_pyqs = await db.resources.count_documents({"resource_type": "pyq", "status": "approved"})
     total_playlists = await db.playlists.count_documents({})
+    
+    # Calculate total video lectures across all playlists
+    playlists_cursor = db.playlists.find({})
+    playlists_list = await playlists_cursor.to_list(length=None)
+    total_lectures = 0
+    for pl in playlists_list:
+        vids = pl.get("videos") or pl.get("video_list") or []
+        total_lectures += max(len(vids), 1)
+
     pending_reviews = await db.resources.count_documents({"status": "pending"})
     total_resources = await db.resources.count_documents({"status": "approved"})
+
+    # Subject-level live tracking stats
+    pipeline = [
+        {"$group": {
+            "_id": "$subject_id",
+            "total": {"$sum": 1},
+            "notes": {"$sum": {"$cond": [{"$eq": ["$resource_type", "note"]}, 1, 0]}},
+            "pyqs": {"$sum": {"$cond": [{"$eq": ["$resource_type", "pyq"]}, 1, 0]}},
+            "last_uploaded": {"$max": "$uploaded_at"}
+        }}
+    ]
+    subject_aggs = await db.resources.aggregate(pipeline).to_list(length=None)
+    subject_tracking = {}
+    for agg in subject_aggs:
+        sub_id = agg.get("_id")
+        if sub_id:
+            last_up = agg.get("last_uploaded")
+            last_up_str = format_iso(last_up) if isinstance(last_up, datetime) else last_up
+            subject_tracking[sub_id.upper()] = {
+                "total": agg.get("total", 0),
+                "notes": agg.get("notes", 0),
+                "pyqs": agg.get("pyqs", 0),
+                "last_uploaded": last_up_str
+            }
 
     return {
         "total_users": total_users,
@@ -343,8 +384,10 @@ async def get_admin_stats(current_admin: dict = Depends(get_current_admin_user))
         "total_notes": total_notes,
         "total_pyqs": total_pyqs,
         "total_playlists": total_playlists,
+        "total_lectures": total_lectures,
         "pending_reviews": pending_reviews,
-        "total_resources": total_resources
+        "total_resources": total_resources,
+        "subject_tracking": subject_tracking
     }
 
 
@@ -379,7 +422,7 @@ async def admin_list_resources(
             doc["url"] = f"/api/resources/file/{rid}"
         for field in ("uploaded_at", "reviewed_at"):
             if isinstance(doc.get(field), datetime):
-                doc[field] = doc[field].isoformat()
+                doc[field] = format_iso(doc.get(field))
     return docs
 
 
@@ -595,7 +638,7 @@ async def get_playlists(
             d["source"] = d.get("source", "admin")
             for field in ("created_at", "updated_at"):
                 if isinstance(d.get(field), datetime):
-                    d[field] = d[field].isoformat()
+                    d[field] = format_iso(d.get(field))
             all_playlists.append(d)
 
     # 2. Fetch approved playlist resources from db.resources collection
@@ -614,7 +657,7 @@ async def get_playlists(
             seen_keys.add(key)
             match = re.search(r'list=([A-Za-z0-9_-]+)', url)
             playlist_id = match.group(1) if match else r.get("resource_id")
-            uploaded_at_str = r.get("uploaded_at").isoformat() if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
+            uploaded_at_str = format_iso(r.get("uploaded_at")) if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
             all_playlists.append({
                 "playlist_id": playlist_id,
                 "subject_id": sub_code,

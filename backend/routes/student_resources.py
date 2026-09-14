@@ -42,6 +42,14 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB cap for student uploads
 import requests
 from fastapi.responses import Response, StreamingResponse
 
+def format_iso(dt):
+    if isinstance(dt, datetime):
+        if dt.tzinfo is None:
+            return dt.isoformat() + "Z"
+        return dt.isoformat()
+    return dt
+
+
 @router.get("/")
 async def list_approved_resources(
     subject_id: Optional[str] = None,
@@ -71,7 +79,7 @@ async def list_approved_resources(
             doc["url"] = f"/api/resources/file/{rid}"
         for field in ("uploaded_at", "reviewed_at"):
             if isinstance(doc.get(field), datetime):
-                doc[field] = doc[field].isoformat()
+                doc[field] = format_iso(doc.get(field))
     return JSONResponse(
         content=docs,
         headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"}
@@ -109,7 +117,7 @@ async def get_playlists_for_students(subject_id: Optional[str] = None):
             d["source"] = d.get("source", "admin")
             for field in ("created_at", "updated_at"):
                 if isinstance(d.get(field), datetime):
-                    d[field] = d[field].isoformat()
+                    d[field] = format_iso(d.get(field))
             all_playlists.append(d)
 
     # 2. Fetch approved playlist resources from db.resources collection
@@ -128,7 +136,7 @@ async def get_playlists_for_students(subject_id: Optional[str] = None):
             seen_keys.add(key)
             match = re.search(r'list=([A-Za-z0-9_-]+)', url)
             playlist_id = match.group(1) if match else r.get("resource_id")
-            uploaded_at_str = r.get("uploaded_at").isoformat() if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
+            uploaded_at_str = format_iso(r.get("uploaded_at")) if isinstance(r.get("uploaded_at"), datetime) else r.get("uploaded_at")
             all_playlists.append({
                 "playlist_id": playlist_id,
                 "subject_id": sub_code,
