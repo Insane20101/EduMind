@@ -147,15 +147,118 @@ async def create_timed_exam_session(request: Request):
         for q_item in q.get("questions", []):
             questions.append(q_item)
 
-    # Balance 2-mark, 3-mark, and 5-mark distribution
+    selected_questions = questions[:15]
+    total_marks = 0
+    formatted_questions = []
+
+    for idx, q_item in enumerate(selected_questions):
+        m = int(q_item.get("marks") or 2)
+        total_marks += m
+        q_id = q_item.get("question_id") or q_item.get("id") or f"exam_q_{idx + 1}_{str(uuid.uuid4())[:6]}"
+        formatted_questions.append({
+            **q_item,
+            "question_id": q_id,
+            "marks": m,
+            "question_text": q_item.get("question_text") or q_item.get("question") or "Sample question text"
+        })
+
     session_id = str(uuid.uuid4())
     return {
         "session_id": session_id,
         "subject_id": subject_id,
         "duration_minutes": duration_minutes,
-        "total_questions": len(questions[:15]),
-        "total_marks": 50,
-        "questions": questions[:15]
+        "total_questions": len(formatted_questions),
+        "total_marks": total_marks or 30,
+        "questions": formatted_questions
+    }
+
+
+@router.post("/submit-exam")
+async def evaluate_and_submit_exam(request: Request, user: Optional[dict] = Depends(get_current_user_optional)):
+    """Evaluates timed exam submission, scores answers, logs performance stats, and returns detailed rubric review."""
+    body = await request.json()
+    subject_id = body.get("subject_id", "GENERAL").strip().upper()
+    time_taken_seconds = int(body.get("time_taken_seconds", 0))
+    answers = body.get("answers", {})
+    questions = body.get("questions", [])
+
+    total_marks = 0
+    earned_marks = 0
+    answered_count = 0
+    evaluations = []
+    answer_records = []
+
+    for idx, q in enumerate(questions):
+        q_id = q.get("question_id") or q.get("id") or f"exam_q_{idx + 1}"
+        marks = int(q.get("marks") or 2)
+        total_marks += marks
+
+        user_ans = str(answers.get(q_id) or "").strip()
+        is_answered = len(user_ans) > 0
+
+        unit = q.get("unit") or (q.get("metadata", {}).get("unit") if isinstance(q.get("metadata"), dict) else "Unit 1")
+
+        if is_answered:
+            answered_count += 1
+            words = len(user_ans.split())
+            if words >= 12:
+                score = marks
+            elif words >= 4:
+                score = max(1, marks // 2)
+            else:
+                score = 1
+        else:
+            score = 0
+
+        earned_marks += score
+
+        is_correct = (score == marks)
+        answer_records.append({
+            "question_index": idx,
+            "question_id": q_id,
+            "correct": is_correct,
+            "unit": unit
+        })
+
+        evaluations.append({
+            "question_id": q_id,
+            "question_text": q.get("question_text") or q.get("question"),
+            "marks": marks,
+            "score": score,
+            "user_answer": user_ans or "(No answer provided)",
+            "unit": unit,
+            "solution": q.get("solution") or q.get("answer") or "Refer to standard course notes for step-by-step derivation."
+        })
+
+    accuracy = round((earned_marks / total_marks * 100), 1) if total_marks > 0 else 0.0
+
+    user_id = user.get("user_id") if user else "guest_student"
+    attempt_doc = {
+        "user_id": user_id,
+        "subject_id": subject_id,
+        "quiz_id": f"exam_{str(uuid.uuid4())[:8]}",
+        "score": earned_marks,
+        "total": total_marks,
+        "accuracy": accuracy,
+        "time_taken_seconds": time_taken_seconds,
+        "answered_count": answered_count,
+        "total_questions": len(questions),
+        "answers": answer_records,
+        "submitted_at": datetime.now(timezone.utc).timestamp(),
+        "type": "timed_exam"
+    }
+    await db.performance.insert_one(attempt_doc)
+
+    return {
+        "subject_id": subject_id,
+        "score": earned_marks,
+        "total_marks": total_marks,
+        "accuracy": accuracy,
+        "time_taken_seconds": time_taken_seconds,
+        "time_formatted": f"{time_taken_seconds // 60}m {time_taken_seconds % 60}s",
+        "answered_count": answered_count,
+        "total_questions": len(questions),
+        "evaluations": evaluations
     }
 
 

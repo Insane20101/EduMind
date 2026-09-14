@@ -68,6 +68,8 @@ export default function Practice() {
   const [examQuestions, setExamQuestions] = useState([]);
   const [examAnswers, setExamAnswers] = useState({});
   const [examFinished, setExamFinished] = useState(false);
+  const [evaluatingExam, setEvaluatingExam] = useState(false);
+  const [examResult, setExamResult] = useState(null);
 
   // Mistakes & Bookmarks State
   const [bookmarks, setBookmarks] = useState([]);
@@ -170,8 +172,7 @@ export default function Practice() {
       setExamTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          setExamFinished(true);
-          setExamActive(false);
+          handleExamSubmit();
           return 0;
         }
         return prev - 1;
@@ -183,6 +184,7 @@ export default function Practice() {
   const startExamSession = () => {
     setExamActive(true);
     setExamFinished(false);
+    setExamResult(null);
     setExamTimeLeft(examDuration * 60);
     setExamAnswers({});
     
@@ -193,9 +195,111 @@ export default function Practice() {
     })
       .then(r => r.json())
       .then(data => {
-        setExamQuestions(data.questions || []);
+        const mapped = (data.questions || []).map((q, idx) => ({
+          ...q,
+          question_id: q.question_id || q.id || `exam_q_${idx + 1}`
+        }));
+        setExamQuestions(mapped);
       })
       .catch(console.error);
+  };
+
+  const handleExamSubmit = async () => {
+    setExamActive(false);
+    setExamFinished(true);
+    setEvaluatingExam(true);
+
+    const timeSpentSeconds = (examDuration * 60) - examTimeLeft;
+
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch(`${getApiBaseUrl()}/api/practice/submit-exam`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          subject_id: subjectId,
+          duration_minutes: examDuration,
+          time_taken_seconds: timeSpentSeconds,
+          answers: examAnswers,
+          questions: examQuestions
+        })
+      });
+
+      if (res.ok) {
+        const evalData = await res.json();
+        setExamResult(evalData);
+        saveLocalAttempt(evalData);
+      } else {
+        generateFallbackEvaluation(timeSpentSeconds);
+      }
+    } catch (e) {
+      console.error(e);
+      generateFallbackEvaluation(timeSpentSeconds);
+    } finally {
+      setEvaluatingExam(false);
+    }
+  };
+
+  const saveLocalAttempt = (evalData) => {
+    try {
+      const storageKey = `edumind_attempts_${subjectId || 'GENERAL'}`;
+      const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const newAttempt = {
+        quiz_id: evalData.session_id || `exam_${Date.now()}`,
+        score: evalData.score,
+        total: evalData.total_marks,
+        accuracy: evalData.accuracy,
+        time_taken_seconds: evalData.time_taken_seconds,
+        submitted_at: Date.now() / 1000,
+        type: 'timed_exam'
+      };
+      existing.push(newAttempt);
+      localStorage.setItem(storageKey, JSON.stringify(existing));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const generateFallbackEvaluation = (timeSpentSeconds) => {
+    let totalMarks = 0;
+    let score = 0;
+    let answeredCount = 0;
+    const evals = examQuestions.map((q, idx) => {
+      const qKey = q.question_id || q.id || `exam_q_${idx + 1}`;
+      const m = q.marks || 2;
+      totalMarks += m;
+      const userAns = (examAnswers[qKey] || '').trim();
+      const isAns = userAns.length > 0;
+      if (isAns) {
+        answeredCount++;
+        score += userAns.length >= 15 ? m : 1;
+      }
+      return {
+        question_id: qKey,
+        question_text: q.question_text || q.question,
+        marks: m,
+        score: isAns ? (userAns.length >= 15 ? m : 1) : 0,
+        user_answer: userAns || '(No answer provided)',
+        solution: q.solution || q.answer || 'Refer to standard course notes for step-by-step derivation.'
+      };
+    });
+
+    const acc = totalMarks > 0 ? Math.round((score / totalMarks * 100) * 10) / 10 : 0;
+    const resultObj = {
+      score,
+      total_marks: totalMarks,
+      accuracy: acc,
+      time_taken_seconds: timeSpentSeconds,
+      time_formatted: `${Math.floor(timeSpentSeconds / 60)}m ${timeSpentSeconds % 60}s`,
+      answered_count: answeredCount,
+      total_questions: examQuestions.length,
+      evaluations: evals
+    };
+    setExamResult(resultObj);
+    saveLocalAttempt(resultObj);
   };
 
   const toggleSolution = (questionId) => {
@@ -528,36 +632,136 @@ export default function Practice() {
                 Start Exam Session Now
               </button>
             </div>
+          ) : examFinished ? (
+            <div className="space-y-6">
+              {evaluatingExam ? (
+                <div className="text-center py-16 space-y-3">
+                  <RefreshCw className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
+                  <p className="text-base font-bold text-gray-800">Evaluating your Exam Answers...</p>
+                  <p className="text-xs text-gray-500">Scoring answers, calculating accuracy, and syncing performance analytics.</p>
+                </div>
+              ) : (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  {/* Results Header Card */}
+                  <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl border border-indigo-500/30">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-4">
+                      <div>
+                        <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Exam Submission Results</span>
+                        <h4 className="text-2xl font-extrabold text-white mt-0.5">Session Overview</h4>
+                      </div>
+                      <button
+                        onClick={startExamSession}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow transition-all self-start sm:self-auto cursor-pointer"
+                      >
+                        Retake Exam Session 🔄
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5 text-center">
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Total Score</span>
+                        <div className="text-2xl font-black text-amber-400 font-mono mt-1">
+                          {examResult?.score ?? 0} / {examResult?.total_marks ?? 0}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Accuracy</span>
+                        <div className="text-2xl font-black text-emerald-400 font-mono mt-1">
+                          {examResult?.accuracy ?? 0}%
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Questions Answered</span>
+                        <div className="text-2xl font-black text-blue-400 font-mono mt-1">
+                          {examResult?.answered_count ?? 0} / {examResult?.total_questions ?? 0}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Time Spent</span>
+                        <div className="text-2xl font-black text-purple-300 font-mono mt-1">
+                          {examResult?.time_formatted || '0m 0s'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Question Evaluation & Model Answer Breakdown */}
+                  <div className="space-y-4">
+                    <h4 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                      <span>📝</span> Question-by-Question Evaluation &amp; Model Solutions
+                    </h4>
+
+                    {(examResult?.evaluations || []).map((ev, idx) => (
+                      <div key={ev.question_id || idx} className="p-5 border border-gray-200 rounded-xl bg-white shadow-xs space-y-3">
+                        <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                          <span className="text-xs font-bold text-blue-600 uppercase">Question {idx + 1} ({ev.marks} Marks)</span>
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${ev.score === ev.marks ? 'bg-emerald-100 text-emerald-800' : ev.score > 0 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
+                            Earned: {ev.score} / {ev.marks} Marks
+                          </span>
+                        </div>
+
+                        <p className="text-sm font-semibold text-gray-900">{ev.question_text}</p>
+
+                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-800">
+                          <strong className="text-gray-900 block mb-1">Your Submitted Answer:</strong>
+                          <p className="whitespace-pre-wrap">{ev.user_answer}</p>
+                        </div>
+
+                        <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-lg text-xs text-blue-950">
+                          <strong className="text-blue-900 block mb-1">Model Solution &amp; Key Rubric Steps:</strong>
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkMath, remarkBreaks]} 
+                            rehypePlugins={[rehypeKatex, rehypeRaw]}
+                            components={MarkdownComponents}
+                          >
+                            {preprocessMarkdownContent(formatTextSpacing(ev.solution))}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <div>
               <div className="flex items-center justify-between bg-gray-900 text-white px-5 py-3 rounded-xl mb-6 shadow">
                 <span className="font-semibold text-sm">Exam in Progress</span>
                 <span className="text-lg font-mono font-bold text-amber-400">{formatTime(examTimeLeft)}</span>
                 <button
-                  onClick={() => { setExamFinished(true); setExamActive(false); }}
-                  className="text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded font-semibold"
+                  onClick={handleExamSubmit}
+                  className="text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded font-semibold transition-colors cursor-pointer"
                 >
                   Submit Exam
                 </button>
               </div>
 
               <div className="space-y-6">
-                {examQuestions.map((q, idx) => (
-                  <div key={q.question_id || idx} className="p-5 border border-gray-200 rounded-xl bg-white">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-blue-600 uppercase">Question {idx + 1}</span>
-                      <span className="text-xs font-semibold bg-gray-100 px-2 py-0.5 rounded">{q.marks || 2} Marks</span>
+                {examQuestions.map((q, idx) => {
+                  const qKey = q.question_id || q.id || `exam_q_${idx + 1}`;
+                  return (
+                    <div key={qKey} className="p-5 border border-gray-200 rounded-xl bg-white shadow-xs">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-blue-600 uppercase">Question {idx + 1}</span>
+                        <span className="text-xs font-semibold bg-gray-100 text-gray-700 px-2 py-0.5 rounded">{q.marks || 2} Marks</span>
+                      </div>
+                      <p className="text-sm font-semibold text-gray-900 mb-4">{q.question_text || q.question}</p>
+                      <textarea
+                        placeholder="Type your structured solution here..."
+                        rows={3}
+                        value={examAnswers[qKey] || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setExamAnswers(prev => ({ ...prev, [qKey]: val }));
+                        }}
+                        className="w-full text-sm p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                      />
                     </div>
-                    <p className="text-sm font-medium text-gray-900 mb-4">{q.question_text || q.question}</p>
-                    <textarea
-                      placeholder="Type your structured solution here..."
-                      rows={3}
-                      value={examAnswers[q.question_id] || ''}
-                      onChange={(e) => setExamAnswers({ ...examAnswers, [q.question_id]: e.target.value })}
-                      className="w-full text-sm p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    />
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

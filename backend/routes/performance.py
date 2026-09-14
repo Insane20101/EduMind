@@ -64,63 +64,114 @@ async def submit_quiz(quiz_id: str, req: QuizSubmitRequest):
 
 @performance_router.get("/api/subjects/{subject_id}/performance")
 async def get_subject_performance(subject_id: str):
-    # Fetch all attempts for this subject
-    cursor = db.performance.find({"subject_id": subject_id})
-    attempts = await cursor.to_list()
+    clean_sub_id = subject_id.strip().upper()
+    cursor = db.performance.find({"subject_id": clean_sub_id})
+    attempts = await cursor.to_list(length=None)
     
     if not attempts:
         return {
             "total_quizzes": 0,
-            "overall_accuracy": 0,
+            "overall_accuracy": 0.0,
+            "grade": "N/A",
+            "total_time_minutes": 0.0,
+            "total_questions_answered": 0,
             "unit_mastery": [],
-            "accuracy_trend": []
+            "accuracy_trend": [],
+            "weak_topics": [],
+            "strong_topics": [],
+            "recent_activity": []
         }
         
     total_quizzes = len(attempts)
     total_correct = 0
     total_questions = 0
+    total_time_seconds = 0
     
-    # Sort attempts by submitted_at to get a sequential trend
     attempts.sort(key=lambda x: x.get("submitted_at", 0))
     
     trend = []
+    recent_activity = []
     unit_stats = defaultdict(lambda: {"correct": 0, "total": 0})
     
     for i, attempt in enumerate(attempts):
         score = attempt.get("score", 0)
         total = attempt.get("total", 0)
-        
         total_correct += score
         total_questions += total
+        t_sec = attempt.get("time_taken_seconds", 0)
+        total_time_seconds += t_sec
+        
+        acc = round((score / total * 100), 1) if total > 0 else 0.0
+        att_type = attempt.get("type", "quiz")
         
         trend.append({
             "attempt_num": i + 1,
             "score": score,
             "total": total,
-            "accuracy": (score / total * 100) if total > 0 else 0
+            "accuracy": acc,
+            "type": att_type
+        })
+
+        recent_activity.append({
+            "quiz_id": attempt.get("quiz_id"),
+            "attempt_num": i + 1,
+            "score": score,
+            "total": total,
+            "accuracy": acc,
+            "time_formatted": f"{t_sec // 60}m {t_sec % 60}s" if t_sec > 0 else "N/A",
+            "type": "Timed Exam" if att_type == "timed_exam" else "Practice Quiz",
+            "submitted_at": attempt.get("submitted_at")
         })
         
         for ans in attempt.get("answers", []):
-            u = ans.get("unit", "unassigned")
-            unit_stats[u]["total"] += 1
-            if ans.get("correct"):
-                unit_stats[u]["correct"] += 1
+            if isinstance(ans, dict):
+                u = ans.get("unit") or "Unit 1"
+                unit_stats[u]["total"] += 1
+                if ans.get("correct"):
+                    unit_stats[u]["correct"] += 1
                 
-    overall_accuracy = (total_correct / total_questions * 100) if total_questions > 0 else 0
+    overall_accuracy = round((total_correct / total_questions * 100), 1) if total_questions > 0 else 0.0
     
     unit_mastery = []
+    weak_topics = []
+    strong_topics = []
+
     for u, stats in unit_stats.items():
+        u_acc = round((stats["correct"] / stats["total"] * 100), 1) if stats["total"] > 0 else 0.0
+        status = "Mastered" if u_acc >= 75 else "Proficient" if u_acc >= 50 else "Needs Review"
         unit_mastery.append({
             "unit_id": u,
-            "accuracy": (stats["correct"] / stats["total"] * 100) if stats["total"] > 0 else 0,
-            "total_questions": stats["total"]
+            "accuracy": u_acc,
+            "total_questions": stats["total"],
+            "status": status
         })
+        if u_acc < 60:
+            weak_topics.append(u)
+        else:
+            strong_topics.append(u)
+
+    if overall_accuracy >= 85:
+        grade = "A+"
+    elif overall_accuracy >= 75:
+        grade = "A"
+    elif overall_accuracy >= 60:
+        grade = "B"
+    elif overall_accuracy >= 45:
+        grade = "C"
+    else:
+        grade = "D"
         
     return {
         "total_quizzes": total_quizzes,
-        "overall_accuracy": round(overall_accuracy, 1),
+        "overall_accuracy": overall_accuracy,
+        "grade": grade,
+        "total_time_minutes": round(total_time_seconds / 60, 1),
+        "total_questions_answered": total_questions,
         "unit_mastery": unit_mastery,
-        "accuracy_trend": trend
+        "accuracy_trend": trend,
+        "weak_topics": weak_topics,
+        "strong_topics": strong_topics,
+        "recent_activity": list(reversed(recent_activity))[:10]
     }
 
 @performance_router.get("/api/performance/overview")
