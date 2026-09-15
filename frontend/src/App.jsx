@@ -40,6 +40,15 @@ import { getApiBaseUrl } from './config';
 
 function App() {
   React.useEffect(() => {
+    // Sync theme on app initialization
+    const savedTheme = localStorage.getItem('edumind_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
     // Non-blocking background health ping to pre-warm Render instance
     fetch(`${getApiBaseUrl()}/health`).catch(() => {});
   }, []);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function EduMindLogo({ size = 32, showText = true, textClass = "text-xl font-bold tracking-tight text-slate-900" }) {
+export default function EduMindLogo({ size = 32, showText = true, textClass = "text-xl font-bold tracking-tight text-slate-900 dark:text-white" }) {
   return (
     <div className="flex items-center gap-2.5 select-none group">
       <div 
@@ -30,7 +30,7 @@ export default function EduMindLogo({ size = 32, showText = true, textClass = "t
       {showText && (
         <span className={`${textClass} flex items-center`}>
           <span>Edu</span>
-          <span className="text-indigo-600 font-extrabold">Mind</span>
+          <span className="text-indigo-600 dark:text-indigo-400 font-extrabold">Mind</span>
         </span>
       )}
     </div>
