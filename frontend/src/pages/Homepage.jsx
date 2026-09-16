@@ -145,7 +145,7 @@ export default function Homepage() {
                 value={homeInput}
                 onChange={(e) => setHomeInput(e.target.value)}
                 placeholder={tempFile ? "Ask about attached document..." : "Ask EduMind AI anything or attach a PDF..."}
-                className="flex-1 bg-transparent border-none outline-none px-3 text-white placeholder-blue-200/70 text-sm sm:text-base min-w-0"
+                className="flex-1 !bg-transparent border-none outline-none px-3 text-white placeholder-blue-100 font-medium text-sm sm:text-base min-w-0 focus:ring-0 focus:outline-none"
               />
 
               <button

@@ -416,10 +416,10 @@ export default function Practice() {
       <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 border-b border-gray-200 pb-2">
         <button
           onClick={() => setActiveSubMode('adaptive')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
             activeSubMode === 'adaptive'
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-blue-600 text-white shadow-md font-bold"
+              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
           <BookOpen className="w-4 h-4" /> Standard & Adaptive
@@ -427,10 +427,10 @@ export default function Practice() {
 
         <button
           onClick={() => setActiveSubMode('exam')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
             activeSubMode === 'exam'
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-blue-600 text-white shadow-md font-bold"
+              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
           <Clock className="w-4 h-4" /> Timed Exam Simulation
@@ -438,10 +438,10 @@ export default function Practice() {
 
         <button
           onClick={() => setActiveSubMode('mistakes')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
             activeSubMode === 'mistakes'
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-blue-600 text-white shadow-md font-bold"
+              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
           <Bookmark className="w-4 h-4" /> Mistake Notebook & Saved
@@ -449,10 +449,10 @@ export default function Practice() {
 
         <button
           onClick={() => setActiveSubMode('cram')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
             activeSubMode === 'cram'
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-blue-600 text-white shadow-md font-bold"
+              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
           <AlertTriangle className="w-4 h-4" /> 5-Min Cram Protocol

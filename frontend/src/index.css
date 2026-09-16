@@ -43,9 +43,9 @@
     --bg-app: #0B1329;
     --surface-card: #151D36;
     --surface-muted: #1E2942;
-    --primary: #38BDF8;
-    --primary-hover: #0EA5E9;
-    --accent-blue: #60A5FA;
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --accent-blue: #3B82F6;
     --text-primary: #F8FAFC;
     --text-secondary: #94A3B8;
     --border-subtle: #273554;
@@ -75,45 +75,44 @@ html.dark header {
 }
 
 html.dark .bg-white {
-  background-color: #151d36 !important;
+  background-color: #151d36;
   color: #f8fafc;
 }
 
 html.dark .bg-slate-50,
 html.dark .bg-gray-50,
-html.dark .bg-slate-100,
 html.dark .bg-blue-50\/50,
 html.dark .bg-blue-50,
 html.dark .bg-indigo-50 {
-  background-color: #1e2942 !important;
+  background-color: #1e2942;
 }
 
 html.dark .bg-muted {
-  background-color: #1e2942 !important;
+  background-color: #1e2942;
 }
 
 html.dark .bg-slate-900 {
-  background-color: #0b1329 !important;
+  background-color: #0b1329;
 }
 
 html.dark .text-slate-900,
 html.dark .text-slate-800,
 html.dark .text-gray-900,
 html.dark .text-gray-800 {
-  color: #f8fafc !important;
+  color: #f8fafc;
 }
 
 html.dark .text-slate-700,
 html.dark .text-slate-600,
 html.dark .text-gray-700,
 html.dark .text-gray-600 {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 html.dark .text-slate-500,
 html.dark .text-slate-400,
 html.dark .text-gray-500 {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 html.dark .border-slate-200,
@@ -121,20 +120,27 @@ html.dark .border-slate-100,
 html.dark .border-gray-200,
 html.dark .border-gray-100,
 html.dark .border-border-subtle {
-  border-color: #273554 !important;
+  border-color: #273554;
 }
 
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #0b1329 !important;
-  color: #f8fafc !important;
-  border-color: #334155 !important;
+/* Dark Mode Inputs - Preserve bg-transparent for hero search bar */
+html.dark input:not(.bg-transparent):not(.\!bg-transparent),
+html.dark select:not(.bg-transparent),
+html.dark textarea:not(.bg-transparent) {
+  background-color: #0b1329;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+html.dark input.bg-transparent,
+html.dark input.\!bg-transparent,
+html.dark textarea.bg-transparent {
+  background-color: transparent !important;
 }
 
 html.dark input::placeholder,
 html.dark textarea::placeholder {
-  color: #64748b !important;
+  color: #94a3b8;
 }
 
 html.dark .shadow-sm,
