@@ -496,14 +496,14 @@ export default function Practice() {
                     <div className="p-5">
                       <div className="flex items-center justify-between gap-2 mb-3">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-xs font-bold px-2 py-1 rounded bg-gray-100 text-gray-800 border border-gray-200">
+                          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60">
                             Q{idx + 1}
                           </span>
-                          <span className="text-xs font-semibold px-2 py-1 rounded bg-blue-100 text-blue-800">
+                          <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60">
                             {q.marks || 2} Marks
                           </span>
                           {q.metadata?.topic && q.metadata.topic !== 'unassigned' && (
-                            <span className="text-xs font-medium px-2 py-1 rounded bg-gray-100 text-gray-700">
+                            <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60">
                               {q.metadata.topic}
                             </span>
                           )}
