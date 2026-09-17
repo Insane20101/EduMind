@@ -1341,25 +1341,25 @@ export default function Practice() {
               {/* Flashcard Flip Component */}
               <div
                 onClick={() => setIsFlipped(!isFlipped)}
-                className="cursor-pointer min-h-[260px] p-8 rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 via-indigo-50 to-white shadow-lg flex flex-col justify-between transition-all transform hover:scale-[1.01]"
+                className="cursor-pointer min-h-[280px] p-8 rounded-2xl border-2 border-blue-200 dark:border-blue-900/60 bg-gradient-to-br from-blue-50 via-indigo-50/50 to-white dark:from-slate-900 dark:via-blue-950/40 dark:to-slate-900 shadow-xl flex flex-col justify-between transition-all transform hover:scale-[1.01]"
               >
-                <div className="flex items-center justify-between text-xs font-bold text-blue-600">
+                <div className="flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
                   <span>CARD {cramIndex + 1} OF {cramCards.length}</span>
-                  <span className="flex items-center gap-1 text-gray-400"><FlipHorizontal className="w-4 h-4" /> Click to Flip</span>
+                  <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400 font-medium"><FlipHorizontal className="w-4 h-4" /> Click to Flip</span>
                 </div>
 
                 <div className="py-6 text-center">
                   {!isFlipped ? (
                     <div>
-                      <span className="text-xs font-bold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider">Concept</span>
-                      <h4 className="text-2xl font-black text-gray-900 mt-3">{cramCards[cramIndex]?.topic || cramCards[cramIndex]?.content?.mnemonic || "Memory Hook"}</h4>
+                      <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-950/70 px-3 py-1 rounded-full uppercase tracking-wider border border-indigo-200 dark:border-indigo-800">Concept</span>
+                      <h4 className="text-2xl font-black text-slate-900 dark:text-white mt-3">{cramCards[cramIndex]?.topic || cramCards[cramIndex]?.content?.mnemonic || "Memory Hook"}</h4>
                     </div>
                   ) : (
                     <div className="text-left space-y-3">
-                      <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider">Recall Answer</span>
-                      <p className="text-sm text-gray-800 font-medium">{cramCards[cramIndex]?.content?.quick_summary || cramCards[cramIndex]?.content?.explanation}</p>
+                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-200 dark:border-emerald-800">Recall Answer</span>
+                      <p className="text-sm sm:text-base text-slate-900 dark:text-slate-100 font-medium leading-relaxed mt-2">{cramCards[cramIndex]?.content?.quick_summary || cramCards[cramIndex]?.content?.explanation}</p>
                       {cramCards[cramIndex]?.content?.mnemonic && (
-                        <div className="p-3 bg-amber-100/70 text-amber-900 rounded-lg text-xs font-semibold">
+                        <div className="p-3.5 bg-amber-100/90 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 rounded-xl text-xs sm:text-sm font-semibold shadow-xs mt-3">
                           💡 Mnemonic: {cramCards[cramIndex]?.content?.mnemonic}
                         </div>
                       )}
@@ -1367,7 +1367,7 @@ export default function Practice() {
                   )}
                 </div>
 
-                <div className="text-center text-xs text-gray-400">
+                <div className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
                   {isFlipped ? "Showing Recall Answer" : "Showing Prompt Concept"}
                 </div>
               </div>
@@ -1377,14 +1377,14 @@ export default function Practice() {
                 <button
                   disabled={cramIndex === 0}
                   onClick={() => { setCramIndex(prev => prev - 1); setIsFlipped(false); }}
-                  className="px-4 py-2 text-sm font-semibold bg-gray-100 disabled:opacity-40 rounded-lg"
+                  className="px-5 py-2.5 text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 disabled:opacity-30 rounded-xl transition-all border border-slate-300 dark:border-slate-700 cursor-pointer shadow-xs"
                 >
                   ← Previous Card
                 </button>
                 <button
                   disabled={cramIndex === cramCards.length - 1}
                   onClick={() => { setCramIndex(prev => prev + 1); setIsFlipped(false); }}
-                  className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white disabled:opacity-40 rounded-lg"
+                  className="px-5 py-2.5 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-30 rounded-xl shadow-md transition-all cursor-pointer"
                 >
                   Next Card →
                 </button>
