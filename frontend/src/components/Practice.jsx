@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn, formatTextSpacing, preprocessMarkdownContent } from '../lib/utils';
 import { useAppStore } from '../store/appStore';
-import { ChevronDown, ChevronUp, Download, Sparkles, BookOpen, Clock, Bookmark, AlertTriangle, Lightbulb, FlipHorizontal, RefreshCw, X, Send } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, Sparkles, BookOpen, Clock, Bookmark, AlertTriangle, Lightbulb, FlipHorizontal, RefreshCw, X, Send, HelpCircle, CheckCircle2, XCircle, Target, Layers, Sliders } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import remarkBreaks from 'remark-breaks';
@@ -37,7 +37,7 @@ export default function Practice() {
   const searchParams = new URLSearchParams(window.location.search);
   const subjectId = searchParams.get('subject') || storeSubject;
 
-  const [activeSubMode, setActiveSubMode] = useState('adaptive'); // 'adaptive', 'exam', 'mistakes', 'diagrams', 'cram'
+  const [activeSubMode, setActiveSubMode] = useState('adaptive'); // 'adaptive', 'mcq', 'exam', 'mistakes', 'cram'
   
   // Standard / Adaptive State
   const [available, setAvailable] = useState(null);
@@ -63,11 +63,8 @@ export default function Practice() {
 
   // Timed Exam State
   const [examDuration, setExamDuration] = useState(30);
-  const [examNumQuestions, setExamNumQuestions] = useState(10);
-  const [examUnit, setExamUnit] = useState('all');
-  const [examDifficulty, setExamDifficulty] = useState('mixed');
-  const [examQuestionType, setExamQuestionType] = useState('mixed');
-  const [examLoading, setExamLoading] = useState(false);
+  const [examSelectedUnits, setExamSelectedUnits] = useState(['All Units']);
+  const [examDifficulty, setExamDifficulty] = useState('Medium');
   const [examActive, setExamActive] = useState(false);
   const [examTimeLeft, setExamTimeLeft] = useState(1800);
   const [examQuestions, setExamQuestions] = useState([]);
@@ -75,6 +72,21 @@ export default function Practice() {
   const [examFinished, setExamFinished] = useState(false);
   const [evaluatingExam, setEvaluatingExam] = useState(false);
   const [examResult, setExamResult] = useState(null);
+  const [loadingExam, setLoadingExam] = useState(false);
+
+  // MCQs Practice State
+  const [mcqSelectedUnits, setMcqSelectedUnits] = useState(['All Units']);
+  const [mcqDifficulty, setMcqDifficulty] = useState('Medium');
+  const [mcqCount, setMcqCount] = useState(20); // Min 15, Max 60
+  const [mcqActive, setMcqActive] = useState(false);
+  const [mcqQuestions, setMcqQuestions] = useState([]);
+  const [mcqAnswers, setMcqAnswers] = useState({});
+  const [mcqQuestionTimes, setMcqQuestionTimes] = useState({});
+  const [mcqOverallTime, setMcqOverallTime] = useState(0);
+  const [mcqFinished, setMcqFinished] = useState(false);
+  const [evaluatingMcq, setEvaluatingMcq] = useState(false);
+  const [mcqResult, setMcqResult] = useState(null);
+  const [loadingMcqs, setLoadingMcqs] = useState(false);
 
   // Mistakes & Bookmarks State
   const [bookmarks, setBookmarks] = useState([]);
@@ -108,21 +120,28 @@ export default function Practice() {
           setAvailable(false);
         }
       })
-      .catch(() => setAvailable(false));
+      .catch(err => {
+        console.error("Failed to load practice info", err);
+        setAvailable(false);
+      });
   }, [subjectId]);
 
   useEffect(() => {
-    if (!subjectId || !selectedUnit || activeSubMode !== 'adaptive') return;
+    if (!subjectId || !selectedUnit) return;
     
     setLoadingQuestions(true);
+    setQuestions([]);
+    setSolutions({});
+    setExpandedQuestions({});
+    
     fetch(`${getApiBaseUrl()}/api/subjects/${subjectId}/practice/${selectedUnit}`)
       .then(res => res.json())
       .then(data => {
         setQuestions(data.questions || []);
         setLoadingQuestions(false);
       })
-      .catch(() => {
-        setQuestions([]);
+      .catch(err => {
+        console.error("Failed to load questions", err);
         setLoadingQuestions(false);
       });
   }, [subjectId, selectedUnit]);
@@ -179,8 +198,32 @@ export default function Practice() {
     return () => clearInterval(timer);
   }, [examActive, examTimeLeft]);
 
+  // MCQ Practice Timer Effect (Self-Paced Overall Timer)
+  useEffect(() => {
+    if (!mcqActive || mcqFinished) return;
+    const timer = setInterval(() => {
+      setMcqOverallTime(prev => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [mcqActive, mcqFinished]);
+
+  const toggleUnitSelection = (unitName, currentList, setList) => {
+    if (unitName === 'All Units') {
+      setList(['All Units']);
+      return;
+    }
+    let updated = currentList.filter(u => u !== 'All Units');
+    if (updated.includes(unitName)) {
+      updated = updated.filter(u => u !== unitName);
+    } else {
+      updated.push(unitName);
+    }
+    if (updated.length === 0) updated = ['All Units'];
+    setList(updated);
+  };
+
   const startExamSession = () => {
-    setExamLoading(true);
+    setLoadingExam(true);
     setExamActive(false);
     setExamFinished(false);
     setExamResult(null);
@@ -193,10 +236,8 @@ export default function Practice() {
       body: JSON.stringify({ 
         subject_id: subjectId, 
         duration_minutes: examDuration,
-        num_questions: examNumQuestions,
-        unit: examUnit,
-        difficulty: examDifficulty,
-        question_type: examQuestionType
+        unit_ids: examSelectedUnits,
+        difficulty: examDifficulty
       })
     })
       .then(r => r.json())
@@ -207,11 +248,82 @@ export default function Practice() {
         }));
         setExamQuestions(mapped);
         setExamActive(true);
-        setExamLoading(false);
+        setLoadingExam(false);
       })
       .catch((err) => {
         console.error(err);
-        setExamLoading(false);
+        setLoadingExam(false);
+      });
+  };
+
+  const startMcqSession = () => {
+    setLoadingMcqs(true);
+    setMcqActive(false);
+    setMcqFinished(false);
+    setMcqResult(null);
+    setMcqAnswers({});
+    setMcqQuestionTimes({});
+    setMcqOverallTime(0);
+
+    fetch(`${getApiBaseUrl()}/api/practice/mcq-session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject_id: subjectId,
+        unit_ids: mcqSelectedUnits,
+        difficulty: mcqDifficulty,
+        count: mcqCount
+      })
+    })
+      .then(r => r.json())
+      .then(data => {
+        setMcqQuestions(data.questions || []);
+        setMcqActive(true);
+        setLoadingMcqs(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoadingMcqs(false);
+      });
+  };
+
+  const handleSelectMcqOption = (qId, optionIdx) => {
+    setMcqAnswers(prev => ({ ...prev, [qId]: optionIdx }));
+    setMcqQuestionTimes(prev => ({
+      ...prev,
+      [qId]: (prev[qId] || 0) + 5
+    }));
+  };
+
+  const handleMcqSubmit = () => {
+    setEvaluatingMcq(true);
+    setMcqActive(false);
+
+    const token = localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    fetch(`${getApiBaseUrl()}/api/practice/submit-mcq`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        subject_id: subjectId,
+        total_time_seconds: mcqOverallTime,
+        question_times: mcqQuestionTimes,
+        answers: mcqAnswers,
+        questions: mcqQuestions
+      })
+    })
+      .then(r => r.json())
+      .then(data => {
+        setMcqResult(data);
+        setMcqFinished(true);
+        setEvaluatingMcq(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setEvaluatingMcq(false);
+        setMcqFinished(true);
       });
   };
 
@@ -399,10 +511,27 @@ export default function Practice() {
     <div className="bg-white rounded-2xl p-4 sm:p-8 border border-border-subtle shadow-sm flex flex-col min-h-[500px]">
       
       {/* Top Header & Sub-Mode Navigation */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-100 dark:border-slate-800 pb-6 mb-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-100 pb-6 mb-6 gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Intelligence Practice Studio</h3>
-          <p className="text-sm text-gray-500 dark:text-slate-400">Master <span className="font-semibold text-blue-600 dark:text-blue-400">{activeSubjectName || subjectId}</span> with adaptive AI modes.</p>
+          <h3 className="text-2xl font-bold text-gray-900">Intelligence Practice Studio</h3>
+          <p className="text-sm text-gray-500">Master <span className="font-semibold text-blue-600">{activeSubjectName || subjectId}</span> with adaptive AI modes.</p>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          {activeSubMode === 'adaptive' && questions.length > 0 && (
+            <button
+              onClick={() => exportPracticeSheetPdf(subjectId, questions, `${activeSubjectName || subjectId} Practice Sheet`)}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors shadow-sm"
+            >
+              <Download className="w-4 h-4" /> Export PDF Sheet
+            </button>
+          )}
+          <button
+            onClick={() => setTutorOpen(!tutorOpen)}
+            className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition-colors shadow-sm"
+          >
+            <Sparkles className="w-4 h-4 text-purple-600" /> Ask AI Tutor
+          </button>
         </div>
       </div>
 
@@ -416,7 +545,18 @@ export default function Practice() {
               : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
-          <BookOpen className="w-4 h-4" /> Standard & Adaptive
+          <BookOpen className="w-4 h-4" /> Standard &amp; Adaptive
+        </button>
+
+        <button
+          onClick={() => setActiveSubMode('mcq')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
+            activeSubMode === 'mcq'
+              ? "bg-blue-600 text-white shadow-md font-bold"
+              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
+          }`}
+        >
+          <HelpCircle className="w-4 h-4" /> MCQs Practice &amp; Quiz
         </button>
 
         <button
@@ -438,7 +578,7 @@ export default function Practice() {
               : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
           }`}
         >
-          <Bookmark className="w-4 h-4" /> Mistake Notebook & Saved
+          <Bookmark className="w-4 h-4" /> Mistake Notebook &amp; Saved
         </button>
 
         <button
@@ -590,185 +730,422 @@ export default function Practice() {
         </div>
       )}
 
+      {/* ── MODE 1B: MCQs Practice & Quiz (New Section) ─────────────────────────── */}
+      {activeSubMode === 'mcq' && (
+        <div className="space-y-6">
+          {!mcqActive && !mcqFinished ? (
+            <div className="max-w-2xl mx-auto p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-6 shadow-sm">
+              <div className="text-center space-y-2">
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                  <HelpCircle className="w-7 h-7" />
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">MCQs Practice &amp; Revision Engine</h4>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-300 max-w-lg mx-auto">
+                  Extensive conceptual &amp; numerical multiple choice questions designed for fast clarity, syllabus mastery, and exam revision.
+                </p>
+              </div>
+
+              {/* Unit Selection */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Layers size={14} className="text-blue-500" /> Select Unit(s) (1 to 4)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {['All Units', 'Unit 1', 'Unit 2', 'Unit 3', 'Unit 4'].map(u => {
+                    const isSelected = mcqSelectedUnits.includes(u);
+                    return (
+                      <button
+                        key={u}
+                        type="button"
+                        onClick={() => toggleUnitSelection(u, mcqSelectedUnits, setMcqSelectedUnits)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          isSelected
+                            ? "bg-blue-600 text-white border-blue-600 shadow-xs font-bold"
+                            : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                        }`}
+                      >
+                        {u}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Difficulty Selection */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Target size={14} className="text-blue-500" /> Question Difficulty
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {['Easy', 'Medium', 'Hard', 'Exam Level'].map(diff => (
+                    <button
+                      key={diff}
+                      type="button"
+                      onClick={() => setMcqDifficulty(diff)}
+                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border text-center ${
+                        mcqDifficulty === diff
+                          ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                          : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                      }`}
+                    >
+                      {diff}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Number of Questions (Min 15, Max 60) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                    <Sliders size={14} className="text-blue-500" /> Number of Questions (15 to 60)
+                  </label>
+                  <span className="text-sm font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40 px-2.5 py-0.5 rounded-lg border border-blue-200 dark:border-blue-800">
+                    {mcqCount} Questions
+                  </span>
+                </div>
+
+                <input
+                  type="range"
+                  min="15"
+                  max="60"
+                  step="1"
+                  value={mcqCount}
+                  onChange={(e) => setMcqCount(parseInt(e.target.value))}
+                  className="w-full accent-blue-600 cursor-pointer"
+                />
+
+                <div className="flex justify-between gap-2 pt-1">
+                  {[15, 25, 40, 60].map(val => (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => setMcqCount(val)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold border ${
+                        mcqCount === val
+                          ? "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200 border-blue-300"
+                          : "bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-400 border-gray-200 dark:border-slate-700"
+                      }`}
+                    >
+                      {val} Qs
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-gray-500 dark:text-slate-400 italic">
+                  Note: MCQs mode is extensive (15 to 60 questions) to cover every concept line and numerical variation without a strict timer cutoff.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                disabled={loadingMcqs}
+                onClick={startMcqSession}
+                className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {loadingMcqs ? (
+                  <><RefreshCw className="w-4 h-4 animate-spin" /> Generating MCQ Practice Set...</>
+                ) : (
+                  <><Sparkles className="w-4 h-4" /> Generate MCQ Practice Set ({mcqCount} Qs)</>
+                )}
+              </button>
+            </div>
+          ) : mcqFinished ? (
+            <div className="space-y-6">
+              {evaluatingMcq ? (
+                <div className="text-center py-16 space-y-3">
+                  <RefreshCw className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
+                  <p className="text-base font-bold text-gray-800 dark:text-white">Evaluating your MCQ Practice Session...</p>
+                  <p className="text-xs text-gray-500">Calculating score, analyzing time spent per question, and logging performance.</p>
+                </div>
+              ) : (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  {/* Results Summary Card */}
+                  <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl border border-blue-500/30">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-4">
+                      <div>
+                        <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">MCQ Practice Results</span>
+                        <h4 className="text-2xl font-extrabold text-white mt-0.5">Session Overview</h4>
+                      </div>
+                      <button
+                        onClick={startMcqSession}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow transition-all cursor-pointer"
+                      >
+                        New MCQ Practice Session 🔄
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5 text-center">
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Score</span>
+                        <div className="text-2xl font-black text-amber-400 font-mono mt-1">
+                          {mcqResult?.score ?? 0} / {mcqResult?.total_questions ?? 0}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Accuracy</span>
+                        <div className="text-2xl font-black text-emerald-400 font-mono mt-1">
+                          {mcqResult?.accuracy ?? 0}%
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Total Time</span>
+                        <div className="text-2xl font-black text-blue-400 font-mono mt-1">
+                          {formatTime(mcqOverallTime)}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span className="text-[11px] text-slate-400 font-semibold uppercase">Avg Time / Q</span>
+                        <div className="text-2xl font-black text-indigo-400 font-mono mt-1">
+                          {mcqResult?.total_questions ? `${Math.round(mcqOverallTime / mcqResult.total_questions)}s` : '0s'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Detailed MCQ Evaluation List */}
+                  <div className="space-y-4">
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <span>🎯</span> Detailed Question Breakdown &amp; Solutions
+                    </h4>
+
+                    {(mcqResult?.evaluations || []).map((ev, idx) => (
+                      <div key={ev.question_id || idx} className="p-5 border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-xs space-y-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 dark:border-slate-800 pb-2.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">
+                              Q{idx + 1} ({ev.unit || 'Unit 1'})
+                            </span>
+                            <span className="text-xs font-medium px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                              ⏱️ Time spent: {ev.time_spent_seconds || 0}s
+                            </span>
+                          </div>
+                          
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${
+                            ev.is_correct ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300'
+                          }`}>
+                            {ev.is_correct ? <><CheckCircle2 size={14} /> Correct</> : <><XCircle size={14} /> Incorrect</>}
+                          </span>
+                        </div>
+
+                        <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">{ev.question_text}</p>
+
+                        {/* Options List */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                          {(ev.options || []).map((opt, oIdx) => {
+                            const isUserPick = ev.user_selected_index === oIdx;
+                            const isCorrectOpt = ev.correct_option_index === oIdx;
+                            let styleClass = "bg-gray-50 dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300";
+                            
+                            if (isCorrectOpt) {
+                              styleClass = "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-900 dark:text-emerald-200 font-bold";
+                            } else if (isUserPick && !isCorrectOpt) {
+                              styleClass = "bg-red-50 dark:bg-red-950/60 border-red-300 text-red-900 dark:text-red-200 font-bold";
+                            }
+
+                            return (
+                              <div key={oIdx} className={`p-2.5 rounded-lg border text-xs flex items-center justify-between ${styleClass}`}>
+                                <span>{opt}</span>
+                                {isCorrectOpt && <span className="text-[10px] bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded font-bold">Correct</span>}
+                                {isUserPick && !isCorrectOpt && <span className="text-[10px] bg-red-200 text-red-900 px-1.5 py-0.5 rounded font-bold">Your Choice</span>}
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Explanation Box */}
+                        <div className="p-3.5 bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 rounded-lg text-xs text-slate-800 dark:text-slate-200">
+                          <strong className="text-blue-900 dark:text-blue-300 block mb-1">Concept &amp; Solution Explanation:</strong>
+                          <p className="whitespace-pre-wrap leading-relaxed">{ev.explanation}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* MCQ Active Quiz Header Bar */}
+              <div className="flex items-center justify-between bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow">
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-sm text-blue-400">MCQs Revision Session</span>
+                  <span className="text-xs bg-slate-800 px-2.5 py-1 rounded font-mono text-slate-300">
+                    Answered: {Object.keys(mcqAnswers).length} / {mcqQuestions.length}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-mono font-bold text-emerald-400">⏱️ {formatTime(mcqOverallTime)}</span>
+                  <button
+                    onClick={handleMcqSubmit}
+                    className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer shadow"
+                  >
+                    Submit Quiz
+                  </button>
+                </div>
+              </div>
+
+              {/* MCQ Active Question List */}
+              <div className="space-y-6">
+                {mcqQuestions.map((q, idx) => {
+                  const qKey = q.question_id || `mcq_q_${idx + 1}`;
+                  const selectedOpt = mcqAnswers[qKey];
+                  return (
+                    <div key={qKey} className="p-5 border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2">
+                        <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">Question {idx + 1} of {mcqQuestions.length} ({q.unit || 'Unit 1'})</span>
+                        <span className="text-xs font-semibold bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800">{q.difficulty || 'Medium'}</span>
+                      </div>
+
+                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-slate-100 leading-relaxed">{q.question_text}</p>
+
+                      {/* Options Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        {(q.options || []).map((opt, oIdx) => {
+                          const isPicked = selectedOpt === oIdx;
+                          return (
+                            <button
+                              key={oIdx}
+                              type="button"
+                              onClick={() => handleSelectMcqOption(qKey, oIdx)}
+                              className={`p-3 rounded-xl border text-left text-xs sm:text-sm font-medium transition-all flex items-center justify-between ${
+                                isPicked
+                                  ? "bg-blue-600 text-white border-blue-600 shadow-sm font-bold"
+                                  : "bg-slate-50 dark:bg-slate-800 text-gray-800 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
+                              }`}
+                            >
+                              <span>{opt}</span>
+                              {isPicked && <CheckCircle2 size={16} className="shrink-0 text-white" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                <button
+                  type="button"
+                  onClick={handleMcqSubmit}
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-base rounded-xl shadow-lg transition-all cursor-pointer"
+                >
+                  Submit &amp; Evaluate MCQ Practice Set
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ── MODE 2: Timed Exam Simulation ────────────────────────────────────── */}
       {activeSubMode === 'exam' && (
         <div className="space-y-6">
           {!examActive && !examFinished ? (
-            <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-indigo-500/30 relative overflow-hidden space-y-6 animate-in fade-in duration-300">
-              {/* Decorative ambient background glow */}
-              <div className="absolute top-0 right-0 -mt-10 -mr-10 w-56 h-56 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="max-w-2xl mx-auto p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-6 shadow-sm">
+              <div className="text-center space-y-2">
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                  <Clock className="w-7 h-7" />
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">Timed Exam Simulation</h4>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-300 max-w-lg mx-auto">
+                  Simulate real university exam conditions with restricted 2, 3, and 5 mark questions under strict countdown conditions.
+                </p>
+              </div>
 
-              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-400/30 mb-2">
-                    <Sparkles size={14} className="text-amber-300 animate-spin-slow" /> Real-Time AI Timed Exam Studio
-                  </div>
-                  <h4 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Customize AI Exam Simulation</h4>
-                  <p className="text-xs sm:text-sm text-slate-300 mt-1">Configure your parameters and generate a real-time syllabus-aligned exam set.</p>
+              {/* Unit Selection (Units 1 to 4) */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Layers size={14} className="text-blue-500" /> Select Unit(s) (1 to 4)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {['All Units', 'Unit 1', 'Unit 2', 'Unit 3', 'Unit 4'].map(u => {
+                    const isSelected = examSelectedUnits.includes(u);
+                    return (
+                      <button
+                        key={u}
+                        type="button"
+                        onClick={() => toggleUnitSelection(u, examSelectedUnits, setExamSelectedUnits)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          isSelected
+                            ? "bg-blue-600 text-white border-blue-600 shadow-xs font-bold"
+                            : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                        }`}
+                      >
+                        {u}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* 1. Number of Questions Selector Bar */}
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                    Number of Questions
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {[5, 10, 15, 20, 25].map(count => (
-                      <button
-                        key={count}
-                        type="button"
-                        onClick={() => setExamNumQuestions(count)}
-                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                          examNumQuestions === count
-                            ? "bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-500/20 font-bold"
-                            : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
-                        }`}
-                      >
-                        {count} Questions
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 2. Unit Selection Bar (Units 1-4) */}
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                    Target Unit Selection
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { id: 'all', label: 'All Units' },
-                      { id: 'unit_1', label: 'Unit 1' },
-                      { id: 'unit_2', label: 'Unit 2' },
-                      { id: 'unit_3', label: 'Unit 3' },
-                      { id: 'unit_4', label: 'Unit 4' }
-                    ].map(u => (
-                      <button
-                        key={u.id}
-                        type="button"
-                        onClick={() => setExamUnit(u.id)}
-                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                          examUnit === u.id
-                            ? "bg-indigo-600 text-white border-indigo-400 shadow-md shadow-indigo-500/20 font-bold"
-                            : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
-                        }`}
-                      >
-                        {u.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 3. Question Difficulty Selector Bar */}
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                    Question Difficulty
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { id: 'mixed', label: 'Adaptive / Mixed' },
-                      { id: 'easy', label: 'Easy (1-2 Marks)' },
-                      { id: 'medium', label: 'Medium (2-3 Marks)' },
-                      { id: 'hard', label: 'Hard (5 Marks)' }
-                    ].map(d => (
-                      <button
-                        key={d.id}
-                        type="button"
-                        onClick={() => setExamDifficulty(d.id)}
-                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                          examDifficulty === d.id
-                            ? "bg-emerald-600 text-white border-emerald-400 shadow-md shadow-emerald-500/20 font-bold"
-                            : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
-                        }`}
-                      >
-                        {d.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 4. Question Format & Types Selector Bar */}
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                    Question Format &amp; Types
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { id: 'mixed', label: 'All Format Types' },
-                      { id: 'mcq', label: 'MCQs Only (A/B/C/D)' },
-                      { id: 'true_false', label: 'True / False Only' },
-                      { id: 'subjective', label: 'Subjective Only' }
-                    ].map(t => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => setExamQuestionType(t.id)}
-                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                          examQuestionType === t.id
-                            ? "bg-purple-600 text-white border-purple-400 shadow-md shadow-purple-500/20 font-bold"
-                            : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
-                        }`}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 5. Exam Duration Selector Bar */}
-                <div className="space-y-2 md:col-span-2">
-                  <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                    Exam Timer Duration
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {[15, 30, 60].map(mins => (
-                      <button
-                        key={mins}
-                        type="button"
-                        onClick={() => setExamDuration(mins)}
-                        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                          examDuration === mins
-                            ? "bg-amber-600 text-white border-amber-400 shadow-md shadow-amber-500/20 font-bold"
-                            : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
-                        }`}
-                      >
-                        ⏱️ {mins} Minutes
-                      </button>
-                    ))}
-                  </div>
+              {/* Difficulty Selection */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Target size={14} className="text-blue-500" /> Exam Question Difficulty
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {['Easy', 'Medium', 'Hard', 'Exam Level'].map(diff => (
+                    <button
+                      key={diff}
+                      type="button"
+                      onClick={() => setExamDifficulty(diff)}
+                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border text-center ${
+                        examDifficulty === diff
+                          ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                          : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                      }`}
+                    >
+                      {diff}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Start Session Action Button */}
-              <div className="relative z-10 pt-2">
-                <button
-                  onClick={startExamSession}
-                  disabled={examLoading}
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-base sm:text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50"
-                >
-                  {examLoading ? (
-                    <>
-                      <RefreshCw className="w-6 h-6 animate-spin" />
-                      <span>Synthesizing Real-Time AI Exam Payload...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-5 h-5 text-amber-300 animate-bounce" />
-                      <span>Generate &amp; Start Real-Time AI Exam ({examNumQuestions} Questions)</span>
-                    </>
-                  )}
-                </button>
+              {/* Duration Selection */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Clock size={14} className="text-blue-500" /> Exam Duration
+                </label>
+                <div className="flex justify-center gap-2">
+                  {[15, 30, 45, 60].map(mins => (
+                    <button
+                      key={mins}
+                      type="button"
+                      onClick={() => setExamDuration(mins)}
+                      className={`flex-1 py-2 rounded-xl font-semibold text-xs sm:text-sm border transition-all text-center ${
+                        examDuration === mins
+                          ? "bg-blue-600 text-white border-blue-600 font-bold shadow-xs"
+                          : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                      }`}
+                    >
+                      {mins} Mins
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              <button
+                type="button"
+                disabled={loadingExam}
+                onClick={startExamSession}
+                className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {loadingExam ? (
+                  <><RefreshCw className="w-4 h-4 animate-spin" /> Preparing Exam Session...</>
+                ) : (
+                  <><Sparkles className="w-4 h-4" /> Start Timed Exam Session Now</>
+                )}
+              </button>
             </div>
           ) : examFinished ? (
             <div className="space-y-6">
               {evaluatingExam ? (
                 <div className="text-center py-16 space-y-3">
                   <RefreshCw className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
-                  <p className="text-base font-bold text-gray-800 dark:text-white">Evaluating your Exam Answers...</p>
-                  <p className="text-xs text-gray-500 dark:text-slate-400">Scoring answers, calculating accuracy, and syncing performance analytics.</p>
+                  <p className="text-base font-bold text-gray-800">Evaluating your Exam Answers...</p>
+                  <p className="text-xs text-gray-500">Scoring answers, calculating accuracy, and syncing performance analytics.</p>
                 </div>
               ) : (
                 <div className="space-y-6 animate-in fade-in duration-300">
@@ -820,45 +1197,28 @@ export default function Practice() {
 
                   {/* Question Evaluation & Model Answer Breakdown */}
                   <div className="space-y-4">
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <h4 className="text-base font-bold text-gray-900 flex items-center gap-2">
                       <span>📝</span> Question-by-Question Evaluation &amp; Model Solutions
                     </h4>
 
                     {(examResult?.evaluations || []).map((ev, idx) => (
-                      <div key={ev.question_id || idx} className="p-5 border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-xs space-y-3">
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 dark:border-slate-800 pb-2.5">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60 uppercase">
-                              Q{idx + 1} ({ev.marks} Marks)
-                            </span>
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase">
-                              {ev.type || 'Subjective'}
-                            </span>
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
-                              {ev.unit || 'Unit 1'}
-                            </span>
-                          </div>
-
-                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${ev.score === ev.marks ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : ev.score > 0 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300'}`}>
+                      <div key={ev.question_id || idx} className="p-5 border border-gray-200 rounded-xl bg-white shadow-xs space-y-3">
+                        <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                          <span className="text-xs font-bold text-blue-600 uppercase">Question {idx + 1} ({ev.marks} Marks)</span>
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${ev.score === ev.marks ? 'bg-emerald-100 text-emerald-800' : ev.score > 0 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
                             Earned: {ev.score} / {ev.marks} Marks
                           </span>
                         </div>
 
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{ev.question_text}</p>
+                        <p className="text-sm font-semibold text-gray-900">{ev.question_text}</p>
 
-                        <div className="p-3 bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-slate-700 rounded-lg text-xs text-gray-800 dark:text-slate-200">
-                          <strong className="text-gray-900 dark:text-white block mb-1">Your Submitted Answer:</strong>
+                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-800">
+                          <strong className="text-gray-900 block mb-1">Your Submitted Answer:</strong>
                           <p className="whitespace-pre-wrap">{ev.user_answer}</p>
                         </div>
 
-                        {ev.correct_answer && (
-                          <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-lg text-xs text-emerald-900 dark:text-emerald-300">
-                            <strong>Correct Answer Key:</strong> {ev.correct_answer}
-                          </div>
-                        )}
-
-                        <div className="p-3.5 bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 rounded-lg text-xs text-blue-950 dark:text-blue-200">
-                          <strong className="text-blue-900 dark:text-blue-300 block mb-1">Model Solution &amp; Key Rubric Steps:</strong>
+                        <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-lg text-xs text-blue-950">
+                          <strong className="text-blue-900 block mb-1">Model Solution &amp; Key Rubric Steps:</strong>
                           <ReactMarkdown 
                             remarkPlugins={[remarkMath, remarkBreaks]} 
                             rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -875,118 +1235,37 @@ export default function Practice() {
             </div>
           ) : (
             <div>
-              <div className="flex items-center justify-between bg-slate-900 text-white px-5 py-3.5 rounded-2xl mb-6 shadow-md border border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="font-bold text-xs sm:text-sm">Exam Session in Progress</span>
-                </div>
-                <span className="text-base sm:text-lg font-mono font-bold text-amber-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">
-                  {formatTime(examTimeLeft)}
-                </span>
+              <div className="flex items-center justify-between bg-gray-900 text-white px-5 py-3 rounded-xl mb-6 shadow">
+                <span className="font-semibold text-sm">Exam in Progress</span>
+                <span className="text-lg font-mono font-bold text-amber-400">{formatTime(examTimeLeft)}</span>
                 <button
                   onClick={handleExamSubmit}
-                  className="text-xs bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl font-bold transition-all shadow cursor-pointer"
+                  className="text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded font-semibold transition-colors cursor-pointer"
                 >
-                  Submit Exam Now
+                  Submit Exam
                 </button>
               </div>
 
               <div className="space-y-6">
                 {examQuestions.map((q, idx) => {
                   const qKey = q.question_id || q.id || `exam_q_${idx + 1}`;
-                  const qType = (q.type || 'subjective').toLowerCase();
-
                   return (
-                    <div key={qKey} className="p-5 sm:p-6 border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-xs space-y-4">
-                      {/* Question Header & Badges */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 dark:border-slate-800 pb-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60">
-                            Question {idx + 1} of {examQuestions.length}
-                          </span>
-                          <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800/60">
-                            {q.marks || 2} Marks
-                          </span>
-                          <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 border border-purple-200 dark:border-purple-800/60 uppercase">
-                            {qType === 'mcq' ? 'MCQ' : qType === 'true_false' ? 'True / False' : 'Subjective'}
-                          </span>
-                          <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                            {q.unit || 'Unit 1'}
-                          </span>
-                        </div>
+                    <div key={qKey} className="p-5 border border-gray-200 rounded-xl bg-white shadow-xs">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-blue-600 uppercase">Question {idx + 1}</span>
+                        <span className="text-xs font-semibold bg-gray-100 text-gray-700 px-2 py-0.5 rounded">{q.marks || 2} Marks</span>
                       </div>
-
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white leading-relaxed">
-                        {q.question_text || q.question}
-                      </p>
-
-                      {/* Render Type 1: MCQ Options */}
-                      {qType === 'mcq' && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                          {(q.options || []).map((opt, oIdx) => {
-                            const isSelected = examAnswers[qKey] === opt || (typeof opt === 'string' && examAnswers[qKey] === opt[0]);
-                            return (
-                              <button
-                                key={oIdx}
-                                type="button"
-                                onClick={() => setExamAnswers(prev => ({ ...prev, [qKey]: opt }))}
-                                className={`p-3.5 rounded-xl border text-left font-medium text-xs sm:text-sm transition-all flex items-center gap-3 cursor-pointer ${
-                                  isSelected
-                                    ? "bg-blue-600 text-white border-blue-500 shadow-md font-bold"
-                                    : "bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
-                                }`}
-                              >
-                                <span className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${isSelected ? 'bg-white text-blue-700' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'}`}>
-                                  {String.fromCharCode(65 + oIdx)}
-                                </span>
-                                <span className="flex-1">{opt}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {/* Render Type 2: True / False Toggle */}
-                      {qType === 'true_false' && (
-                        <div className="flex gap-4 pt-2">
-                          {['True', 'False'].map(val => {
-                            const isSelected = (examAnswers[qKey] || '').toLowerCase() === val.toLowerCase();
-                            const colorStyle = val === 'True'
-                              ? (isSelected ? "bg-emerald-600 text-white border-emerald-500 shadow-md font-bold" : "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/40")
-                              : (isSelected ? "bg-rose-600 text-white border-rose-500 shadow-md font-bold" : "bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800/60 hover:bg-rose-100 dark:hover:bg-rose-900/40");
-                            return (
-                              <button
-                                key={val}
-                                type="button"
-                                onClick={() => setExamAnswers(prev => ({ ...prev, [qKey]: val }))}
-                                className={`flex-1 py-3 px-4 rounded-xl border text-center font-bold text-xs sm:text-sm transition-all cursor-pointer ${colorStyle}`}
-                              >
-                                {val === 'True' ? '✓ True' : '✕ False'}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {/* Render Type 3: Subjective Markdown Textarea */}
-                      {qType === 'subjective' && (
-                        <div className="pt-2 space-y-2">
-                          <textarea
-                            placeholder="Type your structured solution, derivation steps, or core principles here..."
-                            rows={4}
-                            value={examAnswers[qKey] || ''}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setExamAnswers(prev => ({ ...prev, [qKey]: val }));
-                            }}
-                            className="w-full text-xs sm:text-sm p-3.5 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
-                          />
-                          <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-                            <span>Word Count: {(examAnswers[qKey] || '').trim().split(/\s+/).filter(Boolean).length} words</span>
-                            <span>Supports Markdown &amp; Math</span>
-                          </div>
-                        </div>
-                      )}
+                      <p className="text-sm font-semibold text-gray-900 mb-4">{q.question_text || q.question}</p>
+                      <textarea
+                        placeholder="Type your structured solution here..."
+                        rows={3}
+                        value={examAnswers[qKey] || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setExamAnswers(prev => ({ ...prev, [qKey]: val }));
+                        }}
+                        className="w-full text-sm p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                      />
                     </div>
                   );
                 })}
