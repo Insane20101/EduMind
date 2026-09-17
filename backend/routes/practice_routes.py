@@ -14,11 +14,7 @@ from typing import Optional, List, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from database import db
 from jwt_utils import get_current_user_optional, get_current_user
-try:
-    from rag.retriever import retrieve
-except Exception:
-    def retrieve(*args, **kwargs):
-        return []
+from rag.retriever import retrieve
 from rag.prompts import HINT_GENERATOR_PROMPT, DIAGRAM_EXPLAINER_PROMPT
 from utils.logger import get_logger
 from bson import ObjectId
@@ -135,194 +131,134 @@ async def get_adaptive_practice_set(
 
 # ── 3. Timed Exam Simulation Mode ─────────────────────────────────────────────
 
-STOP_WORDS = {
-    "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with",
-    "by", "from", "up", "about", "into", "through", "after", "is", "are", "was", "were",
-    "be", "been", "being", "have", "has", "had", "do", "does", "did", "can", "could",
-    "will", "would", "should", "it", "its", "this", "that", "these", "those", "they",
-    "them", "their", "which", "what", "where", "when", "how", "who", "all", "any", "both"
-}
-
-def normalize_chunk_id(cid: str, valid_set: set) -> str:
-    if not cid:
-        return ""
-    cid_clean = str(cid).strip().strip("'\"")
-    if cid_clean in valid_set:
-        return cid_clean
-    return ""
-
-def evaluate_subjective_answer_calibrated(user_ans: str, question: dict) -> float:
-    user_ans_clean = user_ans.strip().lower()
-    marks = float(question.get("marks", 2))
-    
-    if not user_ans_clean:
-        return 0.0
-
-    solution_text = str(question.get("solution") or question.get("answer") or "").lower()
-    user_tokens = set([t.strip(",.()[]:") for t in user_ans_clean.split() if t not in STOP_WORDS and len(t) > 2])
-    solution_tokens = set([t.strip(",.()[]:") for t in solution_text.split() if t not in STOP_WORDS and len(t) > 2])
-
-    if not user_tokens or not solution_tokens:
-        return round(marks * 0.3, 1) if len(user_ans_clean.split()) >= 6 else 0.0
-
-    matching_tokens = user_tokens.intersection(solution_tokens)
-    solution_coverage = len(matching_tokens) / max(1, len(solution_tokens))
-    user_precision = len(matching_tokens) / max(1, len(user_tokens))
-
-    if user_precision < 0.15:
-        return 0.0
-
-    if solution_coverage >= 0.35 and user_precision >= 0.25:
-        return marks
-    elif solution_coverage >= 0.18 and user_precision >= 0.18:
-        return round(marks * 0.5, 1)
-    elif len(matching_tokens) >= 1 and user_precision >= 0.15:
-        return round(marks * 0.3, 1)
-    else:
-        return 0.0
-
-
 # ── 3. Timed Exam Simulation Mode ─────────────────────────────────────────────
 
 @router.post("/exam-session")
 async def create_timed_exam_session(request: Request):
     """
-    Creates timed exam session with custom parameters (Units 1-4, Difficulty, Question Types, Question Count).
-    Uses Dual-Tier Sourcing:
-    - Tier 1: Queries pre-approved marks-migrated DB pool.
-    - Tier 2: Real-time RAG synthesis with strict code-level citation verification for missing gaps.
+    Creates customized real-time exam session based on:
+    - subject_id (required)
+    - num_questions (5, 10, 15, 20, 25)
+    - unit ('all', 'unit_1', 'unit_2', 'unit_3', 'unit_4')
+    - difficulty ('mixed', 'easy', 'medium', 'hard')
+    - question_type ('mixed', 'mcq', 'true_false', 'subjective')
+    - duration_minutes (15, 30, 60)
     """
     body = await request.json()
     subject_id = body.get("subject_id", "").strip().upper()
     duration_minutes = int(body.get("duration_minutes", 30))
-    num_questions = int(body.get("num_questions") or body.get("question_count") or 10)
-    target_unit = body.get("unit", "all").strip()
-    target_difficulty = body.get("difficulty", "mixed").strip().lower()
-    target_type = body.get("question_types", "mixed").strip().lower()
+    num_questions = max(5, min(25, int(body.get("num_questions", 10))))
+    target_unit = str(body.get("unit", "all")).strip().lower()
+    difficulty = str(body.get("difficulty", "mixed")).strip().lower()
+    question_type = str(body.get("question_type", "mixed")).strip().lower()
 
     if not subject_id:
         raise HTTPException(status_code=400, detail="subject_id is required.")
 
-    # ── Tier 1: Query Pre-Approved Marks-Migrated DB Pool ──────────────────────
-    query = {"subject_id": subject_id}
-    if target_unit != "all":
-        query["$or"] = [{"unit": target_unit}, {"metadata.unit": target_unit}]
+    # Fetch available question pool from MongoDB quizzes collection for this subject
+    quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=20)
+    raw_pool = []
+    for q in quizzes:
+        for q_item in q.get("questions", []):
+            raw_pool.append(q_item)
 
-    db_quizzes = await db.quizzes.find(query).to_list(length=20)
-    db_synth = await db.synthesized_assets.find({**query, "status": "approved"}).to_list(length=20)
-
-    pool = []
-    for q_doc in db_quizzes:
-        for q_item in q_doc.get("questions", []):
-            q_u = q_item.get("unit") or (q_item.get("metadata", {}).get("unit") if isinstance(q_item.get("metadata"), dict) else None)
-            q_d = (q_item.get("difficulty") or "medium").lower()
-            q_t = (q_item.get("type") or ("mcq" if "options" in q_item else "subjective")).lower()
-
-            if target_unit != "all" and q_u and q_u != target_unit:
-                continue
-            if target_difficulty != "mixed" and q_d != target_difficulty:
-                continue
-            if target_type != "mixed" and q_t != target_type:
+    # Filter pool by unit if requested
+    filtered_pool = []
+    for q in raw_pool:
+        q_unit = str(q.get("unit") or q.get("metadata", {}).get("unit") or "").lower()
+        if target_unit != "all":
+            norm_target = target_unit.replace("_", " ")
+            if norm_target not in q_unit and target_unit not in q_unit:
                 continue
 
-            pool.append({
-                **q_item,
-                "unit": q_u or (target_unit if target_unit != "all" else "Unit 1"),
-                "difficulty": q_d,
-                "type": q_t
-            })
+        filtered_pool.append(q)
 
-    # Deduplicate questions by question_text
-    seen_texts = set()
-    unique_pool = []
-    for q_item in pool:
-        txt = (q_item.get("question_text") or q_item.get("question") or "").strip().lower()
-        if txt and txt not in seen_texts:
-            seen_texts.add(txt)
-            unique_pool.append(q_item)
-
-    selected_questions = unique_pool[:num_questions]
-
-    # ── Tier 2: Real-Time RAG Fallback if pool is smaller than num_questions ──
-    if len(selected_questions) < num_questions:
-        needed = num_questions - len(selected_questions)
-        retrieved_chunks = retrieve(
-            subject_id=subject_id,
-            unit_id=target_unit if target_unit != "all" else None,
-            query=f"{target_difficulty} difficulty {target_type} exam questions for {subject_id}",
-            top_k=6
-        )
-        valid_retrieved_set = {c.get("chunk_id") for c in retrieved_chunks if c.get("chunk_id")}
-
-        # Synthetic fallback items matching requested format
-        types_cycle = ["mcq", "true_false", "subjective"] if target_type == "mixed" else [target_type]
-        for idx in range(needed):
-            q_t = types_cycle[idx % len(types_cycle)]
-            m = 2 if q_t in ["mcq", "true_false"] else 5
-            u_name = target_unit if target_unit != "all" else f"Unit {(idx % 4) + 1}"
-
-            fallback_item = {
-                "question_id": f"realtime_q_{idx + 1}_{uuid.uuid4().hex[:6]}",
-                "type": q_t,
-                "difficulty": target_difficulty if target_difficulty != "mixed" else ("easy" if m == 2 else "medium"),
-                "unit": u_name,
-                "marks": m,
-                "question_text": f"Explain the fundamental principles of {subject_id} {u_name} concept #{idx + 1}.",
-                "solution": f"Refer to course notes for {u_name} step-by-step derivation and key formulas.",
-                "source_chunk_ids": list(valid_retrieved_set)[:2]
-            }
-
-            if q_t == "mcq":
-                fallback_item["options"] = [
-                    "A. Option 1: Standard core formulation",
-                    "B. Option 2: Alternative boundary condition",
-                    "C. Option 3: Derived state variable",
-                    "D. Option 4: Constant coefficient"
-                ]
-                fallback_item["correct_answer"] = "A"
-            elif q_t == "true_false":
-                fallback_item["options"] = ["True", "False"]
-                fallback_item["correct_answer"] = "True"
-            else:
-                fallback_item["correct_answer"] = f"Key steps for {u_name} question #{idx + 1}."
-
-            selected_questions.append(fallback_item)
+    working_pool = filtered_pool if len(filtered_pool) >= 3 else raw_pool
 
     formatted_questions = []
-    total_marks = 0
+    import random
+    pool_copy = list(working_pool)
+    if pool_copy:
+        random.shuffle(pool_copy)
 
-    for idx, q_item in enumerate(selected_questions[:num_questions]):
-        m = int(q_item.get("marks") or (2 if q_item.get("type") in ["mcq", "true_false"] else 5))
-        total_marks += m
-        q_id = q_item.get("question_id") or q_item.get("id") or f"exam_q_{idx + 1}_{str(uuid.uuid4())[:6]}"
-        q_t = q_item.get("type") or ("mcq" if "options" in q_item else "subjective")
+    def build_question_item(idx, item):
+        q_id = item.get("question_id") or item.get("id") or f"exam_q_{idx + 1}_{str(uuid.uuid4())[:6]}"
+        q_text = item.get("question_text") or item.get("question") or f"Explain core engineering concept #{idx+1} in {subject_id}."
+        q_unit_val = item.get("unit") or (item.get("metadata", {}).get("unit") if isinstance(item.get("metadata"), dict) else None)
+        if not q_unit_val or q_unit_val == "unassigned":
+            unit_num = (idx % 4) + 1
+            q_unit_val = f"Unit {unit_num}"
 
-        formatted_questions.append({
-            **q_item,
+        desired_type = question_type
+        if desired_type == "mixed":
+            type_cycle = ["mcq", "true_false", "subjective"]
+            desired_type = type_cycle[idx % 3]
+
+        m = int(item.get("marks") or (1 if desired_type == "true_false" else 2 if desired_type == "mcq" else 5))
+        sol = item.get("solution") or item.get("answer") or "Refer to standard course notes for step-by-step derivation."
+
+        q_obj = {
             "question_id": q_id,
-            "type": q_t,
+            "type": desired_type,
+            "difficulty": item.get("difficulty") or (difficulty if difficulty != "mixed" else ("easy" if m == 1 else "medium" if m <= 3 else "hard")),
+            "unit": q_unit_val,
             "marks": m,
-            "unit": q_item.get("unit") or "Unit 1",
-            "question_text": q_item.get("question_text") or q_item.get("question") or "Exam question text"
-        })
+            "question_text": q_text,
+            "solution": sol
+        }
 
+        if desired_type == "mcq":
+            opts = item.get("options")
+            if not opts or len(opts) < 4:
+                ans_str = str(sol)[:45]
+                opts = [
+                    f"A. {ans_str}",
+                    "B. Non-deterministic polynomial time execution",
+                    "C. Inverse polynomial upper bound condition",
+                    "D. None of the above"
+                ]
+            q_obj["options"] = opts
+            q_obj["correct_answer"] = item.get("correct_answer") or "A"
+
+        elif desired_type == "true_false":
+            q_obj["options"] = ["True", "False"]
+            corr = str(item.get("correct_answer") or "True").strip().capitalize()
+            q_obj["correct_answer"] = corr if corr in ["True", "False"] else "True"
+
+        else:
+            q_obj["type"] = "subjective"
+            q_obj["key_rubric_points"] = item.get("key_rubric_points") or [
+                "Definition & core theoretical principles",
+                "Mathematical formulation or system diagram",
+                "Practical implementation & complexity analysis"
+            ]
+
+        return q_obj
+
+    for idx in range(num_questions):
+        source_item = pool_copy[idx % len(pool_copy)] if pool_copy else {"question": f"Analyze fundamental topic #{idx+1} in {subject_id}."}
+        formatted_questions.append(build_question_item(idx, source_item))
+
+    total_marks = sum(q["marks"] for q in formatted_questions)
     session_id = str(uuid.uuid4())
+
     return {
         "session_id": session_id,
         "subject_id": subject_id,
         "duration_minutes": duration_minutes,
+        "num_questions": num_questions,
+        "unit": target_unit,
+        "difficulty": difficulty,
+        "question_type": question_type,
         "total_questions": len(formatted_questions),
-        "total_marks": total_marks or (len(formatted_questions) * 2),
+        "total_marks": total_marks,
         "questions": formatted_questions
     }
 
 
 @router.post("/submit-exam")
 async def evaluate_and_submit_exam(request: Request, user: Optional[dict] = Depends(get_current_user_optional)):
-    """
-    Evaluates timed exam submission with calibrated scoring for MCQs, True/False, and Subjective answers.
-    Logs performance analytics grouped by Question Type & Unit into db.performance.
-    """
+    """Evaluates timed exam submission across Subjective, True/False, and MCQ questions."""
     body = await request.json()
     subject_id = body.get("subject_id", "GENERAL").strip().upper()
     time_taken_seconds = int(body.get("time_taken_seconds", 0))
@@ -335,62 +271,76 @@ async def evaluate_and_submit_exam(request: Request, user: Optional[dict] = Depe
     evaluations = []
     answer_records = []
 
-    type_scores = {"mcq": {"earned": 0, "total": 0}, "true_false": {"earned": 0, "total": 0}, "subjective": {"earned": 0, "total": 0}}
-
     for idx, q in enumerate(questions):
         q_id = q.get("question_id") or q.get("id") or f"exam_q_{idx + 1}"
+        q_type = str(q.get("type") or "subjective").lower()
         marks = int(q.get("marks") or 2)
         total_marks += marks
 
-        q_type = (q.get("type") or ("mcq" if "options" in q and len(q.get("options", [])) > 2 else "subjective")).lower()
-        if q_type not in type_scores:
-            q_type = "subjective"
-
-        type_scores[q_type]["total"] += marks
-
         user_ans = str(answers.get(q_id) or "").strip()
-        correct_ans = str(q.get("correct_answer") or "").strip()
-        unit = q.get("unit") or "Unit 1"
-
-        score = 0.0
         is_answered = len(user_ans) > 0
+        unit = q.get("unit") or (q.get("metadata", {}).get("unit") if isinstance(q.get("metadata"), dict) else "Unit 1")
+
+        score = 0
+        is_correct = False
 
         if is_answered:
             answered_count += 1
-            if q_type in ["mcq", "true_false"]:
-                # Deterministic exact string / option matching
-                u_norm = user_ans.lower().strip()
-                c_norm = correct_ans.lower().strip()
-                if u_norm == c_norm or (len(u_norm) == 1 and c_norm.startswith(u_norm)):
-                    score = float(marks)
+
+            if q_type == "mcq":
+                correct_option = str(q.get("correct_answer") or "").strip().lower()
+                user_clean = user_ans.lower()
+                if user_clean == correct_option or (correct_option and user_clean.startswith(correct_option[0])):
+                    score = marks
+                    is_correct = True
                 else:
-                    score = 0.0
+                    score = 0
+                    is_correct = False
+
+            elif q_type == "true_false":
+                correct_val = str(q.get("correct_answer") or "true").strip().lower()
+                user_clean = user_ans.lower()
+                if user_clean == correct_val:
+                    score = marks
+                    is_correct = True
+                else:
+                    score = 0
+                    is_correct = False
+
             else:
-                # Calibrated subjective grader
-                score = evaluate_subjective_answer_calibrated(user_ans, q)
+                words = len(user_ans.split())
+                if words >= 12:
+                    score = marks
+                    is_correct = True
+                elif words >= 4:
+                    score = max(1, marks // 2)
+                    is_correct = False
+                else:
+                    score = 1
+                    is_correct = False
         else:
-            score = 0.0
+            score = 0
+            is_correct = False
 
         earned_marks += score
-        type_scores[q_type]["earned"] += score
 
-        is_correct = (score >= marks * 0.8)
         answer_records.append({
             "question_index": idx,
             "question_id": q_id,
+            "type": q_type,
             "correct": is_correct,
-            "unit": unit,
-            "type": q_type
+            "unit": unit
         })
 
         evaluations.append({
             "question_id": q_id,
-            "question_text": q.get("question_text") or q.get("question"),
             "type": q_type,
+            "question_text": q.get("question_text") or q.get("question"),
             "marks": marks,
             "score": score,
             "user_answer": user_ans or "(No answer provided)",
-            "correct_answer": correct_ans or "Refer to model solution below",
+            "correct_answer": q.get("correct_answer"),
+            "is_correct": is_correct,
             "unit": unit,
             "solution": q.get("solution") or q.get("answer") or "Refer to standard course notes for step-by-step derivation."
         })
@@ -408,7 +358,6 @@ async def evaluate_and_submit_exam(request: Request, user: Optional[dict] = Depe
         "time_taken_seconds": time_taken_seconds,
         "answered_count": answered_count,
         "total_questions": len(questions),
-        "type_scores": type_scores,
         "answers": answer_records,
         "submitted_at": datetime.now(timezone.utc).timestamp(),
         "type": "timed_exam"
@@ -424,7 +373,6 @@ async def evaluate_and_submit_exam(request: Request, user: Optional[dict] = Depe
         "time_formatted": f"{time_taken_seconds // 60}m {time_taken_seconds % 60}s",
         "answered_count": answered_count,
         "total_questions": len(questions),
-        "type_scores": type_scores,
         "evaluations": evaluations
     }
 
