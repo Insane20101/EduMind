@@ -4,7 +4,7 @@ import PdfViewerModal from './PdfViewerModal';
 
 import { getApiBaseUrl } from '../config';
 
-export default function FileCard({ title, label, url }) {
+export default function FileCard({ title, label, url, resourceType, resourceId }) {
   const [showViewer, setShowViewer] = useState(false);
   const fileUrl = url && url.startsWith('/') ? `${getApiBaseUrl()}${url}` : url;
 
@@ -53,6 +53,9 @@ export default function FileCard({ title, label, url }) {
         <PdfViewerModal
           title={title}
           pdfUrl={fileUrl}
+          resourceType={resourceType}
+          resourceId={resourceId}
+          label={label}
           onClose={() => setShowViewer(false)}
         />
       )}

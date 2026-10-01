@@ -253,6 +253,8 @@ export default function LearnTab() {
                 title={resource.title}
                 label="PDF Note"
                 url={resource.file_url || resource.url}
+                resourceType="note"
+                resourceId={resource.resource_id}
               />
             ))}
           </div>
@@ -272,6 +274,8 @@ export default function LearnTab() {
                 title={resource.title}
                 label="Previous Year Questions"
                 url={resource.file_url || resource.url}
+                resourceType="pyq"
+                resourceId={resource.resource_id}
               />
             ))}
           </div>

@@ -923,3 +923,203 @@ async def scoped_delete_vector_chunks(
         }
     else:
         raise HTTPException(status_code=404, detail=f"No vector chunks found for '{filename}' in subject '{subject_id}'.")
+
+
+# ── In-Place PDF Chat & PDF Quiz Generator Endpoints ─────────────────────────
+
+class PdfChatPayload(BaseModel):
+    pdf_url: Optional[str] = None
+    resource_id: Optional[str] = None
+    message: str
+    history: Optional[List[dict]] = []
+
+class PdfQuizPayload(BaseModel):
+    pdf_url: Optional[str] = None
+    resource_id: Optional[str] = None
+    title: Optional[str] = None
+
+
+async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optional[str]):
+    """Helper to retrieve PDF bytes and extract text page-by-page."""
+    content_bytes = None
+
+    # 1. Direct GridFS / DB lookup if resource_id provided or embedded in URL
+    if not resource_id and pdf_url and "/file/" in pdf_url:
+        match = re.search(r'/file/([A-Za-z0-9_-]+)', pdf_url)
+        if match:
+            resource_id = match.group(1)
+
+    if resource_id:
+        doc = await db.resources.find_one({
+            "$or": [
+                {"resource_id": resource_id},
+                {"cloud_file_id": resource_id},
+                {"cloudinary_public_id": resource_id}
+            ]
+        })
+        if doc and doc.get("file_bytes_cache"):
+            content_bytes = doc.get("file_bytes_cache")
+        elif doc and doc.get("cloud_file_id"):
+            file_obj = await get_file(doc.get("cloud_file_id"))
+            if file_obj and file_obj.get("content"):
+                content_bytes = file_obj["content"]
+        
+        if not content_bytes:
+            file_obj = await get_file(resource_id)
+            if file_obj and file_obj.get("content"):
+                content_bytes = file_obj["content"]
+
+    # 2. External HTTP download fallback
+    if not content_bytes and pdf_url:
+        try:
+            import requests
+            resp = requests.get(pdf_url, timeout=20)
+            if resp.status_code == 200 and resp.content:
+                content_bytes = resp.content
+        except Exception as e:
+            logger.warning(f"Failed to fetch pdf_url {pdf_url}: {e}")
+
+    if not content_bytes:
+        raise HTTPException(status_code=404, detail="Could not retrieve PDF file content.")
+
+    # 3. Extract text page-by-page using PyMuPDF / fitz
+    page_texts = []
+    page_count = 1
+    try:
+        import fitz
+        doc = fitz.open(stream=content_bytes, filetype="pdf")
+        if getattr(doc, "is_encrypted", False):
+            try: doc.authenticate("")
+            except Exception: pass
+        
+        page_count = len(doc)
+        for i, page in enumerate(doc):
+            t = page.get_text("text") or ""
+            if not t.strip():
+                blocks = page.get_text("blocks")
+                if blocks:
+                    t = "\n".join([b[4] for b in blocks if len(b) >= 5 and isinstance(b[4], str)])
+            
+            if not t.strip():
+                t = f"[Scanned/Diagram Content on Page {i+1}]"
+            
+            page_texts.append(f"--- Page {i+1} ---\n{t.strip()}")
+        doc.close()
+    except Exception as e:
+        logger.warning(f"PyMuPDF parse error: {e}")
+        from rag.ingester import extract_text_from_pdf
+        full_extracted = extract_text_from_pdf(content_bytes, "document.pdf")
+        page_texts = [full_extracted]
+        page_count = 1
+
+    full_pdf_text = "\n\n".join(page_texts)
+    return content_bytes, page_count, page_texts, full_pdf_text
+
+
+@router.post("/pdf-chat")
+async def chat_with_pdf(payload: PdfChatPayload):
+    """Interactive in-place Chat with PDF content."""
+    if not payload.message or not payload.message.strip():
+        raise HTTPException(status_code=400, detail="Message is required.")
+
+    _, page_count, _, full_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
+    
+    truncated_text = full_text[:60000]
+
+    history_str = ""
+    if payload.history:
+        history_parts = []
+        for h in payload.history[-6:]:
+            role = "Student" if h.get("role") == "user" else "AI Tutor"
+            history_parts.append(f"{role}: {h.get('content')}")
+        history_str = "\n".join(history_parts)
+
+    prompt = f"""You are EduMind AI PDF Tutor, an expert academic assistant explaining a course document ({page_count} Pages total).
+
+=== ATTACHED PDF DOCUMENT CONTENT ===
+{truncated_text}
+======================================
+
+Recent Conversation Context:
+{history_str}
+
+Student Question: "{payload.message}"
+
+INSTRUCTIONS:
+1. Provide a comprehensive, easy-to-understand explanation specifically based on the PDF contents above.
+2. If the user asks to explain a concept, break it down clearly step-by-step with simple analogies or examples.
+3. Cite page numbers (e.g. "According to Page 2...") whenever applicable.
+4. Format your output nicely using markdown bolding, bullet points, and code blocks if relevant.
+"""
+
+    from rag.generator import generate_with_retry
+    reply = generate_with_retry(prompt)
+    return {
+        "reply": reply,
+        "page_count": page_count
+    }
+
+
+@router.post("/pdf-quiz")
+async def generate_pdf_quiz(payload: PdfQuizPayload):
+    """Generates an in-place interactive quiz strictly based on PDF content with exactly 2 * num_pages questions."""
+    _, page_count, _, full_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
+    
+    # Requirement: Number of questions = 2 * number of pages that PDF contains
+    target_questions = max(2, min(50, page_count * 2))
+
+    truncated_text = full_text[:60000]
+
+    prompt = f"""You are an expert university exam question creator.
+Analyze the following course PDF document ({page_count} Pages total) and generate EXACTLY {target_questions} multiple-choice questions strictly based on the content.
+
+=== PDF DOCUMENT CONTENT ({page_count} Pages) ===
+{truncated_text}
+======================================
+
+STRICT REQUIREMENTS:
+1. You MUST generate EXACTLY {target_questions} questions (which is 2 questions for each of the {page_count} pages).
+2. Every question MUST be directly factual and answerable from the PDF text.
+3. Include 4 distinct options (A, B, C, D) for each question.
+4. Provide a clear detailed explanation citing the exact Page number.
+5. Return ONLY a valid JSON object matching this schema (NO MARKDOWN WRAPPERS, NO EXTRA PROSE):
+
+{{
+  "pdf_title": "{payload.title or 'Course PDF'}",
+  "page_count": {page_count},
+  "total_questions": {target_questions},
+  "questions": [
+    {{
+      "id": 1,
+      "page": 1,
+      "question": "What is the primary characteristic of a block cipher?",
+      "options": [
+        "A) Encrypts streams byte by byte",
+        "B) Encrypts a single block of a fixed size (n bits)",
+        "C) Hashes input string to fixed length",
+        "D) Uses asymmetric public keys"
+      ],
+      "correct_answer": 1,
+      "explanation": "According to Page 1, a block cipher can encrypt a single block of a fixed size (n bits)."
+    }}
+  ]
+}}
+"""
+
+    from rag.generator import generate_with_retry
+    raw_res = generate_with_retry(prompt)
+    
+    try:
+        cleaned = raw_res.strip()
+        if cleaned.startswith("```json"):
+            cleaned = cleaned[7:]
+        if cleaned.startswith("```"):
+            cleaned = cleaned[3:]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3]
+        quiz_data = json.loads(cleaned.strip())
+        return quiz_data
+    except Exception as parse_err:
+        logger.warning(f"Failed to parse quiz JSON: {parse_err}. Raw response: {raw_res[:200]}")
+        raise HTTPException(status_code=500, detail="Failed to parse quiz JSON from AI model. Please try again.")
+
