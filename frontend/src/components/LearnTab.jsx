@@ -49,7 +49,7 @@ function SuggestForm({ subjectId }) {
     if (!file && !url.trim()) { toast.error('Provide at least a file or a URL.'); return; }
     if (file && file.size > 50 * 1024 * 1024) { toast.error('File exceeds 50 MB limit.'); return; }
     if (file && file.size > 10 * 1024 * 1024) {
-      toast.info(`Large PDF detected (${(file.size / 1024 / 1024).toFixed(1)} MB). Step 1 PDF compression pipeline will shrink it automatically...`);
+      toast(`Large PDF detected (${(file.size / 1024 / 1024).toFixed(1)} MB). Step 1 PDF compression pipeline will shrink it automatically...`, { icon: 'ℹ️' });
     }
 
     setLoading(true);
