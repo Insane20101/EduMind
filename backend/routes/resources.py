@@ -13,15 +13,18 @@ from typing import Optional, List
 
 import cloudinary
 import cloudinary.uploader
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
+from pydantic import BaseModel
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, Body
 
 from database import db, upload_file, delete_file
 from qdrant_client.http import models
+import hashlib
 
 from jwt_utils import get_current_admin_user
 from ingestion_queue import ingestion_queue
 from rag.ingester import ingest_document
 from rag.vector_store import get_qdrant_client, delete_resource_chunks
+from utils.pdf_compressor import compress_pdf_bytes
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -190,8 +193,11 @@ async def admin_upload_resource(
         raise HTTPException(status_code=400, detail=f"Unsupported file extension '.{ext}'. Allowed: {ALLOWED_EXTENSIONS}")
 
     content = await file.read()
+    if ext == "pdf" or (file.content_type and "pdf" in file.content_type.lower()):
+        content = compress_pdf_bytes(content, target_max_bytes=MAX_FILE_SIZE)
+
     if len(content) > MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="File exceeds 15 MB limit.")
+        raise HTTPException(status_code=413, detail=f"File ({len(content) / (1024 * 1024):.1f} MB) exceeds 15 MB limit even after compression.")
 
     file_hash = hashlib.sha256(content).hexdigest()
     clean_subj = subject_id.strip().upper()
@@ -432,9 +438,37 @@ async def get_ingestion_lock_status():
     return ingestion_queue.get_status()
 
 
+class ApprovePayload(BaseModel):
+    title: Optional[str] = None
+
+
+@router.patch("/{resource_id}")
+async def update_resource_title(
+    resource_id: str,
+    payload: ApprovePayload,
+    current_admin: dict = Depends(get_current_admin_user)
+):
+    """Update title/name of a resource before or after approval."""
+    doc = await db.resources.find_one({"resource_id": resource_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Resource not found.")
+    
+    if payload and payload.title and payload.title.strip():
+        new_title = payload.title.strip()
+        await db.resources.update_one({"resource_id": resource_id}, {"$set": {"title": new_title}})
+        if doc.get("resource_type") == "playlist" or "list=" in str(doc.get("url", "")):
+            await db.playlists.update_one(
+                {"$or": [{"playlist_id": doc.get("resource_id")}, {"resource_id": doc.get("resource_id")}]},
+                {"$set": {"title": new_title}}
+            )
+        return {"message": "Resource title updated successfully.", "title": new_title}
+    return {"message": "No title changes specified.", "title": doc.get("title")}
+
+
 @router.post("/{resource_id}/approve")
 async def approve_resource(
     resource_id: str,
+    payload: Optional[ApprovePayload] = Body(None),
     current_admin: dict = Depends(get_current_admin_user)
 ):
     """Approve pending student resource and run single-task vector ingestion."""
@@ -444,6 +478,16 @@ async def approve_resource(
         raise HTTPException(status_code=404, detail="Resource not found.")
     if doc["status"] != "pending":
         raise HTTPException(status_code=400, detail=f"Resource is already '{doc['status']}'.")
+
+    # Update resource title and filename if custom readable name was provided by admin prior to approval
+    if payload and payload.title and payload.title.strip():
+        doc["title"] = payload.title.strip()
+        clean_filename = re.sub(r'[^\w\s-]', '', doc["title"]).strip().replace(" ", "_") + ".pdf"
+        doc["filename"] = clean_filename
+        await db.resources.update_one(
+            {"resource_id": resource_id}, 
+            {"$set": {"title": doc["title"], "filename": clean_filename}}
+        )
 
     now = datetime.now(timezone.utc)
     res_type = str(doc.get("resource_type", "")).lower()
@@ -474,13 +518,14 @@ async def approve_resource(
         await db.resources.update_one(
             {"resource_id": resource_id},
             {"$set": {
+                "title": doc.get("title"),
                 "status": "approved",
                 "reviewed_by": current_admin["admin_id"],
                 "reviewed_at": now,
                 "reject_reason": None
             }}
         )
-        return {"message": "Playlist approved and published to Lectures section.", "resource_id": resource_id}
+        return {"message": "Playlist approved and published to Lectures section.", "resource_id": resource_id, "title": doc.get("title")}
 
     # ── Standard Document Ingestion & Approval ────────────────────────────────
     filename = doc.get("filename") or (doc.get("title", "student_resource") + ".pdf")
@@ -508,6 +553,7 @@ async def approve_resource(
                 logger.warning(f"GridFS approval upload: {e}")
 
         update_set = {
+            "title": doc.get("title"),
             "status": "approved",
             "reviewed_by": current_admin["admin_id"],
             "reviewed_at": now,

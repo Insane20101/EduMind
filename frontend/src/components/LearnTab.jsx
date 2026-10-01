@@ -47,7 +47,10 @@ function SuggestForm({ subjectId }) {
     e.preventDefault();
     if (!title.trim()) { toast.error('Title is required.'); return; }
     if (!file && !url.trim()) { toast.error('Provide at least a file or a URL.'); return; }
-    if (file && file.size > 10 * 1024 * 1024) { toast.error('File must be under 10 MB.'); return; }
+    if (file && file.size > 50 * 1024 * 1024) { toast.error('File exceeds 50 MB limit.'); return; }
+    if (file && file.size > 10 * 1024 * 1024) {
+      toast.info(`Large PDF detected (${(file.size / 1024 / 1024).toFixed(1)} MB). Step 1 PDF compression pipeline will shrink it automatically...`);
+    }
 
     setLoading(true);
     try {
@@ -119,7 +122,7 @@ function SuggestForm({ subjectId }) {
             {/* File upload */}
             <div>
               <label className="block text-xs font-medium text-blue-800 mb-1">
-                Upload file <span className="font-normal text-blue-600">(PDF / JPG / PNG, max 10 MB)</span>
+                Upload file <span className="font-normal text-blue-600">(PDF / JPG / PNG — large PDFs auto-compressed)</span>
               </label>
               <div
                 className="flex items-center gap-2 border border-dashed border-blue-300 bg-white rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500 text-sm text-blue-700"

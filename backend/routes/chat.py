@@ -12,6 +12,7 @@ from rag.retriever import retrieve
 from rag.prompts import RAG_SYSTEM_PROMPT
 from rag.generator import generate_with_retry, generate_stream
 from utils.logger import get_logger
+from utils.pdf_compressor import compress_pdf_bytes
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
@@ -250,6 +251,11 @@ async def chat_temp_document(
         content_bytes = await file.read()
         filename = file.filename or "uploaded_document"
         ext = filename.split(".")[-1].lower() if "." in filename else ""
+        
+        # ── Step 1: PDF Compression Pipeline ──────────────────────────────────
+        if ext == "pdf" or (file.content_type and "pdf" in file.content_type.lower()):
+            content_bytes = compress_pdf_bytes(content_bytes, target_max_bytes=10 * 1024 * 1024)
+
         extracted_text = ""
 
         if ext == "pdf":

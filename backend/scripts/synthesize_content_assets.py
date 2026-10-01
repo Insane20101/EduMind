@@ -98,7 +98,7 @@ def synthesize_unit_assets(subject_id: str, unit: str, asset_type: str = "all", 
     for a_type in types_to_generate:
         print(f"\nProcessing asset_type: {a_type}...")
         prompt_tmpl = HINT_GENERATOR_PROMPT if a_type == "hint" else (DIAGRAM_EXPLAINER_PROMPT if a_type == "diagram" else CRAM_SUMMARY_PROMPT)
-        formatted_prompt = prompt_tmpl.format(context=context_str, topic=f"{subject_id} {unit} core concepts")
+        formatted_prompt = prompt_tmpl.replace("{context}", context_str).replace("{topic}", f"{subject_id} {unit} core concepts")
 
         try:
             res = client.chat.completions.create(

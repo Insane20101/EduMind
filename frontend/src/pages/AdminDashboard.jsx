@@ -27,6 +27,7 @@ const LogoutIcon    = () => <Icon path="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M
 const ChartIcon     = () => <Icon path="M18 20V10M12 20V4M6 20v-6" />;
 const ClockIcon     = () => <Icon path="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />;
 const SearchIcon    = () => <Icon path="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />;
+const EditIcon      = ({ size = 14 }) => <Icon path="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" size={size} />;
 
 // ── Shared helpers & Constants ──────────────────────────────────────────────────
 const SUBJECT_OPTIONS = [
@@ -550,6 +551,8 @@ function ReviewTab() {
   const [rejectForm, setRejectForm]         = useState(null); // resource_id
   const [rejectReason, setRejectReason]     = useState('');
   const [previewDoc, setPreviewDoc]         = useState(null);
+  const [titleInputs, setTitleInputs]       = useState({});
+  const [editingTitleId, setEditingTitleId] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -568,7 +571,9 @@ function ReviewTab() {
   const approve = async (id) => {
     setBusy(b => ({ ...b, [id]: true }));
     try {
-      await api.post(`/admin/resources/${id}/approve`);
+      const customTitle = titleInputs[id]?.trim();
+      const payload = customTitle ? { title: customTitle } : {};
+      await api.post(`/admin/resources/${id}/approve`, payload);
       toast.success('Approved & Ingested!');
       setResources(r => r.filter(x => x.resource_id !== id));
     } catch (err) {
@@ -604,7 +609,7 @@ function ReviewTab() {
       if (isMobile) {
         window.open(targetUrl, '_blank', 'noopener,noreferrer');
       } else {
-        setPreviewDoc({ title: r.title, url: targetUrl });
+        setPreviewDoc({ title: titleInputs[r.resource_id] || r.title, url: targetUrl });
       }
     }
   };
@@ -614,7 +619,7 @@ function ReviewTab() {
     const q = subjectSearch.trim().toLowerCase();
     const sId = (r.subject_id || '').toLowerCase();
     const sName = (r.subject_name || '').toLowerCase();
-    const title = (r.title || '').toLowerCase();
+    const title = (titleInputs[r.resource_id] || r.title || '').toLowerCase();
     const submitter = (r.submitter_enrollment || '').toLowerCase();
     return sId.includes(q) || sName.includes(q) || title.includes(q) || submitter.includes(q);
   });
@@ -665,14 +670,28 @@ function ReviewTab() {
           {filteredResources.map(r => {
             const timeStr = formatDate(r.uploaded_at) || r.uploaded_at_formatted;
             const fullSubjectName = r.subject_name ? `${r.subject_name} (${r.subject_id})` : r.subject_id;
+            const currentDisplayTitle = titleInputs[r.resource_id] !== undefined ? titleInputs[r.resource_id] : r.title;
             return (
               <div key={r.resource_id} className="adm-list-item">
-                <div className="adm-list-meta space-y-1">
+                <div className="adm-list-meta space-y-1.5 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="adm-list-title">{r.title}</span>
-                    <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 uppercase">
-                      {r.resource_type === 'note' ? 'PDF Note' : r.resource_type === 'pyq' ? 'PYQ' : r.resource_type}
-                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                          ✏️ PDF Name (Editable for Readability)
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 uppercase flex-shrink-0">
+                          {r.resource_type === 'note' ? 'PDF Note' : r.resource_type === 'pyq' ? 'PYQ' : r.resource_type}
+                        </span>
+                      </div>
+                      <input 
+                        type="text" 
+                        className="adm-input adm-input-sm text-xs font-semibold text-indigo-200 bg-slate-900 border-slate-700 focus:border-indigo-400 w-full px-2.5 py-1.5 rounded transition-all shadow-inner" 
+                        value={currentDisplayTitle} 
+                        onChange={e => setTitleInputs({ ...titleInputs, [r.resource_id]: e.target.value })}
+                        placeholder="Type clean PDF title before approval (e.g. OS Unit 1 Notes)..."
+                      />
+                    </div>
                   </div>
 
                   <div className="adm-list-sub flex items-center gap-3 flex-wrap text-xs text-slate-400">

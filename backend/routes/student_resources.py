@@ -26,6 +26,8 @@ from database import db
 from jwt_utils import get_current_user
 from limiter import limiter
 
+from utils.pdf_compressor import compress_pdf_bytes
+
 router = APIRouter()
 
 # ── Cloudinary config ──────────────────────────────────────────────────────────
@@ -459,10 +461,16 @@ async def get_playlist_items(list_id: str):
     if not list_id or not list_id.strip():
         raise HTTPException(status_code=400, detail="list_id is required.")
 
-    videos = fetch_youtube_playlist_videos(list_id)
+    clean_list_id = list_id.strip()
+    if "list=" in clean_list_id:
+        m = re.search(r'list=([A-Za-z0-9_-]+)', clean_list_id)
+        if m:
+            clean_list_id = m.group(1)
+
+    videos = fetch_youtube_playlist_videos(clean_list_id)
 
     return {
-        "list_id": list_id,
+        "list_id": clean_list_id,
         "total_videos": len(videos),
         "videos": videos
     }
@@ -594,11 +602,15 @@ async def suggest_resource(
         if file.content_type not in ALLOWED_MIME_TYPES:
             raise HTTPException(status_code=400, detail="Only PDF, JPG, PNG, or WebP files are allowed.")
         content_bytes = await file.read()
-        if len(content_bytes) > MAX_FILE_SIZE:
-            raise HTTPException(status_code=413, detail="File exceeds the 10 MB student upload limit.")
-
         filename = file.filename or "student_submission.pdf"
         ext = filename.split(".")[-1].lower() if "." in filename else ""
+
+        # ── Step 1: PDF Compression Pipeline ──────────────────────────────────
+        if ext == "pdf" or file.content_type == "application/pdf":
+            content_bytes = compress_pdf_bytes(content_bytes, target_max_bytes=MAX_FILE_SIZE)
+
+        if len(content_bytes) > MAX_FILE_SIZE:
+            raise HTTPException(status_code=413, detail=f"File ({len(content_bytes) / (1024 * 1024):.1f} MB) exceeds the 10 MB student upload limit even after compression.")
 
         # Upload to GridFS for instant guaranteed PDF serving
         try:
