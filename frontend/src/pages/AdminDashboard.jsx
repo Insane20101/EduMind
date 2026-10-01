@@ -760,6 +760,9 @@ function AllResourcesTab() {
   const [selectedType, setSelectedType]     = useState('all');
   const [busy, setBusy]                     = useState({});
   const [previewDoc, setPreviewDoc]         = useState(null);
+  const [editingId, setEditingId]           = useState(null);
+  const [titleInputs, setTitleInputs]       = useState({});
+  const [savingTitle, setSavingTitle]       = useState({});
 
   const load = async () => {
     setLoading(true);
@@ -778,6 +781,22 @@ function AllResourcesTab() {
   };
 
   useEffect(() => { load(); }, [filterStatus, selectedType]);
+
+  const handleSaveTitle = async (id) => {
+    const newTitle = titleInputs[id]?.trim();
+    if (!newTitle) { toast.error('Title cannot be empty.'); return; }
+    setSavingTitle(s => ({ ...s, [id]: true }));
+    try {
+      await api.patch(`/admin/resources/${id}`, { title: newTitle });
+      toast.success('Resource title updated!');
+      setResources(res => res.map(r => r.resource_id === id ? { ...r, title: newTitle } : r));
+      setEditingId(null);
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Failed to update title.');
+    } finally {
+      setSavingTitle(s => ({ ...s, [id]: false }));
+    }
+  };
 
   const remove = async (id) => {
     if (!window.confirm('Permanently delete this resource?')) return;
@@ -900,8 +919,42 @@ function AllResourcesTab() {
             return (
               <div key={r.resource_id} className="adm-list-item">
                 <div className="adm-list-meta space-y-1">
-                  <div className="adm-list-title-row">
-                    <span className="adm-list-title">{r.title}</span>
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    {editingId === r.resource_id ? (
+                      <div className="flex items-center gap-2 flex-1 min-w-[240px]">
+                        <input 
+                          type="text" 
+                          className="adm-input adm-input-sm text-xs font-semibold text-indigo-200 bg-slate-900 border-indigo-500 flex-1 px-2.5 py-1 rounded shadow-inner" 
+                          value={titleInputs[r.resource_id] !== undefined ? titleInputs[r.resource_id] : r.title}
+                          onChange={e => setTitleInputs({ ...titleInputs, [r.resource_id]: e.target.value })}
+                          autoFocus
+                        />
+                        <button 
+                          className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded transition-all flex items-center gap-1 disabled:opacity-50"
+                          onClick={() => handleSaveTitle(r.resource_id)}
+                          disabled={savingTitle[r.resource_id]}
+                        >
+                          {savingTitle[r.resource_id] ? <Spinner /> : 'Save'}
+                        </button>
+                        <button 
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded transition-all"
+                          onClick={() => setEditingId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="adm-list-title">{r.title}</span>
+                        <button 
+                          onClick={() => { setEditingId(r.resource_id); setTitleInputs({ ...titleInputs, [r.resource_id]: r.title }); }} 
+                          className="text-slate-400 hover:text-indigo-400 p-1 rounded hover:bg-slate-800 transition-colors"
+                          title="Edit Resource Name"
+                        >
+                          <EditIcon size={14} />
+                        </button>
+                      </div>
+                    )}
                     <Badge status={r.status} />
                     <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 uppercase">
                       {r.resource_type === 'note' ? 'PDF Note' : r.resource_type === 'pyq' ? 'PYQ' : r.resource_type}
@@ -961,6 +1014,9 @@ function PlaylistsTab() {
   const [subjectSearch, setSubjectSearch]   = useState('');
   const [form, setForm]                     = useState({ subject_id: '', title: '', playlist_url: '', unit: 'Unit 1' });
   const [saving, setSaving]                 = useState(false);
+  const [editingId, setEditingId]           = useState(null);
+  const [titleInputs, setTitleInputs]       = useState({});
+  const [savingTitle, setSavingTitle]       = useState({});
 
   const load = async () => {
     setLoading(true);
@@ -975,6 +1031,22 @@ function PlaylistsTab() {
   };
 
   useEffect(() => { load(); }, []);
+
+  const handleSaveTitle = async (id) => {
+    const newTitle = titleInputs[id]?.trim();
+    if (!newTitle) { toast.error('Title cannot be empty.'); return; }
+    setSavingTitle(s => ({ ...s, [id]: true }));
+    try {
+      await api.patch(`/admin/resources/playlists/${id}`, { title: newTitle });
+      toast.success('Playlist title updated!');
+      setPlaylists(pls => pls.map(p => p.playlist_id === id ? { ...p, title: newTitle } : p));
+      setEditingId(null);
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Failed to update title.');
+    } finally {
+      setSavingTitle(s => ({ ...s, [id]: false }));
+    }
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -1104,7 +1176,41 @@ function PlaylistsTab() {
               return (
                 <div key={p.playlist_id} className="adm-list-item">
                   <div className="adm-list-meta space-y-1">
-                    <span className="adm-list-title">{p.title}</span>
+                    {editingId === p.playlist_id ? (
+                      <div className="flex items-center gap-2 mb-1 flex-1 min-w-[240px]">
+                        <input 
+                          type="text" 
+                          className="adm-input adm-input-sm text-xs font-semibold text-indigo-200 bg-slate-900 border-indigo-500 flex-1 px-2.5 py-1 rounded shadow-inner" 
+                          value={titleInputs[p.playlist_id] !== undefined ? titleInputs[p.playlist_id] : p.title}
+                          onChange={e => setTitleInputs({ ...titleInputs, [p.playlist_id]: e.target.value })}
+                          autoFocus
+                        />
+                        <button 
+                          className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded transition-all flex items-center gap-1 disabled:opacity-50"
+                          onClick={() => handleSaveTitle(p.playlist_id)}
+                          disabled={savingTitle[p.playlist_id]}
+                        >
+                          {savingTitle[p.playlist_id] ? <Spinner /> : 'Save'}
+                        </button>
+                        <button 
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded transition-all"
+                          onClick={() => setEditingId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="adm-list-title">{p.title}</span>
+                        <button 
+                          onClick={() => { setEditingId(p.playlist_id); setTitleInputs({ ...titleInputs, [p.playlist_id]: p.title }); }} 
+                          className="text-slate-400 hover:text-indigo-400 p-1 rounded hover:bg-slate-800 transition-colors"
+                          title="Edit Playlist Name"
+                        >
+                          <EditIcon size={14} />
+                        </button>
+                      </div>
+                    )}
                     <div className="adm-list-sub flex items-center gap-3 flex-wrap text-xs text-slate-400">
                       <span className="font-semibold text-indigo-300">{fullSubjectName}</span>
                       <span>•</span>

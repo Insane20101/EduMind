@@ -783,6 +783,53 @@ async def update_playlist(
     return doc
 
 
+class PlaylistTitlePayload(BaseModel):
+    title: str
+
+@router.patch("/playlists/{playlist_id}")
+async def update_playlist_title(
+    playlist_id: str,
+    payload: PlaylistTitlePayload,
+    current_admin: dict = Depends(get_current_admin_user)
+):
+    """Admin updates the title/name of an active playlist."""
+    if not payload.title or not payload.title.strip():
+        raise HTTPException(status_code=400, detail="Title cannot be empty.")
+
+    new_title = payload.title.strip()
+
+    # 1. Update in db.playlists
+    await db.playlists.update_many(
+        {"$or": [{"playlist_id": playlist_id}, {"resource_id": playlist_id}]},
+        {"$set": {"title": new_title, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+
+    # 2. Update in db.resources if associated
+    await db.resources.update_many(
+        {"$or": [{"resource_id": playlist_id}, {"url": {"$regex": re.escape(playlist_id)}}]},
+        {"$set": {"title": new_title}}
+    )
+
+    # 3. Update if seed playlist in db.subjects
+    cursor = db.subjects.find({"playlists": {"$exists": True, "$ne": []}})
+    subj_docs = await cursor.to_list(length=None)
+    for s in subj_docs:
+        modified = False
+        new_pls = []
+        for idx, p in enumerate(s.get("playlists", [])):
+            if isinstance(p, dict):
+                p_url = p.get("url") or ""
+                seed_key = f"seed-{s.get('code')}-{idx}"
+                if seed_key == playlist_id or p_url == playlist_id or (p_url and playlist_id in p_url):
+                    p["title"] = new_title
+                    modified = True
+            new_pls.append(p)
+        if modified:
+            await db.subjects.update_one({"_id": s["_id"]}, {"$set": {"playlists": new_pls}})
+
+    return {"message": "Playlist title updated successfully.", "title": new_title}
+
+
 @router.delete("/playlists/{playlist_id}")
 async def delete_playlist(
     playlist_id: str,
