@@ -31,9 +31,9 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Security(security))
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
+        raise HTTPException(status_code=401, detail="Token has expired. Please re-login to renew token.")
     except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Could not validate credentials")
+        raise HTTPException(status_code=401, detail="Could not validate credentials. Please re-login to renew token.")
 
 async def get_current_user(payload: dict = Security(verify_token)):
     # Standard user check - ensure it's not an admin token by checking token_type
