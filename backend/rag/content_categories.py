@@ -48,6 +48,14 @@ def get_category_config(category_key: str) -> Dict[str, Any]:
         raise ValueError(f"Category key must be a non-empty string. Received: {category_key}")
     
     key = category_key.strip().lower()
+    alias_map = {
+        "note": "notes",
+        "pyqs": "pyq",
+        "questionbank": "question_bank",
+        "question-bank": "question_bank",
+        "transcripts": "transcript"
+    }
+    key = alias_map.get(key, key)
     if key not in CONTENT_CATEGORIES:
         valid_keys = list(CONTENT_CATEGORIES.keys())
         raise ValueError(f"Unknown content category '{category_key}'. Supported categories: {valid_keys}")

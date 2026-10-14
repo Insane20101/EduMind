@@ -8,6 +8,7 @@ import re
 import uuid
 import logging
 import traceback
+import json
 from datetime import datetime, timezone
 from typing import Optional, List
 
@@ -16,7 +17,7 @@ import cloudinary.uploader
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, Body
 
-from database import db, upload_file, delete_file
+from database import db, upload_file, get_file, delete_file
 from qdrant_client.http import models
 import hashlib
 
@@ -24,6 +25,7 @@ from jwt_utils import get_current_admin_user
 from ingestion_queue import ingestion_queue
 from rag.ingester import ingest_document
 from rag.vector_store import get_qdrant_client, delete_resource_chunks
+from rag.content_categories import CONTENT_CATEGORIES, get_category_config
 from utils.pdf_compressor import compress_pdf_bytes
 
 logger = logging.getLogger(__name__)
@@ -305,13 +307,16 @@ async def admin_upload_resource(
         logger.error(f"ADMIN UPLOAD EXCEPTION: [{type(e).__name__}] {str(e)}\n{tb_str}")
 
         try:
+            chunk_type_val = "unknown"
+            if 'cat_config' in locals() and isinstance(cat_config, dict):
+                chunk_type_val = cat_config.get("chunk_type", "unknown")
             await db.ingestion_log.insert_one({
                 "log_id": str(uuid.uuid4()),
-                "subject_id": clean_subj,
-                "category_key": effective_category,
-                "chunk_type": cat_config.get("chunk_type", "unknown"),
-                "filename": filename,
-                "file_hash": file_hash,
+                "subject_id": clean_subj if 'clean_subj' in locals() else (subject_id.strip().upper() if 'subject_id' in locals() and subject_id else "UNKNOWN"),
+                "category_key": effective_category if 'effective_category' in locals() else "notes",
+                "chunk_type": chunk_type_val,
+                "filename": filename if 'filename' in locals() else "unknown",
+                "file_hash": file_hash if 'file_hash' in locals() else "",
                 "chunk_count": 0,
                 "timestamp": datetime.now(timezone.utc),
                 "status": "failed",
