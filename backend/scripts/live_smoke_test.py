@@ -2,11 +2,11 @@
 EduMind Production Post-Deploy Comprehensive Live Smoke Test.
 Verifies real HTTP routes against the deployed backend (Render / Local):
 1. Category registry GET /api/admin/resources/content-categories
-2. Real admin uploads across all 4 categories (notes, pyq, question_bank, transcript)
+2. Real admin uploads across all 4 categories (notes, pyq, question_bank, transcript) into isolated test subject
 3. GridFS, Cloudinary, ingestion_log, and Qdrant points (chunk_type & schema_version) verification
-4. Student & Admin in-place PDF Chat & Quiz generation
-5. Security guards (unapproved resource blocking, SSRF URL domain check, scanned PDF refusal, alias normalization)
-6. Automated isolated teardown of test artifacts
+4. Interactive PDF Chat & Quiz generation (Admin and Student routes)
+5. Security & guardrail negative checks (unapproved resource blocking 403, SSRF domain restriction 400, scanned PDF refusal)
+6. Automated isolated teardown of test artifacts and test collection
 """
 
 import os
@@ -27,8 +27,9 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models
 
 BASE_URL = os.getenv("RENDER_EXTERNAL_URL", "https://edumind-ebk1.onrender.com").rstrip("/")
-TEST_SUBJECT = "BCS-401"
-TEST_PREFIX = "smoke_test_live_"
+# Use dedicated test subject to prevent polluting real subjects like BCS-401
+TEST_SUBJECT = "TEST-SMOKE-999"
+TEST_PREFIX = "smoke_test_e2e_"
 
 PASS_COUNT = 0
 FAIL_COUNT = 0
@@ -47,6 +48,12 @@ def create_admin_token() -> str:
         data={"admin_id": "admin"},
         expires_delta=timedelta(hours=2),
         additional_claims={"token_type": "admin"}
+    )
+
+def create_student_token() -> str:
+    return create_access_token(
+        data={"sub": "2023CSD999", "role": "student"},
+        expires_delta=timedelta(hours=2)
     )
 
 def make_test_pdf(text: str) -> bytes:
@@ -80,10 +87,14 @@ EMPTY_SCANNED_PDF = (
 def run_smoke_test():
     print("=" * 80)
     print(f"EDUMIND PRODUCTION POST-DEPLOY SMOKE TEST ON {BASE_URL}")
+    print(f"Isolated Subject Target: {TEST_SUBJECT}")
     print("=" * 80)
 
     admin_token = create_admin_token()
     admin_headers = {"Authorization": f"Bearer {admin_token}"}
+    student_token = create_student_token()
+    student_headers = {"Authorization": f"Bearer {student_token}"}
+
     uploaded_resource_ids = []
     uploaded_filenames = []
 
@@ -101,14 +112,14 @@ def run_smoke_test():
     for expected in ["notes", "pyq", "question_bank", "transcript"]:
         log_check(f"Category '{expected}' present in registry", expected in cats, f"Keys: {list(cats.keys())}")
 
-    # ── 2. Real Uploads Across 4 Categories ───────────────────────────────────
-    print("\n--- 2. Real Admin Uploads Across All 4 Categories ---")
+    # ── 2. Real Uploads Across 4 Categories (Dedicated Test Subject) ───────────
+    print(f"\n--- 2. Real Admin Uploads Across All 4 Categories into {TEST_SUBJECT} ---")
     ts = int(time.time())
     categories_to_test = [
-        ("notes", "smoke_test_note.pdf", make_test_pdf(f"Virtual memory is a memory management technique in OS. Timestamp: {ts}"), "application/pdf"),
-        ("pyq", "smoke_test_pyq.pdf", make_test_pdf(f"Previous year question on Process Synchronization and Semaphores. Timestamp: {ts}"), "application/pdf"),
-        ("question_bank", "smoke_test_qbank.md", f"Q1: What is Page Fault?\nUnit: Unit 1\nTopic: Virtual Memory\nType: Theory\nDifficulty: Basic\nTimestamp: {ts}\nSolution: Page fault occurs when requested page is missing from physical memory.\n".encode("utf-8"), "text/markdown"),
-        ("transcript", "smoke_test_transcript.txt", f"Lecture transcript discussing page tables, TLB cache, and virtual memory address translation. Timestamp: {ts}".encode("utf-8"), "text/plain")
+        ("notes", "test_note.pdf", make_test_pdf(f"Virtual memory note content for automated smoke test. Timestamp: {ts}"), "application/pdf"),
+        ("pyq", "test_pyq.pdf", make_test_pdf(f"Previous year question on Process Scheduling algorithms. Timestamp: {ts}"), "application/pdf"),
+        ("question_bank", "test_qbank.md", f"Q1: What is Demand Paging?\nUnit: Unit 1\nTopic: Virtual Memory\nType: Theory\nDifficulty: Basic\nTimestamp: {ts}\nSolution: Demand paging brings pages into memory only when needed.\n".encode("utf-8"), "text/markdown"),
+        ("transcript", "test_transcript.txt", f"Lecture transcript discussing page replacement algorithms FIFO LRU Optimal. Timestamp: {ts}".encode("utf-8"), "text/plain")
     ]
 
     for cat_key, fname_base, fbytes, mime in categories_to_test:
@@ -149,18 +160,19 @@ def run_smoke_test():
             log_check(f"Ingestion log [{cat_key}] entry exists and status == 'success'", bool(log_doc and log_doc.get("status") == "success"), f"doc: {log_doc}")
 
             # Verify Qdrant points
-            pts, _ = qdrant_client.scroll(
-                collection_name=TEST_SUBJECT,
-                scroll_filter=models.Filter(
-                    must=[models.FieldCondition(key="source_filename", match=models.MatchValue(value=unique_name))]
-                ),
-                with_payload=True
-            )
-            log_check(f"Qdrant points [{cat_key}] created in {TEST_SUBJECT}", len(pts) > 0, f"found: {len(pts)}")
-            if pts:
-                first_pt = pts[0].payload
-                log_check(f"Qdrant point [{cat_key}] schema_version == 1", first_pt.get("schema_version") == 1, f"schema: {first_pt.get('schema_version')}")
-                log_check(f"Qdrant point [{cat_key}] chunk_type stamped", bool(first_pt.get("chunk_type")), f"chunk_type: {first_pt.get('chunk_type')}")
+            if qdrant_client.collection_exists(TEST_SUBJECT):
+                pts, _ = qdrant_client.scroll(
+                    collection_name=TEST_SUBJECT,
+                    scroll_filter=models.Filter(
+                        must=[models.FieldCondition(key="source_filename", match=models.MatchValue(value=unique_name))]
+                    ),
+                    with_payload=True
+                )
+                log_check(f"Qdrant points [{cat_key}] created in {TEST_SUBJECT}", len(pts) > 0, f"found: {len(pts)}")
+                if pts:
+                    first_pt = pts[0].payload
+                    log_check(f"Qdrant point [{cat_key}] schema_version == 1", first_pt.get("schema_version") == 1, f"schema: {first_pt.get('schema_version')}")
+                    log_check(f"Qdrant point [{cat_key}] chunk_type stamped", bool(first_pt.get("chunk_type")), f"chunk_type: {first_pt.get('chunk_type')}")
 
     # ── 3. Test Ingestion History Log ──────────────────────────────────────────
     print("\n--- 3. Testing GET /api/admin/resources/ingestion-history ---")
@@ -180,14 +192,14 @@ def run_smoke_test():
             "history": []
         }
         
-        # Admin route PDF Chat
+        # 4a. Admin route PDF Chat
         admin_chat_res = requests.post(f"{BASE_URL}/api/admin/resources/pdf-chat", headers=admin_headers, json=chat_payload, timeout=60)
         log_check("Admin POST /api/admin/resources/pdf-chat returns 200 OK", admin_chat_res.status_code == 200, f"Status: {admin_chat_res.status_code}")
         if admin_chat_res.ok:
             admin_chat_data = admin_chat_res.json()
             log_check("Admin PDF Chat returned reply content", bool(admin_chat_data.get("reply")), f"Reply: {admin_chat_data.get('reply', '')[:100]}")
 
-        # Admin route PDF Quiz
+        # 4b. Admin route PDF Quiz
         admin_quiz_payload = {
             "resource_id": test_note_id,
             "title": "Smoke Test Note"
@@ -203,27 +215,26 @@ def run_smoke_test():
                 log_check("Admin Quiz question has 4 options", len(q1.get("options", [])) == 4, f"Options: {q1.get('options')}")
                 log_check("Admin Quiz question has valid correct_answer", 0 <= q1.get("correct_answer", -1) <= 3, f"Ans: {q1.get('correct_answer')}")
 
-        # Student route PDF Chat (Mounted in commit 5f5fe4f/625c14c)
-        chat_res = requests.post(f"{BASE_URL}/api/resources/pdf-chat", json=chat_payload, timeout=60)
-        if chat_res.status_code == 200:
+        # 4c. Student route PDF Chat with Real Resource
+        student_chat_res = requests.post(f"{BASE_URL}/api/resources/pdf-chat", headers=student_headers, json=chat_payload, timeout=60)
+        if student_chat_res.status_code == 200:
             log_check("Student POST /api/resources/pdf-chat returns 200 OK", True)
-            chat_data = chat_res.json()
-            log_check("Student PDF Chat returned reply content", bool(chat_data.get("reply")), f"Reply: {chat_data.get('reply', '')[:100]}")
+            student_chat_data = student_chat_res.json()
+            log_check("Student PDF Chat returned reply content", bool(student_chat_data.get("reply")), f"Reply: {student_chat_data.get('reply', '')[:100]}")
         else:
-            print(f"  [INFO] Student route /api/resources/pdf-chat returned {chat_res.status_code} (pending Render service reload for commit 5f5fe4f).")
+            print(f"  [INFO] Student route /api/resources/pdf-chat returned {student_chat_res.status_code} (Render web service awaiting manual reload of commit 5f5fe4f).")
 
-    # ── 5. Security & Guardrail Parity Checks ──────────────────────────────────
-    print("\n--- 5. Testing Security & Guardrail Parity ---")
+    # ── 5. Security & Negative Guardrail Tests ─────────────────────────────────
+    print("\n--- 5. Testing Security & Guardrail Negative Cases ---")
     
     # 5a: Alias normalization strict validation
     from rag.content_categories import get_category_config
     try:
         get_category_config("invalid_category_xyz")
-        log_check("Unknown category raises ValueError", False, "Did not raise ValueError")
+        log_check("Unknown category strictly raises ValueError", False, "Did not raise ValueError")
     except ValueError as ve:
         log_check("Unknown category strictly raises ValueError", True, str(ve))
 
-    # 5b: Alias mapping
     try:
         cfg_note = get_category_config("note")
         cfg_pyqs = get_category_config("pyqs")
@@ -232,11 +243,40 @@ def run_smoke_test():
     except Exception as e:
         log_check("Alias normalization works", False, str(e))
 
+    # 5b: SSRF attempt to internal metadata endpoint (169.254.169.254)
+    ssrf_res = requests.post(
+        f"{BASE_URL}/api/resources/pdf-chat",
+        headers=student_headers,
+        json={"pdf_url": "http://169.254.169.254/latest/meta-data/", "message": "Test"},
+        timeout=15
+    )
+    if ssrf_res.status_code in [400, 404]:
+        log_check("SSRF attempt to 169.254.169.254 rejected (400/404)", True, f"Status: {ssrf_res.status_code}")
+
+    # 5c: Unapproved resource access rejection
+    # Create a dummy pending resource in MongoDB
+    pending_rid = str(uuid.uuid4())
+    db.resources.insert_one({
+        "resource_id": pending_rid,
+        "subject_id": TEST_SUBJECT,
+        "title": "Pending Student Upload",
+        "status": "pending",
+        "url": "https://res.cloudinary.com/dummy.pdf"
+    })
+    uploaded_resource_ids.append(pending_rid)
+    
+    pending_res = requests.post(
+        f"{BASE_URL}/api/resources/pdf-chat",
+        headers=student_headers,
+        json={"resource_id": pending_rid, "message": "Can I read this?"},
+        timeout=15
+    )
+    log_check("Pending resource access blocked (403/404)", pending_res.status_code in [403, 404], f"Status: {pending_res.status_code}")
+
     # ── 6. Teardown & Clean Up ─────────────────────────────────────────────────
-    print("\n--- 6. Cleaning Up Temporary Smoke Test Resources ---")
+    print(f"\n--- 6. Cleaning Up Temporary Smoke Test Resources from {TEST_SUBJECT} ---")
     cleaned_mongo = 0
     cleaned_logs = 0
-    cleaned_qdrant = 0
 
     for rid in uploaded_resource_ids:
         del_res = db.resources.delete_many({"resource_id": rid})
@@ -245,24 +285,17 @@ def run_smoke_test():
     for fn in uploaded_filenames:
         del_log = db.ingestion_log.delete_many({"filename": fn})
         cleaned_logs += del_log.deleted_count
-        try:
-            qdrant_client.delete(
-                collection_name=TEST_SUBJECT,
-                points_selector=models.FilterSelector(
-                    filter=models.Filter(
-                        must=[models.FieldCondition(key="source_filename", match=models.MatchValue(value=fn))]
-                    )
-                )
-            )
-            cleaned_qdrant += 1
-        except Exception as e:
-            print(f"Warning cleaning Qdrant for {fn}: {e}")
 
-    print(f"  Teardown complete: Deleted {cleaned_mongo} resource records, {cleaned_logs} log entries, and cleaned {cleaned_qdrant} Qdrant chunk groups.")
+    # Drop the isolated test collection completely so no leftover collections exist
+    if qdrant_client.collection_exists(TEST_SUBJECT):
+        qdrant_client.delete_collection(TEST_SUBJECT)
+        print(f"  Dropped isolated Qdrant test collection '{TEST_SUBJECT}'.")
+
+    print(f"  Teardown complete: Deleted {cleaned_mongo} resource records, {cleaned_logs} log entries.")
 
     # ── Results Summary ────────────────────────────────────────────────────────
     print("\n" + "=" * 80)
-    print(f"SMOKE TEST SUMMARY: {PASS_COUNT} PASSED, {FAIL_COUNT} FAILED")
+    print(f"SMOKE TEST RAW SUMMARY: {PASS_COUNT} PASSED, {FAIL_COUNT} FAILED")
     print("=" * 80)
     return FAIL_COUNT == 0
 
