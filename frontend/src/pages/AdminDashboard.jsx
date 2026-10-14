@@ -743,7 +743,8 @@ function ReviewTab() {
       {previewDoc && (
         <PdfViewerModal
           title={previewDoc.title}
-          pdfUrl={previewDoc.url}
+          pdfUrl={previewDoc.url || previewDoc.file_url}
+          resourceId={previewDoc.resource_id}
           onClose={() => setPreviewDoc(null)}
         />
       )}
@@ -999,7 +1000,8 @@ function AllResourcesTab() {
       {previewDoc && (
         <PdfViewerModal
           title={previewDoc.title}
-          pdfUrl={previewDoc.url}
+          pdfUrl={previewDoc.url || previewDoc.file_url}
+          resourceId={previewDoc.resource_id}
           onClose={() => setPreviewDoc(null)}
         />
       )}
