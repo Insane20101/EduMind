@@ -11,6 +11,7 @@ env/
 __pycache__/
 **/__pycache__/
 *.pyc
+.ruff_cache/
 
 # Local Vector Store & Heavy Local Data
 backend/chroma_data/

@@ -1,8 +1,11 @@
 import os
 import re
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 # Get environment variables
 MONGODB_URI = os.getenv("MONGODB_URI")

@@ -670,11 +670,42 @@ async def suggest_resource(
 
 # ── In-Place PDF Chat & PDF Quiz Generator Endpoints ─────────────────────────
 
+from urllib.parse import urlparse
+
+ALLOWED_PDF_DOMAINS = {
+    "res.cloudinary.com",
+    "cloudinary.com",
+    "edumind-ebk1.onrender.com",
+    "edumind-five.vercel.app",
+    "localhost",
+    "127.0.0.1"
+}
+
+def _is_trusted_pdf_url(url: str) -> bool:
+    """Verifies that remote HTTP requests target trusted Cloudinary CDN or internal domain only."""
+    try:
+        parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            return False
+        hostname = (parsed.hostname or "").lower()
+        return any(hostname == d or hostname.endswith("." + d) for d in ALLOWED_PDF_DOMAINS)
+    except Exception:
+        return False
+
+
 class PdfChatPayload(BaseModel):
     pdf_url: Optional[str] = None
     resource_id: Optional[str] = None
     message: str
     history: Optional[List[dict]] = []
+
+class SingleQuizQuestion(BaseModel):
+    id: int
+    page: int
+    question: str
+    options: List[str]
+    correct_answer: int
+    explanation: str
 
 class PdfQuizPayload(BaseModel):
     pdf_url: Optional[str] = None
@@ -683,7 +714,10 @@ class PdfQuizPayload(BaseModel):
 
 
 async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optional[str]):
-    """Helper to retrieve PDF bytes and extract text page-by-page."""
+    """
+    Retrieves PDF bytes strictly for approved resources, extracts text page-by-page,
+    and returns content_bytes, page_count, page_texts, full_pdf_text, and has_readable_text flag.
+    """
     content_bytes = None
 
     # 1. Direct GridFS / DB lookup if resource_id provided or embedded in URL
@@ -708,6 +742,14 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
             pass
 
         doc = await db.resources.find_one(query)
+        
+        # Access Scope Guard: Only approved resources can be used for interactive AI chat/quiz
+        if doc and doc.get("status") != "approved":
+            raise HTTPException(
+                status_code=403,
+                detail="Access denied: Only approved resources can be accessed for interactive PDF chat or quiz generation."
+            )
+
         if doc and doc.get("file_bytes_cache"):
             content_bytes = doc.get("file_bytes_cache")
         elif doc and doc.get("cloud_file_id"):
@@ -723,15 +765,21 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
         if not content_bytes and doc:
             ext_url = doc.get("url") or doc.get("cloudinary_url")
             if ext_url and ext_url.startswith("http"):
-                try:
-                    resp = requests.get(ext_url, timeout=20)
-                    if resp.status_code == 200 and resp.content:
-                        content_bytes = resp.content
-                except Exception as e:
-                    logger.warning(f"Failed to fetch resource URL {ext_url}: {e}")
+                if not _is_trusted_pdf_url(ext_url):
+                    logger.warning(f"Blocked untrusted resource URL fetch: {ext_url}")
+                else:
+                    try:
+                        resp = requests.get(ext_url, timeout=20)
+                        if resp.status_code == 200 and resp.content:
+                            content_bytes = resp.content
+                    except Exception as e:
+                        logger.warning(f"Failed to fetch trusted resource URL {ext_url}: {e}")
 
-    # 2. External HTTP download fallback
+    # 2. External HTTP download fallback (SSRF-protected)
     if not content_bytes and pdf_url and str(pdf_url).startswith("http"):
+        if not _is_trusted_pdf_url(pdf_url):
+            logger.warning(f"Blocked untrusted external PDF URL fetch attempt: {pdf_url}")
+            raise HTTPException(status_code=400, detail="Invalid PDF URL: Untrusted domain rejected.")
         try:
             resp = requests.get(pdf_url, timeout=20)
             if resp.status_code == 200 and resp.content:
@@ -773,17 +821,30 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
         page_count = 1
 
     full_pdf_text = "\n\n".join(page_texts)
-    return content_bytes, page_count, page_texts, full_pdf_text
+
+    # 4. Guardrail check for readable text layer vs scanned/empty document
+    cleaned_probe = re.sub(r'--- Page \d+ ---|\[Scanned/Diagram Content on Page \d+\]', '', full_pdf_text).strip()
+    has_readable_text = len(cleaned_probe) >= 50
+
+    return content_bytes, page_count, page_texts, full_pdf_text, has_readable_text
 
 
 @router.post("/pdf-chat")
-async def chat_with_pdf(payload: PdfChatPayload):
-    """Interactive in-place Chat with PDF content."""
+@limiter.limit("10/minute")
+async def chat_with_pdf(request: Request, payload: PdfChatPayload):
+    """Interactive in-place Chat with PDF content (Rate-limited, status-guarded)."""
     if not payload.message or not payload.message.strip():
         raise HTTPException(status_code=400, detail="Message is required.")
 
-    _, page_count, _, full_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
+    _, page_count, _, full_text, has_readable_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
     
+    # Refusal Guard: Do not hallucinate on scanned or empty documents
+    if not has_readable_text:
+        return {
+            "reply": "⚠️ No readable text layer was detected in this document (it appears to be a scanned image or empty). Please upload an OCR-processed or text-based PDF to chat with AI.",
+            "page_count": page_count
+        }
+
     truncated_text = full_text[:60000]
 
     history_str = ""
@@ -823,13 +884,20 @@ INSTRUCTIONS:
 
 
 @router.post("/pdf-quiz")
-async def generate_pdf_quiz(payload: PdfQuizPayload):
-    """Generates an in-place interactive quiz strictly based on PDF content with exactly 2 * num_pages questions."""
-    _, page_count, _, full_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
+@limiter.limit("5/minute")
+async def generate_pdf_quiz(request: Request, payload: PdfQuizPayload):
+    """Generates an in-place interactive quiz strictly based on PDF content with Pydantic schema validation."""
+    _, page_count, _, full_text, has_readable_text = await _fetch_pdf_bytes_and_text(payload.pdf_url, payload.resource_id)
     
-    # Requirement: Number of questions = 2 * number of pages that PDF contains
-    target_questions = max(2, min(50, page_count * 2))
+    # Refusal Guard: Refuse scanned documents lacking readable text
+    if not has_readable_text:
+        raise HTTPException(
+            status_code=422,
+            detail="Cannot generate quiz: This document contains only scanned diagrams or images without readable text. Please use an OCR-processed or text-based PDF."
+        )
 
+    # Requirement: Number of questions = 2 * number of pages that PDF contains (between 2 and 50)
+    target_questions = max(2, min(50, page_count * 2))
     truncated_text = full_text[:60000]
 
     prompt = f"""You are an expert university exam question creator.
@@ -882,7 +950,35 @@ STRICT REQUIREMENTS:
         if cleaned.endswith("```"):
             cleaned = cleaned[:-3]
         quiz_data = json.loads(cleaned.strip())
-        return quiz_data
+
+        # Validate schema parity
+        questions_raw = quiz_data.get("questions", [])
+        validated_questions = []
+        for idx, q in enumerate(questions_raw):
+            try:
+                opts = q.get("options", [])
+                if len(opts) < 4:
+                    opts = opts + [f"Option {chr(65 + i)}" for i in range(len(opts), 4)]
+                validated_questions.append({
+                    "id": int(q.get("id", idx + 1)),
+                    "page": int(q.get("page", 1)),
+                    "question": str(q.get("question", f"Question {idx+1}")),
+                    "options": [str(o) for o in opts[:4]],
+                    "correct_answer": int(q.get("correct_answer", 0)) % 4,
+                    "explanation": str(q.get("explanation", "Refer to document text for explanation."))
+                })
+            except Exception:
+                continue
+
+        if not validated_questions:
+            raise ValueError("No questions satisfied validation.")
+
+        return {
+            "pdf_title": quiz_data.get("pdf_title", payload.title or "Course PDF"),
+            "page_count": page_count,
+            "total_questions": len(validated_questions),
+            "questions": validated_questions
+        }
     except Exception as parse_err:
-        logger.warning(f"Failed to parse quiz JSON: {parse_err}. Raw response: {raw_res[:200]}")
-        raise HTTPException(status_code=500, detail="Failed to parse quiz JSON from AI model. Please try again.")
+        logger.warning(f"Failed to parse or validate quiz JSON: {parse_err}. Raw response: {raw_res[:200]}")
+        raise HTTPException(status_code=500, detail="Failed to parse valid quiz JSON from AI model. Please try again.")
