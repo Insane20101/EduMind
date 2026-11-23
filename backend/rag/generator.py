@@ -15,49 +15,77 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def _resolve_google_model(model_name: str) -> str:
-    """Map internal model names to valid LangChain Google model identifiers."""
-    if not model_name or "3.6" in model_name:
-        return "gemini-1.5-flash"
+    """Map internal or legacy model names to valid LangChain Google model identifiers."""
+    if not model_name or "1.5" in model_name or "3.6" in model_name:
+        return "gemini-3.5-flash"
     if not model_name.startswith("gemini-"):
-        return "gemini-1.5-flash"
+        return "gemini-3.5-flash"
     return model_name
 
-def get_primary_llm(model_name: str = "gemini-1.5-flash", temperature: float = 0.3):
+def get_primary_llm(model_name: str = "gemini-3.5-flash", temperature: float = 0.3):
     """
-    Returns primary ChatGoogleGenerativeAI model instance.
+    Returns primary ChatGoogleGenerativeAI model instance with instant failover max_retries=0.
     """
     if GEMINI_API_KEY:
         resolved_model = _resolve_google_model(model_name)
         return ChatGoogleGenerativeAI(
             model=resolved_model,
             google_api_key=GEMINI_API_KEY,
-            temperature=temperature
+            temperature=temperature,
+            max_retries=0,
+            timeout=10
         )
     elif OPENAI_API_KEY:
         return ChatOpenAI(
             model="gpt-4o-mini",
             api_key=OPENAI_API_KEY,
-            temperature=temperature
+            temperature=temperature,
+            max_retries=0,
+            timeout=10
         )
     raise ValueError("No valid LLM API key (GEMINI_API_KEY or OPENAI_API_KEY) found.")
 
 def get_fallback_llms(temperature: float = 0.3):
     """
-    Returns fallback LLM models (ChatGroq / ChatOpenAI).
+    Returns fallback LLM models (ChatGoogleGenerativeAI lite, ChatGroq, ChatOpenAI).
     """
     fallbacks = []
+    # 1. Gemini Flash Lite secondary fallback
+    if GEMINI_API_KEY:
+        try:
+            fallbacks.append(ChatGoogleGenerativeAI(
+                model="gemini-3.5-flash-lite",
+                google_api_key=GEMINI_API_KEY,
+                temperature=temperature,
+                max_retries=1
+            ))
+        except Exception:
+            pass
+
+    # 2. Ultra-fast high-throughput Groq free tier models
     if GROQ_API_KEY:
-        groq_models = ['llama-3.3-70b-versatile', 'llama3-70b-8192', 'mixtral-8x7b-32768']
+        groq_models = [
+            'qwen/qwen3.8-27b',
+            'openai/gpt-oss-120b',
+            'openai/gpt-oss-20b',
+            'allam-2-7b'
+        ]
         for m in groq_models:
             try:
                 fallbacks.append(ChatGroq(model=m, groq_api_key=GROQ_API_KEY, temperature=temperature))
             except Exception: 
                 pass
+
+    # 3. OpenAI fallback
     if OPENAI_API_KEY:
-        fallbacks.append(ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=temperature))
+        try:
+            fallbacks.append(ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=temperature, max_retries=1))
+        except Exception:
+            pass
+
     return fallbacks
 
-def get_llm_with_fallback(model_name: str = "gemini-1.5-flash", temperature: float = 0.3):
+def get_llm_with_fallback(model_name: str = "gemini-3.5-flash", temperature: float = 0.3):
     """
     Returns a LangChain LLM equipped with fallbacks using .with_fallbacks()
     """
@@ -67,7 +95,7 @@ def get_llm_with_fallback(model_name: str = "gemini-1.5-flash", temperature: flo
         return primary.with_fallbacks(fallbacks)
     return primary
 
-def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini-1.5-flash', response_schema=None) -> str | None:
+def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini-3.5-flash', response_schema=None) -> str | None:
     """
     Generates text or JSON content using LangChain LCEL runnable chains with fallback support.
     If response_schema (Pydantic model) is passed, uses .with_structured_output().
@@ -97,19 +125,36 @@ def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini
             result = chain.invoke({"input": prompt})
             return result.strip() if result else None
     except Exception as e:
-        print(f"  LangChain generation error: {e}")
-        try:
-            fallbacks = get_fallback_llms()
-            if fallbacks:
-                prompt_template = ChatPromptTemplate.from_messages([("user", "{input}")])
-                chain = prompt_template | fallbacks[0] | StrOutputParser()
-                res = chain.invoke({"input": prompt})
-                return res.strip() if res else None
-        except Exception as e2:
-            print(f"  LangChain secondary fallback error: {e2}")
+        print(f"  LangChain generation primary error: {e}")
+        fallbacks = get_fallback_llms()
+        for fb in fallbacks:
+            try:
+                if response_schema:
+                    structured_fb = fb.with_structured_output(response_schema)
+                    prompt_template = ChatPromptTemplate.from_messages([
+                        ("system", "You are an educational assessment assistant. Produce output strictly conforming to the requested schema."),
+                        ("user", "{input}")
+                    ])
+                    chain = prompt_template | structured_fb
+                    res = chain.invoke({"input": prompt})
+                    if hasattr(res, "model_dump_json"):
+                        return res.model_dump_json()
+                    elif isinstance(res, dict):
+                        import json
+                        return json.dumps(res)
+                    return str(res)
+                else:
+                    prompt_template = ChatPromptTemplate.from_messages([("user", "{input}")])
+                    chain = prompt_template | fb | StrOutputParser()
+                    res = chain.invoke({"input": prompt})
+                    if res and res.strip():
+                        return res.strip()
+            except Exception as fb_err:
+                print(f"  Generation fallback failed: {fb_err}")
+                continue
         return None
 
-def generate_stream(prompt: str, model: str = 'gemini-1.5-flash'):
+def generate_stream(prompt: str, model: str = 'gemini-3.5-flash'):
     """
     Streams text content from LangChain runnable chain, yielding text chunks as they arrive.
     """
@@ -128,18 +173,22 @@ def generate_stream(prompt: str, model: str = 'gemini-1.5-flash'):
         if streamed_any:
             return
     except Exception as e:
-        print(f"  LangChain streaming error: {e}")
-        try:
-            fallbacks = get_fallback_llms()
-            if fallbacks:
+        print(f"  LangChain streaming primary error: {e}")
+        fallbacks = get_fallback_llms()
+        for fb in fallbacks:
+            try:
                 prompt_template = ChatPromptTemplate.from_messages([("user", "{input}")])
-                chain = prompt_template | fallbacks[0] | StrOutputParser()
+                chain = prompt_template | fb | StrOutputParser()
+                streamed_any = False
                 for chunk in chain.stream({"input": prompt}):
                     if chunk:
+                        streamed_any = True
                         yield chunk
-                return
-        except Exception as e2:
-            print(f"  LangChain secondary streaming fallback error: {e2}")
-            yield "API limit reached. Please wait a few seconds and try asking again!"
+                if streamed_any:
+                    return
+            except Exception as fb_err:
+                print(f"  Streaming fallback failed: {fb_err}")
+                continue
+        yield "API limit reached. Please wait a few seconds and try asking again!"
 
 
