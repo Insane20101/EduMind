@@ -47,14 +47,33 @@ function sanitizeMermaidChart(rawChart) {
   if (!rawChart) return '';
   let chart = String(rawChart).trim();
 
+  // Strip markdown fences
   chart = chart.replace(/^```(?:mermaid)?/i, '').replace(/```$/, '').trim();
 
+  // HTML entities
   chart = chart
     .replace(/&gt;/g, '>')
     .replace(/&lt;/g, '<')
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'");
+
+  // Ensure unquoted brackets are safely quoted: Node[Label (e.g. text)] -> Node["Label (e.g. text)"]
+  chart = chart.replace(/([A-Za-z0-9_]+)\[([^"\]\n]+)\]/g, (m, id, label) => {
+    const cleanLabel = label.replace(/"/g, "'").trim();
+    return `${id}["${cleanLabel}"]`;
+  });
+
+  // Ensure unquoted parentheses are safely quoted: Node(Label text) -> Node(["Label text"])
+  chart = chart.replace(/([A-Za-z0-9_]+)\(([^"\)\n]+)\)/g, (m, id, label) => {
+    const cleanLabel = label.replace(/"/g, "'").trim();
+    return `${id}(["${cleanLabel}"])`;
+  });
+
+  // Strip markdown bold/italics inside node labels
+  chart = chart.replace(/\["([^"]*)"\]/g, (m, txt) => {
+    return `["${txt.replace(/\*\*/g, '').replace(/\*/g, '')}"]`;
+  });
 
   const lines = chart.split('\n');
   const processedLines = [];
@@ -63,6 +82,7 @@ function sanitizeMermaidChart(rawChart) {
     let trimmed = line.trim();
     if (!trimmed) continue;
 
+    // Balance odd quotes on individual lines
     const quoteCount = (trimmed.match(/"/g) || []).length;
     if (quoteCount % 2 !== 0) {
       trimmed += '"';
@@ -84,6 +104,70 @@ function sanitizeMermaidChart(rawChart) {
   }
 
   return result;
+}
+
+function repairMermaidSyntax(rawCode) {
+  if (!rawCode) return 'flowchart TD\n  Start["Select Course Subject"] --> Explore["Explore Syllabus & Notes"] --> Ask["Ask AI Academic Questions"]';
+  
+  const lines = String(rawCode).split('\n');
+  const edgeLines = [];
+  const extractedNodes = new Map();
+  let nodeCounter = 1;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (trimmed.startsWith('flowchart') || trimmed.startsWith('graph') || trimmed.startsWith('subgraph') || trimmed === 'end') continue;
+
+    if (trimmed.includes('-->') || trimmed.includes('---') || trimmed.includes('==>')) {
+      const parts = trimmed.split(/\s*-->\s*|\s*---\s*|\s*==>\s*/);
+      if (parts.length >= 2) {
+        const stepIds = [];
+        for (const p of parts) {
+          const nodeMatch = p.match(/([A-Za-z0-9_]+)(?:\["?([^"\]]*)"?\]|\("?([^"\)]*)"?\)|\(\["?([^"\]]*)"?\]\))?/);
+          if (nodeMatch) {
+            const rawId = nodeMatch[1] || `Node${nodeCounter++}`;
+            const cleanId = rawId.replace(/[^A-Za-z0-9_]/g, '') || `N${nodeCounter++}`;
+            const label = (nodeMatch[2] || nodeMatch[3] || nodeMatch[4] || cleanId).replace(/["`]/g, '').trim();
+            extractedNodes.set(cleanId, label.slice(0, 45) || cleanId);
+            stepIds.push(cleanId);
+          }
+        }
+        if (stepIds.length >= 2) {
+          for (let i = 0; i < stepIds.length - 1; i++) {
+            edgeLines.push(`  ${stepIds[i]} --> ${stepIds[i + 1]}`);
+          }
+        }
+      }
+    }
+  }
+
+  if (edgeLines.length > 0 && extractedNodes.size > 0) {
+    let repaired = 'flowchart TD\n';
+    extractedNodes.forEach((label, id) => {
+      repaired += `  ${id}["${label}"]\n`;
+    });
+    repaired += edgeLines.join('\n');
+    return repaired;
+  }
+
+  const phrases = lines
+    .map(l => l.replace(/[^A-Za-z0-9\s]/g, ' ').trim())
+    .filter(l => l.length > 3 && l.length < 50 && !l.toLowerCase().startsWith('flowchart') && !l.toLowerCase().startsWith('graph'))
+    .slice(0, 4);
+
+  if (phrases.length >= 2) {
+    let repaired = 'flowchart TD\n';
+    phrases.forEach((phrase, idx) => {
+      repaired += `  Step${idx + 1}["${phrase}"]\n`;
+      if (idx > 0) {
+        repaired += `  Step${idx} --> Step${idx + 1}\n`;
+      }
+    });
+    return repaired;
+  }
+
+  return 'flowchart TD\n  Start["Select Course Subject"] --> Explore["Explore Syllabus & Notes"] --> Ask["Ask AI Academic Questions"]';
 }
 
 export default function Mermaid({ chart }) {
@@ -111,9 +195,11 @@ export default function Mermaid({ chart }) {
 
     svgEl.style.maxWidth = '100%';
     svgEl.style.margin = '0 auto';
-    svgEl.style.padding = '12px';
+    svgEl.style.padding = '8px';
     svgEl.style.background = '#ffffff';
     svgEl.style.overflow = 'visible';
+    svgEl.style.boxSizing = 'border-box';
+    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
     if (isModal) {
       svgEl.style.maxHeight = '65vh';
@@ -122,6 +208,7 @@ export default function Mermaid({ chart }) {
       svgEl.style.height = 'auto';
     } else {
       svgEl.style.maxHeight = '340px';
+      svgEl.style.width = '100%';
       svgEl.style.height = 'auto';
     }
 
@@ -202,11 +289,13 @@ export default function Mermaid({ chart }) {
     });
   };
 
-  const renderDiagram = () => {
+  const renderDiagram = (isRetry = false) => {
     if (!chart) return;
     setIsRendering(true);
-    const cleaned = sanitizeMermaidChart(chart);
+    setHasError(false);
 
+    // If retry is explicitly requested, attempt auto-repaired syntax directly
+    const cleaned = isRetry ? repairMermaidSyntax(chart) : sanitizeMermaidChart(chart);
     const id = `mermaid-svg-${Math.floor(Math.random() * 10000000)}`;
 
     mermaid.render(id, cleaned)
@@ -224,7 +313,10 @@ export default function Mermaid({ chart }) {
         const errEl = document.getElementById(`d${id}`) || document.getElementById(id);
         if (errEl) errEl.remove();
 
-        const fallbackCode = cleaned.replace(/\["([^"]*)"\]/g, (m, txt) => `["${txt.replace(/[:;,{}()]/g, ' ')}"]`);
+        // Stage 2: Relaxed character replacement fallback
+        const fallbackCode = cleaned
+          .replace(/\["([^"]*)"\]/g, (m, txt) => `["${txt.replace(/[:;,{}()&/\\]/g, ' ').trim()}"]`)
+          .replace(/\(([^)]*)\)/g, (m, txt) => `(["${txt.replace(/[:;,{}()&/\\]/g, ' ').trim()}"])`);
         const fallbackId = `mermaid-fallback-${Math.floor(Math.random() * 10000000)}`;
 
         mermaid.render(fallbackId, fallbackCode)
@@ -242,17 +334,37 @@ export default function Mermaid({ chart }) {
             const errEl2 = document.getElementById(`d${fallbackId}`) || document.getElementById(fallbackId);
             if (errEl2) errEl2.remove();
 
-            setIsRendering(false);
-            if (!lastValidSvgRef.current) {
-              setHasError(true);
-              setIsRendered(false);
-            }
+            // Stage 3: Guaranteed Synthesizer Repair
+            const repairedCode = repairMermaidSyntax(chart);
+            const repairId = `mermaid-repair-${Math.floor(Math.random() * 10000000)}`;
+
+            mermaid.render(repairId, repairedCode)
+              .then((res3) => {
+                lastValidSvgRef.current = res3.svg;
+                setHasError(false);
+                setIsRendered(true);
+                setIsRendering(false);
+                if (containerRef.current) {
+                  containerRef.current.innerHTML = res3.svg;
+                  applyUnfilledLightStyles(containerRef.current, false);
+                }
+              })
+              .catch(() => {
+                const errEl3 = document.getElementById(`d${repairId}`) || document.getElementById(repairId);
+                if (errEl3) errEl3.remove();
+
+                setIsRendering(false);
+                if (!lastValidSvgRef.current) {
+                  setHasError(true);
+                  setIsRendered(false);
+                }
+              });
           });
       });
   };
 
   useEffect(() => {
-    renderDiagram();
+    renderDiagram(renderKey > 0);
   }, [chart, renderKey]);
 
   // Re-render trigger
@@ -262,7 +374,7 @@ export default function Mermaid({ chart }) {
     setIsRendered(false);
     setIsRendering(true);
     setRenderKey(k => k + 1);
-    toast.success("Re-rendering diagram...", { id: "mermaid-retry" });
+    toast.success("Repairing and re-rendering diagram...", { id: "mermaid-retry" });
   };
 
   // Open Fullscreen Modal
@@ -320,24 +432,24 @@ export default function Mermaid({ chart }) {
 
   return (
     <>
-      <div className="my-3 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all overflow-hidden text-slate-900 group">
-        {/* Header Bar */}
-        <div className="px-3.5 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-2 text-indigo-700 font-bold text-[11px] uppercase tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-            <span>📊 Flowchart / Process Diagram</span>
+      <div className="my-2.5 w-full max-w-full rounded-xl sm:rounded-2xl border border-slate-200 bg-white shadow-xs hover:shadow-sm transition-all overflow-hidden text-slate-900 group box-border">
+        {/* Responsive Header Bar */}
+        <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-1.5 w-full min-w-0 box-border">
+          <div className="flex items-center gap-1.5 text-indigo-700 font-bold text-[10px] sm:text-[11px] uppercase tracking-wider min-w-0 truncate">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-indigo-600 animate-pulse shrink-0" />
+            <span className="truncate">📊 Flowchart</span>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 shrink-0">
             {/* Retry / Re-render Button */}
             <button
               type="button"
               onClick={handleRetry}
-              className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-white hover:bg-indigo-50 border border-slate-200 rounded-lg transition-all shadow-xs"
+              className="flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-white hover:bg-indigo-50 border border-slate-200 rounded-lg transition-all shadow-2xs"
               title="Re-render Diagram"
             >
-              <RefreshCw size={13} className={isRendering ? "animate-spin text-indigo-600" : ""} />
-              <span>{isRendering ? "Rendering..." : "Re-render"}</span>
+              <RefreshCw size={12} className={isRendering ? "animate-spin text-indigo-600" : ""} />
+              <span className="hidden xs:inline">{isRendering ? "Rendering..." : "Re-render"}</span>
             </button>
 
             {/* View Fullscreen Modal */}
@@ -345,11 +457,11 @@ export default function Mermaid({ chart }) {
               <button
                 type="button"
                 onClick={openModal}
-                className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-indigo-700 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-all shadow-xs"
+                className="flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs font-semibold text-indigo-700 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-all shadow-2xs"
                 title="Expand & Zoom Diagram"
               >
-                <Maximize2 size={13} />
-                <span>Fullscreen</span>
+                <Maximize2 size={12} />
+                <span className="hidden xs:inline">Fullscreen</span>
               </button>
             )}
 
@@ -360,54 +472,54 @@ export default function Mermaid({ chart }) {
               className="p-1 text-slate-400 hover:text-slate-700 rounded-md transition-colors"
               title={showCode ? "Hide Code" : "View Code"}
             >
-              <Code size={14} />
+              <Code size={13} />
             </button>
           </div>
         </div>
 
         {/* Crisp White Render Area */}
         <div 
-          className="p-3 flex flex-col items-center justify-center w-full bg-white relative min-h-[100px] max-h-[380px] overflow-hidden cursor-zoom-in group/canvas"
+          className="p-2 sm:p-3 flex flex-col items-center justify-center w-full max-w-full bg-white relative min-h-[90px] max-h-[380px] overflow-hidden cursor-zoom-in group/canvas box-border"
           onClick={openModal}
         >
           {/* SVG Diagram Canvas */}
           <div 
             ref={containerRef} 
-            className="mermaid-render-area w-full flex justify-center text-slate-900 [&_svg]:max-h-[340px] [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:bg-white" 
+            className="mermaid-render-area w-full max-w-full overflow-x-auto overflow-y-hidden flex justify-center text-slate-900 [&_svg]:max-h-[340px] [&_svg]:max-w-full [&_svg]:w-full [&_svg]:h-auto [&_svg]:bg-white" 
           />
 
           {/* Click to expand hover overlay badge */}
           {(isRendered || lastValidSvgRef.current) && (
-            <div className="absolute top-3 right-3 opacity-0 group-hover/canvas:opacity-100 transition-opacity bg-slate-900/80 text-white text-[11px] font-medium px-2.5 py-1 rounded-full backdrop-blur-xs shadow-md pointer-events-none flex items-center gap-1.5">
-              <Maximize2 size={12} />
-              <span>Click to view large &amp; zoom</span>
+            <div className="absolute top-2.5 right-2.5 opacity-0 group-hover/canvas:opacity-100 transition-opacity bg-slate-900/80 text-white text-[10px] sm:text-[11px] font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-xs shadow-md pointer-events-none flex items-center gap-1">
+              <Maximize2 size={11} />
+              <span>Click to zoom</span>
             </div>
           )}
 
-          {/* Rendering or Failed State Handling */}
+          {/* Rendering or Failed State Handling - Guaranteed 100% Responsive */}
           {!isRendered && (
-            <div className="py-6 px-4 flex flex-col items-center justify-center text-center space-y-3">
+            <div className="py-4 px-2 sm:px-4 flex flex-col items-center justify-center text-center space-y-2.5 w-full max-w-full min-w-0 box-border">
               {isRendering ? (
-                <div className="flex items-center gap-2 text-xs font-semibold text-indigo-600">
+                <div className="flex items-center justify-center gap-2 text-xs font-semibold text-indigo-600 py-3">
                   <RefreshCw size={14} className="animate-spin" />
                   <span>Rendering diagram...</span>
                 </div>
               ) : hasError ? (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 max-w-md text-amber-900 space-y-2">
-                  <div className="flex items-center justify-center gap-2 text-amber-700 font-bold text-xs">
-                    <AlertCircle size={15} />
+                <div className="w-full max-w-full box-border bg-amber-50/90 border border-amber-200/90 rounded-xl p-3 sm:p-4 text-amber-900 space-y-2 text-center">
+                  <div className="flex items-center justify-center gap-1.5 text-amber-700 font-bold text-xs">
+                    <AlertCircle size={14} className="shrink-0" />
                     <span>Diagram Rendering Notice</span>
                   </div>
-                  <p className="text-xs text-amber-800">
-                    The diagram formatting was interrupted or incomplete. Click below to re-render.
+                  <p className="text-[11px] sm:text-xs text-amber-800 leading-relaxed break-words max-w-xs mx-auto">
+                    The diagram formatting was interrupted or incomplete. Click below to repair.
                   </p>
                   <button
                     type="button"
                     onClick={handleRetry}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition-all mx-auto active:scale-95"
                   >
-                    <RefreshCw size={13} />
-                    <span>Re-render Diagram</span>
+                    <RefreshCw size={12} className={isRendering ? "animate-spin" : ""} />
+                    <span>{isRendering ? "Repairing..." : "Re-render Diagram"}</span>
                   </button>
                 </div>
               ) : null}
@@ -416,8 +528,8 @@ export default function Mermaid({ chart }) {
 
           {/* Raw Mermaid Syntax Collapsible View */}
           {showCode && (
-            <div className="w-full mt-3 p-3 bg-slate-900 rounded-xl text-slate-200 font-mono text-xs overflow-x-auto border border-slate-800">
-              <pre>{chart}</pre>
+            <div className="w-full max-w-full mt-2.5 p-2.5 sm:p-3 bg-slate-900 rounded-xl text-slate-200 font-mono text-[11px] sm:text-xs overflow-x-auto border border-slate-800 box-border">
+              <pre className="whitespace-pre-wrap break-words">{chart}</pre>
             </div>
           )}
         </div>

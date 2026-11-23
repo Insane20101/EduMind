@@ -95,7 +95,11 @@ const MarkdownComponents = {
   code({node, inline, className, children, ...props}) {
     const match = /language-(\w+)/.exec(className || '');
     if (!inline && match && match[1] === 'mermaid') {
-      return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+      return (
+        <div className="w-full max-w-full min-w-0 overflow-hidden my-1 box-border">
+          <Mermaid chart={String(children).replace(/\n$/, '')} />
+        </div>
+      );
     }
     return <code className={className} {...props}>{children}</code>;
   }
@@ -498,8 +502,8 @@ export default function Chatbar() {
               <div 
                 key={idx} 
                 className={cn(
-                  "flex flex-col max-w-[88%]", 
-                  msg.role === 'user' ? "self-end items-end" : "self-start items-start"
+                  "flex flex-col max-w-[95%] sm:max-w-[85%] min-w-0", 
+                  msg.role === 'user' ? "self-end items-end" : "self-start items-start w-full sm:w-auto"
                 )}
               >
                 {msg.role === 'ai' && (
@@ -525,7 +529,7 @@ export default function Chatbar() {
 
                 <div 
                   className={cn(
-                    "px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-xs", 
+                    "px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl text-sm leading-relaxed shadow-xs w-full max-w-full min-w-0 overflow-hidden box-border break-words", 
                     msg.role === 'user' 
                       ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-none" 
                       : "bg-white text-slate-800 rounded-bl-none border border-slate-200/80 shadow-sm"
@@ -539,9 +543,9 @@ export default function Chatbar() {
                   )}
 
                   {msg.role === 'user' ? (
-                    <p className="text-white font-medium leading-relaxed whitespace-pre-wrap m-0 text-sm select-text">{msg.content}</p>
+                    <p className="text-white font-medium leading-relaxed whitespace-pre-wrap m-0 text-sm select-text break-words">{msg.content}</p>
                   ) : (
-                    <div className="prose prose-sm max-w-none">
+                    <div className="prose prose-sm max-w-none w-full min-w-0 overflow-hidden break-words">
                       <ReactMarkdown 
                         components={MarkdownComponents}
                         remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]} 

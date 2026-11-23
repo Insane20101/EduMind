@@ -105,7 +105,11 @@ const MarkdownComponents = {
   code({node, inline, className, children, ...props}) {
     const match = /language-(\w+)/.exec(className || '');
     if (!inline && match && match[1] === 'mermaid') {
-      return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+      return (
+        <div className="w-full max-w-full min-w-0 overflow-hidden my-1 box-border">
+          <Mermaid chart={String(children).replace(/\n$/, '')} />
+        </div>
+      );
     }
     return inline ? (
       <code className="bg-slate-800 text-indigo-300 px-1.5 py-0.5 rounded text-[11px] font-mono border border-slate-700/50" {...props}>
@@ -1101,14 +1105,14 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
                         )}
 
                         <div
-                          className={`max-w-[90%] rounded-2xl p-3 shadow-md ${
+                          className={`max-w-[95%] sm:max-w-[90%] w-full sm:w-auto min-w-0 overflow-hidden box-border break-words rounded-2xl p-3 shadow-md ${
                             msg.role === 'user'
                               ? 'bg-indigo-600 text-white rounded-tr-none'
                               : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'
                           }`}
                         >
                           {msg.role === 'assistant' ? (
-                            <div className="text-xs text-slate-200 leading-relaxed space-y-1 select-text">
+                            <div className="text-xs text-slate-200 leading-relaxed space-y-1 select-text w-full min-w-0 overflow-hidden break-words">
                               <ReactMarkdown
                                 remarkPlugins={[remarkGfm, remarkMath]}
                                 rehypePlugins={[rehypeKatex, rehypeRaw]}
