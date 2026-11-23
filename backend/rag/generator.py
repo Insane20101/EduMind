@@ -51,7 +51,7 @@ def get_fallback_llms(temperature: float = 0.3):
         for m in groq_models:
             try:
                 fallbacks.append(ChatGroq(model=m, groq_api_key=GROQ_API_KEY, temperature=temperature))
-            except Exception:
+            except Exception: 
                 pass
     if OPENAI_API_KEY:
         fallbacks.append(ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=temperature))

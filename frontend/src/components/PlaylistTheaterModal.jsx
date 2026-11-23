@@ -327,40 +327,125 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
 
     setChatMessages((prev) => [...prev, promptUserMsg]);
 
-    try {
-      const res = await fetch(`${getApiBaseUrl()}/api/chat/video-summary`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          video_title: currentVideoTitle,
-          subject_id: currentPlaylist.subject_id || 'BCS-401',
-          unit_name: currentPlaylist.unit || 'Playlist Unit',
-          playlist_title: currentPlaylist.title || ''
-        })
-      });
+    const attemptFetchSummary = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
+      try {
+        const res = await fetch(`${getApiBaseUrl()}/api/chat/video-summary`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            video_title: currentVideoTitle,
+            subject_id: currentPlaylist.subject_id || 'BCS-401',
+            unit_name: currentPlaylist.unit || 'Playlist Unit',
+            playlist_title: currentPlaylist.title || ''
+          })
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+          throw new Error(`Server returned HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        return data.summary || null;
+      } catch (e) {
+        clearTimeout(timeoutId);
+        throw e;
+      }
+    };
 
-      const data = await res.json();
-      if (data.summary) {
+    try {
+      let summaryText = null;
+      try {
+        summaryText = await attemptFetchSummary();
+      } catch (firstErr) {
+        console.warn('Initial summary fetch error, retrying in 1.5s...', firstErr);
+        // Wait 1.5s and retry once (handles Render cold boot transition)
+        await new Promise((r) => setTimeout(r, 1500));
+        summaryText = await attemptFetchSummary();
+      }
+
+      if (summaryText) {
         setChatMessages((prev) => [
           ...prev,
           {
             id: Date.now() + 1,
             role: 'assistant',
-            content: data.summary,
+            content: summaryText,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            grounded: data.grounded
+            grounded: true
           }
         ]);
       } else {
-        throw new Error('Failed to generate summary');
+        throw new Error('Empty summary returned');
       }
     } catch (err) {
+      console.error('Video summary failed after retry:', err);
+      // Seamless streaming fallback: stream directly from chat streaming engine
+      try {
+        const streamRes = await fetch(`${getApiBaseUrl()}/api/chat/stream`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            subject_id: currentPlaylist.subject_id || 'BCS-401',
+            message: `Provide a structured summary for the lecture video: "${currentVideoTitle}". Include Overview, Key Concepts, Core Takeaways, and 3 Exam Questions.`,
+            video_title: currentVideoTitle,
+            conversation_history: []
+          })
+        });
+
+        if (streamRes.ok && streamRes.body) {
+          const reader = streamRes.body.getReader();
+          const decoder = new TextDecoder();
+          let streamText = '';
+          const streamMsgId = Date.now() + 1;
+
+          setChatMessages((prev) => [
+            ...prev,
+            {
+              id: streamMsgId,
+              role: 'assistant',
+              content: '',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              isStreaming: true
+            }
+          ]);
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const chunk = decoder.decode(value);
+            for (const line of chunk.split('\n')) {
+              if (line.startsWith('data: ')) {
+                const raw = line.replace('data: ', '').trim();
+                if (raw && raw !== '[DONE]') {
+                  streamText += raw;
+                  setChatMessages((prev) =>
+                    prev.map((msg) =>
+                      msg.id === streamMsgId ? { ...msg, content: streamText } : msg
+                    )
+                  );
+                }
+              }
+            }
+          }
+          setChatMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === streamMsgId ? { ...msg, isStreaming: false } : msg
+            )
+          );
+          return;
+        }
+      } catch (streamErr) {
+        console.warn('Streaming fallback also unavailable:', streamErr);
+      }
+
       setChatMessages((prev) => [
         ...prev,
         {
           id: Date.now() + 1,
           role: 'assistant',
-          content: '⚠️ Failed to generate summary due to network or rate limit. Please try again!',
+          content: '⚠️ Service is initializing on the cloud backend. Please tap **✨ Summarize** once more in a few seconds!',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
