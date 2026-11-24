@@ -124,7 +124,7 @@ Your task is to answer the user's question using your general knowledge (includi
 IMPORTANT: You MUST start your response EXACTLY with this friendly reminder, followed by two newlines, then your actual answer:
 "I'm your EduMind AI teaching assistant! To get accurate and helpful answers based on your course materials, please **select a specific subject** from the homepage first. I can help you better when I know exactly what you're studying!"
 
-Include Mermaid flowcharts whenever possible to explain concepts. MANDATORY DIAGRAM RULE: If your text refers to or promises a diagram or flowchart (e.g. "Below is the diagram", "Here is the flowchart"), you MUST include the complete ```mermaid ... ``` code block. Never claim a diagram is provided without outputting the ```mermaid code block. When generating Mermaid diagrams: ALWAYS start with 'flowchart TD'. ALWAYS quote every node label inside double quotes (e.g. A["Step One"] --> B["Step Two"]). Never put raw parentheses, colons, slashes, or markdown symbols inside node labels unless enclosed in double quotes. Keep node IDs simple alphanumeric characters (A, B, C, Step1, Step2). DO NOT provide unsolicited or arbitrary examples of mathematical equations unless requested.
+Include Mermaid flowcharts whenever possible to explain concepts. MANDATORY DIAGRAM RULE: If your text refers to or promises a diagram or flowchart (e.g. "Below is the diagram", "Here is the flowchart"), you MUST include the complete ```mermaid ... ``` code block. Never claim a diagram is provided without outputting the ```mermaid code block. When generating Mermaid diagrams: ALWAYS start with 'flowchart TD'. ALWAYS assign an explicit, descriptive label inside double quotes to EVERY node (e.g. Step1["Step One: Request Intake"] --> Step2["Step Two: Verification"]). NEVER output bare letters or unlabelled intermediate node IDs like A --> B --> C without descriptive labels ["..."] for each node. Never put raw parentheses, colons, slashes, or markdown symbols inside node labels unless enclosed in double quotes. DO NOT provide unsolicited or arbitrary examples of mathematical equations unless requested.
 
 Conversation History:
 {history_text if history_text else "None"}
@@ -196,7 +196,7 @@ Your task is to answer the user's question using your general knowledge (includi
 IMPORTANT: You MUST start your response EXACTLY with this friendly reminder, followed by two newlines, then your actual answer:
 "I'm your EduMind AI teaching assistant! To get accurate and helpful answers based on your course materials, please **select a specific subject** from the homepage first. I can help you better when I know exactly what you're studying!"
 
-Include Mermaid flowcharts whenever possible to explain concepts. MANDATORY DIAGRAM RULE: If your text refers to or promises a diagram or flowchart (e.g. "Below is the diagram", "Here is the flowchart"), you MUST include the complete ```mermaid ... ``` code block. Never claim a diagram is provided without outputting the ```mermaid code block. When generating Mermaid diagrams: ALWAYS start with 'flowchart TD'. ALWAYS quote every node label inside double quotes (e.g. A["Step One"] --> B["Step Two"]). Never put raw parentheses, colons, slashes, or markdown symbols inside node labels unless enclosed in double quotes. Keep node IDs simple alphanumeric characters (A, B, C, Step1, Step2). DO NOT provide unsolicited or arbitrary examples of mathematical equations unless requested.
+Include Mermaid flowcharts whenever possible to explain concepts. MANDATORY DIAGRAM RULE: If your text refers to or promises a diagram or flowchart (e.g. "Below is the diagram", "Here is the flowchart"), you MUST include the complete ```mermaid ... ``` code block. Never claim a diagram is provided without outputting the ```mermaid code block. When generating Mermaid diagrams: ALWAYS start with 'flowchart TD'. ALWAYS assign an explicit, descriptive label inside double quotes to EVERY node (e.g. Step1["Step One: Request Intake"] --> Step2["Step Two: Verification"]). NEVER output bare letters or unlabelled intermediate node IDs like A --> B --> C without descriptive labels ["..."] for each node. Never put raw parentheses, colons, slashes, or markdown symbols inside node labels unless enclosed in double quotes. DO NOT provide unsolicited or arbitrary examples of mathematical equations unless requested.
 
 Conversation History:
 {history_text if history_text else "None"}
@@ -352,7 +352,7 @@ FORMATTING INSTRUCTIONS:
                     except Exception as ve:
                         logger.warning(f"OpenAI Vision failed: {ve}")
 
-                # 2. Try Google GenAI SDK Vision (gemini-3.5-flash)
+                # 2. Try Google GenAI SDK Vision (gemini-2.5-flash)
                 if not answer and (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
                     try:
                         from google import genai
@@ -361,7 +361,7 @@ FORMATTING INSTRUCTIONS:
                         gclient = genai.Client(api_key=gkey)
                         part = types.Part.from_bytes(data=content_bytes, mime_type=mime_type)
                         gres = gclient.models.generate_content(
-                            model="gemini-3.5-flash",
+                            model="gemini-2.5-flash",
                             contents=[part, vision_prompt]
                         )
                         if gres and gres.text:

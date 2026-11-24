@@ -125,7 +125,7 @@ def extract_text_from_pdf(content_bytes: bytes, filename: str) -> str:
                             try:
                                 from langchain_google_genai import ChatGoogleGenerativeAI
                                 from langchain_core.messages import HumanMessage
-                                llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash-lite", google_api_key=gemini_key)
+                                llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=gemini_key)
                                 res = llm.invoke([HumanMessage(content=[
                                     {"type": "text", "text": "Extract all readable text, formulas, and diagrams from this scanned document page verbatim."},
                                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}

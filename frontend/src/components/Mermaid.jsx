@@ -75,8 +75,22 @@ function sanitizeMermaidChart(rawChart) {
     return `["${txt.replace(/\*\*/g, '').replace(/\*/g, '')}"]`;
   });
 
+  // Collect all explicitly labeled nodes
+  const labeledNodes = new Map();
+  const nodeDefRegex = /([A-Za-z0-9_]+)\s*(?:\["([^"]*)"\]|\[([^\]]+)\]|\("([^"]*)"\)|\(([^\)]+)\)|\{"([^"]*)"\}|\{([^\}]+)\})/g;
+  let m;
+  while ((m = nodeDefRegex.exec(chart)) !== null) {
+    const id = m[1];
+    const label = (m[2] || m[3] || m[4] || m[5] || m[6] || m[7] || '').trim();
+    if (label.length > 2 && !/^[A-Za-z][0-9]?$/.test(label)) {
+      labeledNodes.set(id, label);
+    }
+  }
+
   const lines = chart.split('\n');
-  const processedLines = [];
+  const edges = [];
+  const otherLines = [];
+  let isFlowchart = false;
 
   for (let line of lines) {
     let trimmed = line.trim();
@@ -88,10 +102,97 @@ function sanitizeMermaidChart(rawChart) {
       trimmed += '"';
     }
 
-    processedLines.push(trimmed);
+    if (trimmed.startsWith('flowchart') || trimmed.startsWith('graph')) {
+      isFlowchart = true;
+      otherLines.push(trimmed);
+      continue;
+    }
+    if (trimmed.startsWith('subgraph') || trimmed === 'end' || trimmed.startsWith('%%') || trimmed.startsWith('classDef') || trimmed.startsWith('style')) {
+      otherLines.push(trimmed);
+      continue;
+    }
+
+    if (trimmed.includes('-->') || trimmed.includes('---') || trimmed.includes('==>')) {
+      const parts = trimmed.split(/\s*(?:-->|---|==>)\s*/);
+      const stepNodes = [];
+      for (const p of parts) {
+        const match = p.match(/^([A-Za-z0-9_]+)(?:\["?([^"\]]*)"?\]|\("?([^"\)]*)"?\)|\{"?([^"\}]*)"?\})?/);
+        if (match) {
+          const id = match[1];
+          const label = (match[2] || match[3] || match[4] || '').trim();
+          if (label && label.length > 2 && !/^[A-Za-z][0-9]?$/.test(label)) {
+            labeledNodes.set(id, label);
+          }
+          stepNodes.push(id);
+        }
+      }
+      for (let i = 0; i < stepNodes.length - 1; i++) {
+        edges.push({ from: stepNodes[i], to: stepNodes[i + 1] });
+      }
+    } else {
+      const match = trimmed.match(/^([A-Za-z0-9_]+)\s*(?:\["?([^"\]]*)"?\]|\("?([^"\)]*)"?\)|\{"?([^"\}]*)"?\})/);
+      if (match) {
+        const id = match[1];
+        const label = (match[2] || match[3] || match[4] || '').trim();
+        if (label && label.length > 2 && !/^[A-Za-z][0-9]?$/.test(label)) {
+          labeledNodes.set(id, label);
+          otherLines.push(`  ${id}["${label}"]`);
+        }
+      } else {
+        otherLines.push(trimmed);
+      }
+    }
   }
 
-  let result = processedLines.join('\n').trim();
+  // Detect bare dummy single/double-letter nodes (e.g., B, C, D with no explicit descriptive label)
+  const dummyNodes = new Set();
+  for (const edge of edges) {
+    if (!labeledNodes.has(edge.from) && /^[A-Za-z][0-9]?$/.test(edge.from)) {
+      dummyNodes.add(edge.from);
+    }
+    if (!labeledNodes.has(edge.to) && /^[A-Za-z][0-9]?$/.test(edge.to)) {
+      dummyNodes.add(edge.to);
+    }
+  }
+
+  // If bare single-letter dummy nodes are detected in a flowchart, bypass them cleanly
+  if (isFlowchart && dummyNodes.size > 0 && labeledNodes.size > 0) {
+    let currentEdges = [...edges];
+    dummyNodes.forEach(dummy => {
+      const incoming = currentEdges.filter(e => e.to === dummy).map(e => e.from);
+      const outgoing = currentEdges.filter(e => e.from === dummy).map(e => e.to);
+
+      currentEdges = currentEdges.filter(e => e.from !== dummy && e.to !== dummy);
+
+      for (const inc of incoming) {
+        for (const out of outgoing) {
+          if (inc !== out && !currentEdges.some(e => e.from === inc && e.to === out)) {
+            currentEdges.push({ from: inc, to: out });
+          }
+        }
+      }
+    });
+
+    const header = otherLines.find(l => l.startsWith('flowchart') || l.startsWith('graph')) || 'flowchart TD';
+    const finalLines = [header];
+
+    labeledNodes.forEach((label, id) => {
+      finalLines.push(`  ${id}["${label}"]`);
+    });
+
+    const edgeSet = new Set();
+    currentEdges.forEach(e => {
+      const key = `${e.from} --> ${e.to}`;
+      if (!edgeSet.has(key) && e.from !== e.to) {
+        edgeSet.add(key);
+        finalLines.push(`  ${key}`);
+      }
+    });
+
+    return finalLines.join('\n');
+  }
+
+  let result = lines.join('\n').trim();
 
   const headerKeywords = [
     'flowchart', 'graph', 'sequenceDiagram', 'classDiagram', 
@@ -129,8 +230,11 @@ function repairMermaidSyntax(rawCode) {
             const rawId = nodeMatch[1] || `Node${nodeCounter++}`;
             const cleanId = rawId.replace(/[^A-Za-z0-9_]/g, '') || `N${nodeCounter++}`;
             const label = (nodeMatch[2] || nodeMatch[3] || nodeMatch[4] || cleanId).replace(/["`]/g, '').trim();
-            extractedNodes.set(cleanId, label.slice(0, 45) || cleanId);
-            stepIds.push(cleanId);
+            // Ignore bare 1-2 character dummy nodes (like "B", "C")
+            if (label.length > 2 && !/^[A-Za-z][0-9]?$/.test(label)) {
+              extractedNodes.set(cleanId, label.slice(0, 50));
+              stepIds.push(cleanId);
+            }
           }
         }
         if (stepIds.length >= 2) {
@@ -181,6 +285,7 @@ export default function Mermaid({ chart }) {
   const [renderKey, setRenderKey] = useState(0);
   const [showCode, setShowCode] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalSvgHtml, setModalSvgHtml] = useState('');
 
   // Zoom & Pan state for Fullscreen Modal
   const [zoom, setZoom] = useState(1);
@@ -202,10 +307,13 @@ export default function Mermaid({ chart }) {
     svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
     if (isModal) {
-      svgEl.style.maxHeight = '65vh';
-      svgEl.style.maxWidth = '80vw';
-      svgEl.style.width = 'auto';
-      svgEl.style.height = 'auto';
+      svgEl.style.width = '100%';
+      svgEl.style.height = '100%';
+      svgEl.style.maxWidth = '100%';
+      svgEl.style.maxHeight = '100%';
+      svgEl.style.display = 'block';
+      svgEl.style.minWidth = '280px';
+      svgEl.style.minHeight = '220px';
     } else {
       svgEl.style.maxHeight = '340px';
       svgEl.style.width = '100%';
@@ -380,19 +488,20 @@ export default function Mermaid({ chart }) {
   // Open Fullscreen Modal
   const openModal = (e) => {
     e?.stopPropagation();
-    if (!lastValidSvgRef.current && !containerRef.current?.innerHTML) return;
+    const svgCode = lastValidSvgRef.current || containerRef.current?.innerHTML || '';
+    if (!svgCode) return;
+    setModalSvgHtml(svgCode);
     setIsModalOpen(true);
     setZoom(1);
     setPan({ x: 0, y: 0 });
   };
 
-  // Populate Modal SVG when opened
+  // Style Modal SVG when opened or updated
   useEffect(() => {
     if (isModalOpen && modalContainerRef.current) {
-      modalContainerRef.current.innerHTML = lastValidSvgRef.current || containerRef.current?.innerHTML || '';
       applyUnfilledLightStyles(modalContainerRef.current, true);
     }
-  }, [isModalOpen]);
+  }, [isModalOpen, modalSvgHtml]);
 
   // Handle ESC key & keyboard zoom shortcuts
   useEffect(() => {
@@ -505,7 +614,7 @@ export default function Mermaid({ chart }) {
                   <span>Rendering diagram...</span>
                 </div>
               ) : hasError ? (
-                <div className="w-full max-w-full box-border bg-amber-50/90 border border-amber-200/90 rounded-xl p-3 sm:p-4 text-amber-900 space-y-2 text-center">
+                <div className="w-full max-w-md mx-auto box-border bg-amber-50/90 border border-amber-200/90 rounded-xl p-3 sm:p-4 text-amber-900 space-y-2 text-center">
                   <div className="flex items-center justify-center gap-1.5 text-amber-700 font-bold text-xs">
                     <AlertCircle size={14} className="shrink-0" />
                     <span>Diagram Rendering Notice</span>
@@ -620,9 +729,14 @@ export default function Mermaid({ chart }) {
               }}
             >
               <div 
-                ref={modalContainerRef} 
-                className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border border-slate-200 max-w-[85vw] max-h-[70vh] flex items-center justify-center overflow-hidden [&_svg]:max-h-[65vh] [&_svg]:max-w-[80vw] [&_svg]:w-auto [&_svg]:h-auto [&_svg]:bg-white"
-              />
+                className="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl border border-slate-200 w-[92vw] max-w-[1200px] h-[78vh] min-h-[460px] flex items-center justify-center overflow-hidden"
+              >
+                <div 
+                  ref={modalContainerRef} 
+                  dangerouslySetInnerHTML={{ __html: modalSvgHtml }}
+                  className="w-full h-full flex items-center justify-center [&_svg]:w-full [&_svg]:h-full [&_svg]:max-w-full [&_svg]:max-h-full [&_svg]:block [&_svg]:mx-auto"
+                />
+              </div>
             </div>
 
             {/* Floating Navigation Hint */}

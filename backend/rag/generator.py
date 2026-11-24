@@ -16,13 +16,13 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def _resolve_google_model(model_name: str) -> str:
     """Map internal or legacy model names to valid LangChain Google model identifiers."""
-    if not model_name or "1.5" in model_name or "3.6" in model_name:
-        return "gemini-3.5-flash"
+    if not model_name or "3.5" in model_name or "3.6" in model_name:
+        return "gemini-2.5-flash"
     if not model_name.startswith("gemini-"):
-        return "gemini-3.5-flash"
+        return "gemini-2.5-flash"
     return model_name
 
-def get_primary_llm(model_name: str = "gemini-3.5-flash", temperature: float = 0.3):
+def get_primary_llm(model_name: str = "gemini-2.5-flash", temperature: float = 0.3):
     """
     Returns primary ChatGoogleGenerativeAI model instance with instant failover max_retries=0.
     """
@@ -33,7 +33,7 @@ def get_primary_llm(model_name: str = "gemini-3.5-flash", temperature: float = 0
             google_api_key=GEMINI_API_KEY,
             temperature=temperature,
             max_retries=0,
-            timeout=10
+            timeout=8
         )
     elif OPENAI_API_KEY:
         return ChatOpenAI(
@@ -41,51 +41,53 @@ def get_primary_llm(model_name: str = "gemini-3.5-flash", temperature: float = 0
             api_key=OPENAI_API_KEY,
             temperature=temperature,
             max_retries=0,
-            timeout=10
+            timeout=8
         )
     raise ValueError("No valid LLM API key (GEMINI_API_KEY or OPENAI_API_KEY) found.")
 
 def get_fallback_llms(temperature: float = 0.3):
     """
-    Returns fallback LLM models (ChatGoogleGenerativeAI lite, ChatGroq, ChatOpenAI).
+    Returns fallback LLM models (ChatGoogleGenerativeAI alternatives, ChatGroq, ChatOpenAI).
     """
     fallbacks = []
-    # 1. Gemini Flash Lite secondary fallback
+    # 1. Alternative Gemini models (instant secondary failovers)
     if GEMINI_API_KEY:
-        try:
-            fallbacks.append(ChatGoogleGenerativeAI(
-                model="gemini-3.5-flash-lite",
-                google_api_key=GEMINI_API_KEY,
-                temperature=temperature,
-                max_retries=1
-            ))
-        except Exception:
-            pass
+        for m in ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite"]:
+            try:
+                fallbacks.append(ChatGoogleGenerativeAI(
+                    model=m,
+                    google_api_key=GEMINI_API_KEY,
+                    temperature=temperature,
+                    max_retries=0,
+                    timeout=8
+                ))
+            except Exception:
+                pass
 
-    # 2. Ultra-fast high-throughput Groq free tier models
+    # 2. Ultra-fast high-throughput Groq production free tier models
     if GROQ_API_KEY:
         groq_models = [
-            'qwen/qwen3.8-27b',
-            'openai/gpt-oss-120b',
-            'openai/gpt-oss-20b',
-            'allam-2-7b'
+            'llama-3.3-70b-versatile',
+            'llama-3.1-8b-instant',
+            'mixtral-8x7b-32768',
+            'gemma2-9b-it'
         ]
         for m in groq_models:
             try:
-                fallbacks.append(ChatGroq(model=m, groq_api_key=GROQ_API_KEY, temperature=temperature))
+                fallbacks.append(ChatGroq(model=m, groq_api_key=GROQ_API_KEY, temperature=temperature, max_retries=1, timeout=8))
             except Exception: 
                 pass
 
     # 3. OpenAI fallback
     if OPENAI_API_KEY:
         try:
-            fallbacks.append(ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=temperature, max_retries=1))
+            fallbacks.append(ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=temperature, max_retries=1, timeout=8))
         except Exception:
             pass
 
     return fallbacks
 
-def get_llm_with_fallback(model_name: str = "gemini-3.5-flash", temperature: float = 0.3):
+def get_llm_with_fallback(model_name: str = "gemini-2.5-flash", temperature: float = 0.3):
     """
     Returns a LangChain LLM equipped with fallbacks using .with_fallbacks()
     """
@@ -95,7 +97,7 @@ def get_llm_with_fallback(model_name: str = "gemini-3.5-flash", temperature: flo
         return primary.with_fallbacks(fallbacks)
     return primary
 
-def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini-3.5-flash', response_schema=None) -> str | None:
+def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini-2.5-flash', response_schema=None) -> str | None:
     """
     Generates text or JSON content using LangChain LCEL runnable chains with fallback support.
     If response_schema (Pydantic model) is passed, uses .with_structured_output().
@@ -154,7 +156,7 @@ def generate_with_retry(prompt: str, is_json: bool = False, model: str = 'gemini
                 continue
         return None
 
-def generate_stream(prompt: str, model: str = 'gemini-3.5-flash'):
+def generate_stream(prompt: str, model: str = 'gemini-2.5-flash'):
     """
     Streams text content from LangChain runnable chain, yielding text chunks as they arrive.
     """
