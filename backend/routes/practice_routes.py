@@ -9,6 +9,7 @@ import re
 import json
 import uuid
 import time
+import asyncio
 import logging
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
@@ -239,7 +240,8 @@ async def create_timed_exam_session(request: Request):
     subject_id = body.get("subject_id", "").strip().upper()
     duration_minutes = int(body.get("duration_minutes", 30))
     unit_ids = body.get("unit_ids", [])
-    difficulty = body.get("difficulty", "Medium").strip()
+    raw_diff = body.get("difficulty", "Medium").strip()
+    difficulty = "Hard" if "hard" in raw_diff.lower() or "exam" in raw_diff.lower() else ("Easy" if "easy" in raw_diff.lower() else "Medium")
 
     if not subject_id:
         raise HTTPException(status_code=400, detail="subject_id is required.")
@@ -383,13 +385,93 @@ Return ONLY a valid JSON array:
 
 # ── 3B. MCQs Practice & Quiz Mode ─────────────────────────────────────────────
 
+def _robust_json_loads(text: str) -> Optional[Any]:
+    if not text:
+        return None
+    clean = text.strip()
+    if clean.startswith("```json"): clean = clean[7:]
+    if clean.startswith("```"): clean = clean[3:]
+    if clean.endswith("```"): clean = clean[:-3]
+    clean = clean.strip()
+    try:
+        return json.loads(clean, strict=False)
+    except Exception:
+        fixed = re.sub(r'\\(?![/"\\bfnrtu])', r'\\\\', clean)
+        try:
+            return json.loads(fixed, strict=False)
+        except Exception:
+            match = re.search(r'\[\s*\{.*\}\s*\]', clean, re.DOTALL)
+            if match:
+                try:
+                    fixed_match = re.sub(r'\\(?![/"\\bfnrtu])', r'\\\\', match.group(0))
+                    return json.loads(fixed_match, strict=False)
+                except Exception:
+                    pass
+    return None
+
+def _generate_unit_mcqs_sync(subject_id: str, unit_name: str, num_qs: int, difficulty: str, ctx_str: str) -> List[Dict[str, Any]]:
+    target_count = min(num_qs, 8)
+    prompt = f"""You are a university examination board professor authoring questions for '{subject_id}'.
+Generate exactly {target_count} unique, syllabus-grounded, high-caliber academic Multiple Choice Questions for {unit_name} at '{difficulty}' difficulty.
+
+Course Vector Knowledge Base Notes:
+{ctx_str if ctx_str else f"Academic curriculum for {subject_id} {unit_name}"}
+
+Strict Rules:
+1. Every question must be a REAL academic question testing specific theorems, formulas, algorithms, or definitions from {unit_name}.
+2. Provide 4 distinct, plausible options (A, B, C, D) with authentic mathematical or theoretical distractors.
+3. NEVER return placeholder text like 'Option A (Accurate theoretical concept definition)' or 'Distractor'.
+4. 'correct_option_index' must be 0, 1, 2, or 3. Vary the correct option index naturally across 0, 1, 2, 3.
+5. Provide a thorough academic explanation with step-by-step reasoning.
+6. Set 'unit' to '{unit_name}'.
+7. Set 'difficulty' to '{difficulty}'.
+
+Return strictly a valid JSON array of objects:
+[
+  {{
+    "question_text": "...",
+    "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+    "correct_option_index": 0,
+    "explanation": "Step-by-step academic explanation...",
+    "unit": "{unit_name}",
+    "difficulty": "{difficulty}"
+  }}
+]
+"""
+    try:
+        raw = generate_with_retry(prompt, is_json=True)
+        if raw:
+            parsed = _robust_json_loads(raw)
+            if isinstance(parsed, list):
+                res = []
+                for item in parsed:
+                    if "options" in item and len(item.get("options", [])) >= 4 and item.get("question_text"):
+                        corr = int(item.get("correct_option_index", 0))
+                        if corr < 0 or corr >= len(item["options"]):
+                            corr = 0
+                        res.append({
+                            "question_text": item["question_text"],
+                            "options": item["options"][:4],
+                            "correct_option_index": corr,
+                            "explanation": item.get("explanation") or "Step-by-step derivation based on course notes.",
+                            "unit": unit_name,
+                            "difficulty": difficulty
+                        })
+                return res
+    except Exception as batch_err:
+        logger.warning(f"Error generating MCQs for {unit_name}: {batch_err}")
+    return []
+
+
 @router.post("/mcq-session")
 async def create_mcq_practice_session(request: Request):
-    """Generates an extensive MCQ practice set (15 to 60 questions) for selected units and difficulty with AI."""
+    """Generates an extensive MCQ practice set (15 to 60 questions) for selected units and difficulty with parallel AI generation."""
     body = await request.json()
     subject_id = body.get("subject_id", "").strip().upper()
     unit_ids = body.get("unit_ids", [])
-    difficulty = body.get("difficulty", "Medium").strip()
+    raw_diff = body.get("difficulty", "Medium").strip()
+    # Normalize difficulty: strictly Easy, Medium, Hard (Exam Level mapped to Hard)
+    difficulty = "Hard" if "hard" in raw_diff.lower() or "exam" in raw_diff.lower() else ("Easy" if "easy" in raw_diff.lower() else "Medium")
     count = int(body.get("count", 20))
     count = max(15, min(60, count))
 
@@ -401,6 +483,18 @@ async def create_mcq_practice_session(request: Request):
     else:
         target_units = [str(u).strip() for u in unit_ids if str(u).strip()]
 
+    # Purge any legacy mock quizzes from MongoDB
+    try:
+        await db.quizzes.delete_many({
+            "$or": [
+                {"questions.options": {"$regex": "Accurate theoretical concept definition"}},
+                {"questions.options": {"$regex": "Common misconception distractor"}},
+                {"questions.question_text": {"$regex": "Core syllabus concept in Unit"}}
+            ]
+        })
+    except Exception as purge_err:
+        logger.warning(f"Notice purging legacy mock quizzes: {purge_err}")
+
     # Query DB quizzes matching subject and unit filter, strictly excluding mock dummy options
     quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=50)
     existing_mcqs = []
@@ -408,7 +502,6 @@ async def create_mcq_practice_session(request: Request):
         for q_item in q.get("questions", []):
             if "options" in q_item and len(q_item.get("options", [])) >= 4:
                 opts_str = " ".join([str(o) for o in q_item.get("options", [])])
-                # Skip legacy mock distractors
                 if "Accurate theoretical concept definition" in opts_str or "Common misconception distractor" in opts_str:
                     continue
                 q_u = q_item.get("unit")
@@ -431,83 +524,43 @@ async def create_mcq_practice_session(request: Request):
             "difficulty": item.get("difficulty") or difficulty
         })
 
-    # If existing pool has fewer than requested count, dynamically generate real academic MCQs using AI
+    # If existing pool has fewer than requested count, dynamically generate real academic MCQs via parallel batched Gemini calls
     needed = count - len(formatted_mcqs)
     if needed > 0:
-        all_chunks = []
-        for u_id in target_units:
-            try:
-                chunks = retrieve(
-                    subject_id=subject_id,
-                    unit_id=u_id,
-                    query=f"{subject_id} {u_id} theorems equations algorithms definitions",
-                    top_k=3
-                )
-                all_chunks.extend(chunks)
-            except Exception as r_err:
-                logger.warning(f"RAG retrieval notice for MCQ: {r_err}")
+        tasks = []
+        qs_per_unit = (needed + len(target_units) - 1) // len(target_units)
 
-        context_snippets = "\n".join([f"[{c.get('metadata', {}).get('unit', 'Unit')}] {c['text'][:350]}" for c in all_chunks[:8]])
+        for u in target_units:
+            # retrieve real vector chunks for unit u from Qdrant
+            u_chunks = retrieve(
+                subject_id=subject_id,
+                unit_id=u,
+                query=f"{subject_id} {u} theorems equations algorithms definitions derivations",
+                top_k=5
+            )
+            u_ctx = "\n".join([f"[{c.get('metadata', {}).get('unit', u)}] {c['text'][:350]}" for c in u_chunks[:6]])
+            tasks.append(asyncio.to_thread(_generate_unit_mcqs_sync, subject_id, u, qs_per_unit, difficulty, u_ctx))
 
-        prompt = f"""You are a senior university exam paper setter for course '{subject_id}'.
-Generate exactly {needed} unique, syllabus-grounded academic Multiple Choice Questions across units: {', '.join(target_units)} at difficulty '{difficulty}'.
-
-Course Context Notes:
-{context_snippets if context_snippets else f"Curriculum of course {subject_id} covering {', '.join(target_units)}"}
-
-Strict Rules:
-1. Every question must test a REAL academic concept, formula, algorithm, calculation, or theoretical property.
-2. Provide 4 distinct, plausible options (A, B, C, D) with authentic academic distractors.
-3. NEVER use placeholder text like 'Option A (Accurate theoretical concept definition)' or 'Distractor'.
-4. 'correct_option_index' must be 0, 1, 2, or 3. Vary the correct option index naturally across 0, 1, 2, 3.
-5. Provide a thorough, step-by-step academic explanation.
-6. Return ONLY a valid JSON array of objects.
-
-Format:
-[
-  {{
-    "question_text": "...",
-    "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
-    "correct_option_index": 0,
-    "explanation": "Step-by-step academic explanation...",
-    "unit": "Unit 1",
-    "difficulty": "{difficulty}"
-  }}
-]
-"""
+        unit_results = await asyncio.gather(*tasks)
         new_mcqs_for_db = []
-        try:
-            ai_raw = generate_with_retry(prompt, is_json=True)
-            if ai_raw:
-                clean = ai_raw.strip()
-                if clean.startswith("```json"): clean = clean[7:]
-                if clean.startswith("```"): clean = clean[3:]
-                if clean.endswith("```"): clean = clean[:-3]
-                parsed = json.loads(clean.strip())
-                if isinstance(parsed, list):
-                    for item in parsed:
-                        if "options" in item and len(item.get("options", [])) >= 4 and item.get("question_text"):
-                            corr = int(item.get("correct_option_index", 0))
-                            if corr < 0 or corr >= len(item["options"]):
-                                corr = 0
-                            u = item.get("unit") or target_units[len(formatted_mcqs) % len(target_units)]
-                            q_obj = {
-                                "question_id": f"mcq_ai_{len(formatted_mcqs) + 1}_{str(uuid.uuid4())[:6]}",
-                                "question_text": item["question_text"],
-                                "options": item["options"][:4],
-                                "correct_option_index": corr,
-                                "explanation": item.get("explanation") or "Step-by-step derivation based on standard course principles.",
-                                "unit": u,
-                                "difficulty": difficulty
-                            }
-                            formatted_mcqs.append(q_obj)
-                            new_mcqs_for_db.append(q_obj)
-                            if len(formatted_mcqs) >= count:
-                                break
-        except Exception as ai_err:
-            logger.warning(f"Dynamic AI MCQ generation notice: {ai_err}")
 
-        # If any slots still unfilled, populate with genuine domain-specific curriculum questions (zero placeholders)
+        for batch in unit_results:
+            for item in batch:
+                if len(formatted_mcqs) >= count:
+                    break
+                q_obj = {
+                    "question_id": f"mcq_ai_{len(formatted_mcqs) + 1}_{str(uuid.uuid4())[:6]}",
+                    "question_text": item["question_text"],
+                    "options": item["options"][:4],
+                    "correct_option_index": item["correct_option_index"],
+                    "explanation": item["explanation"],
+                    "unit": item["unit"],
+                    "difficulty": difficulty
+                }
+                formatted_mcqs.append(q_obj)
+                new_mcqs_for_db.append(q_obj)
+
+        # If any shortfall remains, populate from domain engineering pool (100% real questions, zero placeholders)
         still_needed = count - len(formatted_mcqs)
         if still_needed > 0:
             domain_pool = get_domain_fallback_mcqs(subject_id, target_units, difficulty)
@@ -536,6 +589,16 @@ Format:
                 })
             except Exception as cache_err:
                 logger.warning(f"Could not cache generated MCQs: {cache_err}")
+
+    session_id = str(uuid.uuid4())
+    return {
+        "session_id": session_id,
+        "subject_id": subject_id,
+        "unit_ids": target_units,
+        "difficulty": difficulty,
+        "total_questions": len(formatted_mcqs),
+        "questions": formatted_mcqs
+    }
 
     session_id = str(uuid.uuid4())
     return {

@@ -78,6 +78,8 @@ export default function Practice() {
   const [mcqSelectedUnits, setMcqSelectedUnits] = useState(['All Units']);
   const [mcqDifficulty, setMcqDifficulty] = useState('Medium');
   const [mcqCount, setMcqCount] = useState(20); // Min 15, Max 60
+  const [mcqTimerMode, setMcqTimerMode] = useState(0); // 0 = Self-Paced, 15, 30, 45, 60 Mins
+  const [mcqTimeLeft, setMcqTimeLeft] = useState(0);
   const [mcqActive, setMcqActive] = useState(false);
   const [mcqQuestions, setMcqQuestions] = useState([]);
   const [mcqAnswers, setMcqAnswers] = useState({});
@@ -198,14 +200,24 @@ export default function Practice() {
     return () => clearInterval(timer);
   }, [examActive, examTimeLeft]);
 
-  // MCQ Practice Timer Effect (Self-Paced Overall Timer)
+  // MCQ Practice Timer Effect: Supports countdown timer if mcqTimerMode > 0 or self-paced timer
   useEffect(() => {
     if (!mcqActive || mcqFinished) return;
     const timer = setInterval(() => {
       setMcqOverallTime(prev => prev + 1);
+      if (mcqTimerMode > 0) {
+        setMcqTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleMcqSubmit();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }
     }, 1000);
     return () => clearInterval(timer);
-  }, [mcqActive, mcqFinished]);
+  }, [mcqActive, mcqFinished, mcqTimerMode]);
 
   const toggleUnitSelection = (unitName, currentList, setList) => {
     if (unitName === 'All Units') {
@@ -264,6 +276,11 @@ export default function Practice() {
     setMcqAnswers({});
     setMcqQuestionTimes({});
     setMcqOverallTime(0);
+    if (mcqTimerMode > 0) {
+      setMcqTimeLeft(mcqTimerMode * 60);
+    } else {
+      setMcqTimeLeft(0);
+    }
 
     fetch(`${getApiBaseUrl()}/api/practice/mcq-session`, {
       method: 'POST',
@@ -754,8 +771,8 @@ export default function Practice() {
                 <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
                   <Target size={14} className="text-blue-500" /> Question Difficulty
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {['Easy', 'Medium', 'Hard', 'Exam Level'].map(diff => (
+                <div className="grid grid-cols-3 gap-2">
+                  {['Easy', 'Medium', 'Hard'].map(diff => (
                     <button
                       key={diff}
                       type="button"
@@ -767,6 +784,35 @@ export default function Practice() {
                       }`}
                     >
                       {diff}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Manual Timer Selection */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Clock size={14} className="text-blue-500" /> Session Timer Mode
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                  {[
+                    { label: 'Self-Paced', val: 0 },
+                    { label: '15 Mins', val: 15 },
+                    { label: '30 Mins', val: 30 },
+                    { label: '45 Mins', val: 45 },
+                    { label: '60 Mins', val: 60 }
+                  ].map(t => (
+                    <button
+                      key={t.val}
+                      type="button"
+                      onClick={() => setMcqTimerMode(t.val)}
+                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border text-center ${
+                        mcqTimerMode === t.val
+                          ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                          : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                      }`}
+                    >
+                      {t.label}
                     </button>
                   ))}
                 </div>
@@ -955,7 +1001,19 @@ export default function Practice() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-mono font-bold text-emerald-400">⏱️ {formatTime(mcqOverallTime)}</span>
+                  {mcqTimerMode > 0 ? (
+                    <span className={`text-xs sm:text-sm font-mono font-bold px-2.5 py-1 rounded-lg border ${
+                      mcqTimeLeft <= 120 
+                        ? "text-red-400 bg-red-950/80 border-red-700 animate-pulse" 
+                        : "text-amber-400 bg-amber-950/60 border-amber-700"
+                    }`}>
+                      ⏱️ {formatTime(mcqTimeLeft)} Left
+                    </span>
+                  ) : (
+                    <span className="text-xs sm:text-sm font-mono font-bold text-emerald-400">
+                      ⏱️ {formatTime(mcqOverallTime)} (Self-Paced)
+                    </span>
+                  )}
                   <button
                     onClick={handleMcqSubmit}
                     className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer shadow"
@@ -977,7 +1035,11 @@ export default function Practice() {
                         <span className="text-xs font-semibold bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800">{q.difficulty || 'Medium'}</span>
                       </div>
 
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-slate-100 leading-relaxed">{q.question_text}</p>
+                      <div className="text-sm sm:text-base font-semibold text-gray-900 dark:text-slate-100 leading-relaxed">
+                        <ReactMarkdown remarkPlugins={[remarkMath, remarkBreaks]} rehypePlugins={[rehypeKatex]}>
+                          {q.question_text}
+                        </ReactMarkdown>
+                      </div>
 
                       {/* Options Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -988,13 +1050,17 @@ export default function Practice() {
                               key={oIdx}
                               type="button"
                               onClick={() => handleSelectMcqOption(qKey, oIdx)}
-                              className={`p-3 rounded-xl border text-left text-xs sm:text-sm font-medium transition-all flex items-center justify-between ${
+                              className={`p-3 rounded-xl border text-left text-xs sm:text-sm font-medium transition-all flex items-center justify-between gap-2 ${
                                 isPicked
                                   ? "bg-blue-600 text-white border-blue-600 shadow-sm font-bold"
                                   : "bg-slate-50 dark:bg-slate-800 text-gray-800 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
                               }`}
                             >
-                              <span>{opt}</span>
+                              <div className="flex-1 pointer-events-none">
+                                <ReactMarkdown remarkPlugins={[remarkMath, remarkBreaks]} rehypePlugins={[rehypeKatex]}>
+                                  {opt}
+                                </ReactMarkdown>
+                              </div>
                               {isPicked && <CheckCircle2 size={16} className="shrink-0 text-white" />}
                             </button>
                           );
@@ -1063,8 +1129,8 @@ export default function Practice() {
                 <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
                   <Target size={14} className="text-blue-500" /> Exam Question Difficulty
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {['Easy', 'Medium', 'Hard', 'Exam Level'].map(diff => (
+                <div className="grid grid-cols-3 gap-2">
+                  {['Easy', 'Medium', 'Hard'].map(diff => (
                     <button
                       key={diff}
                       type="button"
