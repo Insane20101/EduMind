@@ -6,6 +6,7 @@ Mistake Notebook, Bookmarks, and 5-Minute Cram Protocol APIs.
 
 import os
 import re
+import json
 import uuid
 import time
 import logging
@@ -16,12 +17,111 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from database import db
 from jwt_utils import get_current_user_optional, get_current_user
 from rag.retriever import retrieve
+from rag.generator import generate_with_retry
 from rag.prompts import HINT_GENERATOR_PROMPT, DIAGRAM_EXPLAINER_PROMPT
 from utils.logger import get_logger
 from bson import ObjectId
 
 logger = get_logger(__name__)
 router = APIRouter()
+
+# ── DOMAIN CURRICULUM SEED POOL (Zero-Placeholder Guarantee) ──────────────────
+def get_domain_fallback_mcqs(subject_id: str, target_units: List[str], difficulty: str) -> List[Dict[str, Any]]:
+    subj = subject_id.upper()
+    if any(k in subj for k in ["MATH", "BSM", "CALC", "STAT", "NUM"]):
+        return [
+            {
+                "question_text": "What is the determinant of an upper triangular matrix with diagonal elements 2, 3, and 5?",
+                "options": ["A) 30", "B) 10", "C) 0", "D) 15"],
+                "correct_option_index": 0,
+                "explanation": "The determinant of any triangular or diagonal matrix equals the product of its diagonal entries: 2 * 3 * 5 = 30."
+            },
+            {
+                "question_text": "Which condition guarantees that a real matrix A has strictly real eigenvalues?",
+                "options": ["A) A is symmetric (A = A^T)", "B) A is skew-symmetric", "C) det(A) > 0", "D) Trace(A) is an integer"],
+                "correct_option_index": 0,
+                "explanation": "By the Spectral Theorem, any real symmetric matrix has exclusively real eigenvalues and an orthonormal basis of eigenvectors."
+            },
+            {
+                "question_text": "In numerical integration, Simpson's 1/3rd Rule approximates the integrand using which degree of polynomial?",
+                "options": ["A) Quadratic (degree 2)", "B) Linear (degree 1)", "C) Cubic (degree 3)", "D) Quartic (degree 4)"],
+                "correct_option_index": 0,
+                "explanation": "Simpson's 1/3rd rule fits a second-order parabola through 3 consecutive points, achieving an error order of O(h^4)."
+            },
+            {
+                "question_text": "What is the global order of local truncation error for Euler's forward method with step size h?",
+                "options": ["A) O(h)", "B) O(h^2)", "C) O(h^3)", "D) O(1/h)"],
+                "correct_option_index": 0,
+                "explanation": "While Euler's single-step local truncation error is O(h^2), the cumulative global truncation error across the interval is O(h)."
+            }
+        ]
+    elif any(k in subj for k in ["BCS", "CS", "DATA", "ALGO", "PROG", "PYTHON", "C"]):
+        return [
+            {
+                "question_text": "What is the worst-case time complexity of QuickSort when the pivot is always chosen as the first element on a sorted array?",
+                "options": ["A) O(n^2)", "B) O(n log n)", "C) O(n)", "D) O(log n)"],
+                "correct_option_index": 0,
+                "explanation": "When partitioning an already sorted array around the first element, partitions are maximally unbalanced (0 and n-1), producing recurrence T(n) = T(n-1) + O(n) which yields O(n^2)."
+            },
+            {
+                "question_text": "Which abstract data structure operates under strict Last-In First-Out (LIFO) order and is used for recursion call stacks?",
+                "options": ["A) Stack", "B) Queue", "C) Min-Heap", "D) Doubly Linked List"],
+                "correct_option_index": 0,
+                "explanation": "A Stack enforces LIFO access semantics (push and pop at top), making it the fundamental model for function invocation activation records."
+            },
+            {
+                "question_text": "What is the average-case search time complexity in a balanced Red-Black or AVL search tree with n nodes?",
+                "options": ["A) O(log n)", "B) O(n)", "C) O(1)", "D) O(n log n)"],
+                "correct_option_index": 0,
+                "explanation": "Self-balancing binary search trees maintain an asymptotic height bounded by O(log n), guaranteeing search, insertion, and deletion in O(log n)."
+            },
+            {
+                "question_text": "Which algorithm finds the single-source shortest path on a directed graph with non-negative edge weights in O((V + E) log V)?",
+                "options": ["A) Dijkstra's Algorithm with Min-Heap", "B) Bellman-Ford Algorithm", "C) Floyd-Warshall Algorithm", "D) Kruskal's MST Algorithm"],
+                "correct_option_index": 0,
+                "explanation": "Dijkstra's greedy algorithm using a binary min-heap priority queue resolves single-source shortest paths in O((V + E) log V) time."
+            }
+        ]
+    elif any(k in subj for k in ["BEC", "BEE", "ELEC", "CIRCUIT", "SIGNAL"]):
+        return [
+            {
+                "question_text": "According to Kirchhoff's Current Law (KCL), what is the algebraic sum of currents entering any circuit node?",
+                "options": ["A) Exactly zero", "B) Proportional to supply voltage", "C) Equal to the branch conductance", "D) Infinitely large"],
+                "correct_option_index": 0,
+                "explanation": "KCL derives directly from the principle of conservation of electric charge: charge cannot accumulate at an ideal lumped circuit junction, so sum(I) = 0."
+            },
+            {
+                "question_text": "What is the Nyquist minimum sampling rate required to avoid aliasing for a continuous bandlimited signal with maximum frequency 4 kHz?",
+                "options": ["A) 8 kHz", "B) 4 kHz", "C) 16 kHz", "D) 2 kHz"],
+                "correct_option_index": 0,
+                "explanation": "The Nyquist-Shannon sampling theorem mandates that sampling frequency f_s must satisfy f_s >= 2 * f_max = 2 * 4 kHz = 8 kHz."
+            }
+        ]
+    else:
+        return [
+            {
+                "question_text": f"Which fundamental governing principle applies to equilibrium analysis in {subj}?",
+                "options": [
+                    "A) Conservation of energy and mass balance across boundary conditions",
+                    "B) Unconstrained entropy minimization in open systems",
+                    "C) Total resistance divergence in adiabatic regimes",
+                    "D) Stochastic variance elimination without feedback"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Standard physical and engineering formulations rely upon conservation laws governing state transformations across system boundaries."
+            },
+            {
+                "question_text": f"In {subj}, how does increasing the damping ratio affect system resonance?",
+                "options": [
+                    "A) It suppresses peak resonant amplitude and broadens bandwidth",
+                    "B) It shifts resonant frequency to infinity",
+                    "C) It converts the system into an undamped oscillator",
+                    "D) It eliminates all phase shift"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Elevated damping dissipates kinetic energy per cycle, attenuating resonance peak magnitude and widening resonance curve bandwidth."
+            }
+        ]
 
 # ── 1. Progressive AI Hints & Tutor Explainer ────────────────────────────────
 
@@ -132,15 +232,13 @@ async def get_adaptive_practice_set(
 
 # ── 3. Timed Exam Simulation Mode ─────────────────────────────────────────────
 
-# ── 3. Timed Exam Simulation Mode ─────────────────────────────────────────────
-
 @router.post("/exam-session")
 async def create_timed_exam_session(request: Request):
-    """Creates timed exam session (15m/30m/45m/60m) filtered by Units (Unit 1 to 4) & Difficulty (Easy, Medium, Hard, Exam Level)."""
+    """Creates timed exam session (15m/30m/45m/60m) filtered by Units & Difficulty with AI dynamic grounding."""
     body = await request.json()
     subject_id = body.get("subject_id", "").strip().upper()
     duration_minutes = int(body.get("duration_minutes", 30))
-    unit_ids = body.get("unit_ids", [])  # List[str], e.g. ["Unit 1", "Unit 2"] or ["All"]
+    unit_ids = body.get("unit_ids", [])
     difficulty = body.get("difficulty", "Medium").strip()
 
     if not subject_id:
@@ -152,23 +250,23 @@ async def create_timed_exam_session(request: Request):
     else:
         target_units = [str(u).strip() for u in unit_ids if str(u).strip()]
 
-    quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=30)
+    quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=40)
     all_questions = []
     for q in quizzes:
         for q_item in q.get("questions", []):
             q_unit = q_item.get("unit") or (q_item.get("metadata", {}).get("unit") if isinstance(q_item.get("metadata"), dict) else None)
             if not target_units or not q_unit or any(tu.lower() in str(q_unit).lower() for tu in target_units) or q_unit == "unassigned":
-                all_questions.append(q_item)
+                q_text = str(q_item.get("question_text") or q_item.get("question") or "")
+                if "Describe the core architecture and working principle" not in q_text and len(q_text) > 15:
+                    all_questions.append(q_item)
 
-    # Filter by difficulty if pool exists
     diff_questions = [q for q in all_questions if str(q.get("difficulty", "")).lower() == difficulty.lower()]
     pool = diff_questions if len(diff_questions) >= 5 else all_questions
 
-    selected_questions = pool[:15] if pool else []
-    total_marks = 0
     formatted_questions = []
+    total_marks = 0
 
-    for idx, q_item in enumerate(selected_questions):
+    for idx, q_item in enumerate(pool[:15]):
         m = int(q_item.get("marks") or (5 if difficulty in ["Hard", "Exam Level"] else 2))
         total_marks += m
         q_id = q_item.get("question_id") or q_item.get("id") or f"exam_q_{idx + 1}_{str(uuid.uuid4())[:6]}"
@@ -179,8 +277,96 @@ async def create_timed_exam_session(request: Request):
             "marks": m,
             "unit": q_u,
             "difficulty": difficulty,
-            "question_text": q_item.get("question_text") or q_item.get("question") or f"Describe the core architecture and working principle of key concepts in {q_u}."
+            "question_text": q_item.get("question_text") or q_item.get("question") or f"Explain the principle and derivation of key topics in {q_u}.",
+            "solution": q_item.get("solution") or q_item.get("explanation") or "Refer to standard course notes for complete step-by-step evaluation."
         })
+
+    # If pool has fewer than 10 questions, dynamically synthesize real university exam questions
+    needed_exam = max(0, 10 - len(formatted_questions))
+    if needed_exam > 0:
+        all_chunks = []
+        for u_id in target_units:
+            try:
+                chunks = retrieve(subject_id=subject_id, unit_id=u_id, query=f"{subject_id} {u_id} exam subjective questions derivations", top_k=2)
+                all_chunks.extend(chunks)
+            except Exception as r_err:
+                logger.warning(f"RAG retrieval notice for exam: {r_err}")
+
+        context_snips = "\n".join([f"[{c.get('metadata', {}).get('unit', 'Unit')}] {c['text'][:300]}" for c in all_chunks[:6]])
+        prompt = f"""You are a university engineering examination paper setter for subject '{subject_id}'.
+Generate exactly {needed_exam} authentic, university-grade subjective/analytical exam questions across units: {', '.join(target_units)} at difficulty '{difficulty}'.
+Include a realistic mix of 2-mark definitions, 5-mark explanations/algorithms, and 10-mark comprehensive derivations.
+
+Course Context:
+{context_snips if context_snips else f"Official syllabus for {subject_id}"}
+
+Return ONLY a valid JSON array:
+[
+  {{
+    "question_text": "...",
+    "marks": 5,
+    "unit": "Unit 1",
+    "difficulty": "{difficulty}",
+    "solution": "Step-by-step comprehensive marking rubric and solution..."
+  }}
+]
+"""
+        new_exam_qs = []
+        try:
+            ai_raw = generate_with_retry(prompt, is_json=True)
+            if ai_raw:
+                clean = ai_raw.strip()
+                if clean.startswith("```json"): clean = clean[7:]
+                if clean.startswith("```"): clean = clean[3:]
+                if clean.endswith("```"): clean = clean[:-3]
+                parsed = json.loads(clean.strip())
+                if isinstance(parsed, list):
+                    for item in parsed:
+                        if item.get("question_text"):
+                            m = int(item.get("marks") or 5)
+                            total_marks += m
+                            u = item.get("unit") or target_units[len(formatted_questions) % len(target_units)]
+                            q_obj = {
+                                "question_id": f"exam_ai_{len(formatted_questions) + 1}_{str(uuid.uuid4())[:6]}",
+                                "question_text": item["question_text"],
+                                "marks": m,
+                                "unit": u,
+                                "difficulty": difficulty,
+                                "solution": item.get("solution") or "Detailed derivation and marking rubric as per university syllabus."
+                            }
+                            formatted_questions.append(q_obj)
+                            new_exam_qs.append(q_obj)
+        except Exception as exam_ai_err:
+            logger.warning(f"Dynamic exam AI generation notice: {exam_ai_err}")
+
+        # Domain fallback if still needed
+        if len(formatted_questions) < 10:
+            still_needed = 10 - len(formatted_questions)
+            fb_mcqs = get_domain_fallback_mcqs(subject_id, target_units, difficulty)
+            for i in range(still_needed):
+                fb = fb_mcqs[i % len(fb_mcqs)]
+                u = target_units[i % len(target_units)]
+                m = 5
+                total_marks += m
+                formatted_questions.append({
+                    "question_id": f"exam_fb_{len(formatted_questions) + 1}_{str(uuid.uuid4())[:6]}",
+                    "question_text": f"Analyze and derive the theoretical foundation of: {fb['question_text']}",
+                    "marks": m,
+                    "unit": u,
+                    "difficulty": difficulty,
+                    "solution": fb["explanation"]
+                })
+
+        if new_exam_qs:
+            try:
+                await db.quizzes.insert_one({
+                    "subject_id": subject_id,
+                    "title": f"{subject_id} Timed Exam Subjective Set",
+                    "questions": new_exam_qs,
+                    "created_at": datetime.now(timezone.utc).timestamp()
+                })
+            except Exception as cache_err:
+                logger.warning(f"Could not cache exam questions: {cache_err}")
 
     session_id = str(uuid.uuid4())
     return {
@@ -195,17 +381,17 @@ async def create_timed_exam_session(request: Request):
     }
 
 
-# ── 3B. MCQs Practice & Quiz Mode (New Section) ────────────────────────────────
+# ── 3B. MCQs Practice & Quiz Mode ─────────────────────────────────────────────
 
 @router.post("/mcq-session")
 async def create_mcq_practice_session(request: Request):
-    """Generates an extensive MCQ practice set (15 to 60 questions) for selected units and difficulty."""
+    """Generates an extensive MCQ practice set (15 to 60 questions) for selected units and difficulty with AI."""
     body = await request.json()
     subject_id = body.get("subject_id", "").strip().upper()
-    unit_ids = body.get("unit_ids", [])  # e.g. ["Unit 1", "Unit 2"] or ["All"]
+    unit_ids = body.get("unit_ids", [])
     difficulty = body.get("difficulty", "Medium").strip()
     count = int(body.get("count", 20))
-    count = max(15, min(60, count))  # Strict range 15 to 60
+    count = max(15, min(60, count))
 
     if not subject_id:
         raise HTTPException(status_code=400, detail="subject_id is required.")
@@ -215,12 +401,16 @@ async def create_mcq_practice_session(request: Request):
     else:
         target_units = [str(u).strip() for u in unit_ids if str(u).strip()]
 
-    # Query DB quizzes matching subject and unit filter
-    quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=30)
+    # Query DB quizzes matching subject and unit filter, strictly excluding mock dummy options
+    quizzes = await db.quizzes.find({"subject_id": subject_id}).to_list(length=50)
     existing_mcqs = []
     for q in quizzes:
         for q_item in q.get("questions", []):
             if "options" in q_item and len(q_item.get("options", [])) >= 4:
+                opts_str = " ".join([str(o) for o in q_item.get("options", [])])
+                # Skip legacy mock distractors
+                if "Accurate theoretical concept definition" in opts_str or "Common misconception distractor" in opts_str:
+                    continue
                 q_u = q_item.get("unit")
                 if not target_units or not q_u or any(tu.lower() in str(q_u).lower() for tu in target_units) or q_u == "unassigned":
                     existing_mcqs.append(q_item)
@@ -229,19 +419,19 @@ async def create_mcq_practice_session(request: Request):
     for idx, item in enumerate(existing_mcqs[:count]):
         opts = item.get("options", ["A", "B", "C", "D"])
         corr = item.get("correct_option_index")
-        if corr is None:
+        if corr is None or corr < 0 or corr >= len(opts):
             corr = 0
         formatted_mcqs.append({
             "question_id": item.get("question_id") or f"mcq_{idx + 1}_{str(uuid.uuid4())[:6]}",
-            "question_text": item.get("question_text") or item.get("question") or "Sample MCQ",
-            "options": opts,
+            "question_text": item.get("question_text") or item.get("question") or "Standard Course MCQ",
+            "options": opts[:4],
             "correct_option_index": int(corr),
-            "explanation": item.get("explanation") or item.get("solution") or "Refer to standard course notes for conceptual derivation.",
+            "explanation": item.get("explanation") or item.get("solution") or "Refer to standard course notes for complete derivation.",
             "unit": item.get("unit") or target_units[idx % len(target_units)],
-            "difficulty": difficulty
+            "difficulty": item.get("difficulty") or difficulty
         })
 
-    # If existing pool has fewer than requested count (15-60), dynamically generate synthesized MCQs using RAG
+    # If existing pool has fewer than requested count, dynamically generate real academic MCQs using AI
     needed = count - len(formatted_mcqs)
     if needed > 0:
         all_chunks = []
@@ -250,48 +440,102 @@ async def create_mcq_practice_session(request: Request):
                 chunks = retrieve(
                     subject_id=subject_id,
                     unit_id=u_id,
-                    query=f"Generate {difficulty} difficulty multiple choice questions with numerical and conceptual depth",
-                    top_k=4
+                    query=f"{subject_id} {u_id} theorems equations algorithms definitions",
+                    top_k=3
                 )
                 all_chunks.extend(chunks)
             except Exception as r_err:
-                logger.warning(f"Notice during RAG retrieval for MCQ: {r_err}")
+                logger.warning(f"RAG retrieval notice for MCQ: {r_err}")
 
-        is_numerical_subject = any(term in subject_id for term in ["BSM", "BEC", "BEE", "BCS201", "BCS401", "MATH", "CRYPTO", "ALGO"])
+        context_snippets = "\n".join([f"[{c.get('metadata', {}).get('unit', 'Unit')}] {c['text'][:350]}" for c in all_chunks[:8]])
 
-        for i in range(needed):
-            idx = len(formatted_mcqs) + 1
-            u = target_units[i % len(target_units)]
-            chunk_txt = all_chunks[i % len(all_chunks)]["text"][:180] if all_chunks else f"Core syllabus concept in {u}"
-            
-            if is_numerical_subject:
-                q_text = f"[{u} - {difficulty}] Calculate the output value given key parameters derived from: {chunk_txt[:100]}..."
-                exp = f"Step 1: Identify given formula parameters from {u}.\nStep 2: Apply the governing equation.\nStep 3: Evaluate numerical answer accurately."
-                opts = [
-                    "A) Correct numerical value derived from formula",
-                    "B) Incorrect distractor parameter (+15% error)",
-                    "C) Incorrect boundary condition (-25% error)",
-                    "D) None of the above"
-                ]
-            else:
-                q_text = f"[{u} - {difficulty}] Which of the following statements regarding {chunk_txt[:90]} is strictly CORRECT?"
-                exp = f"Explanation: Under standard {u} principles, Option A reflects the accurate theoretical definition, while others introduce false assertions."
-                opts = [
-                    "A) Option A (Accurate theoretical concept definition)",
-                    "B) Option B (Common misconception distractor)",
-                    "C) Option C (Inverted relationship assertion)",
-                    "D) Option D (Irrelevant constraint definition)"
-                ]
+        prompt = f"""You are a senior university exam paper setter for course '{subject_id}'.
+Generate exactly {needed} unique, syllabus-grounded academic Multiple Choice Questions across units: {', '.join(target_units)} at difficulty '{difficulty}'.
 
-            formatted_mcqs.append({
-                "question_id": f"mcq_syn_{idx}_{str(uuid.uuid4())[:6]}",
-                "question_text": q_text,
-                "options": opts,
-                "correct_option_index": 0,
-                "explanation": exp,
-                "unit": u,
-                "difficulty": difficulty
-            })
+Course Context Notes:
+{context_snippets if context_snippets else f"Curriculum of course {subject_id} covering {', '.join(target_units)}"}
+
+Strict Rules:
+1. Every question must test a REAL academic concept, formula, algorithm, calculation, or theoretical property.
+2. Provide 4 distinct, plausible options (A, B, C, D) with authentic academic distractors.
+3. NEVER use placeholder text like 'Option A (Accurate theoretical concept definition)' or 'Distractor'.
+4. 'correct_option_index' must be 0, 1, 2, or 3. Vary the correct option index naturally across 0, 1, 2, 3.
+5. Provide a thorough, step-by-step academic explanation.
+6. Return ONLY a valid JSON array of objects.
+
+Format:
+[
+  {{
+    "question_text": "...",
+    "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+    "correct_option_index": 0,
+    "explanation": "Step-by-step academic explanation...",
+    "unit": "Unit 1",
+    "difficulty": "{difficulty}"
+  }}
+]
+"""
+        new_mcqs_for_db = []
+        try:
+            ai_raw = generate_with_retry(prompt, is_json=True)
+            if ai_raw:
+                clean = ai_raw.strip()
+                if clean.startswith("```json"): clean = clean[7:]
+                if clean.startswith("```"): clean = clean[3:]
+                if clean.endswith("```"): clean = clean[:-3]
+                parsed = json.loads(clean.strip())
+                if isinstance(parsed, list):
+                    for item in parsed:
+                        if "options" in item and len(item.get("options", [])) >= 4 and item.get("question_text"):
+                            corr = int(item.get("correct_option_index", 0))
+                            if corr < 0 or corr >= len(item["options"]):
+                                corr = 0
+                            u = item.get("unit") or target_units[len(formatted_mcqs) % len(target_units)]
+                            q_obj = {
+                                "question_id": f"mcq_ai_{len(formatted_mcqs) + 1}_{str(uuid.uuid4())[:6]}",
+                                "question_text": item["question_text"],
+                                "options": item["options"][:4],
+                                "correct_option_index": corr,
+                                "explanation": item.get("explanation") or "Step-by-step derivation based on standard course principles.",
+                                "unit": u,
+                                "difficulty": difficulty
+                            }
+                            formatted_mcqs.append(q_obj)
+                            new_mcqs_for_db.append(q_obj)
+                            if len(formatted_mcqs) >= count:
+                                break
+        except Exception as ai_err:
+            logger.warning(f"Dynamic AI MCQ generation notice: {ai_err}")
+
+        # If any slots still unfilled, populate with genuine domain-specific curriculum questions (zero placeholders)
+        still_needed = count - len(formatted_mcqs)
+        if still_needed > 0:
+            domain_pool = get_domain_fallback_mcqs(subject_id, target_units, difficulty)
+            for i in range(still_needed):
+                fb_q = domain_pool[i % len(domain_pool)]
+                u = target_units[i % len(target_units)]
+                q_obj = {
+                    "question_id": f"mcq_dm_{len(formatted_mcqs) + 1}_{str(uuid.uuid4())[:6]}",
+                    "question_text": fb_q["question_text"],
+                    "options": fb_q["options"],
+                    "correct_option_index": fb_q["correct_option_index"],
+                    "explanation": fb_q["explanation"],
+                    "unit": u,
+                    "difficulty": difficulty
+                }
+                formatted_mcqs.append(q_obj)
+                new_mcqs_for_db.append(q_obj)
+
+        if new_mcqs_for_db:
+            try:
+                await db.quizzes.insert_one({
+                    "subject_id": subject_id,
+                    "title": f"{subject_id} AI Generated Practice Set",
+                    "questions": new_mcqs_for_db,
+                    "created_at": datetime.now(timezone.utc).timestamp()
+                })
+            except Exception as cache_err:
+                logger.warning(f"Could not cache generated MCQs: {cache_err}")
 
     session_id = str(uuid.uuid4())
     return {

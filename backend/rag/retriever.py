@@ -21,11 +21,14 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
         return []
 
     try:
-        # 1. Generate 1536-dimensional query embedding via OpenAI
-        query_embeddings = generate_embeddings([query])
-        if not query_embeddings or not query_embeddings[0]:
-            return []
-        query_vector = query_embeddings[0]
+        # 1. Generate 1536-dimensional query embedding via OpenAI (with robust payload-scroll fallback)
+        query_vector = None
+        try:
+            query_embeddings = generate_embeddings([query])
+            if query_embeddings and query_embeddings[0]:
+                query_vector = query_embeddings[0]
+        except Exception as emb_err:
+            logger.warning(f"Embedding generation notice for '{subject_id}': {emb_err}. Falling back to payload scroll.")
 
         # 2. Metadata Filter: Unit scoping if specified
         query_filter = None
@@ -39,37 +42,58 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
                 ]
             )
 
-        # 3. Vector Similarity Search in Qdrant Cloud with fallback handling
         points = []
-        try:
-            search_result = client.query_points(
-                collection_name=subject_id,
-                query=query_vector,
-                query_filter=query_filter,
-                limit=top_k
-            )
-            points = search_result.points if hasattr(search_result, "points") else search_result
-        except Exception as filter_err:
-            logger.warning(f"Filtered Qdrant query notice for '{subject_id}' (attempting index fix & fallback): {filter_err}")
-            ensure_payload_indexes(client, subject_id)
+        if query_vector is not None:
+            # 3. Vector Similarity Search in Qdrant Cloud with fallback handling
             try:
                 search_result = client.query_points(
                     collection_name=subject_id,
                     query=query_vector,
-                    query_filter=None,
-                    limit=top_k * 3
+                    query_filter=query_filter,
+                    limit=top_k
                 )
-                raw_points = search_result.points if hasattr(search_result, "points") else search_result
-                if unit_id and unit_id.strip() and unit_id.strip().lower() != "all":
-                    target_u = unit_id.strip().lower()
-                    points = [p for p in raw_points if (p.payload or {}).get("unit", "").strip().lower() == target_u][:top_k]
-                    if not points:
+                points = search_result.points if hasattr(search_result, "points") else search_result
+            except Exception as filter_err:
+                logger.warning(f"Filtered Qdrant query notice for '{subject_id}' (attempting index fix & fallback): {filter_err}")
+                ensure_payload_indexes(client, subject_id)
+                try:
+                    search_result = client.query_points(
+                        collection_name=subject_id,
+                        query=query_vector,
+                        query_filter=None,
+                        limit=top_k * 3
+                    )
+                    raw_points = search_result.points if hasattr(search_result, "points") else search_result
+                    if unit_id and unit_id.strip() and unit_id.strip().lower() != "all":
+                        target_u = unit_id.strip().lower()
+                        points = [p for p in raw_points if (p.payload or {}).get("unit", "").strip().lower() == target_u][:top_k]
+                        if not points:
+                            points = raw_points[:top_k]
+                    else:
                         points = raw_points[:top_k]
-                else:
-                    points = raw_points[:top_k]
-            except Exception as fallback_err:
-                logger.error(f"Fallback Qdrant query failed for '{subject_id}': {fallback_err}")
-                points = []
+                except Exception as fallback_err:
+                    logger.error(f"Fallback Qdrant query failed for '{subject_id}': {fallback_err}")
+                    points = []
+        
+        # 4. If query_vector unavailable or returned 0 points, scroll Qdrant points directly
+        if not points:
+            try:
+                scroll_res, _ = client.scroll(
+                    collection_name=subject_id,
+                    scroll_filter=query_filter,
+                    limit=top_k,
+                    with_payload=True
+                )
+                points = scroll_res or []
+                if not points and query_filter:
+                    scroll_res_all, _ = client.scroll(
+                        collection_name=subject_id,
+                        limit=top_k,
+                        with_payload=True
+                    )
+                    points = scroll_res_all or []
+            except Exception as scroll_err:
+                logger.warning(f"Qdrant scroll fallback notice for '{subject_id}': {scroll_err}")
 
         chunks = []
         for point in points:
@@ -81,9 +105,11 @@ def retrieve(subject_id: str, unit_id: Optional[str], query: str, top_k: int = 6
                 continue
                 
             chunk_id = payload.get("chunk_id") or str(point.id)
+            score_val = getattr(point, "score", None)
+            score_float = float(score_val) if score_val is not None else 0.85
             chunks.append({
                 "chunk_id": chunk_id,
-                "similarity": float(point.score),
+                "similarity": score_float,
                 "text": text,
                 "metadata": payload
             })

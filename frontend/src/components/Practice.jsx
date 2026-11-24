@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn, formatTextSpacing, preprocessMarkdownContent } from '../lib/utils';
 import { useAppStore } from '../store/appStore';
-import { ChevronDown, ChevronUp, Download, Sparkles, BookOpen, Clock, Bookmark, AlertTriangle, Lightbulb, FlipHorizontal, RefreshCw, X, Send, HelpCircle, CheckCircle2, XCircle, Target, Layers, Sliders } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, Sparkles, BookOpen, Clock, Bookmark, Lightbulb, RefreshCw, X, Send, HelpCircle, CheckCircle2, XCircle, Target, Layers, Sliders } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import remarkBreaks from 'remark-breaks';
@@ -37,7 +37,7 @@ export default function Practice() {
   const searchParams = new URLSearchParams(window.location.search);
   const subjectId = searchParams.get('subject') || storeSubject;
 
-  const [activeSubMode, setActiveSubMode] = useState('adaptive'); // 'adaptive', 'mcq', 'exam', 'mistakes', 'cram'
+  const [activeSubMode, setActiveSubMode] = useState('adaptive'); // 'adaptive', 'mcq', 'exam'
   
   // Standard / Adaptive State
   const [available, setAvailable] = useState(null);
@@ -568,28 +568,6 @@ export default function Practice() {
           }`}
         >
           <Clock className="w-4 h-4" /> Timed Exam Simulation
-        </button>
-
-        <button
-          onClick={() => setActiveSubMode('mistakes')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
-            activeSubMode === 'mistakes'
-              ? "bg-blue-600 text-white shadow-md font-bold"
-              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
-          }`}
-        >
-          <Bookmark className="w-4 h-4" /> Mistake Notebook &amp; Saved
-        </button>
-
-        <button
-          onClick={() => setActiveSubMode('cram')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
-            activeSubMode === 'cram'
-              ? "bg-blue-600 text-white shadow-md font-bold"
-              : "bg-slate-200/90 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
-          }`}
-        >
-          <AlertTriangle className="w-4 h-4" /> 5-Min Cram Protocol
         </button>
       </div>
 
@@ -1269,125 +1247,6 @@ export default function Practice() {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── MODE 3: Mistake Notebook & Bookmarks ────────────────────────────── */}
-      {activeSubMode === 'mistakes' && (
-        <div className="space-y-6">
-          <div className="flex gap-4 border-b border-gray-200 pb-2">
-            <button
-              onClick={() => setSavedTab('bookmarks')}
-              className={`font-bold text-sm pb-2 border-b-2 ${savedTab === 'bookmarks' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500'}`}
-            >
-              Saved Bookmarks ({bookmarks.length})
-            </button>
-            <button
-              onClick={() => setSavedTab('mistakes')}
-              className={`font-bold text-sm pb-2 border-b-2 ${savedTab === 'mistakes' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500'}`}
-            >
-              Mistake Notebook ({mistakes.length})
-            </button>
-          </div>
-
-          {savedTab === 'bookmarks' ? (
-            <div className="space-y-4">
-              {bookmarks.length === 0 ? (
-                <div className="text-center py-12 text-gray-400">No bookmarked questions yet. Click the bookmark icon on any question to save it!</div>
-              ) : (
-                bookmarks.map((b, i) => (
-                  <div key={i} className="p-4 border border-gray-200 rounded-xl bg-white">
-                    <span className="text-xs font-bold text-blue-600">{b.subject_id}</span>
-                    <p className="text-sm font-medium text-gray-800 mt-1">{b.question?.question_text || b.question?.question || "Bookmarked item"}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {mistakes.length === 0 ? (
-                <div className="text-center py-12 text-gray-400">No logged mistakes found.</div>
-              ) : (
-                mistakes.map((m, i) => (
-                  <div key={i} className="p-4 border border-red-200 rounded-xl bg-red-50/50">
-                    <span className="text-xs font-bold text-red-600">{m.subject_id}</span>
-                    <p className="text-sm font-medium text-gray-900 mt-1">{m.question}</p>
-                    <div className="mt-2 text-xs text-red-700"><strong>Your Answer:</strong> {m.user_answer}</div>
-                    <div className="text-xs text-green-700"><strong>Correct Answer:</strong> {m.correct_answer}</div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── MODE 4: 5-Minute Cram Protocol ───────────────────────────────────── */}
-      {activeSubMode === 'cram' && (
-        <div className="space-y-6 max-w-2xl mx-auto py-4">
-          {cramLoading ? (
-            <div className="text-center py-12 text-gray-500">Loading approved cram memory hooks...</div>
-          ) : cramCards.length === 0 ? (
-            <div className="text-center py-12 bg-amber-50 rounded-2xl border border-amber-200 p-8">
-              <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto mb-3" />
-              <h4 className="text-lg font-bold text-amber-900">No Approved Cram Cards Yet</h4>
-              <p className="text-sm text-amber-800 mt-1">Cram memory hooks for this subject are queued for teacher approval in the Admin Review Queue.</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Flashcard Flip Component */}
-              <div
-                onClick={() => setIsFlipped(!isFlipped)}
-                className="cursor-pointer min-h-[280px] p-8 rounded-2xl border-2 border-blue-200 dark:border-blue-900/60 bg-gradient-to-br from-blue-50 via-indigo-50/50 to-white dark:from-slate-900 dark:via-blue-950/40 dark:to-slate-900 shadow-xl flex flex-col justify-between transition-all transform hover:scale-[1.01]"
-              >
-                <div className="flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
-                  <span>CARD {cramIndex + 1} OF {cramCards.length}</span>
-                  <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400 font-medium"><FlipHorizontal className="w-4 h-4" /> Click to Flip</span>
-                </div>
-
-                <div className="py-6 text-center">
-                  {!isFlipped ? (
-                    <div>
-                      <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-950/70 px-3 py-1 rounded-full uppercase tracking-wider border border-indigo-200 dark:border-indigo-800">Concept</span>
-                      <h4 className="text-2xl font-black text-slate-900 dark:text-white mt-3">{cramCards[cramIndex]?.topic || cramCards[cramIndex]?.content?.mnemonic || "Memory Hook"}</h4>
-                    </div>
-                  ) : (
-                    <div className="text-left space-y-3">
-                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-200 dark:border-emerald-800">Recall Answer</span>
-                      <p className="text-sm sm:text-base text-slate-900 dark:text-slate-100 font-medium leading-relaxed mt-2">{cramCards[cramIndex]?.content?.quick_summary || cramCards[cramIndex]?.content?.explanation}</p>
-                      {cramCards[cramIndex]?.content?.mnemonic && (
-                        <div className="p-3.5 bg-amber-100/90 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 rounded-xl text-xs sm:text-sm font-semibold shadow-xs mt-3">
-                          💡 Mnemonic: {cramCards[cramIndex]?.content?.mnemonic}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  {isFlipped ? "Showing Recall Answer" : "Showing Prompt Concept"}
-                </div>
-              </div>
-
-              {/* Navigation Controls */}
-              <div className="flex justify-between items-center">
-                <button
-                  disabled={cramIndex === 0}
-                  onClick={() => { setCramIndex(prev => prev - 1); setIsFlipped(false); }}
-                  className="px-5 py-2.5 text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 disabled:opacity-30 rounded-xl transition-all border border-slate-300 dark:border-slate-700 cursor-pointer shadow-xs"
-                >
-                  ← Previous Card
-                </button>
-                <button
-                  disabled={cramIndex === cramCards.length - 1}
-                  onClick={() => { setCramIndex(prev => prev + 1); setIsFlipped(false); }}
-                  className="px-5 py-2.5 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-30 rounded-xl shadow-md transition-all cursor-pointer"
-                >
-                  Next Card →
-                </button>
               </div>
             </div>
           )}

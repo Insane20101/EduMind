@@ -28,8 +28,12 @@ def generate_embeddings(texts: list[str]) -> list[list[float]]:
         try:
             return embeddings_model.embed_documents(texts)
         except Exception as e:
+            err_str = str(e).lower()
             print(f"  LangChain OpenAI Embedding Error on attempt {attempt+1}: {e}")
+            if "401" in err_str or "invalid_api_key" in err_str or "incorrect api key" in err_str:
+                # Unrecoverable auth error: fail fast so fallback kicks in immediately
+                break
             time.sleep(2 * (attempt + 1))
             
-    raise Exception("Failed to generate embeddings after 4 attempts.")
+    raise Exception("Failed to generate embeddings after attempt.")
 
