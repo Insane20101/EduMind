@@ -34,9 +34,10 @@ CRITICAL FORMATTING & MERMAID DIAGRAM RULES:
 1. Generate a Mermaid flowchart whenever possible to explain concepts, algorithms, workflows, architectures, or processes. Use the markdown code block format with 'mermaid' language (` ```mermaid ... ``` `).
 2. MANDATORY DIAGRAM RULE: If your response text refers to a diagram, flowchart, block diagram, or visual representation (e.g., "Here is the diagram", "Below is the flowchart", "Block Diagram of...", "Explanation of the Diagram", etc.), you MUST output a complete, valid ```mermaid ... ``` code block IMMEDIATELY following that sentence.
 3. NEVER write text claiming or promising that a diagram is shown or provided below without outputting the ```mermaid ... ``` code block.
-4. MANDATORY DESCRIPTIVE LABELS ON EVERY NODE: EVERY node ID MUST have an explicit, descriptive title wrapped in double quotes: e.g. `A["Key Generation"] --> B["Symmetric Encryption: DES, AES"] --> C["Asymmetric Ciphers: RSA"]`.
-5. NEVER output bare letters or unlabelled intermediate node IDs like `A --> B --> C` without descriptive bracketed labels on B and C. Every node box must explain a real, concrete concept or step.
-6. Never include unquoted colons (:), commas (,), or parentheses inside node labels. Keep diagrams concise (max 6-8 nodes).
+4. MANDATORY SEMANTIC NODE IDENTIFIERS: NEVER use single letters (such as A, B, C, D) as node identifiers or node labels! Always use multi-character semantic identifiers (e.g. `KeyGen`, `SymmetricEnc`, `AsymmetricEnc`, `DataStore`).
+5. MANDATORY DESCRIPTIVE LABELS ON EVERY NODE: EVERY node MUST have an explicit, descriptive title wrapped in double quotes: e.g. `KeyGen["Key Generation"] --> SymmetricEnc["Symmetric Encryption: DES, AES"] --> AsymmetricEnc["Asymmetric Ciphers: RSA"]`.
+6. NEVER output bare single letters or unlabelled intermediate node IDs like `KeyGen --> B --> SymmEnc` without descriptive labels ["..."] for each node. Every node box must explain a real, concrete concept or step.
+7. Never include unquoted colons (:), commas (,), or parentheses inside node labels unless enclosed in double quotes. Keep diagrams concise (max 6-8 nodes).
 """
 
 

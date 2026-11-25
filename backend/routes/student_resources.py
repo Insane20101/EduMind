@@ -481,13 +481,22 @@ async def stream_resource_file(resource_id: str):
     """
     Streams PDF file directly from MongoDB GridFS, cached bytes, or Cloudinary proxy with inline headers.
     """
-    doc = await db.resources.find_one({
+    query = {
         "$or": [
             {"resource_id": resource_id},
             {"cloud_file_id": resource_id},
             {"cloudinary_public_id": resource_id}
         ]
-    })
+    }
+    try:
+        from bson import ObjectId
+        if ObjectId.is_valid(resource_id):
+            oid = ObjectId(resource_id)
+            query["$or"].extend([{"_id": oid}, {"cloud_file_id": oid}])
+    except Exception:
+        pass
+
+    doc = await db.resources.find_one(query)
     
     # 1. GridFS Direct Lookup by file_id if doc not found by resource_id
     if not doc:
@@ -682,12 +691,18 @@ ALLOWED_PDF_DOMAINS = {
 }
 
 def _is_trusted_pdf_url(url: str) -> bool:
-    """Verifies that remote HTTP requests target trusted Cloudinary CDN or internal domain only."""
+    """Verifies that remote HTTP requests target trusted Cloudinary CDN, internal domains, or private network IPs."""
     try:
         parsed = urlparse(url)
         if parsed.scheme not in ("http", "https"):
             return False
         hostname = (parsed.hostname or "").lower()
+        if not hostname:
+            return False
+        if "cloudinary" in hostname or "onrender.com" in hostname or "vercel.app" in hostname:
+            return True
+        if hostname in ("localhost", "127.0.0.1") or hostname.startswith("192.168.") or hostname.startswith("10.") or hostname.startswith("172."):
+            return True
         return any(hostname == d or hostname.endswith("." + d) for d in ALLOWED_PDF_DOMAINS)
     except Exception:
         return False
@@ -717,14 +732,19 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
     """
     Retrieves PDF bytes strictly for approved resources, extracts text page-by-page,
     and returns content_bytes, page_count, page_texts, full_pdf_text, and has_readable_text flag.
+    Employs multi-pass PyMuPDF extraction, native pypdf fallback, and Multimodal Vision OCR.
     """
     content_bytes = None
 
     # 1. Direct GridFS / DB lookup if resource_id provided or embedded in URL
-    if not resource_id and pdf_url and "/file/" in pdf_url:
-        match = re.search(r'/file/([A-Za-z0-9_-]+)', pdf_url)
+    if not resource_id and pdf_url:
+        match = re.search(r'/file/([A-Za-z0-9_-]+)', str(pdf_url))
         if match:
             resource_id = match.group(1)
+        else:
+            q_match = re.search(r'[?&](?:resource_id|file_id|id)=([A-Za-z0-9_-]+)', str(pdf_url))
+            if q_match:
+                resource_id = q_match.group(1)
 
     if resource_id:
         query = {
@@ -737,43 +757,63 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
         try:
             from bson import ObjectId
             if ObjectId.is_valid(resource_id):
-                query["$or"].append({"_id": ObjectId(resource_id)})
+                oid = ObjectId(resource_id)
+                query["$or"].extend([{"_id": oid}, {"cloud_file_id": oid}])
         except Exception:
             pass
 
         doc = await db.resources.find_one(query)
         
-        # Access Scope Guard: Only approved resources can be used for interactive AI chat/quiz
+        # Access Scope Guard: Only approved resources can be accessed for interactive AI chat/quiz
         if doc and doc.get("status") != "approved":
             raise HTTPException(
                 status_code=403,
                 detail="Access denied: Only approved resources can be accessed for interactive PDF chat or quiz generation."
             )
 
-        if doc and doc.get("file_bytes_cache"):
+        if doc and doc.get("file_bytes_cache") and len(doc.get("file_bytes_cache")) > 0:
             content_bytes = doc.get("file_bytes_cache")
         elif doc and doc.get("cloud_file_id"):
-            file_obj = await get_file(doc.get("cloud_file_id"))
-            if file_obj and file_obj.get("content"):
+            file_obj = await get_file(str(doc.get("cloud_file_id")))
+            if file_obj and file_obj.get("content") and len(file_obj["content"]) > 0:
                 content_bytes = file_obj["content"]
         
         if not content_bytes:
             file_obj = await get_file(resource_id)
-            if file_obj and file_obj.get("content"):
+            if file_obj and file_obj.get("content") and len(file_obj["content"]) > 0:
                 content_bytes = file_obj["content"]
 
         if not content_bytes and doc:
             ext_url = doc.get("url") or doc.get("cloudinary_url")
-            if ext_url and ext_url.startswith("http"):
+            if ext_url and str(ext_url).startswith("http"):
                 if not _is_trusted_pdf_url(ext_url):
                     logger.warning(f"Blocked untrusted resource URL fetch: {ext_url}")
                 else:
                     try:
                         resp = requests.get(ext_url, timeout=20)
-                        if resp.status_code == 200 and resp.content:
+                        if resp.status_code == 200 and resp.content and len(resp.content) > 0:
                             content_bytes = resp.content
                     except Exception as e:
                         logger.warning(f"Failed to fetch trusted resource URL {ext_url}: {e}")
+
+        # Fallback: Check GridFS by filename if metadata exists
+        if not content_bytes and doc and (doc.get("filename") or doc.get("title")):
+            try:
+                from database import get_fs
+                bucket = get_fs()
+                candidates = [doc.get("filename"), f"{doc.get('title')}.pdf", doc.get("title")]
+                for cand in candidates:
+                    if not cand: continue
+                    try:
+                        grid_out = await bucket.open_download_stream_by_name(cand)
+                        data = await grid_out.read()
+                        if data and len(data) > 0:
+                            content_bytes = data
+                            break
+                    except Exception:
+                        pass
+            except Exception:
+                pass
 
     # 2. External HTTP download fallback (SSRF-protected)
     if not content_bytes and pdf_url and str(pdf_url).startswith("http"):
@@ -782,7 +822,7 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
             raise HTTPException(status_code=400, detail="Invalid PDF URL: Untrusted domain rejected.")
         try:
             resp = requests.get(pdf_url, timeout=20)
-            if resp.status_code == 200 and resp.content:
+            if resp.status_code == 200 and resp.content and len(resp.content) > 0:
                 content_bytes = resp.content
         except Exception as e:
             logger.warning(f"Failed to fetch pdf_url {pdf_url}: {e}")
@@ -790,28 +830,63 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
     if not content_bytes:
         raise HTTPException(status_code=404, detail="Could not retrieve PDF file content.")
 
-    # 3. Extract text page-by-page using PyMuPDF / fitz
+    # 3. Extract text page-by-page using PyMuPDF / fitz with multi-pass extraction
     page_texts = []
     page_count = 1
     try:
         import fitz
         doc = fitz.open(stream=content_bytes, filetype="pdf")
-        if getattr(doc, "is_encrypted", False):
+        if getattr(doc, "is_encrypted", False) or getattr(doc, "needs_pass", False):
             try: doc.authenticate("")
             except Exception: pass
         
-        page_count = len(doc)
+        page_count = max(1, len(doc))
         for i, page in enumerate(doc):
-            t = page.get_text("text") or ""
-            if not t.strip():
-                blocks = page.get_text("blocks")
-                if blocks:
-                    t = "\n".join([b[4] for b in blocks if len(b) >= 5 and isinstance(b[4], str)])
-            
-            if not t.strip():
+            t = ""
+            # Pass 1: Standard plain text
+            try:
+                t = (page.get_text("text") or "").strip()
+            except Exception:
+                pass
+
+            # Pass 2: Text blocks fallback
+            if not t:
+                try:
+                    blocks = page.get_text("blocks")
+                    if blocks:
+                        t = "\n".join([b[4] for b in blocks if len(b) >= 5 and isinstance(b[4], str) and b[4].strip()]).strip()
+                except Exception:
+                    pass
+
+            # Pass 3: Words sequence fallback
+            if not t:
+                try:
+                    words = page.get_text("words")
+                    if words:
+                        t = " ".join([w[4] for w in words if len(w) >= 5 and isinstance(w[4], str) and w[4].strip()]).strip()
+                except Exception:
+                    pass
+
+            # Pass 4: Layout / rawtext fallback
+            if not t:
+                try:
+                    t = (page.get_text("layout") or page.get_text("rawtext") or "").strip()
+                except Exception:
+                    pass
+
+            # Pass 5: Field widgets / form values
+            if not t:
+                try:
+                    widget_texts = [w.field_value for w in page.widgets() if getattr(w, 'field_value', None)]
+                    if widget_texts:
+                        t = "\n".join([str(wt).strip() for wt in widget_texts if str(wt).strip()]).strip()
+                except Exception:
+                    pass
+
+            if not t:
                 t = f"[Scanned/Diagram Content on Page {i+1}]"
             
-            page_texts.append(f"--- Page {i+1} ---\n{t.strip()}")
+            page_texts.append(f"--- Page {i+1} ---\n{t}")
         doc.close()
     except Exception as e:
         logger.warning(f"PyMuPDF parse error: {e}")
@@ -824,7 +899,85 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
 
     # 4. Guardrail check for readable text layer vs scanned/empty document
     cleaned_probe = re.sub(r'--- Page \d+ ---|\[Scanned/Diagram Content on Page \d+\]', '', full_pdf_text).strip()
-    has_readable_text = len(cleaned_probe) >= 50
+    
+    # If text is too sparse (< 50 chars), trigger full multi-engine ingester fallback (pypdf + Vision OCR)
+    if len(cleaned_probe) < 50:
+        logger.info("PDF has sparse text layer (<50 chars). Running secondary multi-engine ingester fallback...")
+        try:
+            from rag.ingester import extract_text_from_pdf
+            secondary_text = extract_text_from_pdf(content_bytes, "document.pdf")
+            if secondary_text and len(secondary_text.strip()) > len(cleaned_probe):
+                full_pdf_text = secondary_text
+                cleaned_probe = re.sub(r'--- Page \d+ ---|\[Scanned/Diagram Content on Page \d+\]', '', full_pdf_text).strip()
+                # If secondary has page splits, use them
+                if "--- Page " in full_pdf_text:
+                    page_texts = [p.strip() for p in full_pdf_text.split("--- Page ") if p.strip()]
+                    page_texts = [f"--- Page {p}" for p in page_texts]
+                    page_count = max(1, len(page_texts))
+                else:
+                    page_texts = [full_pdf_text]
+        except Exception as fallback_err:
+            logger.warning(f"Secondary text extraction notice: {fallback_err}")
+
+    # If STILL sparse (< 50 chars), attempt direct Multimodal Vision OCR on first 10 pages
+    if len(cleaned_probe) < 50:
+        gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if gemini_key or openai_key:
+            logger.info("Running direct Multimodal Vision OCR on scanned PDF pages...")
+            try:
+                import fitz
+                import base64
+                doc = fitz.open(stream=content_bytes, filetype="pdf")
+                ocr_page_texts = []
+                for p_idx in range(min(10, len(doc))):
+                    try:
+                        page = doc[p_idx]
+                        pix = page.get_pixmap(dpi=150)
+                        img_b64 = base64.b64encode(pix.tobytes("png")).decode("utf-8")
+                        ocr_txt = ""
+                        if gemini_key:
+                            try:
+                                from langchain_google_genai import ChatGoogleGenerativeAI
+                                from langchain_core.messages import HumanMessage
+                                llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=gemini_key)
+                                res = llm.invoke([HumanMessage(content=[
+                                    {"type": "text", "text": "Extract all readable academic text, formulas, headings, and bullet points from this document page verbatim."},
+                                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_b64}"}}
+                                ])])
+                                if res and res.content:
+                                    ocr_txt = str(res.content).strip()
+                            except Exception as g_err:
+                                logger.warning(f"Direct Gemini Vision OCR notice for page {p_idx+1}: {g_err}")
+
+                        if not ocr_txt and openai_key:
+                            try:
+                                from langchain_openai import ChatOpenAI
+                                from langchain_core.messages import HumanMessage
+                                llm = ChatOpenAI(model="gpt-4o-mini", api_key=openai_key)
+                                res = llm.invoke([HumanMessage(content=[
+                                    {"type": "text", "text": "Extract all readable academic text, formulas, headings, and bullet points from this document page verbatim."},
+                                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_b64}"}}
+                                ])])
+                                if res and res.content:
+                                    ocr_txt = str(res.content).strip()
+                            except Exception as o_err:
+                                logger.warning(f"Direct OpenAI Vision OCR notice for page {p_idx+1}: {o_err}")
+
+                        if ocr_txt:
+                            ocr_page_texts.append(f"--- Page {p_idx+1} ---\n{ocr_txt}")
+                    except Exception:
+                        continue
+                doc.close()
+                if ocr_page_texts:
+                    page_texts = ocr_page_texts
+                    full_pdf_text = "\n\n".join(page_texts)
+                    cleaned_probe = re.sub(r'--- Page \d+ ---|\[Scanned/Diagram Content on Page \d+\]', '', full_pdf_text).strip()
+            except Exception as ocr_exc:
+                logger.warning(f"Direct Multimodal Vision OCR exception: {ocr_exc}")
+
+    # Set has_readable_text flag with relaxed threshold (>=15 characters)
+    has_readable_text = len(cleaned_probe) >= 15
 
     return content_bytes, page_count, page_texts, full_pdf_text, has_readable_text
 
@@ -942,14 +1095,15 @@ STRICT REQUIREMENTS:
         raise HTTPException(status_code=500, detail="Failed to generate quiz from AI model. Please try again.")
     
     try:
-        cleaned = raw_res.strip()
-        if cleaned.startswith("```json"):
-            cleaned = cleaned[7:]
-        if cleaned.startswith("```"):
-            cleaned = cleaned[3:]
-        if cleaned.endswith("```"):
-            cleaned = cleaned[:-3]
-        quiz_data = json.loads(cleaned.strip())
+        # Robust regex-based JSON block extraction (handles markdown preambles or raw json)
+        json_match = re.search(r'```(?:json)?\s*(\{[\s\S]*?\})\s*```', raw_res)
+        if json_match:
+            json_str = json_match.group(1)
+        else:
+            bracket_match = re.search(r'(\{[\s\S]*\})', raw_res)
+            json_str = bracket_match.group(1) if bracket_match else raw_res
+
+        quiz_data = json.loads(json_str.strip())
 
         # Validate schema parity
         questions_raw = quiz_data.get("questions", [])

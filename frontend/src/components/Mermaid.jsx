@@ -116,14 +116,22 @@ function sanitizeMermaidChart(rawChart) {
       const parts = trimmed.split(/\s*(?:-->|---|==>)\s*/);
       const stepNodes = [];
       for (const p of parts) {
-        const match = p.match(/^([A-Za-z0-9_]+)(?:\["?([^"\]]*)"?\]|\("?([^"\)]*)"?\)|\{"?([^"\}]*)"?\})?/);
-        if (match) {
-          const id = match[1];
-          const label = (match[2] || match[3] || match[4] || '').trim();
+        const cleanP = p.trim();
+        const bracketMatch = cleanP.match(/^([A-Za-z0-9_]+)\s*(?:\["?([^"\]]*)"?\]|\("?([^"\)]*)"?\)|\{"?([^"\}]*)"?\})/);
+        if (bracketMatch) {
+          const id = bracketMatch[1];
+          const label = (bracketMatch[2] || bracketMatch[3] || bracketMatch[4] || '').trim();
           if (label && label.length > 2 && !/^[A-Za-z][0-9]?$/.test(label)) {
             labeledNodes.set(id, label);
           }
           stepNodes.push(id);
+        } else {
+          // Unbracketed node or bare ID
+          const bareId = cleanP.replace(/[^A-Za-z0-9_]/g, '_').replace(/^_+|_+$/g, '') || `Node_${Math.floor(Math.random() * 10000)}`;
+          if (cleanP.length > 2 && !/^[A-Za-z][0-9]?$/.test(cleanP)) {
+            labeledNodes.set(bareId, cleanP.replace(/"/g, "'"));
+          }
+          stepNodes.push(bareId);
         }
       }
       for (let i = 0; i < stepNodes.length - 1; i++) {
@@ -139,7 +147,14 @@ function sanitizeMermaidChart(rawChart) {
           otherLines.push(`  ${id}["${label}"]`);
         }
       } else {
-        otherLines.push(trimmed);
+        const cleanTrimmed = trimmed.trim();
+        if (cleanTrimmed.length > 2 && !/^[A-Za-z][0-9]?$/.test(cleanTrimmed)) {
+          const bareId = cleanTrimmed.replace(/[^A-Za-z0-9_]/g, '_').replace(/^_+|_+$/g, '');
+          labeledNodes.set(bareId, cleanTrimmed.replace(/"/g, "'"));
+          otherLines.push(`  ${bareId}["${cleanTrimmed}"]`);
+        } else {
+          otherLines.push(trimmed);
+        }
       }
     }
   }
@@ -722,14 +737,14 @@ export default function Mermaid({ chart }) {
             onMouseLeave={handleMouseUp}
           >
             <div 
-              className="transition-transform duration-75 ease-out flex items-center justify-center max-w-full max-h-full"
+              className="transition-transform duration-75 ease-out flex items-center justify-center shrink-0 min-w-fit min-h-fit"
               style={{
                 transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
                 transformOrigin: 'center center'
               }}
             >
               <div 
-                className="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl border border-slate-200 w-[92vw] max-w-[1200px] h-[78vh] min-h-[460px] flex items-center justify-center overflow-hidden"
+                className="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl border border-slate-200 w-[92vw] max-w-[1200px] h-[78vh] min-h-[460px] flex items-center justify-center overflow-hidden shrink-0"
               >
                 <div 
                   ref={modalContainerRef} 
