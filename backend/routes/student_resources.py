@@ -117,6 +117,13 @@ async def get_playlists_for_students(subject_id: Optional[str] = None):
         if key not in seen_keys:
             seen_keys.add(key)
             d["source"] = d.get("source", "admin")
+            # Extract real YouTube playlist or video ID
+            list_m = re.search(r'[?&]list=([A-Za-z0-9_-]+)', url)
+            if list_m:
+                d["yt_list_id"] = list_m.group(1)
+            vid_m = re.search(r'(?:v=|\/embed\/|\/watch\?v=|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})', url)
+            if vid_m:
+                d["yt_video_id"] = vid_m.group(1)
             for field in ("created_at", "updated_at"):
                 if isinstance(d.get(field), datetime):
                     d[field] = format_iso(d.get(field))
@@ -457,17 +464,83 @@ async def get_playlist_items(list_id: str):
     """
     Fetches real YouTube video items (title, videoId, index, thumbnail) for a playlist ID in real-time.
     Supports 60+ videos using multi-stage Innertube API scraping and continuation token pagination.
+    Resolves internal MongoDB playlist_ids, UUIDs, and single video links dynamically.
     """
     if not list_id or not list_id.strip():
         raise HTTPException(status_code=400, detail="list_id is required.")
 
-    clean_list_id = list_id.strip()
+    raw_id = list_id.strip()
+    clean_list_id = raw_id
+    single_video_id = None
+    target_title = None
+
+    # 1. Direct URL extraction if query passed as full URL
     if "list=" in clean_list_id:
-        m = re.search(r'list=([A-Za-z0-9_-]+)', clean_list_id)
+        m = re.search(r'[?&]list=([A-Za-z0-9_-]+)', clean_list_id)
         if m:
             clean_list_id = m.group(1)
 
+    # 2. Database lookup if clean_list_id is a UUID or DB resource key
+    is_uuid = bool(re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', clean_list_id, re.IGNORECASE))
+    if is_uuid or clean_list_id.startswith("seed-") or not (clean_list_id.startswith("PL") or clean_list_id.startswith("UU") or clean_list_id.startswith("FL") or clean_list_id.startswith("RD") or clean_list_id.startswith("OLAK")):
+        doc = await db.playlists.find_one({"$or": [{"playlist_id": clean_list_id}, {"resource_id": clean_list_id}]})
+        if not doc:
+            doc = await db.resources.find_one({"$or": [{"resource_id": clean_list_id}, {"playlist_id": clean_list_id}]})
+        
+        if doc:
+            target_title = doc.get("title")
+            doc_url = doc.get("url") or ""
+            if doc_url:
+                list_m = re.search(r'[?&]list=([A-Za-z0-9_-]+)', doc_url)
+                if list_m:
+                    clean_list_id = list_m.group(1)
+                else:
+                    vid_m = re.search(r'(?:v=|\/embed\/|\/watch\?v=|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})', doc_url)
+                    if vid_m:
+                        single_video_id = vid_m.group(1)
+
+    # 3. Handle single video link
+    if single_video_id:
+        single_item = [{
+            "videoId": single_video_id,
+            "title": target_title or "Lecture Video",
+            "index": 1,
+            "thumbnail": f"https://img.youtube.com/vi/{single_video_id}/hqdefault.jpg"
+        }]
+        return {
+            "list_id": clean_list_id,
+            "total_videos": 1,
+            "videos": single_item
+        }
+
+    # Handle direct single 11-char video ID input
+    vid_direct_m = re.search(r'(?:v=|\/embed\/|\/watch\?v=|\/v\/|youtu\.be\/|^)([A-Za-z0-9_-]{11})$', clean_list_id)
+    if vid_direct_m and not (clean_list_id.startswith("PL") or clean_list_id.startswith("UU") or clean_list_id.startswith("FL") or clean_list_id.startswith("RD") or clean_list_id.startswith("OLAK")):
+        v_id = vid_direct_m.group(1)
+        single_item = [{
+            "videoId": v_id,
+            "title": target_title or "Lecture Video",
+            "index": 1,
+            "thumbnail": f"https://img.youtube.com/vi/{v_id}/hqdefault.jpg"
+        }]
+        return {
+            "list_id": v_id,
+            "total_videos": 1,
+            "videos": single_item
+        }
+
     videos = fetch_youtube_playlist_videos(clean_list_id)
+
+    # Fallback: If 0 videos found and URL has a video ID, return single video item
+    if not videos and doc_url if 'doc_url' in locals() else False:
+        m_v = re.search(r'(?:v=|\/watch\?v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})', doc_url)
+        if m_v:
+            videos = [{
+                "videoId": m_v.group(1),
+                "title": target_title or "Lecture Video",
+                "index": 1,
+                "thumbnail": f"https://img.youtube.com/vi/{m_v.group(1)}/hqdefault.jpg"
+            }]
 
     return {
         "list_id": clean_list_id,

@@ -178,25 +178,20 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
 
   // Extract YouTube Playlist ID / Video ID robustly across all URL patterns & data objects
   const getPlaylistDetails = (playlistObj) => {
-    if (!playlistObj) return { listId: null, videoId: null };
+    if (!playlistObj) return { listId: null, videoId: null, queryParamId: null };
 
-    let listId = playlistObj.playlist_id || playlistObj.list_id || null;
-    let videoId = playlistObj.video_id || playlistObj.videoId || null;
+    let listId = null;
+    let videoId = playlistObj.yt_video_id || playlistObj.video_id || playlistObj.videoId || null;
     let rawUrl = playlistObj.url || (typeof playlistObj === 'string' ? playlistObj : '');
 
+    // 1. First priority: extract real YouTube list parameter directly from the raw URL
     if (typeof rawUrl === 'string' && rawUrl.trim()) {
       rawUrl = rawUrl.trim();
-      // Safe extraction for list parameter using regex (bypasses URL constructor failures)
-      if (!listId) {
-        const listMatch = rawUrl.match(/[?&]list=([A-Za-z0-9_-]+)/);
-        if (listMatch) {
-          listId = listMatch[1];
-        } else if (!rawUrl.includes('/') && rawUrl.length >= 12) {
-          listId = rawUrl;
-        }
+      const listMatch = rawUrl.match(/[?&]list=([A-Za-z0-9_-]+)/);
+      if (listMatch) {
+        listId = listMatch[1];
       }
 
-      // Safe extraction for video ID parameter using regex
       if (!videoId) {
         const videoMatch = rawUrl.match(/(?:v=|\/embed\/|\/watch\?v=|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
         if (videoMatch) {
@@ -205,14 +200,36 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
       }
     }
 
-    return { listId, videoId };
+    // 2. Second priority: check yt_list_id from backend response
+    if (!listId && playlistObj.yt_list_id) {
+      listId = playlistObj.yt_list_id;
+    }
+
+    // 3. Third priority: check playlist_id / list_id (ensure it's not a DB UUID or seed key)
+    const candidate = playlistObj.playlist_id || playlistObj.list_id;
+    const isUuid = candidate && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(candidate).trim());
+    const isSeedKey = candidate && String(candidate).trim().startsWith('seed-');
+
+    if (!listId && candidate && typeof candidate === 'string') {
+      const cleanCandidate = candidate.trim();
+      if (!isUuid && !isSeedKey) {
+        const m = cleanCandidate.match(/[?&]list=([A-Za-z0-9_-]+)/);
+        listId = m ? m[1] : cleanCandidate;
+      }
+    }
+
+    // queryParamId is passed to /api/resources/playlist-items (prefer listId, fallback to candidate)
+    const queryParamId = listId || candidate || videoId;
+
+    return { listId, videoId, queryParamId };
   };
 
-  const { listId, videoId } = getPlaylistDetails(currentPlaylist);
+  const { listId, videoId, queryParamId } = getPlaylistDetails(currentPlaylist);
 
-  // Fetch 100% REAL YouTube video titles via backend RSS endpoint
+  // Fetch 100% REAL YouTube video titles via backend RSS/Innertube endpoint
   useEffect(() => {
-    if (!listId) {
+    const fetchTarget = listId || queryParamId;
+    if (!fetchTarget) {
       setRealVideos([]);
       setLoadingItems(false);
       return;
@@ -221,7 +238,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     setLoadingItems(true);
     setRealVideos([]);
 
-    fetch(`${getApiBaseUrl()}/api/resources/playlist-items?list_id=${listId}`)
+    fetch(`${getApiBaseUrl()}/api/resources/playlist-items?list_id=${encodeURIComponent(fetchTarget)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.videos && Array.isArray(data.videos) && data.videos.length > 0) {
@@ -237,7 +254,7 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
       .finally(() => {
         setLoadingItems(false);
       });
-  }, [listId]);
+  }, [listId, queryParamId]);
 
   // Reset active video index when switching playlists
   useEffect(() => {
@@ -291,19 +308,23 @@ export default function PlaylistTheaterModal({ playlists = [], initialIndex = 0,
     if (currentVideoObj && currentVideoObj.videoId) {
       return `https://www.youtube.com/embed/${currentVideoObj.videoId}?autoplay=1&enablejsapi=1&rel=0`;
     }
-    if (listId) {
+    // Only use listId if it looks like a real YouTube playlist ID (not a DB UUID)
+    const isRealYtList = listId && (listId.startsWith('PL') || listId.startsWith('UU') || listId.startsWith('FL') || listId.startsWith('RD') || listId.startsWith('OLAK') || (!listId.includes('-') && listId.length >= 12));
+    if (isRealYtList) {
       return `https://www.youtube.com/embed/videoseries?list=${listId}&index=${activeVideoIdx}&autoplay=1&enablejsapi=1&rel=0`;
     }
     if (videoId) {
       return `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
     }
     if (currentPlaylist && currentPlaylist.url) {
-      let u = String(currentPlaylist.url).trim();
-      if (u.includes('youtube.com') || u.includes('youtu.be')) {
-        if (!u.startsWith('http://') && !u.startsWith('https://')) {
-          u = 'https://' + u;
-        }
-        return u;
+      const u = String(currentPlaylist.url).trim();
+      const vm = u.match(/(?:v=|\/embed\/|\/watch\?v=|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+      if (vm) {
+        return `https://www.youtube.com/embed/${vm[1]}?autoplay=1&enablejsapi=1&rel=0`;
+      }
+      const lm = u.match(/[?&]list=([A-Za-z0-9_-]+)/);
+      if (lm) {
+        return `https://www.youtube.com/embed/videoseries?list=${lm[1]}&index=${activeVideoIdx}&autoplay=1&enablejsapi=1&rel=0`;
       }
     }
     return null;
