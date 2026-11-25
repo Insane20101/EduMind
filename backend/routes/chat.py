@@ -352,7 +352,7 @@ FORMATTING INSTRUCTIONS:
                     except Exception as ve:
                         logger.warning(f"OpenAI Vision failed: {ve}")
 
-                # 2. Try Google GenAI SDK Vision (gemini-2.5-flash)
+                # 2. Try Google GenAI SDK Vision (gemini-3.8-flash)
                 if not answer and (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
                     try:
                         from google import genai
@@ -361,7 +361,7 @@ FORMATTING INSTRUCTIONS:
                         gclient = genai.Client(api_key=gkey)
                         part = types.Part.from_bytes(data=content_bytes, mime_type=mime_type)
                         gres = gclient.models.generate_content(
-                            model="gemini-2.5-flash",
+                            model="gemini-3.8-flash",
                             contents=[part, vision_prompt]
                         )
                         if gres and gres.text:

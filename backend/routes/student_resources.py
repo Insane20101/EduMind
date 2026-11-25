@@ -1013,7 +1013,7 @@ async def _fetch_pdf_bytes_and_text(pdf_url: Optional[str], resource_id: Optiona
                             try:
                                 from langchain_google_genai import ChatGoogleGenerativeAI
                                 from langchain_core.messages import HumanMessage
-                                llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=gemini_key)
+                                llm = ChatGoogleGenerativeAI(model="gemini-3.8-flash", google_api_key=gemini_key)
                                 res = llm.invoke([HumanMessage(content=[
                                     {"type": "text", "text": "Extract all readable academic text, formulas, headings, and bullet points from this document page verbatim."},
                                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_b64}"}}
